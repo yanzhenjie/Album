@@ -1,0 +1,16 @@
+<resources>
+    <string name="gallery_menu_finish">完成</string>
+
+    <!-- 图库 -->
+    <string name="album_title_activity_gallery">图片</string>
+    <string name="album_all_image">所有图片</string>
+    <string name="album_check_limit">你最多可以选择%1$d张图片</string>
+    <string name="album_check_little">你没有选择照片</string>
+    <string name="album_menu_finish">完成</string>
+    <string name="album_check">选择</string>
+
+    <string name="album_dialog_permission_failed">权限获取失败</string>
+    <string name="album_permission_storage_failed_hint">获取读取相册权限失败，请在设置中授权后再使用。</string>
+    <string name="album_permission_camera_failed_hint">获取相机权限失败，请在设置中授权后再使用。</string>
+    <string name="album_dialog_sure">好的</string>
+</resources>

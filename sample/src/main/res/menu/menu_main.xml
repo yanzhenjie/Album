@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.yanzhenjie.photoalbum.MainActivity">
+    <item
+        android:id="@+id/action_check_image"
+        android:icon="@drawable/ic_add_a_photo_white"
+        android:orderInCategory="100"
+        android:title="@string/menu_check_image"
+        app:showAsAction="always|withText" />
+</menu>

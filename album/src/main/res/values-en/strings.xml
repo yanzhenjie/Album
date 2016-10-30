@@ -1,0 +1,15 @@
+<resources>
+    <string name="gallery_menu_finish">Finish</string>
+
+    <string name="album_title_activity_gallery">Image</string>
+    <string name="album_all_image">All Image</string>
+    <string name="album_check_limit">You can choose to %1$d most images</string>
+    <string name="album_check_little">You have not choose photos</string>
+    <string name="album_menu_finish">Finish</string>
+    <string name="album_check">Selected</string>
+
+    <string name="album_dialog_permission_failed">Access to failure</string>
+    <string name="album_permission_storage_failed_hint">Failed to get read photo album permissions, please authorize in the Settings before use.</string>
+    <string name="album_permission_camera_failed_hint">Failed to get camera permissions, please authorize in the Settings before use.</string>
+    <string name="album_dialog_sure">OK</string>
+</resources>
