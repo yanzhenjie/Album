@@ -1,10 +1,8 @@
-# 一个简约的Android相册（支持多选）
+# Album
 技术交流群：[46523908](http://jq.qq.com/?_wv=1027&k=410oIg0)  
 图片上传推荐使用NoHttp：[NoHttp源码](https://github.com/yanzhenjie/NoHttp)、[NoHttp详细使用文档](http://doc.nohttp.net)
 
-本项目开源地址：[https://github.com/yanzhenjie/album](https://github.com/yanzhenjie/album)
-
-1. Album是一个Android开源相册，支持单/多选、支持预览、支持选择文件夹查看图片，后期会加入图片剪切、放大缩小等操作。
+1. Album是一个Android开源相册，支持单/多选、缩放、预览、按文件夹查看图片，二期会考虑加入图片剪切等操作，这个功能将是非必选的。
 
 2. 开发者不需要担心`Android6.0`的运行时权限，`Album`已经非常完善的处理过了。
 
@@ -23,14 +21,14 @@
 ## 使用方法
 Gradle：
 ```groovy
-compile 'com.yanzhenjie:album:1.0.0'
+compile 'com.yanzhenjie:permission:1.0.3'
 ```
 Or Maven:
 ```xml
 <dependency>
   <groupId>com.yanzhenjie</groupId>
-  <artifactId>album</artifactId>
-  <version>1.0.0</version>
+  <artifactId>permission</artifactId>
+  <version>1.0.3</version>
   <type>pom</type>
 </dependency>
 ```
@@ -70,7 +68,7 @@ Album.startAlbum(this, ACTIVITY_REQUEST_SELECT_PHOTO
     , ContextCompat.getColor(this, R.color.colorPrimaryDark));  // 指定状态栏的颜色。
 ```
 
-接受结果，重写`Activity/Fragment`的`onActivityResult()`方法：
+重写`Activity/Fragment`的`onActivityResult()`方法：
 ```java
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -86,7 +84,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 ```
 
 ## 注意点
-由于支持了MaterialDesign（以后会更加MD），项目中已经引用了Google官方的的support库：
+由于支持了MaterialDesign，项目中已经引用了Google官方的的support库：
 ```groovy
 compile 'com.android.support:appcompat-v7:24.2.1'
 compile 'com.android.support:recyclerview-v7:24.2.1'

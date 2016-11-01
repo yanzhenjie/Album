@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import com.yanzhenjie.album.entity.AlbumImage;
 import com.yanzhenjie.album.task.ImageLocalLoader;
 import com.yanzhenjie.album.util.DisplayUtils;
+import com.yanzhenjie.album.widget.PhotoViewAttacher;
 
 import java.util.List;
 
@@ -47,10 +48,14 @@ public class PreviewAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         ImageView imageView = new ImageView(container.getContext());
         imageView.setLayoutParams(new ViewGroup.LayoutParams(-1, -1));
+        container.addView(imageView);
+        final PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
+
         ImageLocalLoader.getInstance().loadImage(imageView, mAlbumImages.get(position).getPath(), DisplayUtils.screenWidth, contentHeight, new ImageLocalLoader.LoadListener() {
             @Override
             public void onLoadFinish(Bitmap bitmap, ImageView imageView, String imagePath) {
                 imageView.setImageBitmap(bitmap);
+                attacher.update();
 
                 int height = bitmap.getHeight();
                 int width = bitmap.getWidth();
@@ -58,13 +63,12 @@ public class PreviewAdapter extends PagerAdapter {
                 int contentSize = contentHeight / DisplayUtils.screenWidth;
 
                 if (height > width && bitmapSize >= contentSize) {
-                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    attacher.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 } else {
-                    imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    attacher.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 }
             }
         });
-        container.addView(imageView);
         return imageView;
     }
 
