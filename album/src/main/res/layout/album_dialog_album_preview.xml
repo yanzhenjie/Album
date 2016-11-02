@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/AlbumMatchParent"
+    android:background="@color/albumWhite"
+    tools:context=".AlbumActivity"
+    tools:ignore="MergeRootFrame,Overdraw,UnusedAttribute">
+
+    <android.support.design.widget.AppBarLayout
+        style="@style/AlbumWrapContent.WidthMatchParent"
+        android:background="@color/albumTransparent"
+        android:theme="@style/AlbumAppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/AlbumToolbar"
+            android:background="@color/albumTransparent"
+            app:navigationIcon="@drawable/album_ic_back_white" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <com.yanzhenjie.album.widget.FixViewPager
+        android:id="@+id/view_pager"
+        style="@style/AlbumMatchParent"
+        android:background="@color/albumPrimaryBlack" />
+
+    <RelativeLayout
+        android:id="@+id/layout_gallery_preview_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/album_dp_50"
+        android:layout_gravity="bottom"
+        android:background="@color/albumSheetBackground">
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/cb_album_check"
+            style="@style/AlbumCheckBox.WrapContent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/album_dp_10"
+            android:layout_marginRight="@dimen/album_dp_10"
+            android:text="@string/album_check"
+            android:textColor="@color/albumWhite"
+            android:textSize="@dimen/album_sp_16" />
+
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

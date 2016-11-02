@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/AlbumWrapContent"
+    android:background="?selectableItemBackgroundBorderless">
+
+    <ImageView
+        android:id="@+id/iv_album_content_image"
+        style="@style/AlbumMatchParent"
+        android:contentDescription="@string/album_title_activity_gallery"
+        android:scaleType="centerCrop" />
+
+    <android.support.v7.widget.AppCompatCheckBox
+        android:id="@+id/cb_album_check"
+        style="@style/AlbumCheckBox.WrapContent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true" />
+
+</RelativeLayout>

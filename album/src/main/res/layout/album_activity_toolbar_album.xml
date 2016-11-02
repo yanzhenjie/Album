@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_bar_layout"
+    style="@style/AlbumWrapContent.WidthMatchParent"
+    android:theme="@style/AlbumAppBarOverlay"
+    tools:showIn="@layout/album_activity_album">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/AlbumToolbar.PopupTheme" />
+
+</android.support.design.widget.AppBarLayout>

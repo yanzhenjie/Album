@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/AlbumWrapContent"
+    android:background="@color/albumPrimaryBlack">
+
+    <ImageView
+        android:id="@+id/iv_album_content_button"
+        style="@style/AlbumMatchParent"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/album_title_activity_gallery"
+        android:scaleType="center"
+        android:src="@drawable/album_ic_add_photo_white" />
+
+</RelativeLayout>
