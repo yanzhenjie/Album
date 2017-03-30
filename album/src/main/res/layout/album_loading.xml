@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/AlbumMatchParent"
+    android:gravity="center">
+
+    <com.yanzhenjie.album.widget.loading.LoadingView
+        android:id="@+id/loading_view"
+        android:layout_width="@dimen/album_dp_100"
+        android:layout_height="@dimen/album_dp_100"/>
+
+    <TextView
+        style="@style/AlbumWrapContent"
+        android:layout_marginLeft="@dimen/album_dp_15"
+        android:layout_marginStart="@dimen/album_dp_15"
+        android:text="@string/album_load_hint"
+        android:textColor="@color/albumWhite"
+        android:textSize="@dimen/album_sp_18"/>
+
+</LinearLayout>

@@ -1,111 +1,144 @@
 # Album
-1. Album是一个Android开源相册，支持单/多选、缩放、预览、按文件夹查看图片，二期会考虑加入图片剪切等操作，这个功能将是非必选的。
+`Album` is an MaterialDesign tyle open source album, the main function is: `Album and Gallery`.
 
-2. 开发者不需要担心`Android6.0`的运行时权限，`Album`已经非常完善的处理过了。
+Image upload recommended NoHttp：[NoHttp Open source address](https://github.com/yanzhenjie/NoHttp).
 
-3. 支持自定义样式风格，比如Toolbar颜色、状态栏颜色等。
+[中文文档](./README-CN.md)
 
-4. 内置支持了相机，开发者不用担心相机的使用问题，Album自动搞定。
+# Features
+1. Support component：`Activity`、`Fragment`.
+2. UI style can be configured, for example: `Toolbar`、`StatusBar`、`NavigationBar`.
+3. Radio, multi-select, folder preview, gallery, gallery zoom.
+4. Support setting album number.
+5. Support for configuring whether to use the camera.
+6. Gallery preview multiple pictures, preview can be anti-election.
 
-5. 支持`Activity`、`Fragment`调用。
+# Screenshot
+Please experience [download apk](https://github.com/yanzhenjie/Album/blob/master/sample-release.apk?raw=true).  
+<image src="./image/1.gif" width="170px"/> <image src="./image/2.gif" width="170px"/> <image src="./image/3.gif" width="170px"/> <image src="./image/4.gif" width="170px"/>
 
-技术交流群：[46523908](http://jq.qq.com/?_wv=1027&k=410oIg0)  
-图片上传推荐使用NoHttp：[NoHttp源码](https://github.com/yanzhenjie/NoHttp)、[NoHttp详细使用文档](http://doc.nohttp.net)
-
-# Demo效果预览
-<image src="https://github.com/yanzhenjie/album/blob/master/image/1.gif?raw=true" width="250px"/>  <image src="https://github.com/yanzhenjie/album/blob/master/image/2.gif?raw=true" width="250px"/>  
-<image src="https://github.com/yanzhenjie/album/blob/master/image/3.gif?raw=true" width="250px"/>  <image src="https://github.com/yanzhenjie/album/blob/master/image/4.gif?raw=true" width="250px"/>  
-
-如果你想体验一把，你可以[下载demo的apk](https://github.com/yanzhenjie/album/blob/master/sample-release.apk?raw=true)来玩玩。
-
-# 使用方法
-Gradle：
+# Dependencies
+* Gradle：
 ```groovy
-compile 'com.yanzhenjie:album:1.0.0'
+compile 'com.yanzhenjie:album:1.0.1'
 ```
-Or Maven:
+
+* Maven:
 ```xml
 <dependency>
   <groupId>com.yanzhenjie</groupId>
   <artifactId>album</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <type>pom</type>
 </dependency>
 ```
-Eclipse请下载源码自行转换成Library project。
 
-# mainifest.xml中需要注册
+# Register in mainifest.xml
 ```xml
 <activity
     android:name="com.yanzhenjie.album.AlbumActivity"
-    android:label="图库"
     android:configChanges="orientation|keyboardHidden|screenSize"
     android:theme="@style/Theme.AppCompat.Light.NoActionBar"
     android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
 ```
-其中`android:label="xx"`中的xx是调起的`Activity`的标题，你可以自定义，其它请照抄即可。
 
-# 需要的权限
+# Permission
 ```xml
 <uses-permission android:name="android.permission.CAMERA" />
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 ```
-开发者不需要担心`Android6.0`的运行时权限，`Album`已经非常完善的处理过了。
 
-# 如何调用
-调起Album的界面：
+* Developers do not need to worry about `Android6.0` runtime permissions，`Album` has been very well handled.
+* In addition `Android6.0` runtime permissions recommended: [AndPermission](https://github.com/yanzhenjie/AndPermission).
+
+# Usage
+Album's main function is: `Album and Gallery`, the following are described separately.
+
+## Album
+Use `Album.album(this).start()` to call up the album.
 ```java
-// 1. 使用默认风格，并指定选择数量：
-// 第一个参数Activity/Fragment； 第二个request_code； 第三个允许选择照片的数量，不填可以无限选择。
-// Album.startAlbum(this, ACTIVITY_REQUEST_SELECT_PHOTO, 9);
-
-// 2. 使用默认风格，不指定选择数量：
-// Album.startAlbum(this, ACTIVITY_REQUEST_SELECT_PHOTO); // 第三个参数不填的话，可以选择无数个。
-
-// 3. 指定风格，并指定选择数量，如果不想限制数量传入Integer.MAX_VALUE;
-Album.startAlbum(this, ACTIVITY_REQUEST_SELECT_PHOTO
-    , 9                                                         // 指定选择数量。
-    , ContextCompat.getColor(this, R.color.colorPrimary)        // 指定Toolbar的颜色。
-    , ContextCompat.getColor(this, R.color.colorPrimaryDark));  // 指定状态栏的颜色。
+Album.album(this)
+    .requestCode(999) // Request code.
+    .toolBarColor(toolbarColor) // Toolbar color.
+    .statusBarColor(statusBarColor) // StatusBar color.
+    .navigationBarColor(navigationBarColor) // NavigationBar color.
+    
+    .selectCount(9) // Choose up to a few pictures.
+    .columnCount(2) // Number of albums.
+    .camera(true) // Have a camera function.
+    .checkedList(mImageList) // Has selected the picture, automatically select.
+    .start();
 ```
 
-重写`Activity/Fragment`的`onActivityResult()`方法：
+Accept the result：  
 ```java
+ArrayList<String> mImageList;
+
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (requestCode == 100) {
-        if (resultCode == RESULT_OK) { // 判断是否成功。
-            // 拿到用户选择的图片路径List：
-            List<String> pathList = Album.parseResult(data);
-        } else if (resultCode == RESULT_CANCELED) { // 用户取消选择。
-            // 根据需要提示用户取消了选择。
+    if(requestCode == 999) {
+        if (resultCode == RESULT_OK) { // Successfully.
+            // Parse select result.
+            mImageList = Album.parseResult(data);
+        } else if (resultCode == RESULT_CANCELED) {
+            // User canceled.
         }
     }
 }
 ```
 
-# 注意点
-由于支持了MaterialDesign，项目中已经引用了Google官方的的support库：
-```groovy
-compile 'com.android.support:appcompat-v7:24.2.1'
-compile 'com.android.support:recyclerview-v7:24.2.1'
-compile 'com.android.support:design:24.2.1'
+## Gallery
+Use the `Album.album(this).start ()` to call up the gallery.
+```java
+Album.gallery(this)
+    .requestCode(999) // Request code.
+    .toolBarColor(toolbarColor) // Toolbar color.
+    .statusBarColor(statusBarColor) // StatusBar color.
+    .navigationBarColor(navigationBarColor) // NavigationBar color.
+    
+    .checkedList(mImageList) // List of pictures to preview.
+    .currentPosition(position) // First display position image of the list.
+    .checkFunction(true) // Anti-election function.
+    .start();
 ```
 
-# 混淆
-都是可以混淆的，如果混淆遇到问题了，请添加如下规则。
+**Note:**
+
+* Be sure to pass in the collection of pictures you want to preview, otherwise it will return immediately after the start.
+* It is recommended to call the gallery preview to judge `if(currentPosition < mImageList.size())`, to ensure that the entry of the `position` in the `list`.
+
+If you need to have an anti-selection function at the time of preview，override the `onActivityResult ()` method, after receiving the anti-selected picture `List` result:  
+```java
+ArrayList<String> mImageList;
+
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if(requestCode == 666) {
+        if (resultCode == RESULT_OK) { // Successfully.
+            // Parse select result.
+            mImageList = Album.parseResult(data);
+        } else if (resultCode == RESULT_CANCELED) {
+            // User canceled.
+        }
+    }
+}
+```
+
+# Proguard-rules
+If there is a problem, add the rule to the proguard-rules:
 ```txt
 -dontwarn com.yanzhenjie.album.**
 -keep class com.yanzhenjie.album.**{*;}
 ```
 
 # Thanks
-项目中的缩放是用的[PhotoView](https://github.com/chrisbanes/PhotoView)，特别感谢作者的付出。
+1. [PhotoView](https://github.com/chrisbanes/PhotoView)
+2. [LoadingDrawable](https://github.com/dinuscxj/LoadingDrawable)
 
 # License
 ```text
-Copyright 2016 Yan Zhenjie
+Copyright 2017 Yan Zhenjie
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

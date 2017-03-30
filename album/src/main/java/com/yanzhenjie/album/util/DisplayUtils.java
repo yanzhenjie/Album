@@ -1,10 +1,17 @@
 /*
- * AUTHOR：Yan Zhenjie
+ * Copyright © Yan Zhenjie. All Rights Reserved
  *
- * DESCRIPTION：create the File, and add the content.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Copyright © www.moresing.com. All Rights Reserved
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.yanzhenjie.album.util;
 
@@ -14,6 +21,7 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 
 /**
+ * <p>Display helper.</p>
  * Created by Yan Zhenjie on 2016/7/7.
  */
 public class DisplayUtils {
@@ -23,11 +31,14 @@ public class DisplayUtils {
     public static int screenHeight;
     public static int screenDpi;
     public static float density = 1;
-    public static float scaledDensity;
 
     public static void initScreen(Activity activity) {
         if (isInitialize) return;
         isInitialize = true;
+        reMeasure(activity);
+    }
+
+    public static void reMeasure(Activity activity) {
         Display display = activity.getWindowManager().getDefaultDisplay();
         DisplayMetrics metric = new DisplayMetrics();
 

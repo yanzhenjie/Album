@@ -1,14 +1,22 @@
 /*
- * AUTHOR：Yan Zhenjie
+ * Copyright © Yan Zhenjie. All Rights Reserved
  *
- * DESCRIPTION：create the File, and add the content.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Copyright © ZhiMore. All Rights Reserved
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.yanzhenjie.album.dialog;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -23,73 +31,78 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.yanzhenjie.album.R;
-import com.yanzhenjie.album.adapter.DialogFolderAdapter;
+import com.yanzhenjie.album.adapter.AlbumFolderAdapter;
 import com.yanzhenjie.album.entity.AlbumFolder;
 import com.yanzhenjie.album.impl.OnCompatItemClickListener;
-import com.yanzhenjie.album.task.Poster;
 import com.yanzhenjie.album.util.SelectorUtils;
 
 import java.util.List;
 
 /**
+ * <p>Folder preview.</p>
  * Created by Yan Zhenjie on 2016/10/18.
  */
 public class AlbumFolderDialog extends BottomSheetDialog {
 
-    private int checkPosition = 0;
+    private int mCurrentPosition = 0;
     private BottomSheetBehavior bottomSheetBehavior;
     private OnCompatItemClickListener mItemClickListener;
 
-    private boolean isOpen = true;
-
-    public AlbumFolderDialog(@NonNull Context context, @ColorInt int toolbarColor, @Nullable List<AlbumFolder> albumFolders, @Nullable OnCompatItemClickListener itemClickListener) {
+    public AlbumFolderDialog(@NonNull Context context,
+                             @ColorInt int toolbarColor,
+                             @ColorInt int navigationColor,
+                             @Nullable List<AlbumFolder> albumFolders,
+                             @Nullable OnCompatItemClickListener itemClickListener) {
         super(context, R.style.AlbumDialogStyle_Folder);
-        setContentView(R.layout.album_dialog_album_floder);
-        mItemClickListener = itemClickListener;
+        setContentView(R.layout.album_dialog_floder);
 
+        setWindowBarColor(toolbarColor, navigationColor);
         fixRestart();
 
+        mItemClickListener = itemClickListener;
+
         RecyclerView rvContentList = (RecyclerView) findViewById(R.id.rv_content_list);
-        rvContentList.setHasFixedSize(true);
+        assert rvContentList != null;
         rvContentList.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvContentList.setAdapter(new DialogFolderAdapter(SelectorUtils.createColorStateList(ContextCompat.getColor(context, R.color.albumPrimaryBlack), toolbarColor), albumFolders, new OnCompatItemClickListener() {
+
+        ColorStateList stateList = SelectorUtils.createColorStateList(
+                ContextCompat.getColor(context, R.color.albumColorPrimaryBlack),
+                toolbarColor);
+        rvContentList.setAdapter(new AlbumFolderAdapter(stateList, albumFolders, new OnCompatItemClickListener() {
             @Override
             public void onItemClick(final View view, final int position) {
-                if (isOpen) { // 反应太快，按钮点击效果出不来，故加延迟。
-                    isOpen = false;
-                    Poster.getInstance().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            behaviorHide();
-                            if (mItemClickListener != null && checkPosition != position) {
-                                checkPosition = position;
-                                mItemClickListener.onItemClick(view, position);
-                            }
-                            isOpen = true;
-                        }
-                    }, 200);
+                behaviorHide();
+                if (mItemClickListener != null && mCurrentPosition != position) {
+                    mCurrentPosition = position;
+                    mItemClickListener.onItemClick(view, position);
                 }
             }
         }));
-        setStatusBarColor(toolbarColor);
     }
 
-    private void setStatusBarColor(@ColorInt int color) {
+    /**
+     * Set window bar color.
+     *
+     * @param statusColor     status bar color.
+     * @param navigationColor navigation bar color.
+     */
+    private void setWindowBarColor(@ColorInt int statusColor, @ColorInt int navigationColor) {
         if (Build.VERSION.SDK_INT >= 21) {
             final Window window = getWindow();
             if (window != null) {
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(color);
-                window.setNavigationBarColor(ContextCompat.getColor(getContext(), R.color.albumPrimaryBlack));
+                window.setStatusBarColor(statusColor);
+                window.setNavigationBarColor(navigationColor);
             }
         }
     }
 
     /**
-     * 修复不能重新显示的bug。
+     * Fix reshow.
      */
     private void fixRestart() {
         View view = findViewById(android.support.design.R.id.design_bottom_sheet);
+        if (view == null) return;
         bottomSheetBehavior = BottomSheetBehavior.from(view);
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
@@ -108,7 +121,7 @@ public class AlbumFolderDialog extends BottomSheetDialog {
 
 
     /**
-     * 关闭dialog。
+     * Dismiss dialog.
      */
     public void behaviorHide() {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);

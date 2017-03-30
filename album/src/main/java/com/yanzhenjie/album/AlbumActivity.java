@@ -1,10 +1,17 @@
 /*
- * AUTHOR：Yan Zhenjie
+ * Copyright © Yan Zhenjie. All Rights Reserved
  *
- * DESCRIPTION：create the File, and add the content.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Copyright © ZhiMore. All Rights Reserved
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.yanzhenjie.album;
 
@@ -12,249 +19,173 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.PersistableBundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.Toast;
 
-import com.yanzhenjie.album.adapter.AlbumContentAdapter;
-import com.yanzhenjie.album.dialog.AlbumFolderDialog;
-import com.yanzhenjie.album.dialog.AlbumPreviewDialog;
 import com.yanzhenjie.album.entity.AlbumFolder;
 import com.yanzhenjie.album.entity.AlbumImage;
-import com.yanzhenjie.album.impl.OnCompatCompoundCheckListener;
-import com.yanzhenjie.album.impl.OnCompatItemClickListener;
-import com.yanzhenjie.album.task.AlbumScanner;
-import com.yanzhenjie.album.task.Poster;
-import com.yanzhenjie.album.util.AlbumUtils;
+import com.yanzhenjie.album.fragment.AlbumFragment;
+import com.yanzhenjie.album.fragment.AlbumNullFragment;
+import com.yanzhenjie.album.fragment.AlbumPreviewFragment;
+import com.yanzhenjie.album.fragment.Callback;
+import com.yanzhenjie.album.fragment.CameraCallback;
+import com.yanzhenjie.album.fragment.GalleryFragment;
+import com.yanzhenjie.album.task.ScanTask;
 import com.yanzhenjie.album.util.DisplayUtils;
+import com.yanzhenjie.fragment.CompatActivity;
+import com.yanzhenjie.fragment.NoFragment;
+import com.yanzhenjie.mediascanner.MediaScanner;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
- * <p>全局相册，选择图片入口。</p>
+ * <p>Responsible for controlling the album data and the overall logic.</p>
  * Created by Yan Zhenjie on 2016/10/17.
  */
-public class AlbumActivity extends AppCompatActivity {
+public class AlbumActivity extends CompatActivity implements
+        Callback,
+        CameraCallback,
+        AlbumFragment.Callback,
+        ScanTask.Callback,
+        GalleryFragment.Callback {
 
-    private static final int PERMISSION_REQUEST_STORAGE = 200;
-    private static final int PERMISSION_REQUEST_CAMERA = 201;
+    private static final int PERMISSION_REQUEST_STORAGE_ALBUM = 200;
+    private static final int PERMISSION_REQUEST_STORAGE_GALLERY = 201;
 
-    private static final int ACTIVITY_REQUEST_CAMERA = 200;
-
-    private static final String INSTANCE_CAMERA_FILE_PATH = "INSTANCE_CAMERA_FILE_PATH";
-
-    private static ExecutorService sRunnableExecutor = Executors.newSingleThreadExecutor();
-
-    private Toolbar mToolbar;
-    private Button mBtnPreview;
-    private Button mBtnSwitchFolder;
-    private RecyclerView mRvContentList;
-    private GridLayoutManager mGridLayoutManager;
-    private AlbumContentAdapter mAlbumContentAdapter;
-
-    private int mToolBarColor;
-    private int mAllowSelectCount;
-    private int mCheckFolderIndex;
-
+    private ScanTask mScanTask;
     private List<AlbumFolder> mAlbumFolders;
     private List<AlbumImage> mCheckedImages = new ArrayList<>(1);
-    private List<AlbumImage> mTempCheckedImages;
+    private List<String> mCheckedPaths;
 
-    private AlbumFolderDialog mAlbumFolderSelectedDialog;
-    private AlbumPreviewDialog mAlbumPreviewDialog;
+    private Bundle mArgument;
 
-    private String mCameraFilePath;
+    @Override
+    protected int fragmentLayoutId() {
+        return R.id.album_root_frame_layout;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DisplayUtils.initScreen(this);
-        setContentView(R.layout.album_activity_album);
+        setContentView(R.layout.album_activity_main);
 
-        if (savedInstanceState != null) {
-            mCameraFilePath = savedInstanceState.getString(INSTANCE_CAMERA_FILE_PATH);
-        }
+        // prepare color.
+        int statusBarColor = ContextCompat.getColor(this, R.color.albumColorPrimaryDark);
+        int toolBarColor = ContextCompat.getColor(this, R.color.albumColorPrimary);
+        int navigationBarColor = ContextCompat.getColor(this, R.color.albumColorPrimaryBlack);
 
+        mArgument = new Bundle();
         Intent intent = getIntent();
-        mToolBarColor = intent.getIntExtra(Album.KEY_INPUT_TOOLBAR_COLOR, ResourcesCompat.getColor(getResources(), R.color.albumColorPrimary, null));
-        int statusColor = intent.getIntExtra(Album.KEY_INPUT_STATUS_COLOR, ResourcesCompat.getColor(getResources(), R.color.albumColorPrimaryDark, null));
-        mAllowSelectCount = intent.getIntExtra(Album.KEY_INPUT_LIMIT_COUNT, Integer.MAX_VALUE);
-        int normalColor = ContextCompat.getColor(this, R.color.albumWhiteGray);
 
-        initializeMain(statusColor);
-        initializeContent(normalColor);
-        setPreviewCount(0);
-        scanImages();
-    }
+        // basic.
+        statusBarColor = intent.getIntExtra(BasicWrapper.KEY_INPUT_STATUS_COLOR, statusBarColor);
+        toolBarColor = intent.getIntExtra(BasicWrapper.KEY_INPUT_TOOLBAR_COLOR, toolBarColor);
+        navigationBarColor = intent.getIntExtra(BasicWrapper.KEY_INPUT_NAVIGATION_COLOR, navigationBarColor);
+        mCheckedPaths = intent.getStringArrayListExtra(BasicWrapper.KEY_INPUT_CHECKED_LIST);
 
-    /**
-     * Initialize up.
-     */
-    private void initializeMain(int statusColor) {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mBtnPreview = (Button) findViewById(R.id.btn_preview);
-        mBtnSwitchFolder = (Button) findViewById(R.id.btn_switch_dir);
-        mRvContentList = (RecyclerView) findViewById(R.id.rv_content_list);
+        setWindowBarColor(statusBarColor, navigationBarColor);
+        mArgument.putInt(BasicWrapper.KEY_INPUT_TOOLBAR_COLOR, toolBarColor);
+        mArgument.putInt(BasicWrapper.KEY_INPUT_NAVIGATION_COLOR, navigationBarColor);
 
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // Function dispatch.
+        final int function = intent.getIntExtra(BasicWrapper.KEY_INPUT_FRAMEWORK_FUNCTION, BasicWrapper.VALUE_INPUT_FRAMEWORK_FUNCTION_ALBUM);
+        switch (function) {
+            case BasicWrapper.VALUE_INPUT_FRAMEWORK_FUNCTION_ALBUM: {
+                int photoColumn = intent.getIntExtra(AlbumWrapper.KEY_INPUT_COLUMN_COUNT, 2);
+                photoColumn = Math.max(1, photoColumn);
+                int limitCount = intent.getIntExtra(AlbumWrapper.KEY_INPUT_LIMIT_COUNT, 1);
+                boolean hasCamera = intent.getBooleanExtra(AlbumWrapper.KEY_INPUT_ALLOW_CAMERA, true);
 
-        mBtnPreview.setOnClickListener(mPreviewClick);
-        mBtnSwitchFolder.setOnClickListener(mSwitchDirClick);
+                mArgument.putInt(AlbumWrapper.KEY_INPUT_COLUMN_COUNT, photoColumn);
+                mArgument.putInt(AlbumWrapper.KEY_INPUT_LIMIT_COUNT, limitCount);
+                mArgument.putBoolean(AlbumWrapper.KEY_INPUT_ALLOW_CAMERA, hasCamera);
 
-        setStatusBarColor(statusColor);
-        mToolbar.setBackgroundColor(mToolBarColor);
-    }
+                if (mCheckedPaths != null && mCheckedPaths.size() > limitCount)
+                    mCheckedPaths = mCheckedPaths.subList(0, limitCount - 1);
 
-    private void setStatusBarColor(@ColorInt int color) {
-        if (Build.VERSION.SDK_INT >= 21) {
-            final Window window = getWindow();
-            if (window != null) {
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(color);
-                window.setNavigationBarColor(ContextCompat.getColor(this, R.color.albumPrimaryBlack));
+                mScanTask = new ScanTask(this, this, mCheckedImages);
+                requestPermission(PERMISSION_REQUEST_STORAGE_ALBUM);
+                break;
             }
-        }
-    }
+            case BasicWrapper.VALUE_INPUT_FRAMEWORK_FUNCTION_GALLERY: {
+                boolean hasCheckFunction = intent.getBooleanExtra(GalleryWrapper.KEY_INPUT_CHECK_FUNCTION, false);
+                int currentPosition = intent.getIntExtra(GalleryWrapper.KEY_INPUT_CURRENT_POSITION, 0);
 
-    /**
-     * Initialize content.
-     */
-    private void initializeContent(int normalColor) {
-        mRvContentList.setHasFixedSize(true);
-        mGridLayoutManager = new GridLayoutManager(this, 2);
-        mRvContentList.setLayoutManager(mGridLayoutManager);
-        mRvContentList.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-                int position = parent.getChildAdapterPosition(view);
-                if (position % 2 == 0)
-                    outRect.set(2, 2, 2, 0);
-                else
-                    outRect.set(0, 2, 2, 0);
-            }
-        });
+                mArgument.putBoolean(GalleryWrapper.KEY_INPUT_CHECK_FUNCTION, hasCheckFunction);
+                mArgument.putInt(GalleryWrapper.KEY_INPUT_CURRENT_POSITION, currentPosition);
 
-        mAlbumContentAdapter = new AlbumContentAdapter(normalColor, mToolBarColor);
-        mAlbumContentAdapter.setAddPhotoClickListener(mAddPhotoListener);
-        mAlbumContentAdapter.setItemClickListener(new OnCompatItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                ArrayList<AlbumImage> albumImages = mAlbumFolders.get(mCheckFolderIndex).getPhotos();
-                dismissPreviewDialog();
-                mAlbumPreviewDialog = new AlbumPreviewDialog(AlbumActivity.this, mToolBarColor, albumImages, mPreviewFolderCheckListener, position, contentHeight);
-                mAlbumPreviewDialog.show();
-            }
-        });
-        mAlbumContentAdapter.setOnCheckListener(mContentCheckListener);
-        mRvContentList.setAdapter(mAlbumContentAdapter);
-    }
-
-    /**
-     * 扫描有照片的文件夹。
-     */
-    private void scanImages() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            int permissionResult = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if (permissionResult == PackageManager.PERMISSION_GRANTED) {
-                sRunnableExecutor.execute(scanner);
-            } else if (permissionResult == PackageManager.PERMISSION_DENIED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_STORAGE);
-            }
-        } else {
-            sRunnableExecutor.execute(scanner);
-        }
-    }
-
-    /**
-     * 拍照点击监听。
-     */
-    private View.OnClickListener mAddPhotoListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (Build.VERSION.SDK_INT >= 23) {
-                int permissionResult = ContextCompat.checkSelfPermission(AlbumActivity.this, Manifest.permission.CAMERA);
-                if (permissionResult == PackageManager.PERMISSION_GRANTED) {
-                    startCamera();
-                } else if (permissionResult == PackageManager.PERMISSION_DENIED) {
-                    ActivityCompat.requestPermissions(AlbumActivity.this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
-                }
-            } else {
-                startCamera();
-            }
-        }
-    };
-
-    /**
-     * 启动相机拍照。
-     */
-    private void startCamera() {
-        String outFileFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath();
-        String outFilePath = AlbumUtils.getNowDateTime("yyyyMMdd_HHmmssSSS") + ".jpg";
-        File file = new File(outFileFolder, outFilePath);
-        mCameraFilePath = file.getAbsolutePath();
-        AlbumUtils.startCamera(this, ACTIVITY_REQUEST_CAMERA, file);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        outState.putString(INSTANCE_CAMERA_FILE_PATH, mCameraFilePath);
-        super.onSaveInstanceState(outState, outPersistentState);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case ACTIVITY_REQUEST_CAMERA: {
-                if (resultCode == RESULT_OK) {
-                    Intent intent = new Intent();
-                    ArrayList<String> pathList = new ArrayList<>();
-                    pathList.add(mCameraFilePath);
-                    intent.putStringArrayListExtra(Album.KEY_OUTPUT_IMAGE_PATH_LIST, pathList);
-                    setResult(RESULT_OK, intent);
-                    super.finish();
-                }
+                if (mCheckedPaths == null || mCheckedPaths.size() == 0 || currentPosition >= mCheckedPaths.size()) finish();
+                else requestPermission(PERMISSION_REQUEST_STORAGE_GALLERY);
                 break;
             }
             default: {
+                finish();
                 break;
             }
+
+        }
+    }
+
+    /**
+     * Set window bar color.
+     *
+     * @param statusColor     status bar color.
+     * @param navigationColor navigation bar color.
+     */
+    private void setWindowBarColor(@ColorInt int statusColor, @ColorInt int navigationColor) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            final Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(statusColor);
+            window.setNavigationBarColor(navigationColor);
+        }
+    }
+
+    /**
+     * Scan, but unknown permissions.
+     *
+     * @param requestCode request code.
+     */
+    private void requestPermission(int requestCode) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            int permissionResult = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (permissionResult == PackageManager.PERMISSION_GRANTED) {
+                onRequestPermissionsResult(
+                        requestCode,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        new int[]{PackageManager.PERMISSION_GRANTED});
+            } else if (permissionResult == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        requestCode);
+            }
+        } else {
+            onRequestPermissionsResult(
+                    requestCode,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    new int[]{PackageManager.PERMISSION_GRANTED});
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case PERMISSION_REQUEST_STORAGE: {
+            case PERMISSION_REQUEST_STORAGE_ALBUM: {
                 int permissionResult = grantResults[0];
                 if (permissionResult == PackageManager.PERMISSION_GRANTED) {
-                    sRunnableExecutor.execute(scanner);
+                    scanWithPermission();
                 } else {
                     new AlertDialog.Builder(this)
                             .setCancelable(false)
@@ -263,282 +194,112 @@ public class AlbumActivity extends AppCompatActivity {
                             .setPositiveButton(R.string.album_dialog_sure, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    toResult(true);
+                                    doResult(false);
                                 }
                             })
                             .show();
                 }
                 break;
             }
-            case PERMISSION_REQUEST_CAMERA: {
-                int permissionResult = grantResults[0];
-                if (permissionResult == PackageManager.PERMISSION_GRANTED) {
-                    startCamera();
-                } else {
-                    new AlertDialog.Builder(this)
-                            .setTitle(R.string.album_dialog_permission_failed)
-                            .setMessage(R.string.album_permission_camera_failed_hint)
-                            .setPositiveButton(R.string.album_dialog_sure, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .show();
-                }
-                break;
-            }
-            default: {
+            case PERMISSION_REQUEST_STORAGE_GALLERY: {
+                GalleryFragment galleryFragment = NoFragment.instantiate(this, GalleryFragment.class, mArgument);
+                galleryFragment.bindImagePaths(mCheckedPaths);
+                startFragment(galleryFragment);
                 break;
             }
         }
     }
 
     /**
-     * 预览文件夹时某个item的选中监听。
+     * Scan, has been given permission.
      */
-    private OnCompatCompoundCheckListener mPreviewFolderCheckListener = new OnCompatCompoundCheckListener() {
-        @Override
-        public void onCheck(CompoundButton compoundButton, int position, boolean isChecked) {
-            mContentCheckListener.onCheck(compoundButton, position, isChecked);
-            mAlbumContentAdapter.notifyItemChangedCompat(position);
-        }
-    };
-
-    /**
-     * 预览已选中的大图的监听。
-     */
-    private OnCompatCompoundCheckListener mPreviewCheckedImageCheckListener = new OnCompatCompoundCheckListener() {
-        @Override
-        public void onCheck(CompoundButton compoundButton, int position, boolean isChecked) {
-            AlbumImage albumImage = mTempCheckedImages.get(position);
-            albumImage.setChecked(isChecked);
-            int i = mAlbumFolders.get(mCheckFolderIndex).getPhotos().indexOf(albumImage);
-            if (i != -1) mAlbumContentAdapter.notifyItemChangedCompat(i);
-            if (!isChecked)
-                mCheckedImages.remove(albumImage);
-        }
-    };
-
-    /**
-     * 选中监听。
-     */
-    private OnCompatCompoundCheckListener mContentCheckListener = new OnCompatCompoundCheckListener() {
-        @Override
-        public void onCheck(CompoundButton compoundButton, int position, boolean isChecked) {
-            AlbumImage albumImage = mAlbumFolders.get(mCheckFolderIndex).getPhotos().get(position);
-            albumImage.setChecked(isChecked);
-            if (isChecked) {
-                if (!mCheckedImages.contains(albumImage))
-                    mCheckedImages.add(albumImage);
-            } else {
-                mCheckedImages.remove(albumImage);
-            }
-
-            int hasCheckSize = mCheckedImages.size();
-            if (hasCheckSize > mAllowSelectCount) {
-                String hint = getString(R.string.album_check_limit);
-                Toast.makeText(AlbumActivity.this, String.format(Locale.getDefault(), hint, mAllowSelectCount), Toast.LENGTH_LONG).show();
-                mCheckedImages.remove(albumImage);
-                compoundButton.setChecked(false);
-                albumImage.setChecked(false);
-            } else {
-                setPreviewCount(hasCheckSize);
-            }
-        }
-    };
-
-    /**
-     * 设置选中的图片数。
-     *
-     * @param count 数字。
-     */
-    public void setPreviewCount(int count) {
-        mBtnPreview.setText(" (" + count + ")");
-        mToolbar.setSubtitle(count + "/" + mAllowSelectCount);
+    private void scanWithPermission() {
+        //noinspection unchecked
+        mScanTask.execute(mCheckedPaths);
     }
 
-    /**
-     * 切换文件夹按钮被点击。
-     */
-    private View.OnClickListener mSwitchDirClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (mAlbumFolderSelectedDialog == null) {
-                mAlbumFolderSelectedDialog = new AlbumFolderDialog(AlbumActivity.this, mToolBarColor, mAlbumFolders, new OnCompatItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        showAlbum(position);
-                    }
-                });
-            }
-            if (!mAlbumFolderSelectedDialog.isShowing())
-                mAlbumFolderSelectedDialog.show();
-        }
-    };
-
-    /**
-     * 预览按钮被点击。
-     */
-    private View.OnClickListener mPreviewClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (mCheckedImages.size() == 0)
-                return;
-            mTempCheckedImages = new ArrayList<>(mCheckedImages);
-            Collections.copy(mTempCheckedImages, mCheckedImages);
-
-            dismissPreviewDialog();
-
-            mAlbumPreviewDialog = new AlbumPreviewDialog(AlbumActivity.this, mToolBarColor, mTempCheckedImages, mPreviewCheckedImageCheckListener, 0, contentHeight);
-            mAlbumPreviewDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    if (mTempCheckedImages != null) {
-                        mTempCheckedImages.clear();
-                        mTempCheckedImages = null;
-                    }
-                }
-            });
-            mAlbumPreviewDialog.show();
-        }
-    };
-
-    /**
-     * 关闭预览窗口。
-     */
-
-    private void dismissPreviewDialog() {
-        if (mAlbumPreviewDialog != null && mAlbumPreviewDialog.isShowing())
-            mAlbumPreviewDialog.dismiss();
-    }
-
-    /**
-     * 显示某个文件夹的图片。
-     *
-     * @param index 选中的文件夹的item。
-     */
-    private void showAlbum(int index) {
-        mCheckFolderIndex = index;
-        AlbumFolder albumFolder = mAlbumFolders.get(index);
-        mBtnSwitchFolder.setText(albumFolder.getName());
-        mAlbumContentAdapter.notifyDataSetChanged(albumFolder.getPhotos());
-        mGridLayoutManager.scrollToPosition(0);
-    }
-
-    /**
-     * 选择完成或者取消。
-     */
-    public void toResult(boolean cancel) {
-        if (cancel) {
-            setResult(RESULT_CANCELED);
-            super.finish();
+    @Override
+    public void onScanCallback(List<AlbumFolder> albumFolders) {
+        this.mAlbumFolders = albumFolders;
+        if (mAlbumFolders.get(0).getImages().size() == 0) {
+            AlbumNullFragment nullFragment = NoFragment.instantiate(this, AlbumNullFragment.class, mArgument);
+            startFragment(nullFragment);
         } else {
-            int allSize = mAlbumFolders.get(0).getPhotos().size();
+            AlbumFragment albumFragment = NoFragment.instantiate(this, AlbumFragment.class, mArgument);
+            albumFragment.bindAlbumFolders(mAlbumFolders);
+            startFragment(albumFragment);
+        }
+    }
+
+    @Override
+    public void onGalleryCallback(ArrayList<String> imagePaths) {
+        Intent intent = new Intent();
+        intent.putStringArrayListExtra(Album.KEY_OUTPUT_IMAGE_PATH_LIST, imagePaths);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
+    public void doResult(boolean ok) {
+        if (ok) {
+            int allSize = mAlbumFolders.get(0).getImages().size();
             int checkSize = mCheckedImages.size();
             if (allSize > 0 && checkSize == 0) {
                 Toast.makeText(this, R.string.album_check_little, Toast.LENGTH_LONG).show();
             } else if (checkSize == 0) {
                 setResult(RESULT_CANCELED);
-                super.finish();
+                finish();
             } else {
-                Intent intent = new Intent();
                 ArrayList<String> pathList = new ArrayList<>();
                 for (AlbumImage albumImage : mCheckedImages) {
                     pathList.add(albumImage.getPath());
                 }
-                intent.putStringArrayListExtra(Album.KEY_OUTPUT_IMAGE_PATH_LIST, pathList);
-                setResult(RESULT_OK, intent);
-                super.finish();
+                onGalleryCallback(pathList);
             }
+        } else {
+            setResult(RESULT_CANCELED);
+            finish();
         }
     }
 
-    /**
-     * 拿到已经选择的大小。
-     *
-     * @return 大小。
-     */
-    public int getCheckedImagesSize() {
+    @Override
+    public void onCheckedChanged(AlbumImage image, boolean isChecked) {
+        if (isChecked && !mCheckedImages.contains(image)) mCheckedImages.add(image);
+        else if (mCheckedImages.contains(image)) mCheckedImages.remove(image);
+    }
+
+    @Override
+    public int getCheckedCount() {
         return mCheckedImages.size();
     }
 
-    /**
-     * 拿到允许选择的数量。
-     *
-     * @return 数量int。
-     */
-    public int getAllowCheckCount() {
-        return mAllowSelectCount;
-    }
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_activity_album, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == android.R.id.home) {
-            toResult(true);
-        } else if (itemId == R.id.menu_gallery_finish) {
-            toResult(false);
-        }
-        return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        toResult(true);
-    }
-
-    /**
-     * Init ui.
-     */
-    private Runnable initialize = new Runnable() {
-        @Override
-        public void run() {
-            if (!AlbumActivity.this.isFinishing()) {
-                showAlbum(0);
-            } else {
-                mAlbumFolders.clear();
-                mAlbumFolders = null;
+    public void onCameraBack(String imagePath) {
+        // Add media library.
+        new MediaScanner(this).scan(imagePath);
+        ArrayList<String> pathList = new ArrayList<>();
+        if (mCheckedImages.size() > 0)
+            for (AlbumImage albumImage : mCheckedImages) {
+                pathList.add(albumImage.getPath());
             }
-        }
-    };
-
-    /**
-     * Scan image.
-     */
-    private Runnable scanner = new Runnable() {
-        @Override
-        public void run() {
-            mAlbumFolders = AlbumScanner.getInstance().getPhotoAlbum(AlbumActivity.this);
-            Poster.getInstance().post(initialize);
-        }
-    };
-
-    private boolean initializeHeight;
-    private int contentHeight;
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus && !initializeHeight) {
-            initializeHeight = true;
-            View view = findViewById(R.id.coordinator_layout);
-            contentHeight = view.getMeasuredHeight();
-        }
+        pathList.add(imagePath);
+        onGalleryCallback(pathList);
     }
 
     @Override
-    protected void onDestroy() {
-        if (mAlbumFolderSelectedDialog != null && mAlbumFolderSelectedDialog.isShowing())
-            mAlbumFolderSelectedDialog.behaviorHide();
-        dismissPreviewDialog();
-        super.onDestroy();
+    public void onPreviewChecked() {
+        if (mCheckedImages.size() <= 0) return;
+        AlbumPreviewFragment previewFragment = NoFragment.instantiate(this, AlbumPreviewFragment.class, mArgument);
+        previewFragment.bindAlbumImages(mCheckedImages, 0);
+        startFragment(previewFragment);
     }
+
+    @Override
+    public void onPreviewFolder(int folderPosition, int itemPosition) {
+        List<AlbumImage> albumImages = mAlbumFolders.get(folderPosition).getImages();
+        AlbumPreviewFragment previewFragment = NoFragment.instantiate(this, AlbumPreviewFragment.class, mArgument);
+        previewFragment.bindAlbumImages(albumImages, itemPosition);
+        startFragment(previewFragment);
+    }
+
 }

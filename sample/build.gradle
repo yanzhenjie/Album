@@ -1,26 +1,32 @@
-apply plugin: 'com.android.application'
+apply plugin: rootProject.ext.plugins.application
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.3"
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
     defaultConfig {
-        applicationId "com.yanzhenjie.album.sample"
-        minSdkVersion 9
-        targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        applicationId rootProject.ext.android.applicationId
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+
+        jackOptions {
+            enabled true
+        }
+
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
         }
     }
 }
 
 dependencies {
-    compile 'com.yanzhenjie:album:1.0.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
+    compile rootProject.ext.dependencies.album
+    compile rootProject.ext.dependencies.appcompat
+    compile rootProject.ext.dependencies.design
+    compile rootProject.ext.dependencies.recyclerview
+    compile rootProject.ext.dependencies.dialog
 }

@@ -18,15 +18,16 @@ package com.yanzhenjie.album.util;
 import android.content.res.ColorStateList;
 
 /**
+ * <p>Selector creator.</p>
  * Created by Yan Zhenjie on 2016/10/23.
  */
 public class SelectorUtils {
 
     /**
-     * 选中效果。
+     * {@link ColorStateList}.
      *
-     * @param normal  正常颜色。
-     * @param checked 选中颜色。
+     * @param normal  Normal color.
+     * @param checked Select the color.
      * @return {@link ColorStateList}.
      */
     public static ColorStateList createColorStateList(int normal, int checked) {

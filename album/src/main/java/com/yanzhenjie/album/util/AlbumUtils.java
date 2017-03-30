@@ -19,6 +19,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -26,9 +27,24 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
+ * <p>Helper for camera.</p>
  * Created by Yan Zhenjie on 2016/10/30.
  */
 public class AlbumUtils {
+
+    public static void startCamera(Fragment fragment, int requestCode, File outPath) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Uri uri = Uri.fromFile(outPath);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        fragment.startActivityForResult(intent, requestCode);
+    }
+
+    public static void startCamera(android.app.Fragment fragment, int requestCode, File outPath) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Uri uri = Uri.fromFile(outPath);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        fragment.startActivityForResult(intent, requestCode);
+    }
 
     public static void startCamera(Activity activity, int requestCode, File outPath) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -38,7 +54,7 @@ public class AlbumUtils {
     }
 
     public static String getNowDateTime(String format) {
-        SimpleDateFormat formatter = new SimpleDateFormat(format, Locale.getDefault());
+        SimpleDateFormat formatter = new SimpleDateFormat(format, Locale.ENGLISH);
         Date curDate = new Date(System.currentTimeMillis());
         return formatter.format(curDate);
     }
