@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017 Yan Zhenjie
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<resources>
+    <string name="album_load_hint">正在讀取圖片…</string>
+
+    <string name="album_title_not_found_image">沒有圖片</string>
+    <string name="album_not_found_picture">沒有找到圖片，趕快拍壹張吧！</string>
+    <string name="album_take_picture">拍照</string>
+
+    <string name="album_title">圖片</string>
+    <string name="album_all_image">所有圖片</string>
+    <string name="album_check_limit">您最多可以選擇%1$d張圖片</string>
+    <string name="album_check_limit_camera">您最多可以選擇%1$d張圖片，請刪除1張後再拍照。</string>
+    <string name="album_check_little">妳沒有選擇照片</string>
+    <string name="album_menu_finish">完成</string>
+    <string name="album_check">選擇</string>
+
+    <string name="album_dialog_permission_failed">權限獲取失敗</string>
+    <string name="album_permission_storage_failed_hint">獲取讀取相冊權限失敗，請在設置中授權後再使用。</string>
+    <string name="album_permission_camera_failed_hint">獲取相機權限失敗，請在設置中授權後再使用。</string>
+    <string name="album_dialog_sure">好的</string>
+</resources>

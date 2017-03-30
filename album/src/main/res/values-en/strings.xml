@@ -1,10 +1,31 @@
-<resources>
-    <string name="gallery_menu_finish">Finish</string>
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017 Yan Zhenjie
 
-    <string name="album_title_activity_gallery">Image</string>
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<resources>
+    <string name="album_load_hint">Loading…</string>
+
+    <string name="album_title_not_found_image">Not Found Image</string>
+    <string name="album_not_found_picture">Did not find the picture</string>
+    <string name="album_take_picture">Take Picture</string>
+
+    <string name="album_title">Image</string>
     <string name="album_all_image">All Image</string>
-    <string name="album_check_limit">You can choose to %1$d most images</string>
-    <string name="album_check_little">You have not choose photos</string>
+    <string name="album_check_limit">You can choose to %1$d most images.</string>
+    <string name="album_check_limit_camera">You can choose to %1$d most images, please delete one and take pictures.</string>
+    <string name="album_check_little">You have not choose photos.</string>
     <string name="album_menu_finish">Finish</string>
     <string name="album_check">Selected</string>
 

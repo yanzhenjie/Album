@@ -1,10 +1,30 @@
-<resources>
-    <string name="gallery_menu_finish">完成</string>
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017 Yan Zhenjie
 
-    <!-- 图库 -->
-    <string name="album_title_activity_gallery">图片</string>
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<resources>
+    <string name="album_load_hint">正在读取图片…</string>
+
+    <string name="album_title_not_found_image">没有图片</string>
+    <string name="album_not_found_picture">没有找到图片，赶快拍一张吧！</string>
+    <string name="album_take_picture">拍照</string>
+
+    <string name="album_title">图片</string>
     <string name="album_all_image">所有图片</string>
-    <string name="album_check_limit">你最多可以选择%1$d张图片</string>
+    <string name="album_check_limit">您最多可以选择%1$d张图片</string>
+    <string name="album_check_limit_camera">您最多可以选择%1$d张图片，请删除1张后再拍照。</string>
     <string name="album_check_little">你没有选择照片</string>
     <string name="album_menu_finish">完成</string>
     <string name="album_check">选择</string>

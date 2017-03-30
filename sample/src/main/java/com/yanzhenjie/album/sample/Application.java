@@ -16,6 +16,7 @@
 package com.yanzhenjie.album.sample;
 
 /**
+ * <p>Application.</p>
  * Created by Yan Zhenjie on 2016/10/30.
  */
 public class Application extends android.app.Application {

@@ -27,17 +27,20 @@ import com.yanzhenjie.album.task.ImageLocalLoader;
 import java.util.List;
 
 /**
+ * <p>Image adapter.</p>
  * Created by Yan Zhenjie on 2016/10/30.
  */
 public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ImageViewHolder> {
 
-    private static int size = (DisplayUtils.screenWidth - 8) / 3;
-
+    private LayoutInflater mInflater;
+    private int itemSize;
     private List<String> mImagePathList;
+    private OnCompatItemClickListener mItemClickListener;
 
-    private LayoutInflater mLayoutInflater;
-
-    public GridAdapter() {
+    public GridAdapter(Context context, OnCompatItemClickListener itemClickListener, int itemSize) {
+        this.mInflater = LayoutInflater.from(context);
+        this.mItemClickListener = itemClickListener;
+        this.itemSize = itemSize;
     }
 
     public void notifyDataSetChanged(List<String> imagePathList) {
@@ -45,15 +48,11 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ImageViewHolde
         super.notifyDataSetChanged();
     }
 
-    public void createLayoutInflater(Context context) {
-        if (mLayoutInflater == null)
-            mLayoutInflater = LayoutInflater.from(context);
-    }
-
     @Override
     public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        createLayoutInflater(parent.getContext());
-        return new ImageViewHolder(mLayoutInflater.inflate(R.layout.item_main_image, parent, false));
+        ImageViewHolder viewHolder = new ImageViewHolder(itemSize, mInflater.inflate(R.layout.item_main_image, parent, false));
+        viewHolder.mItemClickListener = mItemClickListener;
+        return viewHolder;
     }
 
     @Override
@@ -66,20 +65,30 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ImageViewHolde
         return mImagePathList == null ? 0 : mImagePathList.size();
     }
 
-    static class ImageViewHolder extends RecyclerView.ViewHolder {
+    static class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        private OnCompatItemClickListener mItemClickListener;
+        private int itemSize;
         ImageView mIvIcon;
 
-        public ImageViewHolder(View itemView) {
+        public ImageViewHolder(int itemSize, View itemView) {
             super(itemView);
-            itemView.getLayoutParams().height = size;
-            itemView.getLayoutParams().width = size;
+            itemView.setOnClickListener(this);
+            this.itemSize = itemSize;
+            itemView.getLayoutParams().height = itemSize;
             itemView.requestLayout();
             mIvIcon = (ImageView) itemView.findViewById(R.id.iv_icon);
         }
 
         public void loadImage(String imagePath) {
-            ImageLocalLoader.getInstance().loadImage(mIvIcon, imagePath, size, size);
+            ImageLocalLoader.getInstance().loadImage(mIvIcon, imagePath, itemSize, itemSize);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mItemClickListener != null) {
+                mItemClickListener.onItemClick(v, getAdapterPosition());
+            }
         }
     }
 
