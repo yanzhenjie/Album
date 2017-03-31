@@ -39,6 +39,7 @@ import com.yanzhenjie.album.entity.AlbumImage;
 import com.yanzhenjie.album.util.SelectorUtils;
 import com.yanzhenjie.fragment.NoFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -51,14 +52,13 @@ public class AlbumPreviewFragment extends NoFragment {
     private Callback mCallback;
 
     private int mToolBarColor;
-
     private MenuItem mFinishMenuItem;
 
     private AppCompatCheckBox mCheckBox;
 
-    private int mCurrentItemPosition;
     private ViewPager mViewPager;
     private List<AlbumImage> mAlbumImages;
+    private int mCurrentItemPosition;
 
     private int mAllowSelectCount;
 
@@ -115,7 +115,8 @@ public class AlbumPreviewFragment extends NoFragment {
      * @param albumImages image list.
      */
     public void bindAlbumImages(List<AlbumImage> albumImages, int currentItemPosition) {
-        this.mAlbumImages = albumImages;
+        this.mAlbumImages = new ArrayList<>();
+        this.mAlbumImages.addAll(albumImages);
         this.mCurrentItemPosition = currentItemPosition;
     }
 

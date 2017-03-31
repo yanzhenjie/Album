@@ -99,13 +99,15 @@ public class GalleryFragment extends NoFragment {
                 AlbumWrapper.KEY_INPUT_TOOLBAR_COLOR,
                 ContextCompat.getColor(getContext(), R.color.albumColorPrimary));
 
-        boolean hasCheck = argument.getBoolean(GalleryWrapper.KEY_INPUT_CHECK_FUNCTION, false);
-        if (!hasCheck) mCheckParent.setVisibility(View.GONE);
-        this.mCurrentItemPosition = argument.getInt(GalleryWrapper.KEY_INPUT_CURRENT_POSITION, 0);
-
         // noinspection ConstantConditions
         getToolbar().setBackgroundColor(mToolBarColor);
         getToolbar().getBackground().mutate().setAlpha(200);
+
+        this.mCurrentItemPosition = argument.getInt(GalleryWrapper.KEY_INPUT_CURRENT_POSITION, 0);
+        if (mCurrentItemPosition >= mCheckedPaths.size()) mCurrentItemPosition = 0;
+
+        boolean hasCheck = argument.getBoolean(GalleryWrapper.KEY_INPUT_CHECK_FUNCTION, false);
+        if (!hasCheck) mCheckParent.setVisibility(View.GONE);
 
         initializeCheckBox();
         initializeViewPager();
@@ -114,12 +116,12 @@ public class GalleryFragment extends NoFragment {
     }
 
     /**
-     * Bind the file to be displayed.
+     * Bind the preview picture collection.
      *
-     * @param checkedPaths image path list.
+     * @param imagePaths image list of local.
      */
-    public void bindImagePaths(List<String> checkedPaths) {
-        this.mCheckedPaths = checkedPaths;
+    public void bindImagePaths(List<String> imagePaths) {
+        this.mCheckedPaths = imagePaths;
         int length = mCheckedPaths.size();
         mCheckedList = new boolean[length];
         for (int i = 0; i < length; i++) {
@@ -172,6 +174,11 @@ public class GalleryFragment extends NoFragment {
         mFinishMenuItem.setTitle(finishStr);
     }
 
+    /**
+     * Get check item count.
+     *
+     * @return number.
+     */
     private int getCheckCount() {
         int i = 0;
         for (boolean b : mCheckedList) {

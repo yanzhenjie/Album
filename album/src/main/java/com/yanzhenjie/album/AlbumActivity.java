@@ -80,36 +80,26 @@ public class AlbumActivity extends CompatActivity implements
         setContentView(R.layout.album_activity_main);
 
         // prepare color.
-        int statusBarColor = ContextCompat.getColor(this, R.color.albumColorPrimaryDark);
-        int toolBarColor = ContextCompat.getColor(this, R.color.albumColorPrimary);
-        int navigationBarColor = ContextCompat.getColor(this, R.color.albumColorPrimaryBlack);
-
-        mArgument = new Bundle();
         Intent intent = getIntent();
+        mArgument = intent.getExtras();
 
         // basic.
-        statusBarColor = intent.getIntExtra(BasicWrapper.KEY_INPUT_STATUS_COLOR, statusBarColor);
-        toolBarColor = intent.getIntExtra(BasicWrapper.KEY_INPUT_TOOLBAR_COLOR, toolBarColor);
-        navigationBarColor = intent.getIntExtra(BasicWrapper.KEY_INPUT_NAVIGATION_COLOR, navigationBarColor);
+        int statusBarColor = intent.getIntExtra(BasicWrapper.KEY_INPUT_STATUS_COLOR,
+                ContextCompat.getColor(this, R.color.albumColorPrimaryDark));
+        int navigationBarColor = intent.getIntExtra(BasicWrapper.KEY_INPUT_NAVIGATION_COLOR,
+                ContextCompat.getColor(this, R.color.albumColorPrimaryBlack));
         mCheckedPaths = intent.getStringArrayListExtra(BasicWrapper.KEY_INPUT_CHECKED_LIST);
 
         setWindowBarColor(statusBarColor, navigationBarColor);
-        mArgument.putInt(BasicWrapper.KEY_INPUT_TOOLBAR_COLOR, toolBarColor);
-        mArgument.putInt(BasicWrapper.KEY_INPUT_NAVIGATION_COLOR, navigationBarColor);
 
         // Function dispatch.
-        final int function = intent.getIntExtra(BasicWrapper.KEY_INPUT_FRAMEWORK_FUNCTION, BasicWrapper.VALUE_INPUT_FRAMEWORK_FUNCTION_ALBUM);
+        final int function = intent.getIntExtra(BasicWrapper.KEY_INPUT_FRAMEWORK_FUNCTION,
+                BasicWrapper.VALUE_INPUT_FRAMEWORK_FUNCTION_ALBUM);
         switch (function) {
             case BasicWrapper.VALUE_INPUT_FRAMEWORK_FUNCTION_ALBUM: {
-                int photoColumn = intent.getIntExtra(AlbumWrapper.KEY_INPUT_COLUMN_COUNT, 2);
-                photoColumn = Math.max(1, photoColumn);
                 int limitCount = intent.getIntExtra(AlbumWrapper.KEY_INPUT_LIMIT_COUNT, 1);
-                boolean hasCamera = intent.getBooleanExtra(AlbumWrapper.KEY_INPUT_ALLOW_CAMERA, true);
 
-                mArgument.putInt(AlbumWrapper.KEY_INPUT_COLUMN_COUNT, photoColumn);
-                mArgument.putInt(AlbumWrapper.KEY_INPUT_LIMIT_COUNT, limitCount);
-                mArgument.putBoolean(AlbumWrapper.KEY_INPUT_ALLOW_CAMERA, hasCamera);
-
+                // Prepare constraint.
                 if (mCheckedPaths != null && mCheckedPaths.size() > limitCount)
                     mCheckedPaths = mCheckedPaths.subList(0, limitCount - 1);
 
@@ -118,13 +108,7 @@ public class AlbumActivity extends CompatActivity implements
                 break;
             }
             case BasicWrapper.VALUE_INPUT_FRAMEWORK_FUNCTION_GALLERY: {
-                boolean hasCheckFunction = intent.getBooleanExtra(GalleryWrapper.KEY_INPUT_CHECK_FUNCTION, false);
-                int currentPosition = intent.getIntExtra(GalleryWrapper.KEY_INPUT_CURRENT_POSITION, 0);
-
-                mArgument.putBoolean(GalleryWrapper.KEY_INPUT_CHECK_FUNCTION, hasCheckFunction);
-                mArgument.putInt(GalleryWrapper.KEY_INPUT_CURRENT_POSITION, currentPosition);
-
-                if (mCheckedPaths == null || mCheckedPaths.size() == 0 || currentPosition >= mCheckedPaths.size()) finish();
+                if (mCheckedPaths == null || mCheckedPaths.size() == 0) finish();
                 else requestPermission(PERMISSION_REQUEST_STORAGE_GALLERY);
                 break;
             }
@@ -132,7 +116,6 @@ public class AlbumActivity extends CompatActivity implements
                 finish();
                 break;
             }
-
         }
     }
 
