@@ -15,6 +15,10 @@
  */
 package com.yanzhenjie.album.sample;
 
+import com.yanzhenjie.album.Album;
+import com.yanzhenjie.album.AlbumConfig;
+import com.yanzhenjie.album.task.LocalImageLoader;
+
 /**
  * <p>Application.</p>
  * Created by Yan Zhenjie on 2016/10/30.
@@ -28,6 +32,11 @@ public class Application extends android.app.Application {
         super.onCreate();
         if (instance == null)
             instance = this;
+
+        Album.initialize(new AlbumConfig.Build()
+                .setImageLoader(new LocalImageLoader())
+                .build()
+        );
     }
 
     public static Application getInstance() {

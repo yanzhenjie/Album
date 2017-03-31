@@ -25,11 +25,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.entity.AlbumImage;
 import com.yanzhenjie.album.impl.OnCompatItemClickListener;
 import com.yanzhenjie.album.impl.OnCompoundItemCheckListener;
-import com.yanzhenjie.album.task.ImageLocalLoader;
 import com.yanzhenjie.album.util.SelectorUtils;
 
 import java.util.List;
@@ -59,7 +59,8 @@ public class AlbumImageAdapter extends RecyclerView.Adapter<AlbumImageAdapter.It
 
     private int itemSize;
 
-    public AlbumImageAdapter(Context context, boolean hasCamera, int itemSize, @ColorInt int normalColor, @ColorInt int checkColor) {
+    public AlbumImageAdapter(Context context, boolean hasCamera, int itemSize, @ColorInt int normalColor, @ColorInt int
+            checkColor) {
         this.mInflater = LayoutInflater.from(context);
         this.hasCamera = hasCamera;
         this.itemSize = itemSize;
@@ -158,7 +159,7 @@ public class AlbumImageAdapter extends RecyclerView.Adapter<AlbumImageAdapter.It
 
         public void setData(AlbumImage albumImage) {
             mCbChecked.setChecked(albumImage.isChecked());
-            ImageLocalLoader.getInstance().loadImage(mIvImage, albumImage.getPath(), itemSize, itemSize);
+            Album.getAlbumConfig().getImageLoader().loadImage(mIvImage, albumImage.getPath(), itemSize, itemSize);
         }
 
 

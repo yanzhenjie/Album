@@ -21,6 +21,8 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
+import com.yanzhenjie.album.task.LocalImageLoader;
+
 import java.util.ArrayList;
 
 /**
@@ -30,6 +32,32 @@ import java.util.ArrayList;
 public final class Album {
 
     public static String KEY_OUTPUT_IMAGE_PATH_LIST = "KEY_OUTPUT_IMAGE_PATH_LIST";
+
+    private static AlbumConfig sAlbumConfig;
+
+    /**
+     * Initialize Album.
+     *
+     * @param albumConfig {@link AlbumConfig}.
+     */
+    public static void initialize(AlbumConfig albumConfig) {
+        sAlbumConfig = albumConfig;
+    }
+
+    /**
+     * Get the album configuration.
+     *
+     * @return {@link AlbumConfig}.
+     */
+    public static AlbumConfig getAlbumConfig() {
+        if (sAlbumConfig == null) {
+            initialize(new AlbumConfig.Build()
+                    .setImageLoader(new LocalImageLoader())
+                    .build()
+            );
+        }
+        return sAlbumConfig;
+    }
 
     /**
      * Open the album from the activity.

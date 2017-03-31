@@ -16,10 +16,14 @@
 package com.yanzhenjie.album.util;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+
+import com.yanzhenjie.album.provider.CameraFileProvider;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -34,23 +38,33 @@ public class AlbumUtils {
 
     public static void startCamera(Fragment fragment, int requestCode, File outPath) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Uri uri = Uri.fromFile(outPath);
+        Uri uri = getUri(fragment.getContext(), outPath);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         fragment.startActivityForResult(intent, requestCode);
     }
 
     public static void startCamera(android.app.Fragment fragment, int requestCode, File outPath) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Uri uri = Uri.fromFile(outPath);
+        Uri uri = getUri(fragment.getActivity(), outPath);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         fragment.startActivityForResult(intent, requestCode);
     }
 
     public static void startCamera(Activity activity, int requestCode, File outPath) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Uri uri = Uri.fromFile(outPath);
+        Uri uri = getUri(activity, outPath);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         activity.startActivityForResult(intent, requestCode);
+    }
+
+    private static Uri getUri(Context context, File outPath) {
+        Uri uri;
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
+            uri = Uri.fromFile(outPath);
+        } else {
+            uri = CameraFileProvider.getUriForFile(context, CameraFileProvider.getFileProviderName(context), outPath);
+        }
+        return uri;
     }
 
     public static String getNowDateTime(String format) {

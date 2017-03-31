@@ -17,6 +17,7 @@ package com.yanzhenjie.album;
 
 import android.content.Intent;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
@@ -66,7 +67,7 @@ public class GalleryWrapper extends BasicWrapper<GalleryWrapper> {
     }
 
     @Override
-    public GalleryWrapper checkedList(ArrayList<String> pathList) {
+    public GalleryWrapper checkedList(@NonNull ArrayList<String> pathList) {
         intent.putStringArrayListExtra(KEY_INPUT_CHECKED_LIST, pathList);
         return this;
     }

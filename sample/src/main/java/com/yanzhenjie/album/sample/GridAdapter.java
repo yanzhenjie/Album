@@ -22,7 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.yanzhenjie.album.task.ImageLocalLoader;
+import com.yanzhenjie.album.Album;
 
 import java.util.List;
 
@@ -81,7 +81,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ImageViewHolde
         }
 
         public void loadImage(String imagePath) {
-            ImageLocalLoader.getInstance().loadImage(mIvIcon, imagePath, itemSize, itemSize);
+            Album.getAlbumConfig().getImageLoader().loadImage(mIvIcon, imagePath, itemSize, itemSize);
         }
 
         @Override

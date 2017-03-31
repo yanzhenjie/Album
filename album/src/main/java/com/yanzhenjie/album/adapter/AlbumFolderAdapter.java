@@ -24,11 +24,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.entity.AlbumFolder;
 import com.yanzhenjie.album.entity.AlbumImage;
 import com.yanzhenjie.album.impl.OnCompatItemClickListener;
-import com.yanzhenjie.album.task.ImageLocalLoader;
+import com.yanzhenjie.album.task.LocalImageLoader;
 import com.yanzhenjie.album.util.DisplayUtils;
 
 import java.util.List;
@@ -49,7 +50,8 @@ public class AlbumFolderAdapter extends RecyclerView.Adapter<AlbumFolderAdapter.
 
     private static int size = DisplayUtils.dip2px(100);
 
-    public AlbumFolderAdapter(ColorStateList buttonTint, List<AlbumFolder> mAlbumFolders, OnCompatItemClickListener mItemClickListener) {
+    public AlbumFolderAdapter(ColorStateList buttonTint, List<AlbumFolder> mAlbumFolders, OnCompatItemClickListener
+            mItemClickListener) {
         this.mButtonTint = buttonTint;
         this.mAlbumFolders = mAlbumFolders;
         this.mItemClickListener = mItemClickListener;
@@ -57,7 +59,8 @@ public class AlbumFolderAdapter extends RecyclerView.Adapter<AlbumFolderAdapter.
 
     @Override
     public FolderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new FolderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.album_item_dialog_folder, parent, false));
+        return new FolderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.album_item_dialog_folder, parent,
+                false));
     }
 
     @Override
@@ -114,9 +117,9 @@ public class AlbumFolderAdapter extends RecyclerView.Adapter<AlbumFolderAdapter.
             mRbCheck.setChecked(albumFolder.isChecked());
 
             if (albumImages.size() > 0) {
-                ImageLocalLoader.getInstance().loadImage(mIvImage, albumImages.get(0).getPath(), size, size);
+                Album.getAlbumConfig().getImageLoader().loadImage(mIvImage, albumImages.get(0).getPath(), size, size);
             } else {
-                mIvImage.setImageDrawable(ImageLocalLoader.DEFAULT_DRAWABLE);
+                mIvImage.setImageDrawable(LocalImageLoader.DEFAULT_DRAWABLE);
             }
         }
 

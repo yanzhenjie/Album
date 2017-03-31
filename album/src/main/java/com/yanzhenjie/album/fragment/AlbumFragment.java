@@ -23,6 +23,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -99,7 +100,6 @@ public class AlbumFragment extends BasicCameraFragment {
 
         setToolbar((Toolbar) view.findViewById(R.id.toolbar));
         displayHomeAsUpEnabled(R.drawable.album_ic_back_white);
-        setTitle(R.string.album_title);
 
         mBtnSwitchFolder.setOnClickListener(mSwitchDirClick);
         mBtnPreview.setOnClickListener(mPreviewClick);
@@ -118,6 +118,8 @@ public class AlbumFragment extends BasicCameraFragment {
         mToolBarColor = argument.getInt(
                 AlbumWrapper.KEY_INPUT_TOOLBAR_COLOR,
                 ContextCompat.getColor(getContext(), R.color.albumColorPrimary));
+        String title = argument.getString(AlbumWrapper.KEY_INPUT_TITLE);
+        if (TextUtils.isEmpty(title)) title = getString(R.string.album_title);
         mNavigationColor = argument.getInt(
                 AlbumWrapper.KEY_INPUT_NAVIGATION_COLOR,
                 ContextCompat.getColor(getContext(), R.color.albumColorPrimaryBlack));
@@ -127,6 +129,7 @@ public class AlbumFragment extends BasicCameraFragment {
 
         // noinspection ConstantConditions
         getToolbar().setBackgroundColor(mToolBarColor);
+        setTitle(title);
 
         mLayoutManager = new GridLayoutManager(getContext(), columnCount);
         mRvContentList.setLayoutManager(mLayoutManager);

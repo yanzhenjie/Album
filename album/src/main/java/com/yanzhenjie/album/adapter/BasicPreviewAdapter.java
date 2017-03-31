@@ -15,14 +15,13 @@
  */
 package com.yanzhenjie.album.adapter;
 
-import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import com.yanzhenjie.album.task.ImageLocalLoader;
+import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.util.DisplayUtils;
+import com.yanzhenjie.album.widget.photoview.AttacherImageView;
 import com.yanzhenjie.album.widget.photoview.PhotoViewAttacher;
 
 import java.util.List;
@@ -53,34 +52,17 @@ public abstract class BasicPreviewAdapter<T> extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        ImageView imageView = new ImageView(container.getContext());
+        AttacherImageView imageView = new AttacherImageView(container.getContext());
         imageView.setLayoutParams(new ViewGroup.LayoutParams(-1, -1));
         container.addView(imageView);
         final PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
+        imageView.setAttacher(attacher);
 
-        ImageLocalLoader.getInstance().loadImage(
+        Album.getAlbumConfig().getImageLoader().loadImage(
                 imageView,
                 getImagePath(mPreviewList.get(position)),
                 DisplayUtils.screenWidth,
-                DisplayUtils.screenHeight,
-                new ImageLocalLoader.LoadListener() {
-                    @Override
-                    public void onLoadFinish(Bitmap bitmap, ImageView imageView, String imagePath) {
-                        imageView.setImageBitmap(bitmap);
-                        attacher.update();
-
-                        int height = bitmap.getHeight();
-                        int width = bitmap.getWidth();
-                        int bitmapSize = height / width;
-                        int contentSize = DisplayUtils.screenHeight / DisplayUtils.screenWidth;
-
-                        if (height > width && bitmapSize >= contentSize) {
-                            attacher.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                        } else {
-                            attacher.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                        }
-                    }
-                });
+                DisplayUtils.screenHeight);
         return imageView;
     }
 

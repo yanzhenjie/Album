@@ -13,24 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.album.impl;
+package com.yanzhenjie.album.provider;
 
-import android.widget.ImageView;
+import android.content.Context;
+import android.support.v4.content.FileProvider;
 
 /**
- * <p>Picture loader, you can determine the url, load the local image and network pictures.</p>
+ * <p>Defined for the camera.</p>
  * Created by Yan Zhenjie on 2017/3/31.
  */
-public interface AlbumImageLoader {
+public class CameraFileProvider extends FileProvider {
 
     /**
-     * According to the specified width high loading pictures, wide high, the greater the picture clearer, more memory.
+     * Get the provider of the external file path.
      *
-     * @param imageView {@link ImageView}.
-     * @param imagePath path from local SDCard.
-     * @param width     target width.
-     * @param height    target height.
+     * @param context context.
+     * @return provider.
      */
-    void loadImage(ImageView imageView, String imagePath, int width, int height);
+    public static String getFileProviderName(Context context) {
+        return context.getPackageName() + ".album.camera.provider";
+    }
 
 }

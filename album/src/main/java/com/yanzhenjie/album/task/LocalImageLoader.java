@@ -31,6 +31,8 @@ import android.util.Log;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 
+import com.yanzhenjie.album.impl.AlbumImageLoader;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,14 +44,14 @@ import java.util.concurrent.Executors;
  * <p>LRU Cache.</p>
  * Created by Yan Zhenjie on 2017/3/25.
  */
-public class ImageLocalLoader {
+public class LocalImageLoader implements AlbumImageLoader {
 
     public static final Drawable DEFAULT_DRAWABLE = new ColorDrawable(Color.parseColor("#FF2B2B2B"));
 
     /**
      * Single module.
      */
-    private static ImageLocalLoader mInstance;
+    private static LocalImageLoader mInstance;
     /**
      * Post message.
      */
@@ -66,18 +68,18 @@ public class ImageLocalLoader {
     /**
      * Get single object.
      *
-     * @return {@link ImageLocalLoader}.
+     * @return {@link LocalImageLoader}.
      */
-    public static ImageLocalLoader getInstance() {
+    public static LocalImageLoader getInstance() {
         if (mInstance == null)
-            synchronized (ImageLocalLoader.class) {
+            synchronized (LocalImageLoader.class) {
                 if (mInstance == null)
-                    mInstance = new ImageLocalLoader();
+                    mInstance = new LocalImageLoader();
             }
         return mInstance;
     }
 
-    private ImageLocalLoader() {
+    public LocalImageLoader() {
         mExecutorService = Executors.newFixedThreadPool(6);
 
         int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 4);
@@ -99,15 +101,7 @@ public class ImageLocalLoader {
         loadImage(imageView, imagePath, 0, 0, null);
     }
 
-
-    /**
-     * According to the specified width high loading pictures, wide high, the greater the picture clearer, more memory.
-     *
-     * @param imageView {@link ImageView}.
-     * @param imagePath path from local SDCard.
-     * @param width     target width.
-     * @param height    target height.
-     */
+    @Override
     public void loadImage(ImageView imageView, String imagePath, int width, int height) {
         loadImage(imageView, imagePath, width, height, null);
     }
@@ -152,14 +146,14 @@ public class ImageLocalLoader {
 
     private static class TaskThread implements Runnable {
 
-        private ImageLocalLoader loader;
+        private LocalImageLoader loader;
         private ImageView mImageView;
         private String mImagePath;
         private int width;
         private int height;
         private LoadListener loadListener;
 
-        TaskThread(ImageLocalLoader loader, ImageView imageView, String imagePath, int width, int height, LoadListener
+        TaskThread(LocalImageLoader loader, ImageView imageView, String imagePath, int width, int height, LoadListener
                 loadListener) {
             this.loader = loader;
             this.mImagePath = imagePath;
@@ -358,7 +352,7 @@ public class ImageLocalLoader {
 
     private static Handler getHandler() {
         if (instanceHandler == null)
-            synchronized (ImageLocalLoader.class) {
+            synchronized (LocalImageLoader.class) {
                 if (instanceHandler == null)
                     instanceHandler = new Handler(Looper.getMainLooper());
             }

@@ -67,7 +67,7 @@ public abstract class BasicWrapper<T extends BasicWrapper> {
      * Request code, callback to {@code onActivityResult()};
      *
      * @param requestCode int.
-     * @return a subclass of A.
+     * @return a subclass of {@link BasicWrapper}.
      */
     public abstract T requestCode(int requestCode);
 
@@ -75,7 +75,7 @@ public abstract class BasicWrapper<T extends BasicWrapper> {
      * Set the StatusBar color.
      *
      * @param color color.
-     * @return a subclass of A.
+     * @return a subclass of {@link BasicWrapper}.
      */
     public abstract T statusBarColor(@ColorInt int color);
 
@@ -83,7 +83,7 @@ public abstract class BasicWrapper<T extends BasicWrapper> {
      * Set the ToolBar color.
      *
      * @param color color.
-     * @return a subclass of A.
+     * @return a subclass of {@link BasicWrapper}.
      */
     public abstract T toolBarColor(@ColorInt int color);
 
@@ -91,7 +91,7 @@ public abstract class BasicWrapper<T extends BasicWrapper> {
      * Set the NavigationBar color.
      *
      * @param color color.
-     * @return a subclass of A.
+     * @return a subclass of {@link BasicWrapper}.
      */
     public abstract T navigationBarColor(@ColorInt int color);
 
@@ -99,9 +99,9 @@ public abstract class BasicWrapper<T extends BasicWrapper> {
      * Sets the list of selected files.
      *
      * @param pathList path list.
-     * @return a subclass of A.
+     * @return a subclass of {@link BasicWrapper}.
      */
-    public abstract T checkedList(ArrayList<String> pathList);
+    public abstract T checkedList(@NonNull ArrayList<String> pathList);
 
     /**
      * Get the context.

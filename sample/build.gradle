@@ -29,4 +29,8 @@ dependencies {
     compile rootProject.ext.dependencies.design
     compile rootProject.ext.dependencies.recyclerview
     compile rootProject.ext.dependencies.dialog
+
+    // define image loader.
+    compile rootProject.ext.dependencies.picasso
+    compile rootProject.ext.dependencies.glide
 }

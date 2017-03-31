@@ -17,6 +17,7 @@ package com.yanzhenjie.album;
 
 import android.content.Intent;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,7 @@ import java.util.ArrayList;
  */
 public class AlbumWrapper extends BasicWrapper<AlbumWrapper> {
 
+    public static final String KEY_INPUT_TITLE = "KEY_INPUT_TITLE";
     public static final String KEY_INPUT_COLUMN_COUNT = "KEY_INPUT_COLUMN_COUNT";
     public static final String KEY_INPUT_LIMIT_COUNT = "KEY_INPUT_LIMIT_COUNT";
     public static final String KEY_INPUT_ALLOW_CAMERA = "KEY_INPUT_ALLOW_CAMERA";
@@ -67,8 +69,19 @@ public class AlbumWrapper extends BasicWrapper<AlbumWrapper> {
     }
 
     @Override
-    public AlbumWrapper checkedList(ArrayList<String> pathList) {
+    public AlbumWrapper checkedList(@NonNull ArrayList<String> pathList) {
         intent.putStringArrayListExtra(KEY_INPUT_CHECKED_LIST, pathList);
+        return this;
+    }
+
+    /**
+     * Set the title of ui.
+     *
+     * @param title string.
+     * @return a subclass of {@link BasicWrapper}.
+     */
+    public AlbumWrapper title(@NonNull String title) {
+        intent.putExtra(KEY_INPUT_TITLE, title);
         return this;
     }
 

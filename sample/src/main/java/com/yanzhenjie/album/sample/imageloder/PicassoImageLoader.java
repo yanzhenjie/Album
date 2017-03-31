@@ -13,24 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.album.impl;
+package com.yanzhenjie.album.sample.imageloder;
 
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+import com.yanzhenjie.album.impl.AlbumImageLoader;
+
+import java.io.File;
+
 /**
- * <p>Picture loader, you can determine the url, load the local image and network pictures.</p>
  * Created by Yan Zhenjie on 2017/3/31.
  */
-public interface AlbumImageLoader {
+public class PicassoImageLoader implements AlbumImageLoader {
 
-    /**
-     * According to the specified width high loading pictures, wide high, the greater the picture clearer, more memory.
-     *
-     * @param imageView {@link ImageView}.
-     * @param imagePath path from local SDCard.
-     * @param width     target width.
-     * @param height    target height.
-     */
-    void loadImage(ImageView imageView, String imagePath, int width, int height);
+    @Override
+    public void loadImage(ImageView imageView, String imagePath, int width, int height) {
+        Picasso.with(imageView.getContext())
+                .load(new File(imagePath))
+                .centerCrop()
+                .resize(width, height)
+                .into(imageView);
+    }
 
 }
