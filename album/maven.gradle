@@ -1,7 +1,7 @@
 apply plugin: rootProject.ext.plugins.maven
 apply plugin: rootProject.ext.plugins.bintray
 
-version = "1.0.2"
+version = "1.0.3"
 
 def siteUrl = 'https://github.com/yanzhenjie/Album'
 def gitUrl = 'git@github.com:yanzhenjie/Album.git'

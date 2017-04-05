@@ -23,7 +23,7 @@ Please experience [download apk](https://github.com/yanzhenjie/Album/blob/master
 # Dependencies
 * Gradle：
 ```groovy
-compile 'com.yanzhenjie:album:1.0.2'
+compile 'com.yanzhenjie:album:1.0.3'
 ```
 
 * Maven:
@@ -31,7 +31,7 @@ compile 'com.yanzhenjie:album:1.0.2'
 <dependency>
   <groupId>com.yanzhenjie</groupId>
   <artifactId>album</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <type>pom</type>
 </dependency>
 ```

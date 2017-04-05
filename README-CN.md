@@ -26,7 +26,7 @@
 # 依赖
 * Gradle：
 ```groovy
-compile 'com.yanzhenjie:album:1.0.2'
+compile 'com.yanzhenjie:album:1.0.3'
 ```
 
 * Maven:
@@ -34,7 +34,7 @@ compile 'com.yanzhenjie:album:1.0.2'
 <dependency>
   <groupId>com.yanzhenjie</groupId>
   <artifactId>album</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <type>pom</type>
 </dependency>
 ```
@@ -48,9 +48,6 @@ compile 'com.yanzhenjie:album:1.0.2'
     android:theme="@style/Theme.AppCompat.Light.NoActionBar"
     android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
 ```
-
-* 注意：1.0.0以上版本给这个activity配置的`android:title=""`属性会被自动忽略。  
-**在使用相册的时候可以动态设置相册的标题。**
 
 # 权限
 ```xml

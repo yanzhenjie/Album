@@ -59,7 +59,7 @@ public class AlbumUtils {
 
     private static Uri getUri(Context context, File outPath) {
         Uri uri;
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             uri = Uri.fromFile(outPath);
         } else {
             uri = CameraFileProvider.getUriForFile(context, CameraFileProvider.getFileProviderName(context), outPath);
