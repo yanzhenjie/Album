@@ -15,7 +15,6 @@
  */
 package com.yanzhenjie.album.fragment;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -49,30 +48,17 @@ import java.util.Locale;
  */
 public class AlbumPreviewFragment extends NoFragment {
 
-    private Callback mCallback;
-
     private int mToolBarColor;
     private MenuItem mFinishMenuItem;
 
     private AppCompatCheckBox mCheckBox;
 
     private ViewPager mViewPager;
-    private List<AlbumImage> mAlbumImages;
+    private List<AlbumImage> mAlbumImages = new ArrayList<>(1);
+    private List<AlbumImage> mCheckedImages = new ArrayList<>(1);
     private int mCurrentItemPosition;
 
     private int mAllowSelectCount;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mCallback = (Callback) context;
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        this.mCallback = null;
-    }
 
     @Nullable
     @Override
@@ -101,12 +87,12 @@ public class AlbumPreviewFragment extends NoFragment {
 
         // noinspection ConstantConditions
         getToolbar().setBackgroundColor(mToolBarColor);
-        getToolbar().getBackground().mutate().setAlpha(200);
+        getToolbar().getBackground().mutate().setAlpha(180);
 
         initializeCheckBox();
         initializeViewPager();
 
-        setCheckedCountUI(mCallback.getCheckedCount());
+        setCheckedCountUI(mCheckedImages.size());
     }
 
     /**
@@ -114,9 +100,9 @@ public class AlbumPreviewFragment extends NoFragment {
      *
      * @param albumImages image list.
      */
-    public void bindAlbumImages(List<AlbumImage> albumImages, int currentItemPosition) {
-        this.mAlbumImages = new ArrayList<>();
+    public void bindAlbumImages(List<AlbumImage> albumImages, List<AlbumImage> checkedImages, int currentItemPosition) {
         this.mAlbumImages.addAll(albumImages);
+        this.mCheckedImages.addAll(checkedImages);
         this.mCurrentItemPosition = currentItemPosition;
     }
 
@@ -129,21 +115,23 @@ public class AlbumPreviewFragment extends NoFragment {
                 boolean isChecked = mCheckBox.isChecked();
                 AlbumImage albumImage = mAlbumImages.get(mCurrentItemPosition);
                 albumImage.setChecked(isChecked);
-                mCallback.onCheckedChanged(albumImage, isChecked);
 
-                int hasCheckSize = mCallback.getCheckedCount();
-                if (hasCheckSize > mAllowSelectCount) {
-                    Toast.makeText(
-                            getContext(),
-                            String.format(Locale.getDefault(), getString(R.string.album_check_limit), mAllowSelectCount),
-                            Toast.LENGTH_LONG).show();
+                if (isChecked) {
+                    if (mCheckedImages.size() >= mAllowSelectCount) {
+                        Toast.makeText(
+                                getContext(),
+                                String.format(Locale.getDefault(), getString(R.string.album_check_limit), mAllowSelectCount),
+                                Toast.LENGTH_LONG).show();
 
-                    mCallback.onCheckedChanged(albumImage, false);
-                    mCheckBox.setChecked(false);
-                    albumImage.setChecked(false);
+                        mCheckBox.setChecked(false);
+                        albumImage.setChecked(false);
+                    } else {
+                        mCheckedImages.add(albumImage);
+                    }
                 } else {
-                    setCheckedCountUI(hasCheckSize);
+                    mCheckedImages.remove(albumImage);
                 }
+                setCheckedCountUI(mCheckedImages.size());
             }
         });
     }
@@ -191,7 +179,8 @@ public class AlbumPreviewFragment extends NoFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.album_menu_finish) {
-            mCallback.doResult(true);
+            setResult(RESULT_OK);
+            finish();
         }
         return true;
     }

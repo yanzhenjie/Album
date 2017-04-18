@@ -1,7 +1,5 @@
 # Album
-`Album` is an MaterialDesign tyle open source album, the main function is: `Album and Gallery`.
-
-Image upload recommended NoHttp：[NoHttp Open source address](https://github.com/yanzhenjie/NoHttp).
+`Album` is an MaterialDesign tyle open source album, the main function is: `Album, Camera and Gallery`.
 
 [中文文档](./README-CN.md)
 
@@ -9,11 +7,12 @@ Image upload recommended NoHttp：[NoHttp Open source address](https://github.co
 1. Perfect for **Android7.0 FileUriExposedException**.
 2. Support component：`Activity`、`Fragment`.
 3. UI style can be configured, for example: `Toolbar`、`StatusBar`、`NavigationBar`.
-4. Radio, multi-select, folder preview, gallery, gallery zoom.
-5. Support setting album number.
-6. Support for configuring whether to use the camera.
-7. Gallery preview multiple pictures, preview can be anti-election.
-8. Support for custom LocalImageLoader, such as: `Glide`, `Picasso`, `ImageLoder`.
+4. Album: Radio, multi-select, folder preview.
+5. Camera: call alone, as the item of the album.
+6. Gallery: Support zoom, browse local pictures and network pictures.
+7. Configure the album's number of columns, configure the album if there is a camera.
+8. Gallery preview multiple pictures, preview can be anti-election.
+9. Support for custom LocalImageLoader, such as: `Glide`, `Picasso`, `ImageLoder`.
 
 # Screenshot
 Please experience [download apk](https://github.com/yanzhenjie/Album/blob/master/sample-release.apk?raw=true).  
@@ -23,7 +22,7 @@ Please experience [download apk](https://github.com/yanzhenjie/Album/blob/master
 # Dependencies
 * Gradle：
 ```groovy
-compile 'com.yanzhenjie:album:1.0.3'
+compile 'com.yanzhenjie:album:1.0.4'
 ```
 
 * Maven:
@@ -31,7 +30,7 @@ compile 'com.yanzhenjie:album:1.0.3'
 <dependency>
   <groupId>com.yanzhenjie</groupId>
   <artifactId>album</artifactId>
-  <version>1.0.3</version>
+  <version>1.0.4</version>
   <type>pom</type>
 </dependency>
 ```
@@ -55,15 +54,15 @@ For your application to be better and more stable, a few properties are required
 ```
 
 * Developers do not need to worry about `Android6.0` runtime permissions，`Album` has been very well handled.  
-* In addition `Android6.0` runtime permissions recommended: [AndPermission](https://github.com/yanzhenjie/AndPermission).  
+* The repository version of the `support-library` is `25.3.1`, if your version is higher than `25.3.1`, you need to explicitly specify the version of` CardView`.
 
 # Usage
-Album's main function is: `Album and Gallery`, the following are described separately.  
+Album's main function is: `Album, Camera and Gallery`, the following are described separately.  
 
 ## Album
-Use `Album.album(this).start()` to call up the album.  
+Use `Album.album(context).start()` to call up the `Album`.  
 ```java
-Album.album(this)
+Album.album(context)
     .requestCode(999) // Request code.
     .toolBarColor(toolbarColor) // Toolbar color.
     .statusBarColor(statusBarColor) // StatusBar color.
@@ -79,14 +78,36 @@ Album.album(this)
 
 Accept the result：  
 ```java
-ArrayList<String> mImageList;
-
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     if(requestCode == 999) {
         if (resultCode == RESULT_OK) { // Successfully.
             // Parse select result.
-            mImageList = Album.parseResult(data);
+            ArrayList<String> imageList = Album.parseResult(data);
+        } else if (resultCode == RESULT_CANCELED) {
+            // User canceled.
+        }
+    }
+}
+```
+
+## Camera
+Use the `Album.camera(context).start ()` to call up the `Camera`, has handled the RunTimePermissions and `Android7.0 FileProvider`
+```java
+Album.camera(context)
+    .requestCode(666)
+    // .imagePath() // Specify the image path, optional.
+    .start();
+```
+
+Accept the result： 
+```java
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if(requestCode == 666) {
+        if (resultCode == RESULT_OK) { // Successfully.
+            // The size of the pathList is 1.
+            List<String> pathList = Album.parseResult(data); // Parse path.
         } else if (resultCode == RESULT_CANCELED) {
             // User canceled.
         }
@@ -95,10 +116,12 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 ```
 
 ## Gallery
-Use the `Album.gallery(this).start ()` to call up the gallery.
+Use the `Album.gallery(context).start ()` to call up the `Gallery`, default support for previewing local images, preview the network pictures need to configure `ImageLoader`, see below for details.
+
+Call you only need to pass in a path set:  
 ```java
-Album.gallery(this)
-    .requestCode(999) // Request code.
+Album.gallery(context)
+    .requestCode(444) // Request code.
     .toolBarColor(toolbarColor) // Toolbar color.
     .statusBarColor(statusBarColor) // StatusBar color.
     .navigationBarColor(navigationBarColor) // NavigationBar color.
@@ -116,14 +139,12 @@ Album.gallery(this)
 
 If you need to have an anti-selection function at the time of preview，override the `onActivityResult ()` method, after receiving the anti-selected picture `List` result:  
 ```java
-ArrayList<String> mImageList;
-
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if(requestCode == 666) {
+    if(requestCode == 444) {
         if (resultCode == RESULT_OK) { // Successfully.
             // Parse select result.
-            mImageList = Album.parseResult(data);
+            ArrayList<String> imageList = Album.parseResult(data);
         } else if (resultCode == RESULT_CANCELED) {
             // User canceled.
         }
@@ -132,18 +153,22 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 ```
 
 ## Advanced configuration
-**This is not something that must be set.**  
+**This configuration is not necessary, not configured can also be used:**
 
-Your application if use the image loading frame: `Glide`, `Picasso`, `ImageLoader`, you can use them to customize the picture loading interface for the album.  
+1. `ImageLoader`, the default use of 'LocalImageLoader`, you can use` Glide` and `Picasso` and other third-party framework to achieve.  
+2. `Locale`, the default has been supported international, and support Simplified Chinese, Traditional Chinese, English. If you want to specify the language, you can use the `Locale` configuration.
 
-Album has provided a default ImageLoader, E.g:  
+### ImageLoader config
+I recommend using the default `ImageLoader` first, followed by` Glide`, followed by `Picasso`, and finally` ImageLoader`, which does not support `Fresco` for the time being.
+
 ```java
 public class Application extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
 
-        Album.initialize(new AlbumConfig.Build()
+        Album.initialize(
+            new AlbumConfig.Build()
                 .setImageLoader(new LocalImageLoader()) // Use default loader.
                 .build()
         );
@@ -151,15 +176,7 @@ public class Application extends android.app.Application {
 }
 ```
 
-According to the test, the recommended priority is as follows:  
-
-1. LocalImageLoader  
-2. Glide  
-3. Picasso  
-
-Here are examples of Glide and Picasso.  
-
-### Glide
+**Use Glide:**
 ```java
 public class GlideImageLoader implements AlbumImageLoader {
     @Override
@@ -177,7 +194,7 @@ Album.initialize(new AlbumConfig.Build()
     .build()
 ```
 
-### Picasso
+**Use Picasso:**
 ```java
 public class PicassoImageLoader implements AlbumImageLoader {
 

@@ -233,7 +233,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, OnGe
      * Clean-up the resources attached to this object. This needs to be called when the ImageView is
      * no longer used. A good example is from {@link View#onDetachedFromWindow()} or
      * from {@link android.app.Activity#onDestroy()}. This is automatically called if you are using
-     * {@link uk.co.senab.photoview.PhotoView}.
+     * {@link IPhotoView}.
      */
     @SuppressWarnings("deprecation")
     public void cleanup() {
@@ -349,7 +349,8 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, OnGe
 
     @Override
     public float getScale() {
-        return (float) Math.sqrt((float) Math.pow(getValue(mSuppMatrix, Matrix.MSCALE_X), 2) + (float) Math.pow(getValue(mSuppMatrix, Matrix.MSKEW_Y), 2));
+        return (float) Math.sqrt((float) Math.pow(getValue(mSuppMatrix, Matrix.MSCALE_X), 2) + (float) Math.pow(getValue
+                (mSuppMatrix, Matrix.MSKEW_Y), 2));
     }
 
     @Override
@@ -699,7 +700,8 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, OnGe
         if (null != imageView && !(imageView instanceof IPhotoView)) {
             if (!ScaleType.MATRIX.equals(imageView.getScaleType())) {
                 throw new IllegalStateException(
-                        "The ImageView's ScaleType has been changed since attaching a PhotoViewAttacher. You should call setScaleType on the PhotoViewAttacher instead of on the ImageView");
+                        "The ImageView's ScaleType has been changed since attaching a PhotoViewAttacher. You should call " +
+                                "setScaleType on the PhotoViewAttacher instead of on the ImageView");
             }
         }
     }
@@ -934,7 +936,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, OnGe
      */
     public interface OnMatrixChangedListener {
         /**
-         * Callback for when the Matrix displaying the Drawable has changed. This could be because
+         * AlbumCallback for when the Matrix displaying the Drawable has changed. This could be because
          * the View's bounds have changed, or the user has zoomed.
          *
          * @param rect - Rectangle displaying the Drawable's new bounds.
@@ -949,7 +951,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, OnGe
      */
     public interface OnScaleChangeListener {
         /**
-         * Callback for when the scale changes
+         * AlbumCallback for when the scale changes
          *
          * @param scaleFactor the scale factor (less than 1 for zoom out, greater than 1 for zoom in)
          * @param focusX      focal point X position

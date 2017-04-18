@@ -18,12 +18,10 @@ package com.yanzhenjie.album;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 
 /**
  * <p>Album basic wrapper.</p>
@@ -33,21 +31,18 @@ public abstract class BasicWrapper<T extends BasicWrapper> {
 
     protected static final String KEY_INPUT_REQUEST_CODE = "KEY_INPUT_REQUEST_CODE";
 
-    public static final String KEY_INPUT_FRAMEWORK_FUNCTION = "KEY_INPUT_FRAMEWORK_FUNCTION";
-    public static final int VALUE_INPUT_FRAMEWORK_FUNCTION_ALBUM = 0;
-    public static final int VALUE_INPUT_FRAMEWORK_FUNCTION_GALLERY = 1;
-
-    public static final String KEY_INPUT_STATUS_COLOR = "KEY_INPUT_STATUS_COLOR";
-    public static final String KEY_INPUT_TOOLBAR_COLOR = "KEY_INPUT_TOOLBAR_COLOR";
-    public static final String KEY_INPUT_NAVIGATION_COLOR = "KEY_INPUT_NAVIGATION_COLOR";
-    public static final String KEY_INPUT_CHECKED_LIST = "KEY_INPUT_CHECKED_LIST";
+    static final String KEY_INPUT_FRAMEWORK_FUNCTION = "KEY_INPUT_FRAMEWORK_FUNCTION";
+    static final int VALUE_INPUT_FRAMEWORK_FUNCTION_ALBUM = 0;
+    static final int VALUE_INPUT_FRAMEWORK_FUNCTION_GALLERY = 1;
+    static final int VALUE_INPUT_FRAMEWORK_FUNCTION_CAMERA = 2;
 
     private Object o;
     private Intent intent;
 
-    protected BasicWrapper(Object o, Intent intent) {
+    protected BasicWrapper(Object o, Intent intent, int function) {
         this.o = o;
         this.intent = intent;
+        this.intent.putExtra(KEY_INPUT_FRAMEWORK_FUNCTION, function);
     }
 
     /**
@@ -70,38 +65,6 @@ public abstract class BasicWrapper<T extends BasicWrapper> {
      * @return a subclass of {@link BasicWrapper}.
      */
     public abstract T requestCode(int requestCode);
-
-    /**
-     * Set the StatusBar color.
-     *
-     * @param color color.
-     * @return a subclass of {@link BasicWrapper}.
-     */
-    public abstract T statusBarColor(@ColorInt int color);
-
-    /**
-     * Set the ToolBar color.
-     *
-     * @param color color.
-     * @return a subclass of {@link BasicWrapper}.
-     */
-    public abstract T toolBarColor(@ColorInt int color);
-
-    /**
-     * Set the NavigationBar color.
-     *
-     * @param color color.
-     * @return a subclass of {@link BasicWrapper}.
-     */
-    public abstract T navigationBarColor(@ColorInt int color);
-
-    /**
-     * Sets the list of selected files.
-     *
-     * @param pathList path list.
-     * @return a subclass of {@link BasicWrapper}.
-     */
-    public abstract T checkedList(@NonNull ArrayList<String> pathList);
 
     /**
      * Get the context.

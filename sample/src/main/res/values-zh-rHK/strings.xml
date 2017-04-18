@@ -16,12 +16,10 @@
 -->
 <resources>
     <string name="app_name">Album</string>
-    <string name="menu_check_image">選擇照騙</string>
+    <string name="menu_check_image">相冊</string>
+    <string name="menu_camera_picture">相機</string>
 
-    <string name="confirm">好的</string>
+    <string name="cancel_select_photo_hint">用戶取消了操作</string>
 
-    <string name="title_dialog_hint">提示</string>
-    <string name="cancel_select_photo_hint">用戶取消了選擇照片。</string>
-
-    <string name="none_photo">請點擊右上角選擇照騙</string>
+    <string name="none_photo">請點擊右上角選擇圖片</string>
 </resources>

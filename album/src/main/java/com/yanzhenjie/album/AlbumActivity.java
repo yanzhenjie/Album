@@ -28,17 +28,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
-import com.yanzhenjie.album.entity.AlbumFolder;
-import com.yanzhenjie.album.entity.AlbumImage;
 import com.yanzhenjie.album.fragment.AlbumFragment;
-import com.yanzhenjie.album.fragment.AlbumNullFragment;
-import com.yanzhenjie.album.fragment.AlbumPreviewFragment;
-import com.yanzhenjie.album.fragment.Callback;
-import com.yanzhenjie.album.fragment.CameraCallback;
+import com.yanzhenjie.album.fragment.CameraFragment;
 import com.yanzhenjie.album.fragment.GalleryFragment;
-import com.yanzhenjie.album.task.ScanTask;
+import com.yanzhenjie.album.impl.AlbumCallback;
+import com.yanzhenjie.album.impl.CameraCallback;
+import com.yanzhenjie.album.impl.GalleryCallback;
+import com.yanzhenjie.album.util.AlbumUtils;
 import com.yanzhenjie.album.util.DisplayUtils;
 import com.yanzhenjie.fragment.CompatActivity;
 import com.yanzhenjie.fragment.NoFragment;
@@ -46,26 +43,18 @@ import com.yanzhenjie.mediascanner.MediaScanner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * <p>Responsible for controlling the album data and the overall logic.</p>
  * Created by Yan Zhenjie on 2016/10/17.
  */
-public class AlbumActivity extends CompatActivity implements
-        Callback,
-        CameraCallback,
-        AlbumFragment.Callback,
-        ScanTask.Callback,
-        GalleryFragment.Callback {
+public class AlbumActivity extends CompatActivity implements AlbumCallback, GalleryCallback, CameraCallback {
 
     private static final int PERMISSION_REQUEST_STORAGE_ALBUM = 200;
     private static final int PERMISSION_REQUEST_STORAGE_GALLERY = 201;
 
-    private ScanTask mScanTask;
-    private List<AlbumFolder> mAlbumFolders;
-    private List<AlbumImage> mCheckedImages = new ArrayList<>(1);
     private List<String> mCheckedPaths;
-
     private Bundle mArgument;
 
     @Override
@@ -77,6 +66,10 @@ public class AlbumActivity extends CompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DisplayUtils.initScreen(this);
+        // Language.
+        Locale locale = Album.getAlbumConfig().getLocale();
+        AlbumUtils.applyLanguageForContext(this, locale);
+
         setContentView(R.layout.album_activity_main);
 
         // prepare color.
@@ -84,11 +77,11 @@ public class AlbumActivity extends CompatActivity implements
         mArgument = intent.getExtras();
 
         // basic.
-        int statusBarColor = intent.getIntExtra(BasicWrapper.KEY_INPUT_STATUS_COLOR,
+        int statusBarColor = intent.getIntExtra(UIWrapper.KEY_INPUT_STATUS_COLOR,
                 ContextCompat.getColor(this, R.color.albumColorPrimaryDark));
-        int navigationBarColor = intent.getIntExtra(BasicWrapper.KEY_INPUT_NAVIGATION_COLOR,
+        int navigationBarColor = intent.getIntExtra(UIWrapper.KEY_INPUT_NAVIGATION_COLOR,
                 ContextCompat.getColor(this, R.color.albumColorPrimaryBlack));
-        mCheckedPaths = intent.getStringArrayListExtra(BasicWrapper.KEY_INPUT_CHECKED_LIST);
+        mCheckedPaths = intent.getStringArrayListExtra(UIWrapper.KEY_INPUT_CHECKED_LIST);
 
         setWindowBarColor(statusBarColor, navigationBarColor);
 
@@ -97,19 +90,17 @@ public class AlbumActivity extends CompatActivity implements
                 BasicWrapper.VALUE_INPUT_FRAMEWORK_FUNCTION_ALBUM);
         switch (function) {
             case BasicWrapper.VALUE_INPUT_FRAMEWORK_FUNCTION_ALBUM: {
-                int limitCount = intent.getIntExtra(AlbumWrapper.KEY_INPUT_LIMIT_COUNT, 1);
-
-                // Prepare constraint.
-                if (mCheckedPaths != null && mCheckedPaths.size() > limitCount)
-                    mCheckedPaths = mCheckedPaths.subList(0, limitCount - 1);
-
-                mScanTask = new ScanTask(this, this, mCheckedImages);
                 requestPermission(PERMISSION_REQUEST_STORAGE_ALBUM);
                 break;
             }
             case BasicWrapper.VALUE_INPUT_FRAMEWORK_FUNCTION_GALLERY: {
                 if (mCheckedPaths == null || mCheckedPaths.size() == 0) finish();
                 else requestPermission(PERMISSION_REQUEST_STORAGE_GALLERY);
+                break;
+            }
+            case BasicWrapper.VALUE_INPUT_FRAMEWORK_FUNCTION_CAMERA: {
+                CameraFragment fragment = NoFragment.instantiate(this, CameraFragment.class, mArgument);
+                startFragment(fragment);
                 break;
             }
             default: {
@@ -150,7 +141,7 @@ public class AlbumActivity extends CompatActivity implements
             } else if (permissionResult == PackageManager.PERMISSION_DENIED) {
                 ActivityCompat.requestPermissions(
                         this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
                         requestCode);
             }
         } else {
@@ -166,9 +157,9 @@ public class AlbumActivity extends CompatActivity implements
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case PERMISSION_REQUEST_STORAGE_ALBUM: {
-                int permissionResult = grantResults[0];
-                if (permissionResult == PackageManager.PERMISSION_GRANTED) {
-                    scanWithPermission();
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    AlbumFragment albumFragment = NoFragment.instantiate(this, AlbumFragment.class, mArgument);
+                    startFragment(albumFragment);
                 } else {
                     new AlertDialog.Builder(this)
                             .setCancelable(false)
@@ -177,7 +168,7 @@ public class AlbumActivity extends CompatActivity implements
                             .setPositiveButton(R.string.album_dialog_sure, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    doResult(false);
+                                    onAlbumCancel();
                                 }
                             })
                             .show();
@@ -185,104 +176,53 @@ public class AlbumActivity extends CompatActivity implements
                 break;
             }
             case PERMISSION_REQUEST_STORAGE_GALLERY: {
-                GalleryFragment galleryFragment = NoFragment.instantiate(this, GalleryFragment.class, mArgument);
-                galleryFragment.bindImagePaths(mCheckedPaths);
-                startFragment(galleryFragment);
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    GalleryFragment galleryFragment = NoFragment.instantiate(this, GalleryFragment.class, mArgument);
+                    galleryFragment.bindImagePaths(mCheckedPaths);
+                    startFragment(galleryFragment);
+                } else {
+                    onAlbumResult(new ArrayList<>(mCheckedPaths));
+                }
                 break;
             }
         }
     }
 
-    /**
-     * Scan, has been given permission.
-     */
-    private void scanWithPermission() {
-        //noinspection unchecked
-        mScanTask.execute(mCheckedPaths);
-    }
-
     @Override
-    public void onScanCallback(List<AlbumFolder> albumFolders) {
-        this.mAlbumFolders = albumFolders;
-        if (mAlbumFolders.get(0).getImages().size() == 0) {
-            AlbumNullFragment nullFragment = NoFragment.instantiate(this, AlbumNullFragment.class, mArgument);
-            startFragment(nullFragment);
-        } else {
-            AlbumFragment albumFragment = NoFragment.instantiate(this, AlbumFragment.class, mArgument);
-            albumFragment.bindAlbumFolders(mAlbumFolders);
-            startFragment(albumFragment);
-        }
-    }
-
-    @Override
-    public void onGalleryCallback(ArrayList<String> imagePaths) {
+    public void onAlbumResult(ArrayList<String> imagePathList) {
         Intent intent = new Intent();
-        intent.putStringArrayListExtra(Album.KEY_OUTPUT_IMAGE_PATH_LIST, imagePaths);
+        intent.putStringArrayListExtra(Album.KEY_OUTPUT_IMAGE_PATH_LIST, imagePathList);
         setResult(RESULT_OK, intent);
         finish();
     }
 
     @Override
-    public void doResult(boolean ok) {
-        if (ok) {
-            int allSize = mAlbumFolders.get(0).getImages().size();
-            int checkSize = mCheckedImages.size();
-            if (allSize > 0 && checkSize == 0) {
-                Toast.makeText(this, R.string.album_check_little, Toast.LENGTH_LONG).show();
-            } else if (checkSize == 0) {
-                setResult(RESULT_CANCELED);
-                finish();
-            } else {
-                ArrayList<String> pathList = new ArrayList<>();
-                for (AlbumImage albumImage : mCheckedImages) {
-                    pathList.add(albumImage.getPath());
-                }
-                onGalleryCallback(pathList);
-            }
-        } else {
-            setResult(RESULT_CANCELED);
-            finish();
-        }
+    public void onAlbumCancel() {
+        setResult(RESULT_CANCELED);
+        finish();
     }
 
     @Override
-    public void onCheckedChanged(AlbumImage image, boolean isChecked) {
-        if (isChecked && !mCheckedImages.contains(image)) mCheckedImages.add(image);
-        else if (mCheckedImages.contains(image)) mCheckedImages.remove(image);
+    public void onGalleryResult(ArrayList<String> imagePathList) {
+        onAlbumResult(imagePathList);
     }
 
     @Override
-    public int getCheckedCount() {
-        return mCheckedImages.size();
+    public void onGalleryCancel() {
+        onAlbumCancel();
     }
 
     @Override
-    public void onCameraBack(String imagePath) {
+    public void onCameraResult(String imagePath) {
         // Add media library.
         new MediaScanner(this).scan(imagePath);
         ArrayList<String> pathList = new ArrayList<>();
-        if (mCheckedImages.size() > 0)
-            for (AlbumImage albumImage : mCheckedImages) {
-                pathList.add(albumImage.getPath());
-            }
         pathList.add(imagePath);
-        onGalleryCallback(pathList);
+        onAlbumResult(pathList);
     }
 
     @Override
-    public void onPreviewChecked() {
-        if (mCheckedImages.size() <= 0) return;
-        AlbumPreviewFragment previewFragment = NoFragment.instantiate(this, AlbumPreviewFragment.class, mArgument);
-        previewFragment.bindAlbumImages(mCheckedImages, 0);
-        startFragment(previewFragment);
+    public void onCameraCancel() {
+        onAlbumCancel();
     }
-
-    @Override
-    public void onPreviewFolder(int folderPosition, int itemPosition) {
-        List<AlbumImage> albumImages = mAlbumFolders.get(folderPosition).getImages();
-        AlbumPreviewFragment previewFragment = NoFragment.instantiate(this, AlbumPreviewFragment.class, mArgument);
-        previewFragment.bindAlbumImages(albumImages, itemPosition);
-        startFragment(previewFragment);
-    }
-
 }

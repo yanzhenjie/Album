@@ -13,35 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.album.fragment;
+package com.yanzhenjie.album.impl;
 
-import com.yanzhenjie.album.entity.AlbumImage;
+import java.util.ArrayList;
 
 /**
- * <p>Fragment data source change, callback activity.</p>
+ * <p>Callback album results.</p>
  * Created by yanzhenjie on 17-3-28.
  */
-public interface Callback {
+public interface AlbumCallback {
 
     /**
-     * Generate the result.
+     * Photo album callback selection result.
      *
-     * @param ok Returns true if the error returns false.
+     * @param imagePathList file path list.
      */
-    void doResult(boolean ok);
+    void onAlbumResult(ArrayList<String> imagePathList);
 
     /**
-     * When the checked state of a picture changes.
-     *
-     * @param image     {@link AlbumImage}.
-     * @param isChecked checked.
+     * The album canceled the operation.
      */
-    void onCheckedChanged(AlbumImage image, boolean isChecked);
+    void onAlbumCancel();
 
-    /**
-     * Get check image count.
-     *
-     * @return check image count.
-     */
-    int getCheckedCount();
+
 }

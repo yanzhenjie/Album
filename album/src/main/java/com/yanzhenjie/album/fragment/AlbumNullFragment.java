@@ -15,7 +15,6 @@
  */
 package com.yanzhenjie.album.fragment;
 
-import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -36,20 +35,19 @@ import com.yanzhenjie.album.util.SelectorUtils;
  */
 public class AlbumNullFragment extends BasicCameraFragment {
 
-    private CameraCallback mCallback;
+    private static final String KEY_OUTPUT_IMAGE_PATH = "KEY_OUTPUT_IMAGE_PATH";
+
+    /**
+     * Resolve the image path at the time of success.
+     *
+     * @param bundle {@link #onFragmentResult(int, int, Bundle)}.
+     * @return image path.
+     */
+    public static String parseImagePath(Bundle bundle) {
+        return bundle.getString(KEY_OUTPUT_IMAGE_PATH);
+    }
+
     private AppCompatButton mBtnCamera;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.mCallback = (CameraCallback) context;
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        this.mCallback = null;
-    }
 
     @Nullable
     @Override
@@ -93,12 +91,15 @@ public class AlbumNullFragment extends BasicCameraFragment {
     private View.OnClickListener mCameraClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            cameraUnKnowPermission();
+            cameraUnKnowPermission(randomJPGPath());
         }
     };
 
     @Override
     protected void onCameraBack(String imagePath) {
-        mCallback.onCameraBack(imagePath);
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_OUTPUT_IMAGE_PATH, imagePath);
+        setResult(RESULT_OK, bundle);
+        finish();
     }
 }

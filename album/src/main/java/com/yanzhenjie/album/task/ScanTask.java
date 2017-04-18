@@ -51,7 +51,7 @@ public class ScanTask extends AsyncTask<List<String>, Void, List<AlbumFolder>> {
 
     public interface Callback {
         /**
-         * Callback scan results.
+         * AlbumCallback scan results.
          *
          * @param folders AlbumFolder list.
          */
@@ -127,21 +127,14 @@ public class ScanTask extends AsyncTask<List<String>, Void, List<AlbumFolder>> {
             int bucketId = cursor.getInt(4);
             String bucketName = cursor.getString(5);
 
-            AlbumImage albumImage = new AlbumImage();
-            albumImage.setId(imageId);
-            albumImage.setPath(imagePath);
-            albumImage.setName(imageName);
-            albumImage.setAddTime(addTime);
-
+            AlbumImage albumImage = new AlbumImage(imageId, imagePath, imageName, addTime);
             allImageAlbumFolder.addPhoto(albumImage);
 
             AlbumFolder albumFolder = albumFolderMap.get(bucketName);
-            if (albumFolder != null) {
+            if (albumFolder != null)
                 albumFolder.addPhoto(albumImage);
-            } else {
-                albumFolder = new AlbumFolder();
-                albumFolder.setId(bucketId);
-                albumFolder.setName(bucketName);
+            else {
+                albumFolder = new AlbumFolder(bucketId, bucketName);
                 albumFolder.addPhoto(albumImage);
 
                 albumFolderMap.put(bucketName, albumFolder);

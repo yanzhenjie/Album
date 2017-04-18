@@ -24,6 +24,7 @@ import android.support.v4.app.Fragment;
 import com.yanzhenjie.album.task.LocalImageLoader;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * <p>Entrance.</p>
@@ -53,6 +54,7 @@ public final class Album {
         if (sAlbumConfig == null) {
             initialize(new AlbumConfig.Build()
                     .setImageLoader(new LocalImageLoader())
+                    .setLocale(Locale.getDefault())
                     .build()
             );
         }
@@ -117,6 +119,36 @@ public final class Album {
      */
     public static GalleryWrapper gallery(android.app.Fragment fragment) {
         return new GalleryWrapper(fragment);
+    }
+
+    /**
+     * Open the camera from the activity.
+     *
+     * @param activity {@link Activity}.
+     * @return {@link CameraWrapper}.
+     */
+    public static CameraWrapper camera(Activity activity) {
+        return new CameraWrapper(activity);
+    }
+
+    /**
+     * Open the camera from the {@link Fragment}.
+     *
+     * @param fragment {@link Fragment}.
+     * @return {@link CameraWrapper}.
+     */
+    public static CameraWrapper camera(Fragment fragment) {
+        return new CameraWrapper(fragment);
+    }
+
+    /**
+     * Open the camera from the {@link android.app.Fragment}.
+     *
+     * @param fragment {@link android.app.Fragment}.
+     * @return {@link CameraWrapper}.
+     */
+    public static CameraWrapper camera(android.app.Fragment fragment) {
+        return new CameraWrapper(fragment);
     }
 
     /**

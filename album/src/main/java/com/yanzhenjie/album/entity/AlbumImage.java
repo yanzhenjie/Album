@@ -46,12 +46,11 @@ public class AlbumImage implements Parcelable, Comparable<AlbumImage> {
         super();
     }
 
-    public AlbumImage(int id, String path, String name, long addTime, boolean isChecked) {
+    public AlbumImage(int id, String path, String name, long addTime) {
         this.id = id;
         this.path = path;
         this.name = name;
         this.addTime = addTime;
-        this.isChecked = isChecked;
     }
 
     protected AlbumImage(Parcel in) {

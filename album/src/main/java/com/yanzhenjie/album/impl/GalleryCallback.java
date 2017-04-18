@@ -13,19 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.album.fragment;
+package com.yanzhenjie.album.impl;
+
+import java.util.ArrayList;
 
 /**
- * <p>Camera path callback.</p>
- * Created by Yan Zhenjie on 2017/3/28.
+ * <p>Callback album results.</p>
+ * Created by Yan Zhenjie on 2017/4/18.
  */
-public interface CameraCallback {
+public interface GalleryCallback {
 
     /**
-     * After the camera is finished.
+     * Gallery callback selection result.
      *
-     * @param imagePath file path.
+     * @param imagePathList image path list.
      */
-    void onCameraBack(String imagePath);
+    void onGalleryResult(ArrayList<String> imagePathList);
+
+    /**
+     * The gallery canceled the operation.
+     */
+    void onGalleryCancel();
 
 }

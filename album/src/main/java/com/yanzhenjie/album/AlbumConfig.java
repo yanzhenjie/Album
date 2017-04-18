@@ -17,6 +17,8 @@ package com.yanzhenjie.album;
 
 import com.yanzhenjie.album.impl.AlbumImageLoader;
 
+import java.util.Locale;
+
 /**
  * <p>Album config.</p>
  * Created by Yan Zhenjie on 2017/3/31.
@@ -24,9 +26,11 @@ import com.yanzhenjie.album.impl.AlbumImageLoader;
 public class AlbumConfig {
 
     private AlbumImageLoader mImageLoader;
+    private Locale mLocale;
 
     private AlbumConfig(Build build) {
         this.mImageLoader = build.mLoader;
+        this.mLocale = build.mLocale;
     }
 
     /**
@@ -38,9 +42,19 @@ public class AlbumConfig {
         return mImageLoader;
     }
 
+    /**
+     * Get {@link Locale}.
+     *
+     * @return {@link Locale}.
+     */
+    public Locale getLocale() {
+        return mLocale;
+    }
+
     public static final class Build {
 
         private AlbumImageLoader mLoader;
+        private Locale mLocale;
 
         public Build() {
         }
@@ -49,9 +63,21 @@ public class AlbumConfig {
          * Set image loader.
          *
          * @param loader {@link AlbumImageLoader}.
+         * @return {@link Build}.
          */
         public Build setImageLoader(AlbumImageLoader loader) {
             this.mLoader = loader;
+            return this;
+        }
+
+        /**
+         * Set locale for language.
+         *
+         * @param locale {@link Locale}.
+         * @return {@link Build}.
+         */
+        public Build setLocale(Locale locale) {
+            this.mLocale = locale;
             return this;
         }
 

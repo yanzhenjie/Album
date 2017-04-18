@@ -18,6 +18,7 @@ package com.yanzhenjie.album.sample;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
@@ -32,7 +33,6 @@ import android.view.View;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.util.DisplayUtils;
 import com.yanzhenjie.album.widget.recyclerview.AlbumVerticalGirdDecoration;
-import com.yanzhenjie.alertdialog.AlertDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final int ACTIVITY_REQUEST_SELECT_PHOTO = 100;
-    private static final int ACTIVITY_REQUEST_PREVIEW_PHOTO = 101;
+    private static final int ACTIVITY_REQUEST_TAKE_PICTURE = 101;
+    private static final int ACTIVITY_REQUEST_PREVIEW_PHOTO = 102;
 
     private View noneView;
 
@@ -74,12 +75,14 @@ public class MainActivity extends AppCompatActivity {
         int itemSize = (DisplayUtils.screenWidth - (drawable.getIntrinsicWidth() * 4)) / 3;
         mGridAdapter = new GridAdapter(this, (view, position) -> previewImage(position), itemSize);
         mRecyclerView.setAdapter(mGridAdapter);
+
+        mImageList = new ArrayList<>();
     }
 
     /**
-     * Select image.
+     * Select image from fromAlbum.
      */
-    private void selectImage() {
+    private void fromAlbum() {
         Album.album(this)
                 .requestCode(ACTIVITY_REQUEST_SELECT_PHOTO)
                 .toolBarColor(ContextCompat.getColor(this, R.color.colorPrimary)) // Toolbar color.
@@ -87,8 +90,18 @@ public class MainActivity extends AppCompatActivity {
                 .navigationBarColor(ActivityCompat.getColor(this, R.color.colorPrimaryBlack)) // NavigationBar color.
                 .selectCount(9) // select count.
                 .columnCount(2) // span count.
-                .camera(true) // has camera function.
+                .camera(true) // has fromCamera function.
                 .checkedList(mImageList) // The picture has been selected for anti-election.
+                .start();
+    }
+
+    /**
+     * Take a picture from fromCamera.
+     */
+    private void fromCamera() {
+        Album.camera(this)
+                .requestCode(ACTIVITY_REQUEST_TAKE_PICTURE)
+//                .imagePath() // Specify the image path, optional.
                 .start();
     }
 
@@ -116,22 +129,26 @@ public class MainActivity extends AppCompatActivity {
             case ACTIVITY_REQUEST_SELECT_PHOTO: {
                 if (resultCode == RESULT_OK) { // Successfully.
                     mImageList = Album.parseResult(data); // Parse select result.
-                    handleSelectImage(mImageList);
+                    refreshImage();
                 } else if (resultCode == RESULT_CANCELED) { // User canceled.
-                    AlertDialog.build(this)
-                            .setTitle(R.string.title_dialog_hint)
-                            .setMessage(R.string.cancel_select_photo_hint)
-                            .setPositiveButton(R.string.confirm, (dialog, which) -> {
-                                // Nothing.
-                            })
-                            .show();
+                    Snackbar.make(noneView, R.string.cancel_select_photo_hint, Snackbar.LENGTH_LONG).show();
+                }
+                break;
+            }
+            case ACTIVITY_REQUEST_TAKE_PICTURE: {
+                if (resultCode == RESULT_OK) { // Successfully.
+                    List<String> imageList = Album.parseResult(data); // Parse path.
+                    mImageList.addAll(imageList);
+                    refreshImage();
+                } else if (resultCode == RESULT_CANCELED) { // User canceled.
+                    Snackbar.make(noneView, R.string.cancel_select_photo_hint, Snackbar.LENGTH_LONG).show();
                 }
                 break;
             }
             case ACTIVITY_REQUEST_PREVIEW_PHOTO: {
                 if (resultCode == RESULT_OK) { // Successfully.
                     mImageList = Album.parseResult(data); // Parse select result.
-                    handleSelectImage(mImageList);
+                    refreshImage();
                 }
                 break;
             }
@@ -141,9 +158,9 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Process selection results.
      */
-    private void handleSelectImage(List<String> pathList) {
-        mGridAdapter.notifyDataSetChanged(pathList);
-        if (pathList == null || pathList.size() == 0) {
+    private void refreshImage() {
+        mGridAdapter.notifyDataSetChanged(mImageList);
+        if (mImageList == null || mImageList.size() == 0) {
             noneView.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
         } else {
@@ -161,8 +178,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_check_image) {
-            selectImage();
+        switch (id) {
+            case R.id.action_check_image: {
+                fromAlbum();
+                break;
+            }
+            case R.id.action_camera_picture: {
+                fromCamera();
+                break;
+            }
         }
         return true;
     }

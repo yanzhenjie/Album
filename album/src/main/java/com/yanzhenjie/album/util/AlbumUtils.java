@@ -18,6 +18,8 @@ package com.yanzhenjie.album.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -36,6 +38,13 @@ import java.util.Locale;
  */
 public class AlbumUtils {
 
+    /**
+     * Start the camera.
+     *
+     * @param fragment    fragment.
+     * @param requestCode code.
+     * @param outPath     file path.
+     */
     public static void startCamera(Fragment fragment, int requestCode, File outPath) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         Uri uri = getUri(fragment.getContext(), outPath);
@@ -43,6 +52,13 @@ public class AlbumUtils {
         fragment.startActivityForResult(intent, requestCode);
     }
 
+    /**
+     * Start the camera.
+     *
+     * @param fragment    fragment.
+     * @param requestCode code.
+     * @param outPath     file path.
+     */
     public static void startCamera(android.app.Fragment fragment, int requestCode, File outPath) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         Uri uri = getUri(fragment.getActivity(), outPath);
@@ -50,11 +66,34 @@ public class AlbumUtils {
         fragment.startActivityForResult(intent, requestCode);
     }
 
+    /**
+     * Start the camera.
+     *
+     * @param activity    activity.
+     * @param requestCode code.
+     * @param outPath     file path.
+     */
     public static void startCamera(Activity activity, int requestCode, File outPath) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         Uri uri = getUri(activity, outPath);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         activity.startActivityForResult(intent, requestCode);
+    }
+
+    /**
+     * Setting {@link Locale} for {@link Context}.
+     */
+    public static Context applyLanguageForContext(Context context, Locale locale) {
+        Resources resources = context.getResources();
+        Configuration config = resources.getConfiguration();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            config.setLocale(locale);
+            return context.createConfigurationContext(config);
+        } else {
+            config.locale = locale;
+            resources.updateConfiguration(config, resources.getDisplayMetrics());
+            return context;
+        }
     }
 
     private static Uri getUri(Context context, File outPath) {
@@ -67,6 +106,12 @@ public class AlbumUtils {
         return uri;
     }
 
+    /**
+     * Format the current time in the specified format.
+     *
+     * @param format format.
+     * @return time string.
+     */
     public static String getNowDateTime(String format) {
         SimpleDateFormat formatter = new SimpleDateFormat(format, Locale.ENGLISH);
         Date curDate = new Date(System.currentTimeMillis());

@@ -30,11 +30,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.yanzhenjie.album.AlbumWrapper;
 import com.yanzhenjie.album.GalleryWrapper;
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.adapter.BasicPreviewAdapter;
 import com.yanzhenjie.album.adapter.PathPreviewAdapter;
+import com.yanzhenjie.album.impl.GalleryCallback;
 import com.yanzhenjie.album.util.SelectorUtils;
 import com.yanzhenjie.fragment.NoFragment;
 
@@ -47,7 +47,7 @@ import java.util.List;
  */
 public class GalleryFragment extends NoFragment {
 
-    private Callback mCallback;
+    private GalleryCallback mCallback;
 
     private int mToolBarColor;
 
@@ -65,7 +65,7 @@ public class GalleryFragment extends NoFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mCallback = (Callback) context;
+        mCallback = (GalleryCallback) context;
     }
 
     @Override
@@ -96,7 +96,7 @@ public class GalleryFragment extends NoFragment {
 
         Bundle argument = getArguments();
         mToolBarColor = argument.getInt(
-                AlbumWrapper.KEY_INPUT_TOOLBAR_COLOR,
+                GalleryWrapper.KEY_INPUT_TOOLBAR_COLOR,
                 ContextCompat.getColor(getContext(), R.color.albumColorPrimary));
 
         // noinspection ConstantConditions
@@ -203,18 +203,9 @@ public class GalleryFragment extends NoFragment {
                     patList.add(mCheckedPaths.get(i));
                 }
             }
-            mCallback.onGalleryCallback(patList);
+            mCallback.onGalleryResult(patList);
         }
         return true;
-    }
-
-    public interface Callback {
-        /**
-         * Callback gallery preview results.
-         *
-         * @param imagePaths image path list.
-         */
-        void onGalleryCallback(ArrayList<String> imagePaths);
     }
 
 }

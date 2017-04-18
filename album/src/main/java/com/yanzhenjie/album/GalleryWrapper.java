@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * <p>Gallery wrapper.</p>
  * Created by yanzhenjie on 17-3-29.
  */
-public class GalleryWrapper extends BasicWrapper<GalleryWrapper> {
+public class GalleryWrapper extends UIWrapper<GalleryWrapper> {
 
     public static final String KEY_INPUT_CHECK_FUNCTION = "KEY_INPUT_CHECK_FUNCTION";
     public static final String KEY_INPUT_CURRENT_POSITION = "KEY_INPUT_CURRENT_POSITION";
@@ -33,13 +33,12 @@ public class GalleryWrapper extends BasicWrapper<GalleryWrapper> {
     private Intent intent;
 
     GalleryWrapper(Object o) {
-        this(o, new Intent(getContext(o), AlbumActivity.class));
+        this(o, new Intent(getContext(o), AlbumActivity.class), VALUE_INPUT_FRAMEWORK_FUNCTION_GALLERY);
     }
 
-    private GalleryWrapper(Object o, Intent intent) {
-        super(o, intent);
+    private GalleryWrapper(Object o, Intent intent, int function) {
+        super(o, intent, function);
         this.intent = intent;
-        this.intent.putExtra(KEY_INPUT_FRAMEWORK_FUNCTION, VALUE_INPUT_FRAMEWORK_FUNCTION_GALLERY);
     }
 
     @Override

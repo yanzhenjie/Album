@@ -16,12 +16,10 @@
 -->
 <resources>
     <string name="app_name">Album</string>
-    <string name="menu_check_image">Select Image</string>
+    <string name="menu_check_image">相册</string>
+    <string name="menu_camera_picture">相机</string>
 
-    <string name="confirm">OK</string>
+    <string name="cancel_select_photo_hint">用户取消了操作</string>
 
-    <string name="title_dialog_hint">Tips</string>
-    <string name="cancel_select_photo_hint">The user has canceled the operation.</string>
-
-    <string name="none_photo">Please click the upper right corner to select the picture.</string>
+    <string name="none_photo">请点击右上角选择图片</string>
 </resources>

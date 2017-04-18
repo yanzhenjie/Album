@@ -21,8 +21,14 @@
     tools:context="com.yanzhenjie.photoalbum.MainActivity">
     <item
         android:id="@+id/action_check_image"
-        android:icon="@drawable/ic_add_a_photo_white"
+        android:icon="@drawable/ic_image_white"
         android:orderInCategory="100"
         android:title="@string/menu_check_image"
+        app:showAsAction="always|withText"/>
+    <item
+        android:id="@+id/action_camera_picture"
+        android:icon="@drawable/ic_camera_white"
+        android:orderInCategory="100"
+        android:title="@string/menu_camera_picture"
         app:showAsAction="always|withText"/>
 </menu>

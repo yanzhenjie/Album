@@ -44,6 +44,11 @@ public class AlbumFolder implements Parcelable {
         super();
     }
 
+    public AlbumFolder(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     protected AlbumFolder(Parcel in) {
         id = in.readInt();
         name = in.readString();

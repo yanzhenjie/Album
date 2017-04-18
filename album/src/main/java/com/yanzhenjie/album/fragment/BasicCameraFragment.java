@@ -31,6 +31,7 @@ import com.yanzhenjie.alertdialog.AlertDialog;
 import com.yanzhenjie.fragment.NoFragment;
 
 import java.io.File;
+import java.util.Random;
 
 /**
  * <p>Fragment with camera function.</p>
@@ -52,9 +53,23 @@ abstract class BasicCameraFragment extends NoFragment {
     }
 
     /**
+     * A random name for the image path.
+     *
+     * @return image path for jpg.
+     */
+    protected String randomJPGPath() {
+        String outFileFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath();
+        int index = new Random().nextInt(1000);
+        String outFilePath = AlbumUtils.getNowDateTime("yyyyMMdd_HHmmssSSS") + "_" + index + ".jpg";
+        File file = new File(outFileFolder, outFilePath);
+        return file.getAbsolutePath();
+    }
+
+    /**
      * Camera, but unknown permissions.
      */
-    protected void cameraUnKnowPermission() {
+    protected void cameraUnKnowPermission(String filePath) {
+        this.mCameraFilePath = filePath;
         if (Build.VERSION.SDK_INT >= 23) {
             int permissionResult = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA);
             if (permissionResult == PackageManager.PERMISSION_GRANTED) {
@@ -81,7 +96,7 @@ abstract class BasicCameraFragment extends NoFragment {
                             .setPositiveButton(R.string.album_dialog_sure, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    // Nothing.
+                                    onUserCamera();
                                 }
                             })
                             .show();
@@ -99,19 +114,14 @@ abstract class BasicCameraFragment extends NoFragment {
      * Camera, has been given permission.
      */
     private void cameraWithPermission() {
-        String outFileFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath();
-        String outFilePath = AlbumUtils.getNowDateTime("yyyyMMdd_HHmmssSSS") + ".jpg";
-        File file = new File(outFileFolder, outFilePath);
-        mCameraFilePath = file.getAbsolutePath();
-        AlbumUtils.startCamera(this, REQUEST_CODE_ACTIVITY_CAMERA, file);
+        AlbumUtils.startCamera(this, REQUEST_CODE_ACTIVITY_CAMERA, new File(mCameraFilePath));
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_ACTIVITY_CAMERA) {
-            if (resultCode == RESULT_OK) {
-                onCameraBack(mCameraFilePath);
-            }
+            if (resultCode == RESULT_OK) onCameraBack(mCameraFilePath);
+            else onUserCamera();
         }
     }
 
@@ -121,6 +131,12 @@ abstract class BasicCameraFragment extends NoFragment {
      * @param imagePath file path.
      */
     protected abstract void onCameraBack(String imagePath);
+
+    /**
+     * Failed to apply for permission.
+     */
+    protected void onUserCamera() {
+    }
 
 
 }

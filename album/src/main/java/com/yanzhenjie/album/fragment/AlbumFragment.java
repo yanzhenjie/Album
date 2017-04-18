@@ -18,6 +18,7 @@ package com.yanzhenjie.album.fragment;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -36,15 +37,22 @@ import android.widget.Toast;
 
 import com.yanzhenjie.album.AlbumWrapper;
 import com.yanzhenjie.album.R;
+import com.yanzhenjie.album.UIWrapper;
 import com.yanzhenjie.album.adapter.AlbumImageAdapter;
 import com.yanzhenjie.album.dialog.AlbumFolderDialog;
 import com.yanzhenjie.album.entity.AlbumFolder;
 import com.yanzhenjie.album.entity.AlbumImage;
+import com.yanzhenjie.album.impl.AlbumCallback;
 import com.yanzhenjie.album.impl.OnCompatItemClickListener;
 import com.yanzhenjie.album.impl.OnCompoundItemCheckListener;
+import com.yanzhenjie.album.task.ScanTask;
 import com.yanzhenjie.album.util.DisplayUtils;
 import com.yanzhenjie.album.widget.recyclerview.AlbumVerticalGirdDecoration;
+import com.yanzhenjie.fragment.NoFragment;
+import com.yanzhenjie.mediascanner.MediaScanner;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -54,7 +62,12 @@ import java.util.Locale;
  */
 public class AlbumFragment extends BasicCameraFragment {
 
-    private Callback mCallback;
+    private static final int REQUEST_CODE_FRAGMENT_PREVIEW = 100;
+    private static final int REQUEST_CODE_FRAGMENT_NULL = 101;
+
+    private MediaScanner mMediaScanner;
+
+    private AlbumCallback mCallback;
 
     private int mToolBarColor;
     private int mNavigationColor;
@@ -62,12 +75,15 @@ public class AlbumFragment extends BasicCameraFragment {
     private Button mBtnPreview;
     private Button mBtnSwitchFolder;
 
+    private boolean mHasCamera;
+
     private RecyclerView mRvContentList;
     private GridLayoutManager mLayoutManager;
 
     private AlbumImageAdapter mAlbumContentAdapter;
 
     private List<AlbumFolder> mAlbumFolders;
+    private List<AlbumImage> mCheckedImages = new ArrayList<>(1);
     private int mCurrentFolderPosition;
 
     private int mAllowSelectCount;
@@ -77,7 +93,7 @@ public class AlbumFragment extends BasicCameraFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mCallback = (Callback) context;
+        mCallback = (AlbumCallback) context;
     }
 
     @Override
@@ -106,15 +122,9 @@ public class AlbumFragment extends BasicCameraFragment {
     }
 
     @Override
-    public boolean onInterceptToolbarBack() {
-        mCallback.doResult(false);
-        return true;
-    }
-
-    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Bundle argument = getArguments();
+        final Bundle argument = getArguments();
         mToolBarColor = argument.getInt(
                 AlbumWrapper.KEY_INPUT_TOOLBAR_COLOR,
                 ContextCompat.getColor(getContext(), R.color.albumColorPrimary));
@@ -125,7 +135,7 @@ public class AlbumFragment extends BasicCameraFragment {
                 ContextCompat.getColor(getContext(), R.color.albumColorPrimaryBlack));
         int columnCount = argument.getInt(AlbumWrapper.KEY_INPUT_COLUMN_COUNT, 2);
         mAllowSelectCount = argument.getInt(AlbumWrapper.KEY_INPUT_LIMIT_COUNT, Integer.MAX_VALUE);
-        boolean hasCamera = argument.getBoolean(AlbumWrapper.KEY_INPUT_ALLOW_CAMERA, true);
+        mHasCamera = argument.getBoolean(AlbumWrapper.KEY_INPUT_ALLOW_CAMERA, true);
 
         // noinspection ConstantConditions
         getToolbar().setBackgroundColor(mToolBarColor);
@@ -140,7 +150,7 @@ public class AlbumFragment extends BasicCameraFragment {
         int itemSize = (DisplayUtils.screenWidth - decoration.getIntrinsicWidth() * (columnCount + 1)) / columnCount;
         mAlbumContentAdapter = new AlbumImageAdapter(
                 getContext(),
-                hasCamera,
+                mHasCamera,
                 itemSize,
                 ContextCompat.getColor(getContext(), R.color.albumWhiteGray),
                 mToolBarColor);
@@ -149,26 +159,65 @@ public class AlbumFragment extends BasicCameraFragment {
         mAlbumContentAdapter.setItemClickListener(new OnCompatItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                mCallback.onPreviewFolder(mCurrentFolderPosition, position);
+                List<AlbumImage> albumImages = mAlbumFolders.get(mCurrentFolderPosition).getImages();
+                AlbumPreviewFragment previewFragment = NoFragment.instantiate(getContext(), AlbumPreviewFragment.class, argument);
+                previewFragment.bindAlbumImages(albumImages, mCheckedImages, position);
+                startFragmentForResquest(previewFragment, REQUEST_CODE_FRAGMENT_PREVIEW);
             }
         });
         mRvContentList.setAdapter(mAlbumContentAdapter);
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        showImageFromFolder(mCurrentFolderPosition);
-        setCheckedCountUI(mCallback.getCheckedCount());
+        ScanTask scanTask = new ScanTask(getContext(), mScanCallback, mCheckedImages);
+        List<String> checkedPathList = argument.getStringArrayList(UIWrapper.KEY_INPUT_CHECKED_LIST);
+        //noinspection unchecked
+        scanTask.execute(checkedPathList);
     }
 
     /**
-     * Bind the album data source.
-     *
-     * @param albumFolders folder list.
+     * Scan the picture result callback.
      */
-    public void bindAlbumFolders(List<AlbumFolder> albumFolders) {
-        this.mAlbumFolders = albumFolders;
+    private ScanTask.Callback mScanCallback = new ScanTask.Callback() {
+        @Override
+        public void onScanCallback(List<AlbumFolder> folders) {
+            mAlbumFolders = folders;
+            if (mAlbumFolders.get(0).getImages().size() == 0) {
+                AlbumNullFragment nullFragment = NoFragment.instantiate(getContext(), AlbumNullFragment.class, getArguments());
+                startFragmentForResquest(nullFragment, REQUEST_CODE_FRAGMENT_NULL);
+            } else showImageFromFolder(0);
+        }
+    };
+
+    /**
+     * Update data source.
+     */
+    private void showImageFromFolder(int position) {
+        AlbumFolder albumFolder = mAlbumFolders.get(position);
+        mBtnSwitchFolder.setText(albumFolder.getName());
+        mAlbumContentAdapter.notifyDataSetChanged(albumFolder.getImages());
+    }
+
+    @Override
+    public void onFragmentResult(int requestCode, int resultCode, @Nullable Bundle result) {
+        switch (requestCode) {
+            case REQUEST_CODE_FRAGMENT_PREVIEW: { // Preview finish, to refresh check status.
+                showImageFromFolder(mCurrentFolderPosition);
+                setCheckedCountUI(mCheckedImages.size());
+
+                if (resultCode == RESULT_OK) {
+                    onAlbumResult();
+                }
+                break;
+            }
+            case REQUEST_CODE_FRAGMENT_NULL: {
+                if (resultCode == RESULT_OK) {
+                    String imagePath = AlbumNullFragment.parseImagePath(result);
+                    onCameraBack(imagePath);
+                } else {
+                    mCallback.onAlbumCancel();
+                }
+                break;
+            }
+        }
     }
 
     /**
@@ -199,30 +248,49 @@ public class AlbumFragment extends BasicCameraFragment {
     };
 
     /**
-     * Update data source.
-     */
-    private void showImageFromFolder(int position) {
-        AlbumFolder albumFolder = mAlbumFolders.get(position);
-        mBtnSwitchFolder.setText(albumFolder.getName());
-        mAlbumContentAdapter.notifyDataSetChanged(albumFolder.getImages());
-    }
-
-    /**
      * Camera.
      */
     private OnCompatItemClickListener mAddPhotoListener = new OnCompatItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
-            int hasCheckSize = mCallback.getCheckedCount();
-            if (hasCheckSize == mAllowSelectCount)
+            int hasCheckSize = mCheckedImages.size();
+            if (hasCheckSize >= mAllowSelectCount)
                 Toast.makeText(
                         getContext(),
                         String.format(Locale.getDefault(), getString(R.string.album_check_limit_camera), mAllowSelectCount),
                         Toast.LENGTH_LONG).show();
             else
-                cameraUnKnowPermission();
+                cameraUnKnowPermission(randomJPGPath());
         }
     };
+
+    @Override
+    protected void onCameraBack(String imagePath) {
+        // Add media lib.
+        if (mMediaScanner == null) {
+            mMediaScanner = new MediaScanner(getContext());
+        }
+        mMediaScanner.scan(imagePath);
+
+        String name = new File(imagePath).getName();
+        AlbumImage image = new AlbumImage(0, imagePath, name, SystemClock.elapsedRealtime());
+        image.setChecked(true);
+
+        mCheckedImages.add(image);
+        setCheckedCountUI(mCheckedImages.size());
+
+        List<AlbumImage> images = mAlbumFolders.get(0).getImages();
+        if (images.size() > 0) {
+            images.add(0, image);
+
+            if (mCurrentFolderPosition == 0) {
+                mAlbumContentAdapter.notifyItemInserted(mHasCamera ? 1 : 0);
+            } else showImageFromFolder(0);
+        } else {
+            images.add(image);
+            showImageFromFolder(0);
+        }
+    }
 
     /**
      * When a picture is selected.
@@ -233,28 +301,24 @@ public class AlbumFragment extends BasicCameraFragment {
             AlbumImage albumImage = mAlbumFolders.get(mCurrentFolderPosition).getImages().get(position);
             albumImage.setChecked(isChecked);
 
-            mCallback.onCheckedChanged(albumImage, isChecked);
+            if (isChecked) {
+                if (mCheckedImages.size() >= mAllowSelectCount) {
+                    Toast.makeText(
+                            getContext(),
+                            String.format(Locale.getDefault(), getString(R.string.album_check_limit), mAllowSelectCount),
+                            Toast.LENGTH_LONG).show();
 
-            int hasCheckSize = mCallback.getCheckedCount();
-            if (hasCheckSize > mAllowSelectCount) {
-                Toast.makeText(
-                        getContext(),
-                        String.format(Locale.getDefault(), getString(R.string.album_check_limit), mAllowSelectCount),
-                        Toast.LENGTH_LONG).show();
-
-                mCallback.onCheckedChanged(albumImage, false);
-                buttonView.setChecked(false);
-                albumImage.setChecked(false);
+                    buttonView.setChecked(false);
+                    albumImage.setChecked(false);
+                } else {
+                    mCheckedImages.add(albumImage);
+                }
             } else {
-                setCheckedCountUI(hasCheckSize);
+                mCheckedImages.remove(albumImage);
             }
+            setCheckedCountUI(mCheckedImages.size());
         }
     };
-
-    @Override
-    protected void onCameraBack(String imagePath) {
-        mCallback.onCameraBack(imagePath);
-    }
 
     /**
      * Set the number of selected pictures.
@@ -263,7 +327,7 @@ public class AlbumFragment extends BasicCameraFragment {
      */
     public void setCheckedCountUI(int count) {
         mBtnPreview.setText(" (" + count + ")");
-        // noinspection ConstantConditions
+        //noinspection ConstantConditions
         getToolbar().setSubtitle(count + "/" + mAllowSelectCount);
     }
 
@@ -273,7 +337,11 @@ public class AlbumFragment extends BasicCameraFragment {
     private View.OnClickListener mPreviewClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            mCallback.onPreviewChecked();
+            AlbumPreviewFragment previewFragment = NoFragment.instantiate(getContext(),
+                    AlbumPreviewFragment.class,
+                    getArguments());
+            previewFragment.bindAlbumImages(mCheckedImages, mCheckedImages, 0);
+            startFragmentForResquest(previewFragment, REQUEST_CODE_FRAGMENT_PREVIEW);
         }
     };
 
@@ -286,28 +354,32 @@ public class AlbumFragment extends BasicCameraFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == android.R.id.home) {
-            mCallback.doResult(false);
+            mCallback.onAlbumCancel();
         } else if (itemId == R.id.album_menu_finish) {
-            mCallback.doResult(true);
+            onAlbumResult();
         }
         return true;
     }
 
-    public interface Callback extends CameraCallback, com.yanzhenjie.album.fragment.Callback {
-
-        /**
-         * Preview all selected images.
-         */
-        void onPreviewChecked();
-
-        /**
-         * Preview all pictures of a folder.
-         *
-         * @param folderPosition folder's index in sources.
-         * @param itemPosition   image's index in folder.
-         */
-        void onPreviewFolder(int folderPosition, int itemPosition);
-
+    /**
+     * Photo album callback selection result.
+     */
+    private void onAlbumResult() {
+        int allSize = mAlbumFolders.get(0).getImages().size();
+        int checkSize = mCheckedImages.size();
+        if (allSize > 0 && checkSize == 0) {
+            Toast.makeText(getContext(), R.string.album_check_little, Toast.LENGTH_LONG).show();
+        } else if (checkSize == 0) {
+            setResult(RESULT_CANCELED);
+            finish();
+        } else {
+            setResult(RESULT_OK);
+            ArrayList<String> pathList = new ArrayList<>();
+            for (AlbumImage albumImage : mCheckedImages) {
+                pathList.add(albumImage.getPath());
+            }
+            mCallback.onAlbumResult(pathList);
+        }
     }
 
 }

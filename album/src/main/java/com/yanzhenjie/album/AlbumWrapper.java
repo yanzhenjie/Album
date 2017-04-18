@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * <p>Album wrapper.</p>
  * Created by yanzhenjie on 17-3-29.
  */
-public class AlbumWrapper extends BasicWrapper<AlbumWrapper> {
+public class AlbumWrapper extends UIWrapper<AlbumWrapper> {
 
     public static final String KEY_INPUT_TITLE = "KEY_INPUT_TITLE";
     public static final String KEY_INPUT_COLUMN_COUNT = "KEY_INPUT_COLUMN_COUNT";
@@ -35,13 +35,12 @@ public class AlbumWrapper extends BasicWrapper<AlbumWrapper> {
     private Intent intent;
 
     AlbumWrapper(Object o) {
-        this(o, new Intent(getContext(o), AlbumActivity.class));
+        this(o, new Intent(getContext(o), AlbumActivity.class), VALUE_INPUT_FRAMEWORK_FUNCTION_ALBUM);
     }
 
-    private AlbumWrapper(Object o, Intent intent) {
-        super(o, intent);
+    private AlbumWrapper(Object o, Intent intent, int function) {
+        super(o, intent, function);
         this.intent = intent;
-        this.intent.putExtra(KEY_INPUT_FRAMEWORK_FUNCTION, VALUE_INPUT_FRAMEWORK_FUNCTION_ALBUM);
     }
 
     @Override
