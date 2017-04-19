@@ -15,13 +15,13 @@ ext {
             targetSdkVersion : 25,
 
             versionCode      : 11,
-            versionName      : "1.1",
+            versionName      : "1.1.0",
 
             jackOptions      : true
     ]
 
     dependencies = [
-            album       : 'com.yanzhenjie:album:1.0.4',
+            album       : 'com.yanzhenjie:album:1.0.5',
             design      : 'com.android.support:design:25.3.1',
             appcompat   : 'com.android.support:appcompat-v7:25.3.1',
             recyclerview: 'com.android.support:recyclerview-v7:25.3.1',
