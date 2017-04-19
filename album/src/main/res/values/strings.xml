@@ -22,7 +22,7 @@
     <string name="album_take_picture">Take Picture</string>
 
     <string name="album_title">Image</string>
-    <string name="album_all_image">All Image</string>
+    <string name="album_all_image">All Images</string>
     <string name="album_check_limit">You can only select %1$d images</string>
     <string name="album_check_limit_camera">You can only select %1$d images, anti-election after the operation.</string>
     <string name="album_check_little">You have not choose photos.</string>

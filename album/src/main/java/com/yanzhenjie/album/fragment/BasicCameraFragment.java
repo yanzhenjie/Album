@@ -71,11 +71,24 @@ abstract class BasicCameraFragment extends NoFragment {
     protected void cameraUnKnowPermission(String filePath) {
         this.mCameraFilePath = filePath;
         if (Build.VERSION.SDK_INT >= 23) {
-            int permissionResult = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA);
-            if (permissionResult == PackageManager.PERMISSION_GRANTED) {
+
+            boolean cameraResult = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
+                    == PackageManager.PERMISSION_GRANTED;
+            boolean storageResult = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED;
+            if (cameraResult && storageResult) {
                 cameraWithPermission();
-            } else if (permissionResult == PackageManager.PERMISSION_DENIED) {
+            } else if (cameraResult) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CAMERA);
+            } else if (storageResult) {
                 requestPermissions(new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
+            } else {
+                requestPermissions(
+                        new String[]{
+                                Manifest.permission.CAMERA,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        },
+                        PERMISSION_REQUEST_CAMERA);
             }
         } else {
             cameraWithPermission();
@@ -86,10 +99,12 @@ abstract class BasicCameraFragment extends NoFragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_REQUEST_CAMERA: {
-                int permissionResult = grantResults[0];
-                if (permissionResult == PackageManager.PERMISSION_GRANTED) {
-                    cameraWithPermission();
-                } else {
+                boolean allow = true;
+                for (int grantResult : grantResults) {
+                    allow = grantResult == PackageManager.PERMISSION_GRANTED;
+                }
+                if (allow) cameraWithPermission();
+                else
                     AlertDialog.build(getContext())
                             .setTitle(R.string.album_dialog_permission_failed)
                             .setMessage(R.string.album_permission_camera_failed_hint)
@@ -100,7 +115,6 @@ abstract class BasicCameraFragment extends NoFragment {
                                 }
                             })
                             .show();
-                }
                 break;
             }
             default: {
