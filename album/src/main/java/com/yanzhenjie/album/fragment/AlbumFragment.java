@@ -337,11 +337,13 @@ public class AlbumFragment extends BasicCameraFragment {
     private View.OnClickListener mPreviewClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            AlbumPreviewFragment previewFragment = NoFragment.instantiate(getContext(),
-                    AlbumPreviewFragment.class,
-                    getArguments());
-            previewFragment.bindAlbumImages(mCheckedImages, mCheckedImages, 0);
-            startFragmentForResquest(previewFragment, REQUEST_CODE_FRAGMENT_PREVIEW);
+            if(mCheckedImages.size() > 0) {
+                AlbumPreviewFragment previewFragment = NoFragment.instantiate(getContext(),
+                        AlbumPreviewFragment.class,
+                        getArguments());
+                previewFragment.bindAlbumImages(mCheckedImages, mCheckedImages, 0);
+                startFragmentForResquest(previewFragment, REQUEST_CODE_FRAGMENT_PREVIEW);
+            }
         }
     };
 

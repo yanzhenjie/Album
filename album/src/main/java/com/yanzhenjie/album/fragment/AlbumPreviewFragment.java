@@ -102,7 +102,7 @@ public class AlbumPreviewFragment extends NoFragment {
      */
     public void bindAlbumImages(List<AlbumImage> albumImages, List<AlbumImage> checkedImages, int currentItemPosition) {
         this.mAlbumImages.addAll(albumImages);
-        this.mCheckedImages.addAll(checkedImages);
+        this.mCheckedImages = checkedImages;
         this.mCurrentItemPosition = currentItemPosition;
     }
 

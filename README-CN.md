@@ -27,7 +27,7 @@
 # 依赖
 * Gradle：
 ```groovy
-compile 'com.yanzhenjie:album:1.0.4'
+compile 'com.yanzhenjie:album:1.0.5'
 ```
 
 * Maven:
@@ -35,7 +35,7 @@ compile 'com.yanzhenjie:album:1.0.4'
 <dependency>
   <groupId>com.yanzhenjie</groupId>
   <artifactId>album</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.5</version>
   <type>pom</type>
 </dependency>
 ```
