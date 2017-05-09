@@ -14,10 +14,9 @@ dependencies {
     compile rootProject.ext.dependencies.appcompat
     compile rootProject.ext.dependencies.design
     compile rootProject.ext.dependencies.recyclerview
-    compile rootProject.ext.dependencies.fragment
-    compile rootProject.ext.dependencies.dialog
-    compile rootProject.ext.dependencies.mediascanner
     compile rootProject.ext.dependencies.cardview
+    compile rootProject.ext.dependencies.fragment
+    compile rootProject.ext.dependencies.mediascanner
 }
 
-apply from: "maven.gradle"
+apply from: "../maven.gradle"

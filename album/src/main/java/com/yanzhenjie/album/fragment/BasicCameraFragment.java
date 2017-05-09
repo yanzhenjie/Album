@@ -24,10 +24,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.util.AlbumUtils;
-import com.yanzhenjie.alertdialog.AlertDialog;
 import com.yanzhenjie.fragment.NoFragment;
 
 import java.io.File;
@@ -105,7 +105,7 @@ abstract class BasicCameraFragment extends NoFragment {
                 }
                 if (allow) cameraWithPermission();
                 else
-                    AlertDialog.build(getContext())
+                    new AlertDialog.Builder(getContext())
                             .setTitle(R.string.album_dialog_permission_failed)
                             .setMessage(R.string.album_permission_camera_failed_hint)
                             .setPositiveButton(R.string.album_dialog_sure, new DialogInterface.OnClickListener() {

@@ -12,7 +12,7 @@ android {
         versionName rootProject.ext.android.versionName
 
         jackOptions {
-            enabled true
+            enabled rootProject.ext.android.jackOptions
         }
 
         compileOptions {
@@ -28,7 +28,6 @@ dependencies {
     compile rootProject.ext.dependencies.appcompat
     compile rootProject.ext.dependencies.design
     compile rootProject.ext.dependencies.recyclerview
-    compile rootProject.ext.dependencies.dialog
 
     // define image loader.
     compile rootProject.ext.dependencies.picasso
