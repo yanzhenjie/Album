@@ -16,7 +16,7 @@
 -->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/AlbumWrapContent.WidthMatchParent"
+    style="@style/album_WrapContent.WidthMatchParent"
     android:background="?selectableItemBackground"
     android:padding="@dimen/album_dp_10">
 
@@ -31,7 +31,7 @@
 
     <android.support.v7.widget.AppCompatRadioButton
         android:id="@+id/rb_gallery_preview_check"
-        style="@style/AlbumWrapContent"
+        style="@style/album_WrapContent"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
@@ -39,7 +39,7 @@
 
     <TextView
         android:id="@+id/tv_gallery_preview_title"
-        style="@style/AlbumWrapContent.WidthMatchParent"
+        style="@style/album_WrapContent.WidthMatchParent"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/album_dp_10"
         android:layout_marginLeft="@dimen/album_dp_10"

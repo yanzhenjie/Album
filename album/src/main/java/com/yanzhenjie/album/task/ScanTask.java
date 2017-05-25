@@ -15,15 +15,16 @@
  */
 package com.yanzhenjie.album.task;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 
 import com.yanzhenjie.album.R;
-import com.yanzhenjie.album.dialog.AlbumWaitDialog;
 import com.yanzhenjie.album.entity.AlbumFolder;
 import com.yanzhenjie.album.entity.AlbumImage;
+import com.yanzhenjie.loading.dialog.LoadingDialog;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,13 +62,13 @@ public class ScanTask extends AsyncTask<List<String>, Void, List<AlbumFolder>> {
     private Context mContext;
     private Callback mCallback;
     private List<AlbumImage> mCheckedImages;
-    private AlbumWaitDialog mWaitDialog;
+    private Dialog mWaitDialog;
 
     public ScanTask(Context context, Callback callback, List<AlbumImage> checkedImages) {
         this.mContext = context;
         this.mCallback = callback;
         this.mCheckedImages = checkedImages;
-        this.mWaitDialog = new AlbumWaitDialog(context);
+        this.mWaitDialog = new LoadingDialog(context);
     }
 
     @Override
@@ -118,29 +119,31 @@ public class ScanTask extends AsyncTask<List<String>, Void, List<AlbumFolder>> {
         allImageAlbumFolder.setChecked(true);
         allImageAlbumFolder.setName(context.getString(R.string.album_all_image));
 
-        while (cursor.moveToNext()) {
-            int imageId = cursor.getInt(0);
-            String imagePath = cursor.getString(1);
-            String imageName = cursor.getString(2);
-            long addTime = cursor.getLong(3);
+        if(cursor != null) {
+            while (cursor.moveToNext()) {
+                int imageId = cursor.getInt(0);
+                String imagePath = cursor.getString(1);
+                String imageName = cursor.getString(2);
+                long addTime = cursor.getLong(3);
 
-            int bucketId = cursor.getInt(4);
-            String bucketName = cursor.getString(5);
+                int bucketId = cursor.getInt(4);
+                String bucketName = cursor.getString(5);
 
-            AlbumImage albumImage = new AlbumImage(imageId, imagePath, imageName, addTime);
-            allImageAlbumFolder.addPhoto(albumImage);
+                AlbumImage albumImage = new AlbumImage(imageId, imagePath, imageName, addTime);
+                allImageAlbumFolder.addPhoto(albumImage);
 
-            AlbumFolder albumFolder = albumFolderMap.get(bucketName);
-            if (albumFolder != null)
-                albumFolder.addPhoto(albumImage);
-            else {
-                albumFolder = new AlbumFolder(bucketId, bucketName);
-                albumFolder.addPhoto(albumImage);
+                AlbumFolder albumFolder = albumFolderMap.get(bucketName);
+                if (albumFolder != null)
+                    albumFolder.addPhoto(albumImage);
+                else {
+                    albumFolder = new AlbumFolder(bucketId, bucketName);
+                    albumFolder.addPhoto(albumImage);
 
-                albumFolderMap.put(bucketName, albumFolder);
+                    albumFolderMap.put(bucketName, albumFolder);
+                }
             }
+            cursor.close();
         }
-        cursor.close();
         List<AlbumFolder> albumFolders = new ArrayList<>();
 
         Collections.sort(allImageAlbumFolder.getImages());

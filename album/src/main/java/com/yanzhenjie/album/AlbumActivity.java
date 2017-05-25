@@ -78,9 +78,9 @@ public class AlbumActivity extends CompatActivity implements AlbumCallback, Gall
 
         // basic.
         int statusBarColor = intent.getIntExtra(UIWrapper.KEY_INPUT_STATUS_COLOR,
-                ContextCompat.getColor(this, R.color.albumColorPrimaryDark));
+                ContextCompat.getColor(this, R.color.album_ColorPrimaryDark));
         int navigationBarColor = intent.getIntExtra(UIWrapper.KEY_INPUT_NAVIGATION_COLOR,
-                ContextCompat.getColor(this, R.color.albumColorPrimaryBlack));
+                ContextCompat.getColor(this, R.color.album_ColorPrimaryBlack));
         mCheckedPaths = intent.getStringArrayListExtra(UIWrapper.KEY_INPUT_CHECKED_LIST);
 
         setWindowBarColor(statusBarColor, navigationBarColor);
@@ -138,7 +138,7 @@ public class AlbumActivity extends CompatActivity implements AlbumCallback, Gall
                         requestCode,
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         new int[]{PackageManager.PERMISSION_GRANTED});
-            } else if (permissionResult == PackageManager.PERMISSION_DENIED) {
+            } else {
                 ActivityCompat.requestPermissions(
                         this,
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},

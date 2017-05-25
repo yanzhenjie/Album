@@ -6,7 +6,8 @@
 我的主页：[http://www.yanzhenjie.com](http://www.yanzhenjie.com)  
 我的微博：[http://weibo.com/yanzhenjieit](http://weibo.com/yanzhenjieit)  
 
-另外文件上传Http框架：[https://github.com/yanzhenjie/NoHttp](https://github.com/yanzhenjie/NoHttp)  
+图片剪切框架：[https://github.com/yanzhenjie/Durban](https://github.com/yanzhenjie/Durban)  
+文件上传Http框架：[https://github.com/yanzhenjie/NoHttp](https://github.com/yanzhenjie/NoHttp)  
 
 # 特性
 1. 完美支持7.0，不存在**Android7.0 FileUriExposedException**。
@@ -18,6 +19,7 @@
 7. 支持配置相册列数，支持配置相册是否使用相机。
 8. 画廊预览选择的图片，预览时可以反选。
 9. 支持自定义`LocalImageLoader`，例如使用：`Glide`、`Picasso`、`ImageLoader`实现。
+10. 支持和图片裁剪框架[Durban](https://github.com/yanzhenjie/Durban)结合使用，Durban支持一次性裁剪多张图片。
 
 # 效果预览
 体验请[下载demo的apk](https://github.com/yanzhenjie/Album/blob/master/sample-release.apk?raw=true)。  
@@ -98,6 +100,8 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 }
 ```
 
+如果你接着需要对图片进行裁剪，那么你可以紧接着调用[Durban](https://github.com/yanzhenjie/Durban)。
+
 ## Camera 相机
 使用`Album.camera(context).start()`即可调起相机，已经处理了权限和`Android7.0`的`FileProvider`问题。
 ```java
@@ -121,6 +125,8 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     }
 }
 ```
+
+如果你接着需要对图片进行裁剪，那么你可以紧接着调用[Durban](https://github.com/yanzhenjie/Durban)。
 
 ## Gallery 画廊
 使用`Album.gallery(context).start()`即可调起画廊。画廊默认支持预览本地图片，如果要预览网络图片，你需要在初始化的时候配置`ImageLoader`，具体见下文。  

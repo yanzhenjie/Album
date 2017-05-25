@@ -97,7 +97,7 @@ public class GalleryFragment extends NoFragment {
         Bundle argument = getArguments();
         mToolBarColor = argument.getInt(
                 GalleryWrapper.KEY_INPUT_TOOLBAR_COLOR,
-                ContextCompat.getColor(getContext(), R.color.albumColorPrimary));
+                ContextCompat.getColor(getContext(), R.color.album_ColorPrimary));
 
         // noinspection ConstantConditions
         getToolbar().setBackgroundColor(mToolBarColor);

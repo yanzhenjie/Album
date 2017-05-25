@@ -127,12 +127,12 @@ public class AlbumFragment extends BasicCameraFragment {
         final Bundle argument = getArguments();
         mToolBarColor = argument.getInt(
                 AlbumWrapper.KEY_INPUT_TOOLBAR_COLOR,
-                ContextCompat.getColor(getContext(), R.color.albumColorPrimary));
+                ContextCompat.getColor(getContext(), R.color.album_ColorPrimary));
         String title = argument.getString(AlbumWrapper.KEY_INPUT_TITLE);
         if (TextUtils.isEmpty(title)) title = getString(R.string.album_title);
         mNavigationColor = argument.getInt(
                 AlbumWrapper.KEY_INPUT_NAVIGATION_COLOR,
-                ContextCompat.getColor(getContext(), R.color.albumColorPrimaryBlack));
+                ContextCompat.getColor(getContext(), R.color.album_ColorPrimaryBlack));
         int columnCount = argument.getInt(AlbumWrapper.KEY_INPUT_COLUMN_COUNT, 2);
         mAllowSelectCount = argument.getInt(AlbumWrapper.KEY_INPUT_LIMIT_COUNT, Integer.MAX_VALUE);
         mHasCamera = argument.getBoolean(AlbumWrapper.KEY_INPUT_ALLOW_CAMERA, true);
@@ -152,7 +152,7 @@ public class AlbumFragment extends BasicCameraFragment {
                 getContext(),
                 mHasCamera,
                 itemSize,
-                ContextCompat.getColor(getContext(), R.color.albumWhiteGray),
+                ContextCompat.getColor(getContext(), R.color.album_WhiteGray),
                 mToolBarColor);
         mAlbumContentAdapter.setAddPhotoClickListener(mAddPhotoListener);
         mAlbumContentAdapter.setOnCheckListener(mItemCheckListener);

@@ -7,7 +7,14 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
+
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_7
+            targetCompatibility JavaVersion.VERSION_1_7
+        }
     }
+
+    resourcePrefix 'album_'
 }
 
 dependencies {
@@ -17,6 +24,7 @@ dependencies {
     compile rootProject.ext.dependencies.cardview
     compile rootProject.ext.dependencies.fragment
     compile rootProject.ext.dependencies.mediascanner
+    compile rootProject.ext.dependencies.loading
 }
 
 apply from: "../maven.gradle"

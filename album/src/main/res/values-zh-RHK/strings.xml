@@ -15,8 +15,6 @@
     limitations under the License.
 -->
 <resources>
-    <string name="album_load_hint">正在讀取圖片…</string>
-
     <string name="album_title_not_found_image">沒有圖片</string>
     <string name="album_not_found_picture">沒有找到圖片，趕快拍壹張吧！</string>
     <string name="album_take_picture">拍照</string>

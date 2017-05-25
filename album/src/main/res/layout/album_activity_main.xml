@@ -18,6 +18,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/album_root_frame_layout"
-    style="@style/AlbumMatchParent"
-    android:background="@color/albumWhite"
+    style="@style/album_MatchParent"
+    android:background="@color/album_White"
     tools:context=".AlbumActivity"/>

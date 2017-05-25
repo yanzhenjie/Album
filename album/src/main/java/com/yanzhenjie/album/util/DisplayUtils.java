@@ -29,8 +29,8 @@ public class DisplayUtils {
     private static boolean isInitialize = false;
     public static int screenWidth;
     public static int screenHeight;
-    public static int screenDpi;
-    public static float density = 1;
+
+    private static DisplayMetrics mMetrics;
 
     public static void initScreen(Activity activity) {
         if (isInitialize) return;
@@ -40,33 +40,31 @@ public class DisplayUtils {
 
     public static void reMeasure(Activity activity) {
         Display display = activity.getWindowManager().getDefaultDisplay();
-        DisplayMetrics metric = new DisplayMetrics();
+        mMetrics = new DisplayMetrics();
 
         if (VERSION.SDK_INT >= 17) {
-            display.getRealMetrics(metric);
+            display.getRealMetrics(mMetrics);
         } else {
-            display.getMetrics(metric);
+            display.getMetrics(mMetrics);
         }
 
-        screenWidth = metric.widthPixels;
-        screenHeight = metric.heightPixels;
-        screenDpi = metric.densityDpi;
-        density = metric.density;
+        screenWidth = mMetrics.widthPixels;
+        screenHeight = mMetrics.heightPixels;
     }
 
     public static int px2dip(float inParam) {
-        return (int) (inParam / density + 0.5F);
+        return (int) (inParam / mMetrics.density + 0.5F);
     }
 
     public static int dip2px(float inParam) {
-        return (int) (inParam * density + 0.5F);
+        return (int) (inParam * mMetrics.density + 0.5F);
     }
 
     public static int px2sp(float inParam) {
-        return (int) (inParam / density + 0.5F);
+        return (int) (inParam / mMetrics.scaledDensity + 0.5F);
     }
 
     public static int sp2px(float inParam) {
-        return (int) (inParam * density + 0.5F);
+        return (int) (inParam * mMetrics.scaledDensity + 0.5F);
     }
 }

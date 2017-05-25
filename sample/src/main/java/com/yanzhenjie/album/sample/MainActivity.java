@@ -73,7 +73,12 @@ public class MainActivity extends AppCompatActivity {
 
         assert drawable != null;
         int itemSize = (DisplayUtils.screenWidth - (drawable.getIntrinsicWidth() * 4)) / 3;
-        mGridAdapter = new GridAdapter(this, (view, position) -> previewImage(position), itemSize);
+        mGridAdapter = new GridAdapter(this, new OnCompatItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                previewImage(position);
+            }
+        }, itemSize);
         mRecyclerView.setAdapter(mGridAdapter);
 
         mImageList = new ArrayList<>();

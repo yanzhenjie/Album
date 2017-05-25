@@ -72,10 +72,10 @@ public class AlbumNullFragment extends BasicCameraFragment {
         Bundle argument = getArguments();
         int toolBarColor = argument.getInt(
                 AlbumWrapper.KEY_INPUT_TOOLBAR_COLOR,
-                ContextCompat.getColor(getContext(), R.color.albumColorPrimary));
+                ContextCompat.getColor(getContext(), R.color.album_ColorPrimary));
         int statusBarColor = argument.getInt(
                 AlbumWrapper.KEY_INPUT_STATUS_COLOR,
-                ContextCompat.getColor(getContext(), R.color.albumColorPrimaryBlack));
+                ContextCompat.getColor(getContext(), R.color.album_ColorPrimaryBlack));
 
         // noinspection ConstantConditions
         getToolbar().setBackgroundColor(toolBarColor);

@@ -15,8 +15,8 @@
     limitations under the License.
 -->
 <resources>
-    <color name="colorPrimary">#FF5722</color>
-    <color name="colorPrimaryDark">#E64A19</color>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#1E88E5</color>
     <color name="colorAccent">@color/colorPrimary</color>
     <color name="colorPrimaryBlack">#FF2B2B2B</color>
 

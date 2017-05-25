@@ -82,12 +82,12 @@ public class AlbumPreviewFragment extends NoFragment {
         Bundle argument = getArguments();
         mToolBarColor = argument.getInt(
                 AlbumWrapper.KEY_INPUT_TOOLBAR_COLOR,
-                ContextCompat.getColor(getContext(), R.color.albumColorPrimary));
+                ContextCompat.getColor(getContext(), R.color.album_ColorPrimary));
         mAllowSelectCount = argument.getInt(AlbumWrapper.KEY_INPUT_LIMIT_COUNT, Integer.MAX_VALUE);
 
         // noinspection ConstantConditions
         getToolbar().setBackgroundColor(mToolBarColor);
-        getToolbar().getBackground().mutate().setAlpha(180);
+        getToolbar().getBackground().mutate().setAlpha(120);
 
         initializeCheckBox();
         initializeViewPager();

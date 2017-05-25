@@ -14,30 +14,29 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<android.support.design.widget.CoordinatorLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/AlbumMatchParent"
-    android:background="@color/albumWhite"
+    style="@style/album_MatchParent"
+    android:background="@color/album_White"
     tools:ignore="MergeRootFrame,Overdraw,UnusedAttribute">
 
     <include layout="@layout/album_toolbar"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_content_list"
-        style="@style/AlbumWrapContent.WidthMatchParent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        style="@style/album_WrapContent.WidthMatchParent"
+        android:layout_below="@+id/app_bar_layout"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/album_dp_50"
         android:layout_gravity="bottom"
-        android:background="@color/albumSheetBackground">
+        android:background="@color/album_SheetBackground">
 
         <Button
             android:id="@+id/btn_switch_dir"
-            style="@style/AlbumButtonText"
+            style="@style/album_ButtonText"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:drawableEnd="@drawable/album_abc_spinner_white"
@@ -45,13 +44,13 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:maxWidth="@dimen/album_dp_200"
-            android:textColor="@color/albumWhite"
+            android:textColor="@color/album_White"
             android:textSize="@dimen/album_sp_16"/>
 
 
         <Button
             android:id="@+id/btn_preview"
-            style="@style/AlbumButtonText"
+            style="@style/album_ButtonText"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:drawableLeft="@drawable/album_ic_eye_white"
@@ -59,8 +58,8 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:maxWidth="@dimen/album_dp_200"
-            android:textColor="@color/albumWhite"
+            android:textColor="@color/album_White"
             android:textSize="@dimen/album_sp_16"/>
 
     </RelativeLayout>
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

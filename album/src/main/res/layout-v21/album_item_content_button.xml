@@ -17,9 +17,9 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/AlbumMatchParent"
+    style="@style/album_MatchParent"
     android:foreground="?selectableItemBackgroundBorderless"
-    app:cardBackgroundColor="@color/albumColorPrimaryBlack"
+    app:cardBackgroundColor="@color/album_ColorPrimaryBlack"
     app:cardCornerRadius="@dimen/album_dp_1"
     app:cardElevation="@dimen/album_dp_4"
     app:cardPreventCornerOverlap="false">
@@ -27,7 +27,7 @@
 
     <ImageView
         android:id="@+id/iv_album_content_button"
-        style="@style/AlbumMatchParent"
+        style="@style/album_MatchParent"
         android:background="?selectableItemBackgroundBorderless"
         android:contentDescription="@string/album_title"
         android:scaleType="center"

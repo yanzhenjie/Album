@@ -16,12 +16,12 @@
 -->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/AlbumMatchParent"
-    android:background="@color/albumColorPrimaryBlack">
+    style="@style/album_MatchParent"
+    android:background="@color/album_ColorPrimaryBlack">
 
     <ImageView
         android:id="@+id/iv_album_content_button"
-        style="@style/AlbumMatchParent"
+        style="@style/album_MatchParent"
         android:background="?selectableItemBackgroundBorderless"
         android:contentDescription="@string/album_title"
         android:scaleType="center"

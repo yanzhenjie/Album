@@ -16,14 +16,14 @@
 -->
 <resources>
 
-    <color name="albumWhite">#FFFFFFFF</color>
-    <color name="albumWhiteGray">#E0E0E0</color>
-    <color name="albumTransparent">#00000000</color>
+    <color name="album_White">#FFFFFFFF</color>
+    <color name="album_WhiteGray">#E0E0E0</color>
+    <color name="album_Transparent">#00000000</color>
 
-    <color name="albumColorPrimary">#2196F3</color>
-    <color name="albumColorPrimaryDark">#1E88E5</color>
-    <color name="albumColorPrimaryBlack">#FF2B2B2B</color>
+    <color name="album_ColorPrimary">#2196F3</color>
+    <color name="album_ColorPrimaryDark">#1E88E5</color>
+    <color name="album_ColorPrimaryBlack">#FF2B2B2B</color>
 
-    <color name="albumFontColorHint">#FF808080</color>
-    <color name="albumSheetBackground">#CC2B2B2B</color>
+    <color name="album_FontColorHint">#FF808080</color>
+    <color name="album_SheetBackground">#CC2B2B2B</color>
 </resources>

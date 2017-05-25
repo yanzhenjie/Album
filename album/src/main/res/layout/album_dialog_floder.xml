@@ -18,6 +18,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rv_content_list"
-    style="@style/AlbumWrapContent.WidthMatchParent"
-    android:background="@color/albumWhite"
+    style="@style/album_WrapContent.WidthMatchParent"
+    android:background="@color/album_White"
     app:behavior_hideable="true"/>

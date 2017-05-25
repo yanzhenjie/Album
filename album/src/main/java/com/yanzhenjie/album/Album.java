@@ -52,7 +52,7 @@ public final class Album {
      */
     public static AlbumConfig getAlbumConfig() {
         if (sAlbumConfig == null) {
-            initialize(new AlbumConfig.Build()
+            initialize(AlbumConfig.newBuilder(null)
                     .setImageLoader(new LocalImageLoader())
                     .setLocale(Locale.getDefault())
                     .build()

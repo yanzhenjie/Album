@@ -15,8 +15,6 @@
     limitations under the License.
 -->
 <resources>
-    <string name="album_load_hint">Loading…</string>
-
     <string name="album_title_not_found_image">Not Found Image</string>
     <string name="album_not_found_picture">Did not find the picture</string>
     <string name="album_take_picture">Take Picture</string>

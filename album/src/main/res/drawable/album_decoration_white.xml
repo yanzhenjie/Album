@@ -17,7 +17,7 @@
 <shape
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <solid android:color="@color/albumWhite"/>
+    <solid android:color="@color/album_White"/>
     <size
         android:width="@dimen/album_dp_2"
         android:height="@dimen/album_dp_2"/>

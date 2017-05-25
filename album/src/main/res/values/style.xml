@@ -16,71 +16,66 @@
 -->
 <resources>
 
-    <style name="AlbumAppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="album_AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="AlbumPopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="album_PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <!-- MatchParent -->
 
-    <style name="AlbumMatchParent">
+    <style name="album_MatchParent">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
     </style>
 
     <!-- WrapContent -->
 
-    <style name="AlbumWrapContent">
+    <style name="album_WrapContent">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="AlbumWrapContent.WidthMatchParent">
+    <style name="album_WrapContent.WidthMatchParent">
         <item name="android:layout_width">match_parent</item>
     </style>
 
-    <style name="AlbumToolbar" parent="TextAppearance.AppCompat.Title">
+    <style name="album_Toolbar" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="titleTextColor">@color/album_White</item>
+        <item name="subtitleTextColor">@color/album_White</item>
+        <item name="theme">@style/album_ToolbarTheme</item>
     </style>
 
-    <style name="AlbumToolbar.PopupTheme">
-        <item name="popupTheme">@style/AlbumPopupOverlay</item>
+    <style name="album_ToolbarTheme">
+        <item name="actionMenuTextColor">@color/album_White</item>
+    </style>
+
+    <style name="album_Toolbar.PopupTheme">
+        <item name="popupTheme">@style/album_PopupOverlay</item>
     </style>
 
     <!-- CheckBox -->
 
-    <style name="AlbumCheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox"/>
+    <style name="album_CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox"/>
 
-    <style name="AlbumCheckBox.WrapContent">
+    <style name="album_CheckBox.WrapContent">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="AlbumDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+    <style name="album_DialogStyle" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
-    <style name="AlbumDialogStyle.Folder">
+    <style name="album_DialogStyle.Folder">
         <item name="android:windowBackground">@null</item>
-    </style>
-
-    <style name="AlbumDialogStyle.Preview">
-        <item name="android:backgroundDimEnabled">false</item>
-        <item name="android:windowBackground">@null</item>
-    </style>
-
-    <style name="AlbumDialogStyle.Wait">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
-        <item name="android:windowSoftInputMode">stateHidden</item>
     </style>
 
     <!-- Button -->
-    <style name="AlbumButtonText" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+    <style name="album_ButtonText" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>

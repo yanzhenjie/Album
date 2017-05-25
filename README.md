@@ -1,5 +1,7 @@
 # Album
-`Album` is an MaterialDesign tyle open source album, the main function is: `Album, Camera and Gallery`.
+`Album` is a MaterialDesign tyle open source album, the main function is: `Album, Camera and Gallery`.  
+
+Image crop library **Durban**: [https://github.com/yanzhenjie/Durban](https://github.com/yanzhenjie/Durban)
 
 [中文文档](./README-CN.md)
 
@@ -13,6 +15,7 @@
 7. Configure the album's number of columns, configure the album if there is a camera.
 8. Gallery preview multiple pictures, preview can be anti-election.
 9. Support for custom LocalImageLoader, such as: `Glide`, `Picasso`, `ImageLoder`.
+10. Support and use the image crop library [Durban](https://github.com/yanzhenjie/Durban).
 
 # Screenshot
 Please experience [download apk](https://github.com/yanzhenjie/Album/blob/master/sample-release.apk?raw=true).  
@@ -91,6 +94,8 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 }
 ```
 
+Cut the selection results, then use [Durban](https://github.com/yanzhenjie/Durban).
+
 ## Camera
 Use the `Album.camera(context).start ()` to call up the `Camera`, has handled the RunTimePermissions and `Android7.0 FileProvider`
 ```java
@@ -114,6 +119,8 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     }
 }
 ```
+
+Cut the selection results, then use [Durban](https://github.com/yanzhenjie/Durban).
 
 ## Gallery
 Use the `Album.gallery(context).start ()` to call up the `Gallery`, default support for previewing local images, preview the network pictures need to configure `ImageLoader`, see below for details.

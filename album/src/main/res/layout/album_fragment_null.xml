@@ -14,37 +14,36 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<android.support.design.widget.CoordinatorLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/AlbumMatchParent"
-    android:background="@color/albumWhite"
+    style="@style/album_MatchParent"
+    android:background="@color/album_White"
     tools:ignore="MergeRootFrame,Overdraw,UnusedAttribute">
 
     <include layout="@layout/album_toolbar"/>
 
     <LinearLayout
-        style="@style/AlbumMatchParent"
+        style="@style/album_MatchParent"
+        android:layout_below="@+id/app_bar_layout"
         android:gravity="center"
-        android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:orientation="vertical">
 
         <TextView
-            style="@style/AlbumWrapContent"
+            style="@style/album_WrapContent"
             android:text="@string/album_not_found_picture"
-            android:textColor="@color/albumFontColorHint"/>
+            android:textColor="@color/album_FontColorHint"/>
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_camera"
-            style="@style/AlbumWrapContent"
+            style="@style/album_WrapContent"
             android:layout_marginTop="@dimen/album_dp_15"
             android:drawableLeft="@drawable/album_ic_photo_camera_white"
             android:drawableStart="@drawable/album_ic_photo_camera_white"
             android:gravity="center"
             android:text="@string/album_take_picture"
             android:textAllCaps="false"
-            android:textColor="@color/albumWhite"/>
+            android:textColor="@color/album_White"/>
 
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

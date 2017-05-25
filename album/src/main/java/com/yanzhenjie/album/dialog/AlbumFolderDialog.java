@@ -53,7 +53,7 @@ public class AlbumFolderDialog extends BottomSheetDialog {
                              @ColorInt int navigationColor,
                              @Nullable List<AlbumFolder> albumFolders,
                              @Nullable OnCompatItemClickListener itemClickListener) {
-        super(context, R.style.AlbumDialogStyle_Folder);
+        super(context, R.style.album_DialogStyle_Folder);
         setContentView(R.layout.album_dialog_floder);
 
         setWindowBarColor(toolbarColor, navigationColor);
@@ -66,7 +66,7 @@ public class AlbumFolderDialog extends BottomSheetDialog {
         rvContentList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         ColorStateList stateList = SelectorUtils.createColorStateList(
-                ContextCompat.getColor(context, R.color.albumColorPrimaryBlack),
+                ContextCompat.getColor(context, R.color.album_ColorPrimaryBlack),
                 toolbarColor);
         rvContentList.setAdapter(new AlbumFolderAdapter(stateList, albumFolders, new OnCompatItemClickListener() {
             @Override

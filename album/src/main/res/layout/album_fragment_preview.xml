@@ -14,49 +14,44 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<android.support.design.widget.CoordinatorLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/AlbumMatchParent"
-    android:background="@color/albumWhite"
+    style="@style/album_MatchParent"
+    android:background="@color/album_ColorPrimaryBlack"
     tools:ignore="MergeRootFrame,Overdraw,UnusedAttribute">
-
-    <android.support.design.widget.AppBarLayout
-        style="@style/AlbumWrapContent.WidthMatchParent"
-        android:background="@color/albumTransparent"
-        android:theme="@style/AlbumAppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            style="@style/AlbumToolbar"
-            android:background="@color/albumTransparent"
-            app:navigationIcon="@drawable/album_ic_back_white"/>
-    </android.support.design.widget.AppBarLayout>
 
     <com.yanzhenjie.album.widget.photoview.FixViewPager
         android:id="@+id/view_pager"
-        style="@style/AlbumMatchParent"
-        android:background="@color/albumColorPrimaryBlack"/>
+        style="@style/album_MatchParent"/>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/album_Toolbar.PopupTheme"
+        android:layout_alignParentTop="true"
+        android:background="@color/album_Transparent"
+        app:navigationIcon="@drawable/album_ic_back_white"/>
 
     <RelativeLayout
         android:id="@+id/layout_gallery_preview_bottom"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:layout_gravity="bottom"
-        android:background="@color/albumSheetBackground">
+        android:layout_alignParentBottom="true"
+        android:background="@color/album_SheetBackground">
 
         <android.support.v7.widget.AppCompatCheckBox
             android:id="@+id/cb_album_check"
-            style="@style/AlbumCheckBox.WrapContent"
+            style="@style/album_CheckBox.WrapContent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/album_dp_10"
             android:layout_marginRight="@dimen/album_dp_10"
             android:text="@string/album_check"
-            android:textColor="@color/albumWhite"
+            android:textColor="@color/album_White"
             android:textSize="@dimen/album_sp_16"/>
 
     </RelativeLayout>
-</android.support.design.widget.CoordinatorLayout>
+
+</RelativeLayout>

@@ -29,7 +29,7 @@ import java.lang.reflect.Method;
  */
 public abstract class BasicWrapper<T extends BasicWrapper> {
 
-    protected static final String KEY_INPUT_REQUEST_CODE = "KEY_INPUT_REQUEST_CODE";
+    static final String KEY_INPUT_REQUEST_CODE = "KEY_INPUT_REQUEST_CODE";
 
     static final String KEY_INPUT_FRAMEWORK_FUNCTION = "KEY_INPUT_FRAMEWORK_FUNCTION";
     static final int VALUE_INPUT_FRAMEWORK_FUNCTION_ALBUM = 0;
@@ -39,7 +39,7 @@ public abstract class BasicWrapper<T extends BasicWrapper> {
     private Object o;
     private Intent intent;
 
-    protected BasicWrapper(Object o, Intent intent, int function) {
+    BasicWrapper(Object o, Intent intent, int function) {
         this.o = o;
         this.intent = intent;
         this.intent.putExtra(KEY_INPUT_FRAMEWORK_FUNCTION, function);
@@ -59,7 +59,7 @@ public abstract class BasicWrapper<T extends BasicWrapper> {
     }
 
     /**
-     * Request code, callback to {@code onActivityResult()};
+     * Request code, callback to {@code onActivityResult()}.
      *
      * @param requestCode int.
      * @return a subclass of {@link BasicWrapper}.

@@ -17,11 +17,11 @@
 <android.support.design.widget.AppBarLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/app_bar_layout"
-    style="@style/AlbumWrapContent.WidthMatchParent"
-    android:theme="@style/AlbumAppBarOverlay">
+    style="@style/album_WrapContent.WidthMatchParent"
+    android:theme="@style/album_AppBarOverlay">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        style="@style/AlbumToolbar.PopupTheme"/>
+        style="@style/album_Toolbar.PopupTheme"/>
 
 </android.support.design.widget.AppBarLayout>
