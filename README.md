@@ -1,5 +1,5 @@
 # Album
-`Album` is a MaterialDesign tyle open source album, the main function is: `Album, Camera and Gallery`.  
+`Album` is a MaterialDesign style open source album, the main function is: `Album, Camera and Gallery`.  
 
 Image crop library **Durban**: [https://github.com/yanzhenjie/Durban](https://github.com/yanzhenjie/Durban)
 
