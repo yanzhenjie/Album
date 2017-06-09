@@ -66,7 +66,7 @@ Album's main function is: `Album, Camera and Gallery`, the following are describ
 Use `Album.album(context).start()` to call up the `Album`.  
 ```java
 Album.album(context)
-    .requestCode(999) // Request code.
+    .requestCode(999) // Request code,default is `AlbumConstant.REQUEST_CODE_ALBUM`.
     .toolBarColor(toolbarColor) // Toolbar color.
     .statusBarColor(statusBarColor) // StatusBar color.
     .navigationBarColor(navigationBarColor) // NavigationBar color.
@@ -84,6 +84,7 @@ Accept the result：
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     if(requestCode == 999) {
+//  if(requestCode == AlbumConstant.REQUEST_CODE_ALBUM) {
         if (resultCode == RESULT_OK) { // Successfully.
             // Parse select result.
             ArrayList<String> imageList = Album.parseResult(data);
@@ -100,7 +101,7 @@ Cut the selection results, then use [Durban](https://github.com/yanzhenjie/Durba
 Use the `Album.camera(context).start ()` to call up the `Camera`, has handled the RunTimePermissions and `Android7.0 FileProvider`
 ```java
 Album.camera(context)
-    .requestCode(666)
+    .requestCode(666) //Default is `AlbumConstant.REQUEST_CODE_CAMERA`.
     // .imagePath() // Specify the image path, optional.
     .start();
 ```
@@ -110,6 +111,7 @@ Accept the result：
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     if(requestCode == 666) {
+//  if(requestCode == AlbumConstant.REQUEST_CODE_CAMERA) {
         if (resultCode == RESULT_OK) { // Successfully.
             // The size of the pathList is 1.
             List<String> pathList = Album.parseResult(data); // Parse path.
@@ -128,7 +130,7 @@ Use the `Album.gallery(context).start ()` to call up the `Gallery`, default supp
 Call you only need to pass in a path set:  
 ```java
 Album.gallery(context)
-    .requestCode(444) // Request code.
+    .requestCode(444) // Request code,default is `AlbumConstant.REQUEST_CODE_GALLERY`.
     .toolBarColor(toolbarColor) // Toolbar color.
     .statusBarColor(statusBarColor) // StatusBar color.
     .navigationBarColor(navigationBarColor) // NavigationBar color.
@@ -149,6 +151,7 @@ If you need to have an anti-selection function at the time of preview，override
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     if(requestCode == 444) {
+//  if(requestCode == AlbumConstant.REQUEST_CODE_GALLERY) {
         if (resultCode == RESULT_OK) { // Successfully.
             // Parse select result.
             ArrayList<String> imageList = Album.parseResult(data);

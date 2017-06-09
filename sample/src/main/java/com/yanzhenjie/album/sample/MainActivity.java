@@ -124,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        System.out.println("code==" + requestCode);
         switch (requestCode) {
             case AlbumConstant.REQUEST_CODE_ALBUM: {
                 if (resultCode == RESULT_OK) { // Successfully.

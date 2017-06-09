@@ -72,7 +72,7 @@ compile 'com.yanzhenjie:album:1.0.6'
 使用`Album.album(context).start()`即可调起相册。
 ```java
 Album.album(context)
-    .requestCode(999) // 请求码，返回时onActivityResult()的第一个参数。
+    .requestCode(999) // 请求码，返回时onActivityResult()的第一个参数，默认AlbumConstant.REQUEST_CODE_ALBUM。
     .toolBarColor(toolbarColor) // Toolbar 颜色，默认蓝色。
     .statusBarColor(statusBarColor) // StatusBar 颜色，默认蓝色。
     .navigationBarColor(navigationBarColor) // NavigationBar 颜色，默认黑色，建议使用默认。
@@ -90,6 +90,7 @@ Album.album(context)
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     if(requestCode == 999) {
+//  if(requestCode == AlbumConstant.REQUEST_CODE_ALBUM) {
         if (resultCode == RESULT_OK) { // Successfully.
             // 不要质疑你的眼睛，就是这么简单。
             ArrayList<String> pathList = Album.parseResult(data);
@@ -106,7 +107,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 使用`Album.camera(context).start()`即可调起相机，已经处理了权限和`Android7.0`的`FileProvider`问题。
 ```java
 Album.camera(context)
-    .requestCode(666)
+    .requestCode(666) //默认AlbumConstant.REQUEST_CODE_CAMERA
 	// .imagePath() // 指定相机拍照的路径，建议非特殊情况不要指定.
     .start();
 ```
@@ -116,6 +117,7 @@ Album.camera(context)
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     if(requestCode == 666) {
+//  if(requestCode == AlbumConstant.REQUEST_CODE_CAMERA) {
         if (resultCode == RESULT_OK) { // Successfully.
             // 这里的List的size肯定是1。
             List<String> pathList = Album.parseResult(data); // Parse path.
@@ -134,7 +136,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 调用的时候你只需要传入一个路径集合：  
 ```java
 Album.gallery(context)
-    .requestCode(555) // 请求码，返回时onActivityResult()的第一个参数。
+    .requestCode(555) // 请求码，返回时onActivityResult()的第一个参数，默认AlbumConstant.REQUEST_CODE_GALLERY。
     .toolBarColor(toolbarColor) // Toolbar 颜色，默认蓝色。
     .statusBarColor(statusBarColor) // StatusBar 颜色，默认蓝色。
     .navigationBarColor(navigationBarColor) // NavigationBar 颜色，默认黑色，建议使用默认。
@@ -157,6 +159,7 @@ ArrayList<String> mImageList;
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     if(requestCode == 555) {
+//  if(requestCode == AlbumConstant.REQUEST_CODE_GALLERY) {
         if (resultCode == RESULT_OK) { // Successfully.
             // 不要再次质疑你的眼睛，还是这么简单。
             mImageList = Album.parseResult(data);

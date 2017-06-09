@@ -42,14 +42,12 @@ abstract class BasicWrapper<T extends BasicWrapper> {
 
     private Object o;
     private Intent intent;
-    private String sourceName;
     private int requestCode;
 
     BasicWrapper(Object o, Intent intent, int function, String sourceName) {
         this.o = o;
         this.intent = intent;
         this.intent.putExtra(KEY_INPUT_FRAMEWORK_FUNCTION, function);
-        this.sourceName = sourceName;
         if (sourceName.equals(AlbumWrapper.class.getName())) {
             requestCode = REQUEST_CODE_ALBUM;
         } else if (sourceName.equals(GalleryWrapper.class.getName())) {
