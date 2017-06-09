@@ -33,11 +33,11 @@ public class GalleryWrapper extends UIWrapper<GalleryWrapper> {
     private Intent intent;
 
     GalleryWrapper(Object o) {
-        this(o, new Intent(getContext(o), AlbumActivity.class), VALUE_INPUT_FRAMEWORK_FUNCTION_GALLERY);
+        this(o, new Intent(getContext(o), AlbumActivity.class), VALUE_INPUT_FRAMEWORK_FUNCTION_GALLERY, GalleryWrapper.class.getName());
     }
 
-    private GalleryWrapper(Object o, Intent intent, int function) {
-        super(o, intent, function);
+    private GalleryWrapper(Object o, Intent intent, int function, String sourceName) {
+        super(o, intent, function, sourceName);
         this.intent = intent;
     }
 

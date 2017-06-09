@@ -35,11 +35,11 @@ public class AlbumWrapper extends UIWrapper<AlbumWrapper> {
     private Intent intent;
 
     AlbumWrapper(Object o) {
-        this(o, new Intent(getContext(o), AlbumActivity.class), VALUE_INPUT_FRAMEWORK_FUNCTION_ALBUM);
+        this(o, new Intent(getContext(o), AlbumActivity.class), VALUE_INPUT_FRAMEWORK_FUNCTION_ALBUM, AlbumWrapper.class.getName());
     }
 
-    private AlbumWrapper(Object o, Intent intent, int function) {
-        super(o, intent, function);
+    private AlbumWrapper(Object o, Intent intent, int function, String sourceName) {
+        super(o, intent, function, sourceName);
         this.intent = intent;
     }
 

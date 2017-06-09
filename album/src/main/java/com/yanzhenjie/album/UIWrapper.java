@@ -32,8 +32,8 @@ public abstract class UIWrapper<T extends BasicWrapper> extends BasicWrapper<T> 
     public static final String KEY_INPUT_NAVIGATION_COLOR = "KEY_INPUT_NAVIGATION_COLOR";
     public static final String KEY_INPUT_CHECKED_LIST = "KEY_INPUT_CHECKED_LIST";
 
-    protected UIWrapper(Object o, Intent intent, int function) {
-        super(o, intent, function);
+    UIWrapper(Object o, Intent intent, int function, String sourceName) {
+        super(o, intent, function, sourceName);
     }
 
     /**

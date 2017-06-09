@@ -28,11 +28,11 @@ public class CameraWrapper extends BasicWrapper<CameraWrapper> {
     private Intent mIntent;
 
     CameraWrapper(Object o) {
-        this(o, new Intent(getContext(o), AlbumActivity.class), VALUE_INPUT_FRAMEWORK_FUNCTION_CAMERA);
+        this(o, new Intent(getContext(o), AlbumActivity.class), VALUE_INPUT_FRAMEWORK_FUNCTION_CAMERA, CameraWrapper.class.getName());
     }
 
-    private CameraWrapper(Object o, Intent intent, int function) {
-        super(o, intent, function);
+    private CameraWrapper(Object o, Intent intent, int function, String sourceName) {
+        super(o, intent, function, sourceName);
         this.mIntent = intent;
     }
 

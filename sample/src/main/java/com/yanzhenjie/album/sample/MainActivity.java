@@ -31,6 +31,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.yanzhenjie.album.Album;
+import com.yanzhenjie.album.util.AlbumConstant;
 import com.yanzhenjie.album.util.DisplayUtils;
 import com.yanzhenjie.album.widget.recyclerview.AlbumVerticalGirdDecoration;
 
@@ -42,10 +43,6 @@ import java.util.List;
  * Created by Yan Zhenjie on 2016/10/30.
  */
 public class MainActivity extends AppCompatActivity {
-
-    private static final int ACTIVITY_REQUEST_SELECT_PHOTO = 100;
-    private static final int ACTIVITY_REQUEST_TAKE_PICTURE = 101;
-    private static final int ACTIVITY_REQUEST_PREVIEW_PHOTO = 102;
 
     private View noneView;
 
@@ -89,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private void fromAlbum() {
         Album.album(this)
-                .requestCode(ACTIVITY_REQUEST_SELECT_PHOTO)
                 .toolBarColor(ContextCompat.getColor(this, R.color.colorPrimary)) // Toolbar color.
                 .statusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark)) // StatusBar color.
                 .navigationBarColor(ActivityCompat.getColor(this, R.color.colorPrimaryBlack)) // NavigationBar color.
@@ -105,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private void fromCamera() {
         Album.camera(this)
-                .requestCode(ACTIVITY_REQUEST_TAKE_PICTURE)
 //                .imagePath() // Specify the image path, optional.
                 .start();
     }
@@ -117,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private void previewImage(int position) {
         Album.gallery(this)
-                .requestCode(ACTIVITY_REQUEST_PREVIEW_PHOTO)
                 .toolBarColor(ContextCompat.getColor(this, R.color.colorPrimary)) // Toolbar color.
                 .statusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark)) // StatusBar color.
                 .navigationBarColor(ActivityCompat.getColor(this, R.color.colorPrimaryBlack)) // NavigationBar color.
@@ -130,8 +124,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("code==" + requestCode);
         switch (requestCode) {
-            case ACTIVITY_REQUEST_SELECT_PHOTO: {
+            case AlbumConstant.REQUEST_CODE_ALBUM: {
                 if (resultCode == RESULT_OK) { // Successfully.
                     mImageList = Album.parseResult(data); // Parse select result.
                     refreshImage();
@@ -140,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             }
-            case ACTIVITY_REQUEST_TAKE_PICTURE: {
+            case AlbumConstant.REQUEST_CODE_CAMERA: {
                 if (resultCode == RESULT_OK) { // Successfully.
                     List<String> imageList = Album.parseResult(data); // Parse path.
                     mImageList.addAll(imageList);
@@ -150,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             }
-            case ACTIVITY_REQUEST_PREVIEW_PHOTO: {
+            case AlbumConstant.REQUEST_CODE_GALLERY: {
                 if (resultCode == RESULT_OK) { // Successfully.
                     mImageList = Album.parseResult(data); // Parse select result.
                     refreshImage();

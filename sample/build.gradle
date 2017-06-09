@@ -20,7 +20,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile rootProject.ext.dependencies.album
+    compile project(':album')
     compile rootProject.ext.dependencies.appcompat
     compile rootProject.ext.dependencies.design
     compile rootProject.ext.dependencies.recyclerview

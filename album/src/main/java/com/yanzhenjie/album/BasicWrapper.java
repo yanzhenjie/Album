@@ -23,11 +23,15 @@ import android.support.v4.app.Fragment;
 
 import java.lang.reflect.Method;
 
+import static com.yanzhenjie.album.util.AlbumConstant.REQUEST_CODE_ALBUM;
+import static com.yanzhenjie.album.util.AlbumConstant.REQUEST_CODE_CAMERA;
+import static com.yanzhenjie.album.util.AlbumConstant.REQUEST_CODE_GALLERY;
+
 /**
  * <p>Album basic wrapper.</p>
  * Created by yanzhenjie on 17-3-29.
  */
-public abstract class BasicWrapper<T extends BasicWrapper> {
+abstract class BasicWrapper<T extends BasicWrapper> {
 
     static final String KEY_INPUT_REQUEST_CODE = "KEY_INPUT_REQUEST_CODE";
 
@@ -38,11 +42,21 @@ public abstract class BasicWrapper<T extends BasicWrapper> {
 
     private Object o;
     private Intent intent;
+    private String sourceName;
+    private int requestCode;
 
-    BasicWrapper(Object o, Intent intent, int function) {
+    BasicWrapper(Object o, Intent intent, int function, String sourceName) {
         this.o = o;
         this.intent = intent;
         this.intent.putExtra(KEY_INPUT_FRAMEWORK_FUNCTION, function);
+        this.sourceName = sourceName;
+        if (sourceName.equals(AlbumWrapper.class.getName())) {
+            requestCode = REQUEST_CODE_ALBUM;
+        } else if (sourceName.equals(GalleryWrapper.class.getName())) {
+            requestCode = REQUEST_CODE_GALLERY;
+        } else if (sourceName.equals(CameraWrapper.class.getName())) {
+            requestCode = REQUEST_CODE_CAMERA;
+        }
     }
 
     /**
@@ -52,7 +66,7 @@ public abstract class BasicWrapper<T extends BasicWrapper> {
         try {
             Method method = o.getClass().getMethod("startActivityForResult", Intent.class, int.class);
             if (!method.isAccessible()) method.setAccessible(true);
-            method.invoke(o, intent, intent.getIntExtra(KEY_INPUT_REQUEST_CODE, 0));
+            method.invoke(o, intent, intent.getIntExtra(KEY_INPUT_REQUEST_CODE, requestCode));
         } catch (Exception e) {
             e.printStackTrace();
         }
