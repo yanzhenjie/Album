@@ -34,7 +34,8 @@
             android:name=".provider.CameraFileProvider"
             android:authorities="${applicationId}.album.camera.provider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true"
+            android:multiprocess="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/album_camera_provider"/>
