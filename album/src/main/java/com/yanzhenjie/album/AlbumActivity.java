@@ -38,12 +38,15 @@ import com.yanzhenjie.album.impl.GalleryCallback;
 import com.yanzhenjie.album.util.AlbumUtils;
 import com.yanzhenjie.album.util.DisplayUtils;
 import com.yanzhenjie.fragment.CompatActivity;
-import com.yanzhenjie.fragment.NoFragment;
 import com.yanzhenjie.mediascanner.MediaScanner;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import static com.yanzhenjie.album.fragment.AlbumFragment.KEY_INPUT_CHECK_MODE;
+import static com.yanzhenjie.album.fragment.AlbumFragment.VALUE_INPUT_CHECK_MULTI;
+import static com.yanzhenjie.album.fragment.AlbumFragment.VALUE_INPUT_CHECK_RADIO;
 
 /**
  * <p>Responsible for controlling the album data and the overall logic.</p>
@@ -52,7 +55,8 @@ import java.util.Locale;
 public class AlbumActivity extends CompatActivity implements AlbumCallback, GalleryCallback, CameraCallback {
 
     private static final int PERMISSION_REQUEST_STORAGE_ALBUM = 200;
-    private static final int PERMISSION_REQUEST_STORAGE_GALLERY = 201;
+    private static final int PERMISSION_REQUEST_STORAGE_ALBUM_RADIO = 201;
+    private static final int PERMISSION_REQUEST_STORAGE_GALLERY = 301;
 
     private List<String> mCheckedPaths;
     private Bundle mArgument;
@@ -93,13 +97,17 @@ public class AlbumActivity extends CompatActivity implements AlbumCallback, Gall
                 requestPermission(PERMISSION_REQUEST_STORAGE_ALBUM);
                 break;
             }
+            case BasicWrapper.VALUE_INPUT_FRAMEWORK_FUNCTION_ALBUM_RADIO: {
+                requestPermission(PERMISSION_REQUEST_STORAGE_ALBUM_RADIO);
+                break;
+            }
             case BasicWrapper.VALUE_INPUT_FRAMEWORK_FUNCTION_GALLERY: {
                 if (mCheckedPaths == null || mCheckedPaths.size() == 0) finish();
                 else requestPermission(PERMISSION_REQUEST_STORAGE_GALLERY);
                 break;
             }
             case BasicWrapper.VALUE_INPUT_FRAMEWORK_FUNCTION_CAMERA: {
-                CameraFragment fragment = NoFragment.instantiate(this, CameraFragment.class, mArgument);
+                CameraFragment fragment = fragment(CameraFragment.class, mArgument);
                 startFragment(fragment);
                 break;
             }
@@ -158,26 +166,23 @@ public class AlbumActivity extends CompatActivity implements AlbumCallback, Gall
         switch (requestCode) {
             case PERMISSION_REQUEST_STORAGE_ALBUM: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    AlbumFragment albumFragment = NoFragment.instantiate(this, AlbumFragment.class, mArgument);
+                    AlbumFragment albumFragment = fragment(AlbumFragment.class, mArgument);
+                    mArgument.putInt(KEY_INPUT_CHECK_MODE, VALUE_INPUT_CHECK_MULTI);
                     startFragment(albumFragment);
-                } else {
-                    new AlertDialog.Builder(this)
-                            .setCancelable(false)
-                            .setTitle(R.string.album_dialog_permission_failed)
-                            .setMessage(R.string.album_permission_storage_failed_hint)
-                            .setPositiveButton(R.string.album_dialog_sure, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    onAlbumCancel();
-                                }
-                            })
-                            .show();
-                }
+                } else albumPermissionDenied();
+                break;
+            }
+            case PERMISSION_REQUEST_STORAGE_ALBUM_RADIO: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    AlbumFragment albumFragment = fragment(AlbumFragment.class, mArgument);
+                    mArgument.putInt(KEY_INPUT_CHECK_MODE, VALUE_INPUT_CHECK_RADIO);
+                    startFragment(albumFragment);
+                } else albumPermissionDenied();
                 break;
             }
             case PERMISSION_REQUEST_STORAGE_GALLERY: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    GalleryFragment galleryFragment = NoFragment.instantiate(this, GalleryFragment.class, mArgument);
+                    GalleryFragment galleryFragment = fragment(GalleryFragment.class, mArgument);
                     galleryFragment.bindImagePaths(mCheckedPaths);
                     startFragment(galleryFragment);
                 } else {
@@ -186,6 +191,23 @@ public class AlbumActivity extends CompatActivity implements AlbumCallback, Gall
                 break;
             }
         }
+    }
+
+    /**
+     * The permission for Album is denied.
+     */
+    private void albumPermissionDenied() {
+        new AlertDialog.Builder(this)
+                .setCancelable(false)
+                .setTitle(R.string.album_dialog_permission_failed)
+                .setMessage(R.string.album_permission_storage_failed_hint)
+                .setPositiveButton(R.string.album_dialog_sure, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onAlbumCancel();
+                    }
+                })
+                .show();
     }
 
     @Override

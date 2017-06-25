@@ -25,73 +25,56 @@ import java.util.ArrayList;
  * <p>Album wrapper.</p>
  * Created by yanzhenjie on 17-3-29.
  */
-public class AlbumWrapper extends UIWrapper<AlbumWrapper> {
+public class AlbumWrapper extends RadioAlbumWrapper<AlbumWrapper> {
 
-    public static final String KEY_INPUT_TITLE = "KEY_INPUT_TITLE";
-    public static final String KEY_INPUT_COLUMN_COUNT = "KEY_INPUT_COLUMN_COUNT";
-    public static final String KEY_INPUT_LIMIT_COUNT = "KEY_INPUT_LIMIT_COUNT";
-    public static final String KEY_INPUT_ALLOW_CAMERA = "KEY_INPUT_ALLOW_CAMERA";
-
-    private Intent intent;
+    private Intent mIntent;
+    private int requestCode;
 
     AlbumWrapper(Object o) {
-        this(o, new Intent(getContext(o), AlbumActivity.class), VALUE_INPUT_FRAMEWORK_FUNCTION_ALBUM);
-    }
-
-    private AlbumWrapper(Object o, Intent intent, int function) {
-        super(o, intent, function);
-        this.intent = intent;
-    }
-
-    @Override
-    public AlbumWrapper requestCode(int requestCode) {
-        intent.putExtra(KEY_INPUT_REQUEST_CODE, requestCode);
-        return this;
+        super(o, VALUE_INPUT_FRAMEWORK_FUNCTION_ALBUM);
+        this.mIntent = getIntent();
+        mIntent.putExtra(KEY_INPUT_LIMIT_COUNT, Integer.MAX_VALUE);
     }
 
     @Override
     public AlbumWrapper statusBarColor(@ColorInt int color) {
-        intent.putExtra(KEY_INPUT_STATUS_COLOR, color);
+        mIntent.putExtra(KEY_INPUT_STATUS_COLOR, color);
         return this;
     }
 
     @Override
     public AlbumWrapper toolBarColor(@ColorInt int color) {
-        intent.putExtra(KEY_INPUT_TOOLBAR_COLOR, color);
+        mIntent.putExtra(KEY_INPUT_TOOLBAR_COLOR, color);
         return this;
     }
 
     @Override
     public AlbumWrapper navigationBarColor(@ColorInt int color) {
-        intent.putExtra(KEY_INPUT_NAVIGATION_COLOR, color);
-        return this;
-    }
-
-    @Override
-    public AlbumWrapper checkedList(@NonNull ArrayList<String> pathList) {
-        intent.putStringArrayListExtra(KEY_INPUT_CHECKED_LIST, pathList);
+        mIntent.putExtra(KEY_INPUT_NAVIGATION_COLOR, color);
         return this;
     }
 
     /**
-     * Set the title of ui.
+     * Request code, callback to {@code onActivityResult()}.
      *
-     * @param title string.
+     * @param requestCode int.
+     * @return a subclass of {@link BasicWrapper}.
+     * @deprecated use {@link #start(int)} instead.
+     */
+    @Deprecated
+    public AlbumWrapper requestCode(int requestCode) {
+        this.requestCode = requestCode;
+        return this;
+    }
+
+    /**
+     * Sets the list of selected files.
+     *
+     * @param pathList path list.
      * @return a subclass of {@link BasicWrapper}.
      */
-    public AlbumWrapper title(@NonNull String title) {
-        intent.putExtra(KEY_INPUT_TITLE, title);
-        return this;
-    }
-
-    /**
-     * Sets the number of column that the photo shows.
-     *
-     * @param count count.
-     * @return {@link AlbumWrapper}.
-     */
-    public AlbumWrapper columnCount(int count) {
-        intent.putExtra(KEY_INPUT_COLUMN_COUNT, count);
+    public AlbumWrapper checkedList(@NonNull ArrayList<String> pathList) {
+        mIntent.putStringArrayListExtra(KEY_INPUT_CHECKED_LIST, pathList);
         return this;
     }
 
@@ -102,19 +85,16 @@ public class AlbumWrapper extends UIWrapper<AlbumWrapper> {
      * @return {@link AlbumWrapper}.
      */
     public AlbumWrapper selectCount(int count) {
-        intent.putExtra(KEY_INPUT_LIMIT_COUNT, count);
+        mIntent.putExtra(KEY_INPUT_LIMIT_COUNT, count);
         return this;
     }
 
     /**
-     * Allow to take pictures.
-     *
-     * @param camera true, other wise false.
-     * @return {@link AlbumWrapper}.
+     * @see #start(int)
+     * @deprecated use {@link #start(int)} instead.
      */
-    public AlbumWrapper camera(boolean camera) {
-        intent.putExtra(KEY_INPUT_ALLOW_CAMERA, camera);
-        return this;
+    @Deprecated
+    public void start() {
+        start(requestCode);
     }
-
 }

@@ -30,44 +30,53 @@ public class GalleryWrapper extends UIWrapper<GalleryWrapper> {
     public static final String KEY_INPUT_CHECK_FUNCTION = "KEY_INPUT_CHECK_FUNCTION";
     public static final String KEY_INPUT_CURRENT_POSITION = "KEY_INPUT_CURRENT_POSITION";
 
-    private Intent intent;
+    private Intent mIntent;
+    private int requestCode;
 
     GalleryWrapper(Object o) {
-        this(o, new Intent(getContext(o), AlbumActivity.class), VALUE_INPUT_FRAMEWORK_FUNCTION_GALLERY);
-    }
-
-    private GalleryWrapper(Object o, Intent intent, int function) {
-        super(o, intent, function);
-        this.intent = intent;
-    }
-
-    @Override
-    public GalleryWrapper requestCode(int requestCode) {
-        intent.putExtra(KEY_INPUT_REQUEST_CODE, requestCode);
-        return this;
+        super(o, VALUE_INPUT_FRAMEWORK_FUNCTION_GALLERY);
+        this.mIntent = getIntent();
     }
 
     @Override
     public GalleryWrapper statusBarColor(@ColorInt int color) {
-        intent.putExtra(KEY_INPUT_STATUS_COLOR, color);
+        mIntent.putExtra(KEY_INPUT_STATUS_COLOR, color);
         return this;
     }
 
     @Override
     public GalleryWrapper toolBarColor(@ColorInt int color) {
-        intent.putExtra(KEY_INPUT_TOOLBAR_COLOR, color);
+        mIntent.putExtra(KEY_INPUT_TOOLBAR_COLOR, color);
         return this;
     }
 
     @Override
     public GalleryWrapper navigationBarColor(@ColorInt int color) {
-        intent.putExtra(KEY_INPUT_NAVIGATION_COLOR, color);
+        mIntent.putExtra(KEY_INPUT_NAVIGATION_COLOR, color);
         return this;
     }
 
-    @Override
+    /**
+     * Request code, callback to {@code onActivityResult()}.
+     *
+     * @param requestCode int.
+     * @return a subclass of {@link BasicWrapper}.
+     * @deprecated use {@link #start(int)} instead.
+     */
+    @Deprecated
+    public GalleryWrapper requestCode(int requestCode) {
+        this.requestCode = requestCode;
+        return this;
+    }
+
+    /**
+     * Sets the list of selected files.
+     *
+     * @param pathList path list.
+     * @return a subclass of {@link BasicWrapper}.
+     */
     public GalleryWrapper checkedList(@NonNull ArrayList<String> pathList) {
-        intent.putStringArrayListExtra(KEY_INPUT_CHECKED_LIST, pathList);
+        mIntent.putStringArrayListExtra(KEY_INPUT_CHECKED_LIST, pathList);
         return this;
     }
 
@@ -78,7 +87,7 @@ public class GalleryWrapper extends UIWrapper<GalleryWrapper> {
      * @return {@link GalleryWrapper}.
      */
     public GalleryWrapper checkFunction(boolean check) {
-        intent.putExtra(KEY_INPUT_CHECK_FUNCTION, check);
+        mIntent.putExtra(KEY_INPUT_CHECK_FUNCTION, check);
         return this;
     }
 
@@ -89,8 +98,16 @@ public class GalleryWrapper extends UIWrapper<GalleryWrapper> {
      * @return {@link GalleryWrapper}.
      */
     public GalleryWrapper currentPosition(int position) {
-        intent.putExtra(KEY_INPUT_CURRENT_POSITION, position);
+        mIntent.putExtra(KEY_INPUT_CURRENT_POSITION, position);
         return this;
     }
 
+    /**
+     * @see #start(int)
+     * @deprecated use {@link #start(int)} instead.
+     */
+    @Deprecated
+    public void start() {
+        start(requestCode);
+    }
 }

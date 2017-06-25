@@ -48,7 +48,6 @@ import com.yanzhenjie.album.impl.OnCompoundItemCheckListener;
 import com.yanzhenjie.album.task.ScanTask;
 import com.yanzhenjie.album.util.DisplayUtils;
 import com.yanzhenjie.album.widget.recyclerview.AlbumVerticalGirdDecoration;
-import com.yanzhenjie.fragment.NoFragment;
 import com.yanzhenjie.mediascanner.MediaScanner;
 
 import java.io.File;
@@ -61,6 +60,10 @@ import java.util.Locale;
  * Created by Yan Zhenjie on 2017/3/25.
  */
 public class AlbumFragment extends BasicCameraFragment {
+
+    public static final String KEY_INPUT_CHECK_MODE = "KEY_INPUT_CHECK_MODE";
+    public static final int VALUE_INPUT_CHECK_MULTI = 0;
+    public static final int VALUE_INPUT_CHECK_RADIO = 1;
 
     private static final int REQUEST_CODE_FRAGMENT_PREVIEW = 100;
     private static final int REQUEST_CODE_FRAGMENT_NULL = 101;
@@ -86,6 +89,7 @@ public class AlbumFragment extends BasicCameraFragment {
     private List<AlbumImage> mCheckedImages = new ArrayList<>(1);
     private int mCurrentFolderPosition;
 
+    private int mCheckMode;
     private int mAllowSelectCount;
 
     private AlbumFolderDialog mAlbumFolderDialog;
@@ -135,6 +139,7 @@ public class AlbumFragment extends BasicCameraFragment {
                 ContextCompat.getColor(getContext(), R.color.album_ColorPrimaryBlack));
         int columnCount = argument.getInt(AlbumWrapper.KEY_INPUT_COLUMN_COUNT, 2);
         mAllowSelectCount = argument.getInt(AlbumWrapper.KEY_INPUT_LIMIT_COUNT, Integer.MAX_VALUE);
+        mCheckMode = argument.getInt(KEY_INPUT_CHECK_MODE, VALUE_INPUT_CHECK_MULTI);
         mHasCamera = argument.getBoolean(AlbumWrapper.KEY_INPUT_ALLOW_CAMERA, true);
 
         // noinspection ConstantConditions
@@ -154,15 +159,16 @@ public class AlbumFragment extends BasicCameraFragment {
                 itemSize,
                 ContextCompat.getColor(getContext(), R.color.album_WhiteGray),
                 mToolBarColor);
+        mAlbumContentAdapter.setCheckMode(mCheckMode);
         mAlbumContentAdapter.setAddPhotoClickListener(mAddPhotoListener);
         mAlbumContentAdapter.setOnCheckListener(mItemCheckListener);
         mAlbumContentAdapter.setItemClickListener(new OnCompatItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 List<AlbumImage> albumImages = mAlbumFolders.get(mCurrentFolderPosition).getImages();
-                AlbumPreviewFragment previewFragment = NoFragment.instantiate(getContext(), AlbumPreviewFragment.class, argument);
+                AlbumPreviewFragment previewFragment = fragment(AlbumPreviewFragment.class, argument);
                 previewFragment.bindAlbumImages(albumImages, mCheckedImages, position);
-                startFragmentForResquest(previewFragment, REQUEST_CODE_FRAGMENT_PREVIEW);
+                startFragmentForResult(previewFragment, REQUEST_CODE_FRAGMENT_PREVIEW);
             }
         });
         mRvContentList.setAdapter(mAlbumContentAdapter);
@@ -181,8 +187,8 @@ public class AlbumFragment extends BasicCameraFragment {
         public void onScanCallback(List<AlbumFolder> folders) {
             mAlbumFolders = folders;
             if (mAlbumFolders.get(0).getImages().size() == 0) {
-                AlbumNullFragment nullFragment = NoFragment.instantiate(getContext(), AlbumNullFragment.class, getArguments());
-                startFragmentForResquest(nullFragment, REQUEST_CODE_FRAGMENT_NULL);
+                AlbumNullFragment nullFragment = fragment(AlbumNullFragment.class, getArguments());
+                startFragmentForResult(nullFragment, REQUEST_CODE_FRAGMENT_NULL);
             } else showImageFromFolder(0);
         }
     };
@@ -313,6 +319,17 @@ public class AlbumFragment extends BasicCameraFragment {
                 } else {
                     mCheckedImages.add(albumImage);
                 }
+
+                switch (mCheckMode) {
+                    case AlbumFragment.VALUE_INPUT_CHECK_RADIO: {
+                        onAlbumResult();
+                        break;
+                    }
+                    case AlbumFragment.VALUE_INPUT_CHECK_MULTI: {
+                        // Nothing.
+                        break;
+                    }
+                }
             } else {
                 mCheckedImages.remove(albumImage);
             }
@@ -337,12 +354,10 @@ public class AlbumFragment extends BasicCameraFragment {
     private View.OnClickListener mPreviewClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(mCheckedImages.size() > 0) {
-                AlbumPreviewFragment previewFragment = NoFragment.instantiate(getContext(),
-                        AlbumPreviewFragment.class,
-                        getArguments());
+            if (mCheckedImages.size() > 0) {
+                AlbumPreviewFragment previewFragment = fragment(AlbumPreviewFragment.class, getArguments());
                 previewFragment.bindAlbumImages(mCheckedImages, mCheckedImages, 0);
-                startFragmentForResquest(previewFragment, REQUEST_CODE_FRAGMENT_PREVIEW);
+                startFragmentForResult(previewFragment, REQUEST_CODE_FRAGMENT_PREVIEW);
             }
         }
     };

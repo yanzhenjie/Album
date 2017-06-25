@@ -29,42 +29,37 @@ import java.lang.reflect.Method;
  */
 public abstract class BasicWrapper<T extends BasicWrapper> {
 
-    static final String KEY_INPUT_REQUEST_CODE = "KEY_INPUT_REQUEST_CODE";
-
     static final String KEY_INPUT_FRAMEWORK_FUNCTION = "KEY_INPUT_FRAMEWORK_FUNCTION";
     static final int VALUE_INPUT_FRAMEWORK_FUNCTION_ALBUM = 0;
-    static final int VALUE_INPUT_FRAMEWORK_FUNCTION_GALLERY = 1;
-    static final int VALUE_INPUT_FRAMEWORK_FUNCTION_CAMERA = 2;
+    static final int VALUE_INPUT_FRAMEWORK_FUNCTION_ALBUM_RADIO = 1;
+    static final int VALUE_INPUT_FRAMEWORK_FUNCTION_GALLERY = 2;
+    static final int VALUE_INPUT_FRAMEWORK_FUNCTION_CAMERA = 3;
 
     private Object o;
     private Intent intent;
 
-    BasicWrapper(Object o, Intent intent, int function) {
+    protected BasicWrapper(Object o, int function) {
         this.o = o;
-        this.intent = intent;
+        this.intent = new Intent(getContext(o), AlbumActivity.class);
         this.intent.putExtra(KEY_INPUT_FRAMEWORK_FUNCTION, function);
+    }
+
+    Intent getIntent() {
+        return intent;
     }
 
     /**
      * Start the Album.
      */
-    public final void start() {
+    public final void start(int requestCode) {
         try {
             Method method = o.getClass().getMethod("startActivityForResult", Intent.class, int.class);
             if (!method.isAccessible()) method.setAccessible(true);
-            method.invoke(o, intent, intent.getIntExtra(KEY_INPUT_REQUEST_CODE, 0));
+            method.invoke(o, intent, requestCode);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-    /**
-     * Request code, callback to {@code onActivityResult()}.
-     *
-     * @param requestCode int.
-     * @return a subclass of {@link BasicWrapper}.
-     */
-    public abstract T requestCode(int requestCode);
 
     /**
      * Get the context.

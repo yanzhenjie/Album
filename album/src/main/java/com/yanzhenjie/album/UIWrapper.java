@@ -15,11 +15,7 @@
  */
 package com.yanzhenjie.album;
 
-import android.content.Intent;
 import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-
-import java.util.ArrayList;
 
 /**
  * <p>Basic UI Wrapper.</p>
@@ -32,8 +28,8 @@ public abstract class UIWrapper<T extends BasicWrapper> extends BasicWrapper<T> 
     public static final String KEY_INPUT_NAVIGATION_COLOR = "KEY_INPUT_NAVIGATION_COLOR";
     public static final String KEY_INPUT_CHECKED_LIST = "KEY_INPUT_CHECKED_LIST";
 
-    protected UIWrapper(Object o, Intent intent, int function) {
-        super(o, intent, function);
+    protected UIWrapper(Object o, int function) {
+        super(o, function);
     }
 
     /**
@@ -59,13 +55,5 @@ public abstract class UIWrapper<T extends BasicWrapper> extends BasicWrapper<T> 
      * @return a subclass of {@link BasicWrapper}.
      */
     public abstract T navigationBarColor(@ColorInt int color);
-
-    /**
-     * Sets the list of selected files.
-     *
-     * @param pathList path list.
-     * @return a subclass of {@link BasicWrapper}.
-     */
-    public abstract T checkedList(@NonNull ArrayList<String> pathList);
 
 }
