@@ -190,6 +190,7 @@ public class AlbumFragment extends BasicCameraFragment {
                 AlbumNullFragment nullFragment = fragment(AlbumNullFragment.class, getArguments());
                 startFragmentForResult(nullFragment, REQUEST_CODE_FRAGMENT_NULL);
             } else showImageFromFolder(0);
+            setCheckedCountUI(mCheckedImages.size());
         }
     };
 
@@ -295,6 +296,17 @@ public class AlbumFragment extends BasicCameraFragment {
         } else {
             images.add(image);
             showImageFromFolder(0);
+        }
+
+        switch (mCheckMode) {
+            case AlbumFragment.VALUE_INPUT_CHECK_RADIO: {
+                onAlbumResult();
+                break;
+            }
+            case AlbumFragment.VALUE_INPUT_CHECK_MULTI: {
+                // Nothing.
+                break;
+            }
         }
     }
 

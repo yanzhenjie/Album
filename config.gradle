@@ -14,8 +14,8 @@ ext {
             minSdkVersion    : 11,
             targetSdkVersion : 25,
 
-            versionCode      : 12,
-            versionName      : "1.1.1",
+            versionCode      : 13,
+            versionName      : "1.1.2",
     ]
 
     maven = [
@@ -57,7 +57,8 @@ ext {
             mediascanner: 'com.yanzhenjie:mediascanner:1.0.2',
             loading     : 'com.yanzhenjie:loading:1.0.2',
 
-            album       : 'com.yanzhenjie:album:1.0.6',
+            album       : 'com.yanzhenjie:album:1.0.7',
+            durban      : 'com.yanzhenjie:durban:1.0.1',
             picasso     : 'com.squareup.picasso:picasso:2.5.2',
             glide       : 'com.github.bumptech.glide:glide:3.8.0',
     ]

@@ -108,10 +108,7 @@ public class AlbumImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 return new ItemViewHolder(mInflater.inflate(R.layout.album_item_content_button, parent, false), hasCamera, itemSize);
             }
             default: {
-                ImageHolder viewHolder = new ImageHolder(
-                        mInflater.inflate(R.layout.album_item_content_image, parent, false), hasCamera, itemSize);
-                viewHolder.setCheckMode(mCheckMode);
-                return viewHolder;
+                return new ImageHolder(mInflater.inflate(R.layout.album_item_content_image, parent, false), hasCamera, itemSize);
             }
         }
     }
@@ -133,6 +130,7 @@ public class AlbumImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 int camera = hasCamera ? 1 : 0;
                 int imagePosition = holder.getAdapterPosition() - camera;
                 AlbumImage albumImage = mAlbumImages.get(imagePosition);
+                imageHolder.setCheckMode(mCheckMode);
                 imageHolder.setData(albumImage);
                 break;
             }

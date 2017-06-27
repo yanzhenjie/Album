@@ -17,13 +17,13 @@ public class RadioAlbumWrapper<T extends RadioAlbumWrapper> extends UIWrapper<T>
     private Intent mIntent;
 
     RadioAlbumWrapper(Object o) {
-        super(o, VALUE_INPUT_FRAMEWORK_FUNCTION_ALBUM_RADIO);
-        mIntent = getIntent();
-        mIntent.putExtra(KEY_INPUT_LIMIT_COUNT, 1);
+        this(o, VALUE_INPUT_FRAMEWORK_FUNCTION_ALBUM_RADIO);
     }
 
-    protected RadioAlbumWrapper(Object o, int function) {
+    RadioAlbumWrapper(Object o, int function) {
         super(o, function);
+        mIntent = getIntent();
+        mIntent.putExtra(KEY_INPUT_LIMIT_COUNT, 1);
     }
 
     @Override
