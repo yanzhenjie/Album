@@ -26,19 +26,23 @@ public class CameraWrapper extends BasicWrapper<CameraWrapper> {
     public static final String KEY_INPUT_IMAGE_PATH = "KEY_INPUT_IMAGE_PATH";
 
     private Intent mIntent;
+    private int requestCode;
 
     CameraWrapper(Object o) {
-        this(o, new Intent(getContext(o), AlbumActivity.class), VALUE_INPUT_FRAMEWORK_FUNCTION_CAMERA);
+        super(o, VALUE_INPUT_FRAMEWORK_FUNCTION_CAMERA);
+        this.mIntent = getIntent();
     }
 
-    private CameraWrapper(Object o, Intent intent, int function) {
-        super(o, intent, function);
-        this.mIntent = intent;
-    }
-
-    @Override
+    /**
+     * Request code, callback to {@code onActivityResult()}.
+     *
+     * @param requestCode int.
+     * @return a subclass of {@link BasicWrapper}.
+     * @deprecated use {@link #start(int)} instead.
+     */
+    @Deprecated
     public CameraWrapper requestCode(int requestCode) {
-        mIntent.putExtra(KEY_INPUT_REQUEST_CODE, requestCode);
+        this.requestCode = requestCode;
         return this;
     }
 
@@ -51,5 +55,14 @@ public class CameraWrapper extends BasicWrapper<CameraWrapper> {
     public CameraWrapper imagePath(String imagePath) {
         mIntent.putExtra(KEY_INPUT_IMAGE_PATH, imagePath);
         return this;
+    }
+
+    /**
+     * @see #start(int)
+     * @deprecated use {@link #start(int)} instead.
+     */
+    @Deprecated
+    public void start() {
+        start(requestCode);
     }
 }

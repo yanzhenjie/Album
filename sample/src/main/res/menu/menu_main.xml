@@ -19,12 +19,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.yanzhenjie.photoalbum.MainActivity">
+
+    <item
+        android:id="@+id/action_check_image_face"
+        android:icon="@drawable/ic_tag_faces_white"
+        android:orderInCategory="100"
+        android:title="@string/menu_check_image"
+        app:showAsAction="always|withText"/>
+
     <item
         android:id="@+id/action_check_image"
         android:icon="@drawable/ic_image_white"
         android:orderInCategory="100"
         android:title="@string/menu_check_image"
         app:showAsAction="always|withText"/>
+
     <item
         android:id="@+id/action_camera_picture"
         android:icon="@drawable/ic_camera_white"

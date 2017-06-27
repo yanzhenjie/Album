@@ -47,8 +47,6 @@ public final class Album {
 
     /**
      * Get the album configuration.
-     *
-     * @return {@link AlbumConfig}.
      */
     public static AlbumConfig getAlbumConfig() {
         if (sAlbumConfig == null) {
@@ -62,40 +60,49 @@ public final class Album {
     }
 
     /**
-     * Open the album from the activity.
-     *
-     * @param activity {@link Activity}.
-     * @return {@link AlbumWrapper}.
+     * In multi-check mode, open the album.
      */
     public static AlbumWrapper album(Activity activity) {
         return new AlbumWrapper(activity);
     }
 
     /**
-     * Open the album from the {@link Fragment}.
-     *
-     * @param fragment {@link Fragment}.
-     * @return {@link AlbumWrapper}.
+     * In multi-check mode, open the album.
      */
     public static AlbumWrapper album(Fragment fragment) {
         return new AlbumWrapper(fragment);
     }
 
     /**
-     * Open the album from the {@link android.app.Fragment}.
-     *
-     * @param fragment {@link android.app.Fragment}.
-     * @return {@link AlbumWrapper}.
+     * In multi-check mode, open the album.
      */
     public static AlbumWrapper album(android.app.Fragment fragment) {
         return new AlbumWrapper(fragment);
     }
 
     /**
+     * Open the album in radio mode.
+     */
+    public static RadioAlbumWrapper albumRadio(Activity activity) {
+        return new RadioAlbumWrapper(activity);
+    }
+
+    /**
+     * Open the album in radio mode.
+     */
+    public static RadioAlbumWrapper albumRadio(Fragment fragment) {
+        return new RadioAlbumWrapper(fragment);
+    }
+
+    /**
+     * Open the album in radio mode.
+     */
+    public static RadioAlbumWrapper albumRadio(android.app.Fragment fragment) {
+        return new RadioAlbumWrapper(fragment);
+    }
+
+    /**
      * Open the gallery from the activity.
-     *
-     * @param activity {@link Activity}.
-     * @return {@link GalleryWrapper}.
      */
     public static GalleryWrapper gallery(Activity activity) {
         return new GalleryWrapper(activity);
@@ -103,9 +110,6 @@ public final class Album {
 
     /**
      * Open the gallery from the {@link Fragment}.
-     *
-     * @param fragment {@link Fragment}.
-     * @return {@link GalleryWrapper}.
      */
     public static GalleryWrapper gallery(Fragment fragment) {
         return new GalleryWrapper(fragment);
@@ -113,9 +117,6 @@ public final class Album {
 
     /**
      * Open the gallery from the {@link android.app.Fragment}.
-     *
-     * @param fragment {@link android.app.Fragment}.
-     * @return {@link GalleryWrapper}.
      */
     public static GalleryWrapper gallery(android.app.Fragment fragment) {
         return new GalleryWrapper(fragment);
@@ -123,9 +124,6 @@ public final class Album {
 
     /**
      * Open the camera from the activity.
-     *
-     * @param activity {@link Activity}.
-     * @return {@link CameraWrapper}.
      */
     public static CameraWrapper camera(Activity activity) {
         return new CameraWrapper(activity);
@@ -133,9 +131,6 @@ public final class Album {
 
     /**
      * Open the camera from the {@link Fragment}.
-     *
-     * @param fragment {@link Fragment}.
-     * @return {@link CameraWrapper}.
      */
     public static CameraWrapper camera(Fragment fragment) {
         return new CameraWrapper(fragment);
@@ -143,9 +138,6 @@ public final class Album {
 
     /**
      * Open the camera from the {@link android.app.Fragment}.
-     *
-     * @param fragment {@link android.app.Fragment}.
-     * @return {@link CameraWrapper}.
      */
     public static CameraWrapper camera(android.app.Fragment fragment) {
         return new CameraWrapper(fragment);
@@ -167,13 +159,6 @@ public final class Album {
     }
 
     /**
-     * Open the album from the {@link Activity}.
-     *
-     * @param activity    {@link Activity}.
-     * @param requestCode request code.
-     * @see #album(Activity)
-     * @see #album(Fragment)
-     * @see #album(android.app.Fragment)
      * @deprecated user {@link #album(Activity)} instead.
      */
     @Deprecated
@@ -183,14 +168,6 @@ public final class Album {
     }
 
     /**
-     * Open the album from the {@link Activity}.
-     *
-     * @param activity    {@link Activity}.
-     * @param requestCode request code.
-     * @param limitCount  number of photos to select.
-     * @see #album(Activity)
-     * @see #album(Fragment)
-     * @see #album(android.app.Fragment)
      * @deprecated user {@link #album(Activity)} instead.
      */
     @Deprecated
@@ -201,16 +178,6 @@ public final class Album {
     }
 
     /**
-     * Open the album from the {@link Activity}.
-     *
-     * @param activity       {@link Activity}.
-     * @param requestCode    request code.
-     * @param limitCount     number of photos to select.
-     * @param toolbarColor   Toolbar color.
-     * @param statusBarColor StatusBar color.
-     * @see #album(Activity)
-     * @see #album(Fragment)
-     * @see #album(android.app.Fragment)
      * @deprecated user {@link #album(Activity)} instead.
      */
     @Deprecated
@@ -224,13 +191,6 @@ public final class Album {
     }
 
     /**
-     * Open the album from the {@link Fragment}.
-     *
-     * @param fragment    {@link Fragment}.
-     * @param requestCode request code.
-     * @see #album(Activity)
-     * @see #album(Fragment)
-     * @see #album(android.app.Fragment)
      * @deprecated user {@link #album(Fragment)} instead.
      */
     @Deprecated
@@ -240,14 +200,6 @@ public final class Album {
     }
 
     /**
-     * Open the album from the {@link Fragment}.
-     *
-     * @param fragment    {@link Fragment}.
-     * @param requestCode request code.
-     * @param limitCount  number of photos to select.
-     * @see #album(Activity)
-     * @see #album(Fragment)
-     * @see #album(android.app.Fragment)
      * @deprecated user {@link #album(Fragment)} instead.
      */
     @Deprecated
@@ -258,16 +210,6 @@ public final class Album {
     }
 
     /**
-     * Open the album from the {@link Fragment}.
-     *
-     * @param fragment       {@link Fragment}.
-     * @param requestCode    request code.
-     * @param limitCount     number of photos to select.
-     * @param toolbarColor   Toolbar color.
-     * @param statusBarColor StatusBar color.
-     * @see #album(Activity)
-     * @see #album(Fragment)
-     * @see #album(android.app.Fragment)
      * @deprecated user {@link #album(Fragment)} instead.
      */
     @Deprecated

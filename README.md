@@ -25,7 +25,7 @@ Please experience [download apk](https://github.com/yanzhenjie/Album/blob/master
 # Dependencies
 * Gradle：
 ```groovy
-compile 'com.yanzhenjie:album:1.0.6'
+compile 'com.yanzhenjie:album:1.0.7'
 ```
 
 * Maven:
@@ -33,19 +33,9 @@ compile 'com.yanzhenjie:album:1.0.6'
 <dependency>
   <groupId>com.yanzhenjie</groupId>
   <artifactId>album</artifactId>
-  <version>1.0.6</version>
+  <version>1.0.7</version>
   <type>pom</type>
 </dependency>
-```
-
-# Register in mainifest.xml
-For your application to be better and more stable, a few properties are required, you can also add other, for example: `android:screenOrientation="portrait"`.
-```xml
-<activity
-    android:name="com.yanzhenjie.album.AlbumActivity"
-    android:configChanges="orientation|keyboardHidden|screenSize"
-    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-    android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
 ```
 
 # Permission
@@ -66,7 +56,6 @@ Album's main function is: `Album, Camera and Gallery`, the following are describ
 Use `Album.album(context).start()` to call up the `Album`.  
 ```java
 Album.album(context)
-    .requestCode(999) // Request code.
     .toolBarColor(toolbarColor) // Toolbar color.
     .statusBarColor(statusBarColor) // StatusBar color.
     .navigationBarColor(navigationBarColor) // NavigationBar color.
@@ -76,7 +65,7 @@ Album.album(context)
     .columnCount(2) // Number of albums.
     .camera(true) // Have a camera function.
     .checkedList(mImageList) // Has selected the picture, automatically select.
-    .start();
+    .start(999); // 999 is requestCode.
 ```
 
 Accept the result：  
@@ -94,15 +83,28 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 }
 ```
 
-Cut the selection results, then use [Durban](https://github.com/yanzhenjie/Durban).
+Cut the selection results, then use [Durban](https://github.com/yanzhenjie/Durban).  
+
+**If you need to radio**, that is, in the album click on the picture to return:  
+```java
+Album.albumRadio(this)
+    .toolBarColor(toolbarColor) // Toolbar color.
+    .statusBarColor(statusBarColor) // StatusBar color.
+    .navigationBarColor(navigationBarColor) // NavigationBar color.
+    .title("Album") // Title.
+    
+    .selectCount(9) // Choose up to a few pictures.
+    .columnCount(2) // Number of albums.
+    .start(999); // 999 is requestCode.
+```
+And call the election is different from the `Album.albumRadio(context)`, and lost `selectCount()` and `checkedList()` methods.
 
 ## Camera
 Use the `Album.camera(context).start ()` to call up the `Camera`, has handled the RunTimePermissions and `Android7.0 FileProvider`
 ```java
 Album.camera(context)
-    .requestCode(666)
     // .imagePath() // Specify the image path, optional.
-    .start();
+    .start(666); // 666 is requestCode.
 ```
 
 Accept the result： 
@@ -128,7 +130,6 @@ Use the `Album.gallery(context).start ()` to call up the `Gallery`, default supp
 Call you only need to pass in a path set:  
 ```java
 Album.gallery(context)
-    .requestCode(444) // Request code.
     .toolBarColor(toolbarColor) // Toolbar color.
     .statusBarColor(statusBarColor) // StatusBar color.
     .navigationBarColor(navigationBarColor) // NavigationBar color.
@@ -136,7 +137,7 @@ Album.gallery(context)
     .checkedList(mImageList) // List of pictures to preview.
     .currentPosition(position) // First display position image of the list.
     .checkFunction(true) // Anti-election function.
-    .start();
+    .start(444); // 444 is requestCode.
 ```
 
 **Note:**
@@ -231,7 +232,6 @@ If there is a problem, add the rule to the proguard-rules:
 
 # Thanks
 1. [PhotoView](https://github.com/chrisbanes/PhotoView)
-2. [LoadingDrawable](https://github.com/dinuscxj/LoadingDrawable)
 
 # License
 ```text

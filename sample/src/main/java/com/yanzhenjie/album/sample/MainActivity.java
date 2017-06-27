@@ -26,13 +26,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.yanzhenjie.album.Album;
+import com.yanzhenjie.album.sample.util.FileUtils;
 import com.yanzhenjie.album.util.DisplayUtils;
 import com.yanzhenjie.album.widget.recyclerview.AlbumVerticalGirdDecoration;
+import com.yanzhenjie.durban.Durban;
+import com.yanzhenjie.mediascanner.MediaScanner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +47,11 @@ import java.util.List;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private static final int ACTIVITY_REQUEST_SELECT_PHOTO = 100;
-    private static final int ACTIVITY_REQUEST_TAKE_PICTURE = 101;
-    private static final int ACTIVITY_REQUEST_PREVIEW_PHOTO = 102;
+    private static final int ACTIVITY_REQUEST_SELECT_RADIO = 100;
+    private static final int ACTIVITY_REQUEST_SELECT_CROP_RADIO = 101;
+    private static final int ACTIVITY_REQUEST_SELECT_PHOTO = 102;
+    private static final int ACTIVITY_REQUEST_TAKE_PICTURE = 103;
+    private static final int ACTIVITY_REQUEST_PREVIEW_PHOTO = 104;
 
     private View noneView;
 
@@ -89,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private void fromAlbum() {
         Album.album(this)
-                .requestCode(ACTIVITY_REQUEST_SELECT_PHOTO)
                 .toolBarColor(ContextCompat.getColor(this, R.color.colorPrimary)) // Toolbar color.
                 .statusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark)) // StatusBar color.
                 .navigationBarColor(ActivityCompat.getColor(this, R.color.colorPrimaryBlack)) // NavigationBar color.
@@ -97,7 +102,20 @@ public class MainActivity extends AppCompatActivity {
                 .columnCount(2) // span count.
                 .camera(true) // has fromCamera function.
                 .checkedList(mImageList) // The picture has been selected for anti-election.
-                .start();
+                .start(ACTIVITY_REQUEST_SELECT_PHOTO);
+    }
+
+    /**
+     * Radio mode selection picture.
+     */
+    private void fromAlbumRadio() {
+        Album.albumRadio(this)
+                .toolBarColor(ContextCompat.getColor(this, R.color.colorPrimary)) // Toolbar color.
+                .statusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark)) // StatusBar color.
+                .navigationBarColor(ActivityCompat.getColor(this, R.color.colorPrimaryBlack)) // NavigationBar color.
+                .columnCount(2) // span count.
+                .camera(true) // has fromCamera function.
+                .start(ACTIVITY_REQUEST_SELECT_RADIO);
     }
 
     /**
@@ -105,9 +123,8 @@ public class MainActivity extends AppCompatActivity {
      */
     private void fromCamera() {
         Album.camera(this)
-                .requestCode(ACTIVITY_REQUEST_TAKE_PICTURE)
 //                .imagePath() // Specify the image path, optional.
-                .start();
+                .start(ACTIVITY_REQUEST_TAKE_PICTURE);
     }
 
     /**
@@ -117,20 +134,51 @@ public class MainActivity extends AppCompatActivity {
      */
     private void previewImage(int position) {
         Album.gallery(this)
-                .requestCode(ACTIVITY_REQUEST_PREVIEW_PHOTO)
                 .toolBarColor(ContextCompat.getColor(this, R.color.colorPrimary)) // Toolbar color.
                 .statusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark)) // StatusBar color.
                 .navigationBarColor(ActivityCompat.getColor(this, R.color.colorPrimaryBlack)) // NavigationBar color.
                 .checkedList(mImageList) // Image list.
                 .currentPosition(position) // Preview first to show the first few.
                 .checkFunction(true) // Does the user have an anti-selection when previewing.
-                .start();
+                .start(ACTIVITY_REQUEST_PREVIEW_PHOTO);
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
+            case ACTIVITY_REQUEST_SELECT_RADIO: {
+                if (resultCode == RESULT_OK) {
+                    // Image crop: https://github.com/yanzhenjie/Durban
+                    Durban.with(this)
+                            .toolBarColor(ContextCompat.getColor(this, R.color.colorPrimary)) // Toolbar color.
+                            .statusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark)) // StatusBar color.
+                            .navigationBarColor(ActivityCompat.getColor(this, R.color.colorPrimaryBlack)) // NavigationBar color.
+                            .inputImagePaths(Album.parseResult(data))
+                            .outputDirectory(FileUtils.getRootPath(this).getAbsolutePath())
+                            .aspectRatio(1, 1)
+                            .maxWidthHeight(500, 500)
+                            .requestCode(ACTIVITY_REQUEST_SELECT_CROP_RADIO)
+                            .start();
+                } else if (resultCode == RESULT_CANCELED) { // User canceled.
+                    Snackbar.make(noneView, R.string.cancel_select_photo_hint, Snackbar.LENGTH_LONG).show();
+                }
+                break;
+            }
+            case ACTIVITY_REQUEST_SELECT_CROP_RADIO: {
+                if (resultCode == RESULT_OK) { // Successfully.
+                    List<String> imageList = Durban.parseResult(data); // Parse path.
+                    for (String s : imageList) {
+                        Log.i("TAG", s);
+                    }
+                    new MediaScanner(this).scan(imageList); // Scan to system: https://github.com/yanzhenjie/MediaScanner
+                    mImageList.addAll(imageList);
+                    refreshImage();
+                } else if (resultCode == RESULT_CANCELED) { // User canceled.
+                    Snackbar.make(noneView, R.string.cancel_select_photo_hint, Snackbar.LENGTH_LONG).show();
+                }
+                break;
+            }
             case ACTIVITY_REQUEST_SELECT_PHOTO: {
                 if (resultCode == RESULT_OK) { // Successfully.
                     mImageList = Album.parseResult(data); // Parse select result.
@@ -184,6 +232,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            case R.id.action_check_image_face: {
+                fromAlbumRadio();
+                break;
+            }
             case R.id.action_check_image: {
                 fromAlbum();
                 break;

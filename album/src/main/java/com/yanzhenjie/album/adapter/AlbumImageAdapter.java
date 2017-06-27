@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.entity.AlbumImage;
+import com.yanzhenjie.album.fragment.AlbumFragment;
 import com.yanzhenjie.album.impl.OnCompatItemClickListener;
 import com.yanzhenjie.album.impl.OnCompoundItemCheckListener;
 import com.yanzhenjie.album.util.SelectorUtils;
@@ -38,7 +39,7 @@ import java.util.List;
  * <p>Picture list display adapter.</p>
  * Created by Yan Zhenjie on 2016/10/18.
  */
-public class AlbumImageAdapter extends RecyclerView.Adapter<AlbumImageAdapter.ItemViewHolder> {
+public class AlbumImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_BUTTON = 1;
     private static final int TYPE_IMAGE = 2;
@@ -46,15 +47,11 @@ public class AlbumImageAdapter extends RecyclerView.Adapter<AlbumImageAdapter.It
     private boolean hasCamera;
 
     private LayoutInflater mInflater;
-
     private ColorStateList mColorStateList;
-
     private List<AlbumImage> mAlbumImages;
-
+    private int mCheckMode;
     private OnCompatItemClickListener mAddPhotoClickListener;
-
     private OnCompatItemClickListener mItemClickListener;
-
     private OnCompoundItemCheckListener mOnCompatCheckListener;
 
     private int itemSize;
@@ -70,6 +67,10 @@ public class AlbumImageAdapter extends RecyclerView.Adapter<AlbumImageAdapter.It
     public void notifyDataSetChanged(List<AlbumImage> albumImages) {
         this.mAlbumImages = albumImages;
         super.notifyDataSetChanged();
+    }
+
+    public void setCheckMode(int checkMode) {
+        this.mCheckMode = checkMode;
     }
 
     public void setAddPhotoClickListener(OnCompatItemClickListener addPhotoClickListener) {
@@ -101,63 +102,86 @@ public class AlbumImageAdapter extends RecyclerView.Adapter<AlbumImageAdapter.It
     }
 
     @Override
-    public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ItemViewHolder viewHolder;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
-            case TYPE_BUTTON:
-                viewHolder = new ItemViewHolder(
-                        mInflater.inflate(R.layout.album_item_content_button, parent, false), hasCamera, itemSize);
-                break;
-            default:
-                viewHolder = new ImageHolder(
-                        mInflater.inflate(R.layout.album_item_content_image, parent, false), hasCamera, itemSize);
-                break;
+            case TYPE_BUTTON: {
+                return new ItemViewHolder(mInflater.inflate(R.layout.album_item_content_button, parent, false), hasCamera, itemSize);
+            }
+            default: {
+                return new ImageHolder(mInflater.inflate(R.layout.album_item_content_image, parent, false), hasCamera, itemSize);
+            }
         }
-        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ItemViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
             case TYPE_BUTTON: {
-                holder.mItemClickListener = mAddPhotoClickListener;
+                ItemViewHolder imageHolder = (ItemViewHolder) holder;
+                imageHolder.mItemClickListener = mAddPhotoClickListener;
                 break;
             }
             default: {
-                int camera = hasCamera ? 1 : 0;
-                int imagePosition = holder.getAdapterPosition() - camera;
-                AlbumImage albumImage = mAlbumImages.get(imagePosition);
-
                 ImageHolder imageHolder = (ImageHolder) holder;
                 imageHolder.mItemClickListener = mItemClickListener;
                 imageHolder.mOnCompatCheckListener = mOnCompatCheckListener;
                 imageHolder.setButtonTint(mColorStateList);
+
+                int camera = hasCamera ? 1 : 0;
+                int imagePosition = holder.getAdapterPosition() - camera;
+                AlbumImage albumImage = mAlbumImages.get(imagePosition);
+                imageHolder.setCheckMode(mCheckMode);
                 imageHolder.setData(albumImage);
                 break;
             }
         }
     }
 
-    private static class ImageHolder extends ItemViewHolder implements View.OnClickListener {
+    private static class ImageHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView mIvImage;
         private AppCompatCheckBox mCbChecked;
 
+        private final boolean hasCamera;
+        private final int itemSize;
+        private OnCompatItemClickListener mItemClickListener;
         private OnCompoundItemCheckListener mOnCompatCheckListener;
 
-        public ImageHolder(View itemView, boolean hasCamera, int itemSize) {
-            super(itemView, hasCamera, itemSize);
+        int mCheckMode;
+
+        ImageHolder(View itemView, boolean hasCamera, int itemSize) {
+            super(itemView);
+            this.hasCamera = hasCamera;
+            this.itemSize = itemSize;
+
+            itemView.getLayoutParams().height = itemSize;
+            itemView.setOnClickListener(this);
+
             mIvImage = (ImageView) itemView.findViewById(R.id.iv_album_content_image);
             mCbChecked = (AppCompatCheckBox) itemView.findViewById(R.id.cb_album_check);
             mCbChecked.setOnClickListener(this);
         }
 
-        public void setButtonTint(ColorStateList colorStateList) {
+        void setCheckMode(int mode) {
+            this.mCheckMode = mode;
+            switch (mode) {
+                case AlbumFragment.VALUE_INPUT_CHECK_RADIO: {
+                    mCbChecked.setVisibility(View.GONE);
+                    break;
+                }
+                case AlbumFragment.VALUE_INPUT_CHECK_MULTI: {
+                    mCbChecked.setVisibility(View.VISIBLE);
+                    break;
+                }
+            }
+        }
+
+        void setButtonTint(ColorStateList colorStateList) {
             //noinspection RestrictedApi
             mCbChecked.setSupportButtonTintList(colorStateList);
         }
 
-        public void setData(AlbumImage albumImage) {
+        void setData(AlbumImage albumImage) {
             mCbChecked.setChecked(albumImage.isChecked());
             Album.getAlbumConfig().getImageLoader().loadImage(mIvImage, albumImage.getPath(), itemSize, itemSize);
         }
@@ -165,21 +189,41 @@ public class AlbumImageAdapter extends RecyclerView.Adapter<AlbumImageAdapter.It
 
         @Override
         public void onClick(View v) {
-            if (mOnCompatCheckListener != null && v == mCbChecked) {
-                boolean isChecked = mCbChecked.isChecked();
-                int camera = hasCamera ? 1 : 0;
-                mOnCompatCheckListener.onCheckedChanged(mCbChecked, getAdapterPosition() - camera, isChecked);
+            if (v == itemView) {
+                switch (mCheckMode) {
+                    case AlbumFragment.VALUE_INPUT_CHECK_RADIO: {
+                        if (mOnCompatCheckListener != null) {
+                            mCbChecked.toggle();
+                            int camera = hasCamera ? 1 : 0;
+                            mOnCompatCheckListener.onCheckedChanged(mCbChecked, getAdapterPosition() - camera, mCbChecked.isChecked());
+                        }
+                        break;
+                    }
+                    case AlbumFragment.VALUE_INPUT_CHECK_MULTI: {
+                        if (mItemClickListener != null) {
+                            int camera = hasCamera ? 1 : 0;
+                            mItemClickListener.onItemClick(v, getAdapterPosition() - camera);
+                        }
+                        break;
+                    }
+                }
+            } else if (v == mCbChecked) {
+                if (mOnCompatCheckListener != null) {
+                    boolean isChecked = mCbChecked.isChecked();
+                    int camera = hasCamera ? 1 : 0;
+                    mOnCompatCheckListener.onCheckedChanged(mCbChecked, getAdapterPosition() - camera, isChecked);
+                }
             }
         }
     }
 
-    static class ItemViewHolder extends RecyclerView.ViewHolder {
+    private static class ItemViewHolder extends RecyclerView.ViewHolder {
 
         final boolean hasCamera;
         final int itemSize;
         OnCompatItemClickListener mItemClickListener;
 
-        public ItemViewHolder(View itemView, boolean hasCamera, int itemSize) {
+        ItemViewHolder(View itemView, boolean hasCamera, int itemSize) {
             super(itemView);
             this.hasCamera = hasCamera;
             this.itemSize = itemSize;
