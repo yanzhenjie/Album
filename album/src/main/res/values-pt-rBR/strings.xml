@@ -35,7 +35,7 @@
         <item quantity="other">Você pode selecionar apenas %1$d imagens</item>
     </plurals>
     <plurals name="album_check_limit_camera">
-        <item quantity="one">Ação não permitida. Você atingiu o limite de %1$d imagem selecionada.</item>
-        <item quantity="other">Ação não permitida. Você atingiu o limite de %1$d imagens selecionada.</item>
+        <item quantity="one">Você atingiu o limite de %1$d imagem selecionada.</item>
+        <item quantity="other">Você atingiu o limite de %1$d imagens selecionada.</item>
     </plurals>
 </resources>
