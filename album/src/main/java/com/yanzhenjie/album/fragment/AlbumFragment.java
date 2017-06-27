@@ -257,7 +257,7 @@ public class AlbumFragment extends BasicCameraFragment {
             if (hasCheckSize >= mAllowSelectCount)
                 Toast.makeText(
                         getContext(),
-                        String.format(Locale.getDefault(), getString(R.string.album_check_limit_camera), mAllowSelectCount),
+                        String.format(Locale.getDefault(), getResources().getQuantityString(R.plurals.album_check_limit_camera, mAllowSelectCount), mAllowSelectCount),
                         Toast.LENGTH_LONG).show();
             else
                 cameraUnKnowPermission(randomJPGPath());
@@ -305,7 +305,7 @@ public class AlbumFragment extends BasicCameraFragment {
                 if (mCheckedImages.size() >= mAllowSelectCount) {
                     Toast.makeText(
                             getContext(),
-                            String.format(Locale.getDefault(), getString(R.string.album_check_limit), mAllowSelectCount),
+                            String.format(Locale.getDefault(), getResources().getQuantityString(R.plurals.album_check_limit, mAllowSelectCount), mAllowSelectCount),
                             Toast.LENGTH_LONG).show();
 
                     buttonView.setChecked(false);

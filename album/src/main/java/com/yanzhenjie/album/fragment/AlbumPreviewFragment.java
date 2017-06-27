@@ -120,7 +120,7 @@ public class AlbumPreviewFragment extends NoFragment {
                     if (mCheckedImages.size() >= mAllowSelectCount) {
                         Toast.makeText(
                                 getContext(),
-                                String.format(Locale.getDefault(), getString(R.string.album_check_limit), mAllowSelectCount),
+                                String.format(Locale.getDefault(), getResources().getQuantityString(R.plurals.album_check_limit, mAllowSelectCount), mAllowSelectCount),
                                 Toast.LENGTH_LONG).show();
 
                         mCheckBox.setChecked(false);

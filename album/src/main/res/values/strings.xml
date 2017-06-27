@@ -21,8 +21,6 @@
 
     <string name="album_title">Image</string>
     <string name="album_all_image">All Images</string>
-    <string name="album_check_limit">You can only select %1$d images</string>
-    <string name="album_check_limit_camera">You can only select %1$d images, anti-election after the operation.</string>
     <string name="album_check_little">You have not choose photos.</string>
     <string name="album_menu_finish">Finish</string>
     <string name="album_check">Selected</string>
@@ -31,4 +29,11 @@
     <string name="album_permission_storage_failed_hint">Failed to get read photo album permissions, please authorize in the Settings before use.</string>
     <string name="album_permission_camera_failed_hint">Failed to get camera permissions, please authorize in the Settings before use.</string>
     <string name="album_dialog_sure">OK</string>
+
+    <plurals name="album_check_limit">
+        <item quantity="other">You can only select %1$d images</item>
+    </plurals>
+    <plurals name="album_check_limit_camera">
+        <item quantity="other">You can only select %1$d images, anti-election after the operation.</item>
+    </plurals>
 </resources>
