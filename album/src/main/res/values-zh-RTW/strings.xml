@@ -21,8 +21,6 @@
 
     <string name="album_title">圖片</string>
     <string name="album_all_image">所有圖片</string>
-    <string name="album_check_limit">您最多可以選擇%1$d張圖片</string>
-    <string name="album_check_limit_camera">您最多可以選擇%1$d張圖片，請刪除1張後再拍照。</string>
     <string name="album_check_little">妳沒有選擇照片</string>
     <string name="album_menu_finish">完成</string>
     <string name="album_check">選擇</string>
@@ -31,4 +29,11 @@
     <string name="album_permission_storage_failed_hint">獲取讀取相冊權限失敗，請在設置中授權後再使用。</string>
     <string name="album_permission_camera_failed_hint">獲取相機權限失敗，請在設置中授權後再使用。</string>
     <string name="album_dialog_sure">好的</string>
+
+    <plurals name="album_check_limit">
+        <item quantity="other">您最多可以選擇%1$d張圖片</item>
+    </plurals>
+    <plurals name="album_check_limit_camera">
+        <item quantity="other">您最多可以選擇%1$d張圖片，請刪除1張後再拍照。</item>
+    </plurals>
 </resources>
