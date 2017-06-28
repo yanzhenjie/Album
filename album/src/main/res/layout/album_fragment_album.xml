@@ -31,7 +31,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/album_dp_50"
-        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
         android:background="@color/album_SheetBackground">
 
         <Button

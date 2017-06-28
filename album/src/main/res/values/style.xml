@@ -71,7 +71,7 @@
     </style>
 
     <style name="album_DialogStyle.Folder">
-        <item name="android:windowBackground">@null</item>
+        <item name="android:windowBackground">@color/album_Transparent</item>
     </style>
 
     <!-- Button -->
