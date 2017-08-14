@@ -18,7 +18,7 @@ ext {
             versionName      : "1.1.2",
     ]
 
-    maven = [
+    bintray = [
             // library
             version       : "1.0.7",
 
