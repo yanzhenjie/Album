@@ -16,29 +16,48 @@
 -->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     style="@style/album_MatchParent"
-    android:background="@color/album_ColorPrimaryBlack"
-    tools:ignore="MergeRootFrame,Overdraw,UnusedAttribute">
+    android:background="@color/album_ColorPrimaryBlack">
 
     <com.yanzhenjie.album.widget.photoview.FixViewPager
         android:id="@+id/view_pager"
         style="@style/album_MatchParent"/>
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        style="@style/album_Toolbar.PopupTheme"
+    <LinearLayout
+        style="@style/album_WrapContent.WidthMatchParent"
         android:layout_alignParentTop="true"
-        android:background="@color/album_Transparent"
-        app:navigationIcon="@drawable/album_ic_back_white"/>
+        android:orientation="vertical">
+
+        <com.yanzhenjie.statusview.StatusView
+            style="@style/album_WrapContent.WidthMatchParent"
+            android:background="@color/album_Transparent"/>
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/album_Toolbar"
+            android:background="@color/album_Transparent"/>
+    </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/layout_gallery_preview_bottom"
+        android:id="@+id/bottom_root"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_alignParentBottom="true"
         android:background="@color/album_SheetBackground">
+
+        <TextView
+            android:id="@+id/tv_duration"
+            style="@style/album_WrapContent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/album_dp_6"
+            android:layout_marginStart="@dimen/album_dp_6"
+            android:drawableLeft="@drawable/album_tag_video_white"
+            android:drawablePadding="@dimen/album_dp_4"
+            android:drawableStart="@drawable/album_tag_video_white"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@color/album_FontLight"
+            android:visibility="gone"/>
 
         <android.support.v7.widget.AppCompatCheckBox
             android:id="@+id/cb_album_check"
@@ -49,7 +68,7 @@
             android:layout_marginEnd="@dimen/album_dp_10"
             android:layout_marginRight="@dimen/album_dp_10"
             android:text="@string/album_check"
-            android:textColor="@color/album_White"
+            android:textColor="@color/album_FontLight"
             android:textSize="@dimen/album_sp_16"/>
 
     </RelativeLayout>

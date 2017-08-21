@@ -14,12 +14,13 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/album_menu_finish"
         android:icon="@drawable/album_ic_done_white"
         android:title="@string/album_menu_finish"
-        app:showAsAction="always|withText" />
+        app:showAsAction="always|withText"/>
 </menu>

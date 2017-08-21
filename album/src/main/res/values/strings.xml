@@ -15,25 +15,60 @@
     limitations under the License.
 -->
 <resources>
-    <string name="album_title_not_found_image">Not Found Image</string>
-    <string name="album_not_found_picture">Did not find the picture</string>
-    <string name="album_take_picture">Take Picture</string>
+    <string name="album_not_found_image">No picture files found</string>
+    <string name="album_not_found_video">No video files found</string>
+    <string name="album_not_found_album">No media files found</string>
 
-    <string name="album_title">Image</string>
-    <string name="album_all_image">All Images</string>
-    <string name="album_check_little">You have not choose photos.</string>
+    <string name="album_camera_image_capture">Take Picture</string>
+    <string name="album_camera_video_capture">Record Video</string>
+
+    <string name="album_title">Media Album</string>
+    <string name="album_all_images">All Images</string>
+    <string name="album_all_videos">All Videos</string>
+    <string name="album_all_images_videos">All Images/Videos</string>
+
+    <string name="album_check_image_little">You have not choose image file yet</string>
+    <string name="album_check_video_little">You have not choose video file yet</string>
+    <string name="album_check_album_little">You have not choose media file yet</string>
     <string name="album_menu_finish">Finish</string>
     <string name="album_check">Selected</string>
 
-    <string name="album_dialog_permission_failed">Access to failure</string>
-    <string name="album_permission_storage_failed_hint">Failed to get read photo album permissions, please authorize in the Settings before use.</string>
-    <string name="album_permission_camera_failed_hint">Failed to get camera permissions, please authorize in the Settings before use.</string>
+    <string name="album_menu_camera_image">Take Picture</string>
+    <string name="album_menu_camera_video">Record Video</string>
+
+    <string name="album_title_permission_failed">Access to failure</string>
+    <string name="album_permission_storage_failed_hint">Failed to get Storage permission, please authorize in the Settings before use.</string>
+    <string name="album_permission_camera_image_failed_hint">Failed to get Camera/Storage permissions, please authorize in the Settings before use.</string>
+    <string name="album_permission_camera_video_failed_hint">Failed to get Camera/Storage/Microphone permissions, please authorize in the Settings before use.</string>
     <string name="album_dialog_sure">OK</string>
 
-    <plurals name="album_check_limit">
-        <item quantity="other">You can only select %1$d images</item>
+    <plurals name="album_check_image_limit">
+        <item quantity="one">You can only select %1$d image.</item>
+        <item quantity="other">You can only select %1$d images.</item>
     </plurals>
-    <plurals name="album_check_limit_camera">
+
+    <plurals name="album_check_image_limit_camera">
+        <item quantity="one">You can only select %1$d image, anti-election after the operation.</item>
         <item quantity="other">You can only select %1$d images, anti-election after the operation.</item>
+    </plurals>
+
+    <plurals name="album_check_video_limit">
+        <item quantity="one">You can only select %1$d video.</item>
+        <item quantity="other">You can only select %1$d videos.</item>
+    </plurals>
+
+    <plurals name="album_check_video_limit_camera">
+        <item quantity="one">You can only select %1$d image, anti-election after the operation.</item>
+        <item quantity="other">You can only select %1$d videos, anti-election after the operation.</item>
+    </plurals>
+
+    <plurals name="album_check_album_limit">
+        <item quantity="one">You can only select %1$d file.</item>
+        <item quantity="other">You can only select %1$d files.</item>
+    </plurals>
+
+    <plurals name="album_check_album_limit_camera">
+        <item quantity="one">You can only select %1$d file, anti-election after the operation.</item>
+        <item quantity="other">You can only select %1$d files, anti-election after the operation.</item>
     </plurals>
 </resources>

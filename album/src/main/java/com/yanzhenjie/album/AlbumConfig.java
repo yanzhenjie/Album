@@ -17,7 +17,7 @@ package com.yanzhenjie.album;
 
 import android.content.Context;
 
-import com.yanzhenjie.album.impl.AlbumImageLoader;
+import com.yanzhenjie.album.task.DefaultAlbumLoader;
 
 import java.util.Locale;
 
@@ -34,30 +34,23 @@ public class AlbumConfig {
         return new Builder(context);
     }
 
-    private AlbumImageLoader mImageLoader;
+    private AlbumLoader mLoader;
     private Locale mLocale;
 
-    private AlbumConfig(Builder build) {
-        this.mImageLoader = build.mLoader;
-        this.mLocale = build.mLocale;
+    private AlbumConfig(Builder builder) {
+        this.mLoader = builder.mLoader == null ?
+                DefaultAlbumLoader.getInstance() : builder.mLoader;
+        this.mLocale = builder.mLocale == null ?
+                Locale.getDefault() : builder.mLocale;
     }
 
     /**
-     * @deprecated use {@link #AlbumConfig(Builder)} instead.
-     */
-    @Deprecated
-    private AlbumConfig(Build build) {
-        this.mImageLoader = build.mLoader;
-        this.mLocale = build.mLocale;
-    }
-
-    /**
-     * Get {@link AlbumImageLoader}.
+     * Get {@link AlbumLoader}.
      *
-     * @return {@link AlbumImageLoader}.
+     * @return {@link AlbumLoader}.
      */
-    public AlbumImageLoader getImageLoader() {
-        return mImageLoader;
+    public AlbumLoader getAlbumLoader() {
+        return mLoader;
     }
 
     /**
@@ -71,19 +64,19 @@ public class AlbumConfig {
 
     public static final class Builder {
 
-        private AlbumImageLoader mLoader;
+        private AlbumLoader mLoader;
         private Locale mLocale;
 
         private Builder(Context context) {
         }
 
         /**
-         * Set image loader.
+         * Set album loader.
          *
-         * @param loader {@link AlbumImageLoader}.
+         * @param loader {@link AlbumLoader}.
          * @return {@link Builder}.
          */
-        public Builder setImageLoader(AlbumImageLoader loader) {
+        public Builder setAlbumLoader(AlbumLoader loader) {
             this.mLoader = loader;
             return this;
         }
@@ -104,60 +97,6 @@ public class AlbumConfig {
          *
          * @return {@link AlbumConfig}.
          */
-        public AlbumConfig build() {
-            return new AlbumConfig(this);
-        }
-    }
-
-    /**
-     * @deprecated use {@link Builder} instead.
-     */
-    @Deprecated
-    public static final class Build {
-
-        private AlbumImageLoader mLoader;
-        private Locale mLocale;
-
-        /**
-         * @deprecated use {@link AlbumConfig#newBuilder(Context)} instead.
-         */
-        @Deprecated
-        public Build() {
-        }
-
-        /**
-         * Set image loader.
-         *
-         * @param loader {@link AlbumImageLoader}.
-         * @return {@link Build}.
-         * @deprecated use {@link Builder#setImageLoader(AlbumImageLoader)} instead.
-         */
-        @Deprecated
-        public Build setImageLoader(AlbumImageLoader loader) {
-            this.mLoader = loader;
-            return this;
-        }
-
-        /**
-         * Set locale for language.
-         *
-         * @param locale {@link Locale}.
-         * @return {@link Build}.
-         * @deprecated use {@link Builder#setLocale(Locale)} instead.
-         */
-        @Deprecated
-        public Build setLocale(Locale locale) {
-            this.mLocale = locale;
-            return this;
-        }
-
-        /**
-         * Create AlbumConfig.
-         *
-         * @return {@link AlbumConfig}.
-         * @deprecated use {@link Builder#build()} instead.
-         */
-        @Deprecated
         public AlbumConfig build() {
             return new AlbumConfig(this);
         }

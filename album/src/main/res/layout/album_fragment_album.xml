@@ -16,12 +16,23 @@
 -->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     style="@style/album_MatchParent"
-    android:background="@color/album_White"
-    tools:ignore="MergeRootFrame,Overdraw,UnusedAttribute">
+    android:background="@color/album_White">
 
-    <include layout="@layout/album_toolbar"/>
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        style="@style/album_WrapContent.WidthMatchParent">
+
+        <com.yanzhenjie.statusview.StatusView
+            android:id="@+id/status_view"
+            style="@style/album_WrapContent.WidthMatchParent"
+            android:background="@color/album_ColorPrimaryDark"/>
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/album_Toolbar"/>
+
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_content_list"
@@ -44,7 +55,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:maxWidth="@dimen/album_dp_200"
-            android:textColor="@color/album_White"
+            android:textColor="@color/album_FontLight"
             android:textSize="@dimen/album_sp_16"/>
 
 
@@ -58,7 +69,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:maxWidth="@dimen/album_dp_200"
-            android:textColor="@color/album_White"
+            android:textColor="@color/album_FontLight"
             android:textSize="@dimen/album_sp_16"/>
 
     </RelativeLayout>

@@ -27,44 +27,44 @@ import android.view.Display;
 public class DisplayUtils {
 
     private static boolean isInitialize = false;
-    public static int screenWidth;
-    public static int screenHeight;
 
-    private static DisplayMetrics mMetrics;
+    public static int sScreenWidth;
+    public static int sScreenHeight;
+    private static float mDensity;
+    private static float mScaledDensity;
 
     public static void initScreen(Activity activity) {
         if (isInitialize) return;
         isInitialize = true;
-        reMeasure(activity);
-    }
 
-    public static void reMeasure(Activity activity) {
         Display display = activity.getWindowManager().getDefaultDisplay();
-        mMetrics = new DisplayMetrics();
+        DisplayMetrics metrics = new DisplayMetrics();
 
         if (VERSION.SDK_INT >= 17) {
-            display.getRealMetrics(mMetrics);
+            display.getRealMetrics(metrics);
         } else {
-            display.getMetrics(mMetrics);
+            display.getMetrics(metrics);
         }
 
-        screenWidth = mMetrics.widthPixels;
-        screenHeight = mMetrics.heightPixels;
+        sScreenWidth = metrics.widthPixels;
+        sScreenHeight = metrics.heightPixels;
+        mDensity = metrics.density;
+        mScaledDensity = metrics.scaledDensity;
     }
 
     public static int px2dip(float inParam) {
-        return (int) (inParam / mMetrics.density + 0.5F);
+        return (int) (inParam / mDensity + 0.5F);
     }
 
     public static int dip2px(float inParam) {
-        return (int) (inParam * mMetrics.density + 0.5F);
+        return (int) (inParam * mDensity + 0.5F);
     }
 
     public static int px2sp(float inParam) {
-        return (int) (inParam / mMetrics.scaledDensity + 0.5F);
+        return (int) (inParam / mScaledDensity + 0.5F);
     }
 
     public static int sp2px(float inParam) {
-        return (int) (inParam * mMetrics.scaledDensity + 0.5F);
+        return (int) (inParam * mScaledDensity + 0.5F);
     }
 }

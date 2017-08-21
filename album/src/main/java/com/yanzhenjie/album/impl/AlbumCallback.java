@@ -15,6 +15,8 @@
  */
 package com.yanzhenjie.album.impl;
 
+import com.yanzhenjie.album.AlbumFile;
+
 import java.util.ArrayList;
 
 /**
@@ -26,9 +28,9 @@ public interface AlbumCallback {
     /**
      * Photo album callback selection result.
      *
-     * @param imagePathList file path list.
+     * @param albumFiles file path list.
      */
-    void onAlbumResult(ArrayList<String> imagePathList);
+    void onAlbumResult(ArrayList<AlbumFile> albumFiles);
 
     /**
      * The album canceled the operation.

@@ -14,11 +14,20 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="album_AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="album_ChoiceActivity" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textAllCaps" tools:targetApi="ice_cream_sandwich">false</item>
+    </style>
 
-    <style name="album_PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="album_TransparentActivity" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/album_Transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowDisablePreview">true</item>
+    </style>
 
     <!-- MatchParent -->
 
@@ -39,19 +48,16 @@
     </style>
 
     <style name="album_Toolbar" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:theme">@style/album_ToolbarTheme</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
-        <item name="titleTextColor">@color/album_White</item>
-        <item name="subtitleTextColor">@color/album_White</item>
-        <item name="theme">@style/album_ToolbarTheme</item>
+        <item name="titleTextColor">@color/album_FontLight</item>
+        <item name="subtitleTextColor">@color/album_FontLight</item>
+        <item name="navigationIcon">@drawable/album_ic_back_white</item>
     </style>
 
     <style name="album_ToolbarTheme">
-        <item name="actionMenuTextColor">@color/album_White</item>
-    </style>
-
-    <style name="album_Toolbar.PopupTheme">
-        <item name="popupTheme">@style/album_PopupOverlay</item>
+        <item name="actionMenuTextColor">@color/album_FontLight</item>
     </style>
 
     <!-- CheckBox -->
