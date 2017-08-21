@@ -82,6 +82,7 @@ public class VideoActivity extends AppCompatActivity {
         Album.video(this)
                 .multipleChoice()
                 .requestCode(200)
+                .columnCount(2)
                 .selectCount(6)
                 .camera(true)
                 .checkedList(mAlbumFiles)

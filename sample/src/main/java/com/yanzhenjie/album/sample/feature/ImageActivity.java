@@ -84,7 +84,7 @@ public class ImageActivity extends AppCompatActivity {
                 .requestCode(200)
                 .camera(true)
                 .columnCount(2)
-                .selectCount(1)
+                .selectCount(6)
                 .checkedList(mAlbumFiles)
                 .widget(
                         Widget.newDarkBuilder(this)

@@ -26,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumListener;
 import com.yanzhenjie.album.sample.R;
@@ -61,9 +60,9 @@ public class CameraActivity extends AppCompatActivity {
                     @Override
                     public void onAlbumResult(int requestCode, @NonNull String result) {
                         mTextView.setText(result);
-                        Glide.with(CameraActivity.this)
-                                .load(result)
-                                .into(mImageView);
+
+                        DefaultAlbumLoader.getInstance()
+                                .loadImage(mImageView, result, 720, 1280);
                     }
 
                     @Override
@@ -79,6 +78,9 @@ public class CameraActivity extends AppCompatActivity {
                 .video()
 //                .filePath()
                 .requestCode(3)
+                .quality(1)
+                .limitDuration(Long.MAX_VALUE)
+                .limitBytes(Long.MAX_VALUE)
                 .listener(new AlbumListener<String>() {
                     @Override
                     public void onAlbumResult(int requestCode, @NonNull String result) {

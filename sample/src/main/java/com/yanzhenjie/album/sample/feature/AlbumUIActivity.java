@@ -48,6 +48,7 @@ import java.util.ArrayList;
  */
 public class AlbumUIActivity extends AppCompatActivity {
 
+    private Toolbar mToolbar;
     private TextView mTvMessage;
 
     private Adapter mAdapter;
@@ -58,8 +59,8 @@ public class AlbumUIActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         StatusUtils.setStatusBarColor(this, Color.WHITE);
         setContentView(R.layout.activity_album_ui);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
         mTvMessage = (TextView) findViewById(R.id.tv_message);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -76,12 +77,12 @@ public class AlbumUIActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(mAdapter);
 
-        if(!StatusUtils.setStatusBarDarkFont(this, true)) {
+        if (!StatusUtils.setStatusBarDarkFont(this, true)) {
             StatusUtils.setStatusBarColor(this, ContextCompat.getColor(this, R.color.colorPrimaryBlack));
         }
 
         //noinspection ConstantConditions
-        AlbumUtils.setDrawableTint(toolbar.getNavigationIcon(), ContextCompat.getColor(this, R.color.colorPrimaryBlack));
+        AlbumUtils.setDrawableTint(mToolbar.getNavigationIcon(), ContextCompat.getColor(this, R.color.colorPrimaryBlack));
     }
 
     /**
@@ -96,6 +97,7 @@ public class AlbumUIActivity extends AppCompatActivity {
                 .checkedList(mAlbumFiles)
                 .widget(
                         Widget.newLightBuilder(this)
+                                .title(mToolbar.getTitle().toString())
                                 .statusBarColor(Color.WHITE)
                                 .toolBarColor(Color.WHITE)
                                 .mediaItemCheckSelector(Color.BLUE, Color.GREEN)

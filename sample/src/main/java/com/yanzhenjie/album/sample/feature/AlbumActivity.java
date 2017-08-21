@@ -82,6 +82,7 @@ public class AlbumActivity extends AppCompatActivity {
         Album.album(this)
                 .multipleChoice()
                 .requestCode(200)
+                .columnCount(2)
                 .selectCount(6)
                 .camera(true)
                 .checkedList(mAlbumFiles)

@@ -28,7 +28,7 @@ import java.io.File;
 /**
  * Created by Yan Zhenjie on 2017/3/31.
  */
-public class PicassoImageLoader implements AlbumLoader {
+public class PicassoAlbumLoader implements AlbumLoader {
 
     @Override
     public void loadAlbumFile(ImageView imageView, AlbumFile albumFile, int viewWidth, int viewHeight) {
