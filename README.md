@@ -2,6 +2,8 @@
 `Album` is an Material Design Style open source album, support internationalization, support for international expansion; main function modules: select image and video, take picture, record video, gallery.
 
 <image src="./image/logo.png"/>  
+  
+[中文文档](./README-CN.md)  
 
 # Feature
 1. Stream Api.
@@ -20,7 +22,7 @@
 # Screenshot
 <image src="./image/1.gif" width="210px"/> <image src="./image/2.gif" width="210px"/> <image src="./image/3.gif" width="210px"/> <image src="./image/4.gif" width="210px"/>  
 
-White StatusBar, because Android5.0 does not support the StatusBar dark font, so when using the white StatusBar, the text of the StatusBar can not see, so the album within the Android5.0 system default StatusBar gray Black (system original color). The left is the effect of 5.0, the right is the effect of 5.0:  
+White StatusBar, because Android5.0 does not support the StatusBar dark font, so when using the white StatusBar, the text of the StatusBar can not see, so the album within the Android5.0 system default StatusBar gray Black (system original color). The left is the effect of 5.0-(Containing 5.0), the right is the effect of 6.0+(Containing 6.0):  
   
 <image src="./image/5.gif" width="210px"/> <image src="./image/6.gif" width="210px"/>
 
@@ -194,7 +196,9 @@ public long getModifyDate(); // File to modification date, must not be empty.
 public float getLatitude(); // The latitude of the file, may be zero.
 public float getLongitude(); // The longitude of the file, may be zero.
 public long getSize(); // File size in bytes.
-public String getThumbPath(); // The preview of image, the photo album to return to the original image must be the original path.
+
+// The thumb of image, Returns the path of file when taking pictures in the album.
+public String getThumbPath();
 ```
 
 ### Video
@@ -214,7 +218,9 @@ public long getDuration(); // Video duration, must have.
 public String getResolution(); // Video resolution, must have.
 public int getWidth(); // Video wide, must have.
 public int getHeight(); // Video height, must have.
-public String getThumbPath(); // The preview of video, the photo album to return to the original image must be the original path.
+
+// The thumb of video, Returns the path of file when recording video in the album.
+public String getThumbPath();
 ```
 
 ## Customize UI
