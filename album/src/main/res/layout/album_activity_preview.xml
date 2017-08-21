@@ -38,44 +38,47 @@
             android:background="@color/album_Transparent"/>
     </LinearLayout>
 
-    <com.yanzhenjie.statusview.NavigationView
-        android:id="@+id/navigation_view"
+    <LinearLayout
         style="@style/album_WrapContent.WidthMatchParent"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/bottom_root"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:layout_above="@id/navigation_view"
-        android:layout_alignParentBottom="true">
+        <RelativeLayout
+            android:id="@+id/bottom_root"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize">
 
-        <TextView
-            android:id="@+id/tv_duration"
-            style="@style/album_WrapContent"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/album_dp_6"
-            android:layout_marginStart="@dimen/album_dp_6"
-            android:drawableLeft="@drawable/album_tag_video_white"
-            android:drawablePadding="@dimen/album_dp_4"
-            android:drawableStart="@drawable/album_tag_video_white"
-            android:gravity="center"
-            android:maxLines="1"
-            android:textColor="@color/album_FontLight"
-            android:visibility="gone"/>
+            <TextView
+                android:id="@+id/tv_duration"
+                style="@style/album_WrapContent"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/album_dp_6"
+                android:layout_marginStart="@dimen/album_dp_6"
+                android:drawableLeft="@drawable/album_tag_video_white"
+                android:drawablePadding="@dimen/album_dp_4"
+                android:drawableStart="@drawable/album_tag_video_white"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textColor="@color/album_FontLight"
+                android:visibility="gone"/>
 
-        <android.support.v7.widget.AppCompatCheckBox
-            android:id="@+id/cb_album_check"
-            style="@style/album_CheckBox.WrapContent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/album_dp_10"
-            android:layout_marginRight="@dimen/album_dp_10"
-            android:text="@string/album_check"
-            android:textColor="@color/album_FontLight"
-            android:textSize="@dimen/album_sp_16"/>
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/cb_album_check"
+                style="@style/album_CheckBox.WrapContent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/album_dp_10"
+                android:layout_marginRight="@dimen/album_dp_10"
+                android:text="@string/album_check"
+                android:textColor="@color/album_FontLight"
+                android:textSize="@dimen/album_sp_16"/>
 
-    </RelativeLayout>
+        </RelativeLayout>
+
+        <com.yanzhenjie.statusview.NavigationView
+            android:id="@+id/navigation_view"
+            style="@style/album_WrapContent.WidthMatchParent"/>
+    </LinearLayout>
 
 </RelativeLayout>
