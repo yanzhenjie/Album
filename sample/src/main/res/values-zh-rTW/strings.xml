@@ -16,10 +16,31 @@
 -->
 <resources>
     <string name="app_name">Album</string>
-    <string name="menu_check_image">相冊</string>
-    <string name="menu_camera_picture">相機</string>
 
-    <string name="cancel_select_photo_hint">用戶取消了操作</string>
+    <string name="btn_plus">+</string>
 
-    <string name="none_photo">請點擊右上角選擇圖片</string>
+    <string name="title_camera">相機</string>
+    <string name="menu_camera_image">圖片</string>
+    <string name="menu_camera_video">視頻</string>
+
+    <string name="title_image_select">選擇圖片</string>
+    <string name="menu_image_select">圖片</string>
+
+    <string name="title_video_select">選擇視頻</string>
+    <string name="menu_video_select">視頻</string>
+
+    <string name="title_album_select">媒體專輯</string>
+    <string name="menu_album_select">Album</string>
+
+    <string name="title_gallery">畫廊</string>
+
+    <string name="menu_preview">畫廊</string>
+    <string name="btn_gallery_preview">預覽網絡圖片</string>
+
+    <string name="checkable">預覽圖片時可選擇</string>
+    <string name="canceled">取消了</string>
+
+    <string name="no_selected">請先選擇媒體文件</string>
+
+    <string name="hint_image_preview_click">點擊壹個Item去預覽全部的媒體文件</string>
 </resources>

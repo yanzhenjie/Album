@@ -18,11 +18,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yanzhenjie.album.sample">
 
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".Application"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
         <activity
@@ -35,6 +43,36 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".feature.CameraActivity"
+            android:label="@string/title_camera"
+            android:theme="@style/AppTheme"/>
+
+        <activity
+            android:name=".feature.ImageActivity"
+            android:label="@string/title_image_select"
+            android:theme="@style/AppTheme"/>
+
+        <activity
+            android:name=".feature.VideoActivity"
+            android:label="@string/title_video_select"
+            android:theme="@style/AppTheme"/>
+
+        <activity
+            android:name=".feature.AlbumActivity"
+            android:label="@string/title_album_select"
+            android:theme="@style/AppTheme"/>
+
+        <activity
+            android:name=".feature.AlbumUIActivity"
+            android:label="@string/title_album_select"
+            android:theme="@style/AppTheme"/>
+
+        <activity
+            android:name=".feature.GalleryActivity"
+            android:label="@string/title_gallery"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017 Yan Zhenjie
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<resources>
+    <string name="app_name">Álbum</string>
+
+    <string name="btn_plus">+</string>
+
+    <string name="title_camera">Câmera</string>
+    <string name="menu_camera_image">Imagem</string>
+    <string name="menu_camera_video">Vídeo</string>
+
+    <string name="title_image_select">Selecione a imagem</string>
+    <string name="menu_image_select">Imagem</string>
+
+    <string name="title_video_select">Selecione o vídeo</string>
+    <string name="menu_video_select">Vídeo</string>
+
+    <string name="title_album_select">Álbum de mídia</string>
+    <string name="menu_album_select">Álbum</string>
+
+    <string name="title_gallery">Galeria</string>
+
+    <string name="menu_preview">Galeria</string>
+    <string name="btn_gallery_preview">Visualize a imagem da web</string>
+
+    <string name="checkable">Visualizar quando visualizar fotos</string>
+    <string name="canceled">Cancelado</string>
+
+    <string name="no_selected">Selecione o arquivo de mídia primeiro</string>
+
+    <string name="hint_image_preview_click">Clique em um item para visualizar todos os arquivos de mídia</string>
+</resources>

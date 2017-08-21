@@ -20,5 +20,6 @@
     <color name="colorAccent">@color/colorPrimary</color>
     <color name="colorPrimaryBlack">#FF2B2B2B</color>
 
-    <color name="white">#FFFFFFFF</color>
+    <color name="colorWhite">#FFF</color>
+    <color name="colorFont">#333</color>
 </resources>

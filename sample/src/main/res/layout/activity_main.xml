@@ -1,12 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.yanzhenjie.album.sample.MainActivity">
+<!--
+    Copyright 2017 Yan Zhenjie
 
-    <include layout="@layout/activity_main_toolbar" />
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
-    <include layout="@layout/activity_main_content" />
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchParent">
+
+    <include layout="@layout/toolbar"/>
+
+    <ScrollView
+        style="@style/album_MatchParent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            style="@style/WrapContent.WidthMatchParent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/btn_camera"
+                style="@style/Button.Primary.WrapContent.WidthMatchParent"
+                android:minHeight="@dimen/dp_100"
+                android:src="@drawable/btn_camera_photo_white"/>
+
+            <LinearLayout
+                style="@style/WrapContent.WidthMatchParent"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/btn_image"
+                    style="@style/Button.Primary.WrapContent.WidthMatchParent"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/app_name"
+                    android:minHeight="@dimen/dp_100"
+                    android:src="@drawable/btn_image_white"/>
+
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/btn_video"
+                    style="@style/Button.Primary.WrapContent.WidthMatchParent"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/app_name"
+                    android:minHeight="@dimen/dp_100"
+                    android:src="@drawable/btn_video_white"/>
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btn_album"
+                style="@style/Button.Primary.WrapContent.WidthMatchParent"
+                android:contentDescription="@string/app_name"
+                android:minHeight="@dimen/dp_100"
+                android:src="@drawable/btn_album"/>
+
+            <ImageButton
+                android:id="@+id/btn_gallery"
+                style="@style/Button.Primary.WrapContent.WidthMatchParent"
+                android:contentDescription="@string/app_name"
+                android:minHeight="@dimen/dp_100"
+                android:src="@drawable/btn_gallery"/>
+
+            <ImageButton
+                android:id="@+id/btn_chang_ui"
+                style="@style/Button.Primary.WrapContent.WidthMatchParent"
+                android:contentDescription="@string/app_name"
+                android:minHeight="@dimen/dp_100"
+                android:src="@drawable/btn_change_ui"/>
+        </LinearLayout>
+    </ScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

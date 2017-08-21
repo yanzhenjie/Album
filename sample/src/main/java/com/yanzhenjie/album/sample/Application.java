@@ -17,9 +17,7 @@ package com.yanzhenjie.album.sample;
 
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumConfig;
-import com.yanzhenjie.album.task.LocalImageLoader;
-
-import java.util.Locale;
+import com.yanzhenjie.album.sample.load.GlideImageLoader;
 
 /**
  * <p>Application.</p>
@@ -32,14 +30,15 @@ public class Application extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        if (instance == null)
+        if (instance == null) {
             instance = this;
 
-        Album.initialize(new AlbumConfig.Build()
-                .setImageLoader(new LocalImageLoader())
-                .setLocale(Locale.getDefault())
-                .build()
-        );
+            Album.initialize(
+                    AlbumConfig.newBuilder(instance)
+                            .setAlbumLoader(new GlideImageLoader()) // This is not necessary.
+                            .build()
+            );
+        }
     }
 
     public static Application getInstance() {
