@@ -37,6 +37,7 @@ import com.yanzhenjie.album.util.PermissionUtils;
 import com.yanzhenjie.statusview.StatusUtils;
 
 import java.io.File;
+import java.util.Locale;
 
 /**
  * Created by YanZhenjie on 2017/8/16.
@@ -73,6 +74,9 @@ public class CameraActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StatusUtils.setStatusBarColor(this, Color.TRANSPARENT);
+        // Language.
+        Locale locale = Album.getAlbumConfig().getLocale();
+        AlbumUtils.applyLanguageForContext(this, locale);
         if (savedInstanceState != null &&
                 savedInstanceState.containsKey(INSTANCE_CAMERA_FUNCTION) &&
                 savedInstanceState.containsKey(INSTANCE_CAMERA_REQUEST_CODE) &&

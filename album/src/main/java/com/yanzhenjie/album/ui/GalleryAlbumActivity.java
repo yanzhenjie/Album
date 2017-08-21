@@ -48,6 +48,7 @@ import com.yanzhenjie.statusview.StatusUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -80,6 +81,8 @@ public class GalleryAlbumActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StatusUtils.setFullToStatusBar(this);
+        Locale locale = Album.getAlbumConfig().getLocale();
+        AlbumUtils.applyLanguageForContext(this, locale);
         setContentView(R.layout.album_activity_preview);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
