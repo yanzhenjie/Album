@@ -76,6 +76,10 @@ public class AlbumUIActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(mAdapter);
 
+        if(!StatusUtils.setStatusBarDarkFont(this, true)) {
+            StatusUtils.setStatusBarColor(this, ContextCompat.getColor(this, R.color.colorPrimaryBlack));
+        }
+
         //noinspection ConstantConditions
         AlbumUtils.setDrawableTint(toolbar.getNavigationIcon(), ContextCompat.getColor(this, R.color.colorPrimaryBlack));
     }
