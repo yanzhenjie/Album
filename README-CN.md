@@ -159,6 +159,11 @@ Album.camera(this)
 ## 画廊
 默认支持浏览本地图片，可以配置AlbumLoader来支持浏览网络图片列表。
 ```java
+// 浏览选中的AlbumFile：
+Album.galleryAlbum(this)。
+    ...
+
+// 浏览一般的String路径：
 Album.gallery(this)
     .requestCode(2) // 请求码，会在listener中返回。
     .checkedList(imageList) // 要浏览的图片列表：ArrayList<String>。
@@ -242,7 +247,13 @@ Album.video(this)
     .widget(...) // 此方法既是配置UI的方法。
     ...
 
-// 比如画廊：
+
+// 画廊，浏览选中的AlbumFile：
+Album.galleryAlbum(this)
+    .widget(...) // 此方法既是配置UI的方法。
+    ...
+
+// 画廊，浏览一般的String路径：
 Album.gallery(this)
     .widget(...) // 此方法既是配置UI的方法。
     ...

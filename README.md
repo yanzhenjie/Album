@@ -8,7 +8,7 @@
 # Feature
 1. Stream Api.
 2. Select Image, selecte video, select a mix of pictures and videos, all support single-select mode and multi-select mode.
-3. Thme camera function to support taking pictures and recording video, and support for use in the album's item.
+3. The camera function to support taking pictures and recording video, and support for use in the album's item.
 4. Gallery, support for zoom, support for browsing local images with network images, or a mix of local images and network images.
 5. The gallery supports for selection when previewing, and the "Finish" button does not appear in the upper right corner when the selection is not used.
 6. Multi-select mode supports setting the number of choices.
@@ -159,6 +159,11 @@ Album.camera(this)
 By default, developer can preview the local image, developer can configure AlbumLoader to support browsing the network image list.
 
 ```java
+// Preview AlbumFile:
+Album.galleryAlbum(this)
+...
+
+// Preview path:
 Album.gallery(this)
     .requestCode(2)
     .checkedList(imageList) // List of image to view: ArrayList<String>.
@@ -245,7 +250,12 @@ Album.video(this)
     .widget(...)
     ...
 
-// Gallery:
+// Gallery, preview AlbumFile:
+Album.galleryAlbum(this)
+    .widget(...)
+    ...
+
+// Gallery, preview path:
 Album.gallery(this)
     .widget(...)
     ...
