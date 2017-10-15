@@ -19,7 +19,7 @@ ext {
     ]
 
     bintray = [
-            version       : "2.0.0-alpha",
+            version       : "2.0.0",
 
             siteUrl       : 'https://github.com/yanzhenjie/Album',
             gitUrl        : 'git@github.com:yanzhenjie/Album.git',
@@ -48,6 +48,9 @@ ext {
     ]
 
     dependencies = [
+            junit       : 'junit:junit:4.12',
+            expressoCore: 'com.android.support.test.espresso:espresso-core:2.2.2',
+
             design      : 'com.android.support:design:25.3.1',
             appCompat   : 'com.android.support:appcompat-v7:25.3.1',
             recyclerView: 'com.android.support:recyclerview-v7:25.3.1',
@@ -58,7 +61,7 @@ ext {
             loading     : 'com.yanzhenjie:loading:1.0.2',
             statusView  : 'com.yanzhenjie:statusview:1.0.3',
 
-            album       : 'com.yanzhenjie:album:2.0.0-alpha',
+            album       : 'com.yanzhenjie:album:2.0.0',
             picasso     : 'com.squareup.picasso:picasso:2.5.2',
             glide       : 'com.github.bumptech.glide:glide:3.8.0',
     ]
