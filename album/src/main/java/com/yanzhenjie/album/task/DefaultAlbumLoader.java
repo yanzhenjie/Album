@@ -15,7 +15,6 @@
  */
 package com.yanzhenjie.album.task;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -23,14 +22,9 @@ import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
-import android.media.MediaMetadataRetriever;
-import android.media.ThumbnailUtils;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.MediaStore;
 import android.support.v4.util.LruCache;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -64,14 +58,6 @@ public class DefaultAlbumLoader implements AlbumLoader {
      * Post message.
      */
     private static Handler instanceHandler;
-    /**
-     * Image cache.
-     */
-    private final LruCache<String, Bitmap> mLruCache;
-    /**
-     * Thread pool.
-     */
-    private final ExecutorService mExecutorService;
 
     /**
      * Get single object.
@@ -87,6 +73,20 @@ public class DefaultAlbumLoader implements AlbumLoader {
         return mInstance;
     }
 
+    /**
+     * Get single handler.
+     *
+     * @return {@link Handler}.
+     */
+    private static Handler getHandler() {
+        if (instanceHandler == null)
+            synchronized (DefaultAlbumLoader.class) {
+                if (instanceHandler == null)
+                    instanceHandler = new Handler(Looper.getMainLooper());
+            }
+        return instanceHandler;
+    }
+
     public static void setPlaceHolderDrawable(Drawable drawable) {
         if (drawable != null)
             sPlaceHolderDrawable = drawable;
@@ -100,8 +100,17 @@ public class DefaultAlbumLoader implements AlbumLoader {
             sErrorDrawable = drawable;
     }
 
+    /**
+     * Image cache.
+     */
+    private final LruCache<String, Bitmap> mLruCache;
+    /**
+     * Thread pool.
+     */
+    private final ExecutorService mExecutorService;
+
     private DefaultAlbumLoader() {
-        mExecutorService = Executors.newFixedThreadPool(6);
+        this.mExecutorService = Executors.newFixedThreadPool(6);
 
         int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 4);
         mLruCache = new LruCache<String, Bitmap>(maxMemory) {
@@ -112,14 +121,14 @@ public class DefaultAlbumLoader implements AlbumLoader {
         };
     }
 
-    // ------------------------- Interface impl ------------------------- //
+    // ---------- Interface Impl ---------- //
 
     @Override
     public void loadAlbumFile(ImageView imageView, AlbumFile albumFile, int viewWidth, int viewHeight) {
         if (albumFile.getMediaType() == AlbumFile.TYPE_IMAGE) {
             loadImage(imageView, albumFile.getPath(), viewWidth, viewHeight);
         } else {
-            loadVideo(imageView, albumFile, viewWidth, viewHeight);
+            loadVideo(imageView, albumFile.getPath(), viewWidth, viewHeight);
         }
     }
 
@@ -134,30 +143,6 @@ public class DefaultAlbumLoader implements AlbumLoader {
             BitmapHolder holder = new BitmapHolder();
             holder.mImageView = imageView;
             holder.mTargetPath = imagePath;
-            holder.mBitmap = bitmap;
-            getHandler().post(holder);
-        }
-    }
-
-    /**
-     * Load video preview from local.
-     *
-     * @param imageView  {@link ImageView}.
-     * @param albumFile  path from local.
-     * @param viewWidth  target mViewWidth.
-     * @param viewHeight target mViewHeight.
-     */
-    private void loadVideo(ImageView imageView, AlbumFile albumFile, int viewWidth, int viewHeight) {
-        String albumPath = albumFile.getPath();
-        imageView.setTag(R.id.album_image_load_tag, albumPath);
-        Bitmap bitmap = getImageFromCache(albumPath, viewWidth, viewHeight);
-        if (bitmap == null) {
-            imageView.setImageDrawable(sPlaceHolderDrawable);
-            mExecutorService.execute(new LoadAlbumVideoTask(this, imageView, albumFile, viewWidth, viewHeight));
-        } else {
-            BitmapHolder holder = new BitmapHolder();
-            holder.mImageView = imageView;
-            holder.mTargetPath = albumPath;
             holder.mBitmap = bitmap;
             getHandler().post(holder);
         }
@@ -178,60 +163,7 @@ public class DefaultAlbumLoader implements AlbumLoader {
         }
     }
 
-    private static class LoadAlbumVideoTask implements Runnable {
-
-        private DefaultAlbumLoader mLoader;
-        private ImageView mImageView;
-        private AlbumFile mAlbumFile;
-        private int mViewWidth;
-        private int mViewHeight;
-
-        LoadAlbumVideoTask(DefaultAlbumLoader loader, ImageView imageView, AlbumFile albumFile, int viewWidth, int viewHeight) {
-            this.mLoader = loader;
-            this.mAlbumFile = albumFile;
-            this.mImageView = imageView;
-            this.mViewWidth = viewWidth;
-            this.mViewHeight = viewHeight;
-        }
-
-        @Override
-        public void run() {
-            Bitmap bitmap = null;
-            String targetPath = mAlbumFile.getPath();
-            String thumbnail = mAlbumFile.getThumbPath();
-
-            if (!TextUtils.isEmpty(thumbnail)) {
-                bitmap = readImageFromPath(mAlbumFile.getPath(), mViewWidth, mViewHeight);
-            }
-
-            if (bitmap == null) {
-                try {
-                    bitmap = readVideoFromId(mImageView.getContext(), mAlbumFile.getId());
-                } catch (Exception e) {
-                    Log.w(TAG, "Load thumbnail error, the path of file: " + mAlbumFile.getPath(), e);
-                }
-            }
-
-            if (bitmap == null) {
-                try {
-                    bitmap = readVideoFromPath(mImageView.getContext(), mAlbumFile.getPath());
-                } catch (Exception e) {
-                    Log.w(TAG, "Load thumbnail error, the path of file: " + mAlbumFile.getPath(), e);
-                }
-            }
-
-            postResult(targetPath, bitmap);
-        }
-
-        private void postResult(String filePath, Bitmap result) {
-            mLoader.addImageToCache(filePath, mViewWidth, mViewHeight, result);
-            BitmapHolder holder = new BitmapHolder();
-            holder.mBitmap = result;
-            holder.mImageView = mImageView;
-            holder.mTargetPath = filePath;
-            getHandler().post(holder);
-        }
-    }
+    // ---------- Load Task ---------- //
 
     private static class LoadVideoTask implements Runnable {
 
@@ -251,9 +183,10 @@ public class DefaultAlbumLoader implements AlbumLoader {
 
         @Override
         public void run() {
+            String thumbnail = new ThumbnailBuilder(mImageView.getContext()).createThumbnailForVideo(mFilePath);
             Bitmap bitmap = null;
             try {
-                bitmap = readVideoFromPath(mImageView.getContext(), mFilePath);
+                bitmap = BitmapFactory.decodeFile(thumbnail);
             } catch (Exception e) {
                 Log.w(TAG, "Load thumbnail error, the path of file: " + mFilePath, e);
             }
@@ -269,28 +202,6 @@ public class DefaultAlbumLoader implements AlbumLoader {
             getHandler().post(holder);
         }
     }
-
-    private static Bitmap readVideoFromId(Context context, int originId) throws Exception {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 1;
-        return MediaStore.Video.Thumbnails.getThumbnail(context.getContentResolver(),
-                originId,
-                MediaStore.Video.Thumbnails.MINI_KIND,
-                options);
-    }
-
-    private static Bitmap readVideoFromPath(Context context, String filePath) throws Exception {
-        Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(filePath, MediaStore.Video.Thumbnails.MINI_KIND);
-
-        if (bitmap == null) {
-            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-            retriever.setDataSource(context, Uri.fromFile(new File(filePath)));
-            bitmap = retriever.getFrameAtTime();
-        }
-        return bitmap;
-    }
-
-    // ---------------------------- Load Image ----------------------------- //
 
     private static class LoadImageTask implements Runnable {
 
@@ -332,7 +243,7 @@ public class DefaultAlbumLoader implements AlbumLoader {
      * @param maxHeight the highest limit value target mViewHeight.
      * @return Bitmap.
      */
-    private static Bitmap readImageFromPath(String imagePath, int maxWidth, int maxHeight) {
+    public static Bitmap readImageFromPath(String imagePath, int maxWidth, int maxHeight) {
         File imageFile = new File(imagePath);
         if (imageFile.exists()) {
             BufferedInputStream inputStream = null;
@@ -469,14 +380,4 @@ public class DefaultAlbumLoader implements AlbumLoader {
             }
         }
     }
-
-    private static Handler getHandler() {
-        if (instanceHandler == null)
-            synchronized (DefaultAlbumLoader.class) {
-                if (instanceHandler == null)
-                    instanceHandler = new Handler(Looper.getMainLooper());
-            }
-        return instanceHandler;
-    }
-
 }

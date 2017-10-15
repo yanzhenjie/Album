@@ -47,7 +47,7 @@ import com.yanzhenjie.album.api.widget.Widget;
 import com.yanzhenjie.album.impl.AlbumCallback;
 import com.yanzhenjie.album.impl.OnItemCheckedListener;
 import com.yanzhenjie.album.impl.OnItemClickListener;
-import com.yanzhenjie.album.task.MediaScanTask;
+import com.yanzhenjie.album.task.MediaReadTask;
 import com.yanzhenjie.album.ui.adapter.AlbumFileAdapter;
 import com.yanzhenjie.album.util.AlbumUtils;
 import com.yanzhenjie.album.util.DisplayUtils;
@@ -191,7 +191,7 @@ public class AlbumFragment extends NoFragment {
         });
         mRvContentList.setAdapter(mAlbumContentAdapter);
 
-        MediaScanTask scanTask = new MediaScanTask(getContext(), mFunction, mScanCallback, mCheckedList);
+        MediaReadTask scanTask = new MediaReadTask(getContext(), mFunction, mScanCallback, mCheckedList);
         ArrayList<AlbumFile> checkedList = argument.getParcelableArrayList(Album.KEY_INPUT_CHECKED_LIST);
         //noinspection unchecked
         scanTask.execute(checkedList);
@@ -232,7 +232,7 @@ public class AlbumFragment extends NoFragment {
     /**
      * Scan the picture result callback.
      */
-    private MediaScanTask.Callback mScanCallback = new MediaScanTask.Callback() {
+    private MediaReadTask.Callback mScanCallback = new MediaReadTask.Callback() {
         @Override
         public void onScanCallback(ArrayList<AlbumFolder> folders) {
             mAlbumFolders = folders;
@@ -403,7 +403,6 @@ public class AlbumFragment extends NoFragment {
             File file = new File(result);
             String name = file.getName();
             AlbumFile albumFile = new AlbumFile();
-            albumFile.setId(0);
             albumFile.setPath(result);
             albumFile.setName(name);
             String title = name;

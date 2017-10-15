@@ -19,13 +19,12 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
-import android.support.annotation.AnyThread;
 import android.support.annotation.WorkerThread;
 import android.text.TextUtils;
 
-import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.AlbumFolder;
+import com.yanzhenjie.album.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,7 +39,6 @@ public class MediaReader {
 
     private Context mContext;
 
-    @AnyThread
     public MediaReader(Context context) {
         mContext = context;
     }
@@ -64,13 +62,6 @@ public class MediaReader {
     };
 
     /**
-     * Image thumb.
-     */
-    private static final String[] IMAGE_THUMB = {
-            MediaStore.Images.Thumbnails.DATA
-    };
-
-    /**
      * Video attribute.
      */
     private static final String[] VIDEOS = {
@@ -88,13 +79,6 @@ public class MediaReader {
             MediaStore.Video.Media.SIZE,
             MediaStore.Video.Media.DURATION,
             MediaStore.Video.Media.RESOLUTION
-    };
-
-    /**
-     * Video thumb.
-     */
-    private static final String[] VIDEO_THUMB = {
-            MediaStore.Video.Thumbnails.DATA
     };
 
     /**
@@ -130,7 +114,6 @@ public class MediaReader {
 
                 AlbumFile imageFile = new AlbumFile();
                 imageFile.setMediaType(AlbumFile.TYPE_IMAGE);
-                imageFile.setId(id);
                 imageFile.setPath(path);
                 imageFile.setName(name);
                 imageFile.setTitle(title);
@@ -142,20 +125,6 @@ public class MediaReader {
                 imageFile.setLatitude(latitude);
                 imageFile.setLongitude(longitude);
                 imageFile.setSize(size);
-
-                String thumbPath = null;
-                Cursor thumbCursor = contentResolver.query(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
-                        IMAGE_THUMB,
-                        MediaStore.Images.Thumbnails.IMAGE_ID + "=" + id,
-                        null,
-                        null);
-                if (thumbCursor != null) {
-                    if (thumbCursor.moveToFirst()) {
-                        thumbPath = thumbCursor.getString(thumbCursor.getColumnIndex(IMAGE_THUMB[0]));
-                    }
-                    thumbCursor.close();
-                }
-                imageFile.setThumbPath(thumbPath);
 
                 allFileFolder.addAlbumFile(imageFile);
                 AlbumFolder albumFolder = albumFolderMap.get(bucketName);
@@ -210,7 +179,6 @@ public class MediaReader {
 
                 AlbumFile videoFile = new AlbumFile();
                 videoFile.setMediaType(AlbumFile.TYPE_VIDEO);
-                videoFile.setId(id);
                 videoFile.setPath(path);
                 videoFile.setName(name);
                 videoFile.setTitle(title);
@@ -223,20 +191,6 @@ public class MediaReader {
                 videoFile.setLongitude(longitude);
                 videoFile.setSize(size);
                 videoFile.setDuration(duration);
-
-                String thumbPath = null;
-                Cursor thumbCursor = contentResolver.query(MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI,
-                        VIDEO_THUMB,
-                        MediaStore.Video.Thumbnails.VIDEO_ID + "=" + id,
-                        null,
-                        null);
-                if (thumbCursor != null) {
-                    if (thumbCursor.moveToFirst()) {
-                        thumbPath = thumbCursor.getString(thumbCursor.getColumnIndex(VIDEO_THUMB[0]));
-                    }
-                    thumbCursor.close();
-                }
-                videoFile.setThumbPath(thumbPath);
 
                 int width = 0, height = 0;
                 if (!TextUtils.isEmpty(resolution) && resolution.contains("x")) {

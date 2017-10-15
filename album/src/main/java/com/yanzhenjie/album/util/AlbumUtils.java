@@ -54,6 +54,31 @@ import java.util.UUID;
 public class AlbumUtils {
 
     /**
+     * Get a writable root directory.
+     *
+     * @return {@link File}.
+     */
+    public static File getAlbumRootPath(Context context) {
+        if (sdCardIsAvailable()) {
+            return Environment.getExternalStorageDirectory();
+        } else {
+            return context.getFilesDir();
+        }
+    }
+
+    /**
+     * SD card is available.
+     *
+     * @return true, other wise is false.
+     */
+    public static boolean sdCardIsAvailable() {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            return Environment.getExternalStorageDirectory().canWrite();
+        } else
+            return false;
+    }
+
+    /**
      * Take pictures.
      *
      * @param activity    activity.

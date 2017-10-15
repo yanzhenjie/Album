@@ -31,7 +31,7 @@ import java.util.List;
  * <p>Image scan task.</p>
  * Created by Yan Zhenjie on 2017/3/28.
  */
-public class MediaScanTask extends AsyncTask<ArrayList<AlbumFile>, Void, ArrayList<AlbumFolder>> {
+public class MediaReadTask extends AsyncTask<ArrayList<AlbumFile>, Void, ArrayList<AlbumFolder>> {
 
     public interface Callback {
         /**
@@ -50,7 +50,7 @@ public class MediaScanTask extends AsyncTask<ArrayList<AlbumFile>, Void, ArrayLi
 
     private Dialog mWaitDialog;
 
-    public MediaScanTask(Context context, @Album.ChoiceFunction int function, Callback callback, List<AlbumFile> checkedFiles) {
+    public MediaReadTask(Context context, @Album.ChoiceFunction int function, Callback callback, List<AlbumFile> checkedFiles) {
         this.mContext = context;
         this.mFunction = function;
         this.mCallback = callback;

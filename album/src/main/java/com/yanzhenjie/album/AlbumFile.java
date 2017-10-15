@@ -38,10 +38,6 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
     }
 
     /**
-     * ID.
-     */
-    private int id;
-    /**
      * File path.
      */
     private String mPath;
@@ -140,16 +136,8 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
 
     @Override
     public int hashCode() {
-        String key = id + mBucketId + mPath;
+        String key = mBucketId + mPath;
         return key.hashCode();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getPath() {
@@ -298,7 +286,6 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
     }
 
     protected AlbumFile(Parcel in) {
-        id = in.readInt();
         mPath = in.readString();
         mName = in.readString();
         mTitle = in.readString();
@@ -321,7 +308,6 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
         dest.writeString(mPath);
         dest.writeString(mName);
         dest.writeString(mTitle);

@@ -30,6 +30,7 @@ import com.yanzhenjie.album.AlbumListener;
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.api.widget.Widget;
 import com.yanzhenjie.album.impl.AlbumCallback;
+import com.yanzhenjie.album.task.ThumbnailBuildTask;
 import com.yanzhenjie.album.util.AlbumUtils;
 import com.yanzhenjie.album.util.DisplayUtils;
 import com.yanzhenjie.album.util.PermissionUtils;
@@ -196,10 +197,15 @@ public class AlbumActivity extends CompatActivity implements AlbumCallback {
 
     @Override
     public void onAlbumResult(ArrayList<AlbumFile> albumFiles) {
-        if (sAlbumListener != null)
-            sAlbumListener.onAlbumResult(mRequestCode, albumFiles);
-        setResult(RESULT_OK);
-        finish();
+        new ThumbnailBuildTask(this, albumFiles, new ThumbnailBuildTask.Callback() {
+            @Override
+            public void onThumbnailCallback(ArrayList<AlbumFile> albumFiles) {
+                if (sAlbumListener != null)
+                    sAlbumListener.onAlbumResult(mRequestCode, albumFiles);
+                setResult(RESULT_OK);
+                finish();
+            }
+        }).execute();
     }
 
     @Override
