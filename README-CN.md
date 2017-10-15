@@ -7,7 +7,7 @@
 我的微博：[http://weibo.com/yanzhenjieit](http://weibo.com/yanzhenjieit)  
 
 # 特性
-1. 流式Api（Stream Api）。
+1. 流式Api（Stream Api），完全支持Lambda式的调用。
 2. 图片选择、视频选择、图片+视频混合选择，全部支持单选模式和多选模式。
 3. 相机支持单独调用，支持拍照片和录视频，支持放在相册的Item中使用。
 4. 画廊，支持缩放、支持浏览本地图片与网络图片，或者本地图片和网络图的混合。
@@ -15,8 +15,9 @@
 6. 多选模式下支持配置选择数量。
 7. 支持配置相册列数，支持配置相机是否出现在Item中。
 8. StatusBar和Toolbar的背景可定制，而且支持浅色背景，例如白色（支持小米、魅族）。
-9. 支持配置第三方ImageLoader，例如使用：Glide、Picasso、ImageLoader实现。
-10. 支持和图片裁剪框架[Durban](https://github.com/yanzhenjie/Durban)结合使用，Durban支持一次性裁剪多张图片。
+9. 支持显示过滤器，比如文件格式、文件大小、视频时长的过滤。
+10. 支持配置第三方ImageLoader，例如使用：Glide、Picasso、ImageLoader实现。
+11. 支持和图片裁剪框架[Durban](https://github.com/yanzhenjie/Durban)结合使用，Durban支持一次性裁剪多张图片。
 
 > **注意**：从2.0-alpha版本开始，可以拿到图片和视频的路径、标题、缩略图、大小、经纬度、添加日期、修改日期以及所在文件夹；视频还可以拿到分辨率和时长。
 
@@ -30,7 +31,7 @@
 # 依赖
 * Gradle：
 ```groovy
-compile 'com.yanzhenjie:album:2.0.0-alpha'
+compile 'com.yanzhenjie:album:2.0.0'
 ```
 
 * Maven:
@@ -38,7 +39,7 @@ compile 'com.yanzhenjie:album:2.0.0-alpha'
 <dependency>
   <groupId>com.yanzhenjie</groupId>
   <artifactId>album</artifactId>
-  <version>2.0.0-alpha</version>
+  <version>2.0.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -52,19 +53,23 @@ compile 'com.yanzhenjie:album:2.0.0-alpha'
 ```java
 Album.album(this) // 图片和视频混选。
     .multipleChoice() // 多选模式，单选模式为：singleChoice()。
-    .requestCode(200) // 请求码，会在listener中返回。
-    .columnCount(2) // 页面列表的列数。
-    .selectCount(6)  // 最多选择几张图片。
-    .camera(true) // 是否在Item中出现相机。
-    .checkedList(mAlbumFiles) // 要反选的列表，比如选择一次再次选择，可以把上次选择的传入。
-    .listener(new AlbumListener<ArrayList<AlbumFile>>() {
+    .requestCode() // 请求码，会在listener中返回。
+    .columnCount() // 页面列表的列数。
+    .selectCount()  // 最多选择几张图片。
+    .camera() // 是否在Item中出现相机。
+    .checkedList() // 要反选的列表，比如选择一次再次选择，可以把上次选择的传入。
+    .filterSize() // 文件大小的过滤。
+    .filterMimeType() // 文件格式的过滤。
+    .filterDuration() // 视频时长的过滤。
+    .onResult(new Action<ArrayList<AlbumFile>>() {
         @Override
-        public void onAlbumResult(int requestCode, @NonNull ArrayList<AlbumFile> result) {
+        public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
             // TODO 接受结果。
         }
-
+    })
+    .onCancel(new Action<String>() {
         @Override
-        public void onAlbumCancel(int requestCode) {
+        public void onAction(int requestCode, @NonNull String result) {
             // 用户取消了操作。
         }
     })
@@ -75,18 +80,21 @@ Album.album(this) // 图片和视频混选。
 ```java
 Album.image(this) // 选择图片。
     .multipleChoice()
-    .requestCode(200)
-    .camera(true)
-    .columnCount(2)
-    .selectCount(6)
-    .checkedList(mAlbumFiles)
-    .listener(new AlbumListener<ArrayList<AlbumFile>>() {
+    .requestCode()
+    .camera()
+    .columnCount()
+    .selectCount()
+    .checkedList()
+    .filterSize()
+    .filterMimeType()
+    .onResult(new Action<ArrayList<AlbumFile>>() {
         @Override
-        public void onAlbumResult(int requestCode, @NonNull ArrayList<AlbumFile> result) {
+        public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
         }
-
+    })
+    .onCancel(new Action<String>() {
         @Override
-        public void onAlbumCancel(int requestCode) {
+        public void onAction(int requestCode, @NonNull String result) {
         }
     })
     .start();
@@ -98,18 +106,24 @@ Album.image(this) // 选择图片。
 ```java
 Album.video(this) // 选择视频。
     .multipleChoice()
-    .requestCode(200)
-    .camera(true)
-    .columnCount(2)
-    .selectCount(6)
-    .checkedList(mAlbumFiles)
-    .listener(new AlbumListener<ArrayList<AlbumFile>>() {
+    .requestCode()
+    .camera()
+    .columnCount()
+    .selectCount()
+    .checkedList()
+    .filterSize()
+    .filterMimeType()
+    .filterDuration()
+    .onResult(new Action<ArrayList<AlbumFile>>() {
         @Override
-        public void onAlbumResult(int requestCode, @NonNull ArrayList<AlbumFile> result) {
+        public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
+            // TODO 接受结果。
         }
-
+    })
+    .onCancel(new Action<String>() {
         @Override
-        public void onAlbumCancel(int requestCode) {
+        public void onAction(int requestCode, @NonNull String result) {
+            // 用户取消了操作。
         }
     })
     .start();
@@ -119,15 +133,16 @@ Album.video(this) // 选择视频。
 ```
 Album.camera(this) // 相机功能。
     .image() // 拍照。
-    // .filePath() // 文件保存路径，非必须。
-    .requestCode(2)
-    .listener(new AlbumListener<String>() {
+    .filePath() // 文件保存路径，非必须。
+    .requestCode()
+    .onResult(new Action<String>() {
         @Override
-        public void onAlbumResult(int requestCode, @NonNull String result) {
+        public void onAction(int requestCode, @NonNull String result) {
         }
-
+    })
+    .onCancel(new Action<String>() {
         @Override
-        public void onAlbumCancel(int requestCode) {
+        public void onAction(int requestCode, @NonNull String result) {
         }
     })
     .start();
@@ -139,18 +154,19 @@ Album.camera(this) // 相机功能。
 ```
 Album.camera(this)
     .video() // 录视频，注意与拍照的方法不同。
-    // .filePath()
+    .filePath()
     .requestCode(2)
     .quality(1) // 视频质量，[0, 1]。
     .limitDuration(Long.MAX_VALUE) // 视频最长时长，单位是毫秒。
     .limitBytes(Long.MAX_VALUE) // 视频最大大小，单位byte。
-    .listener(new AlbumListener<String>() {
+    .onResult(new Action<String>() {
         @Override
-        public void onAlbumResult(int requestCode, @NonNull String result) {
+        public void onAction(int requestCode, @NonNull String result) {
         }
-
+    })
+    .onCancel(new Action<String>() {
         @Override
-        public void onAlbumCancel(int requestCode) {
+        public void onAction(int requestCode, @NonNull String result) {
         }
     })
     .start();
@@ -165,18 +181,18 @@ Album.galleryAlbum(this)。
 
 // 浏览一般的String路径：
 Album.gallery(this)
-    .requestCode(2) // 请求码，会在listener中返回。
-    .checkedList(imageList) // 要浏览的图片列表：ArrayList<String>。
-    .navigationAlpha(80) // Android5.0+的虚拟导航栏的透明度。
-    .checkable(true) // 是否有浏览时的选择功能。
-    .listener(new AlbumListener<ArrayList<String>>() { // 如果checkable(false)，那么listener不用传。
+    .requestCode() // 请求码，会在listener中返回。
+    .checkedList() // 要浏览的图片列表：ArrayList<String>。
+    .navigationAlpha() // Android5.0+的虚拟导航栏的透明度。
+    .checkable() // 是否有浏览时的选择功能。
+    .onResult(new Action<ArrayList<String>>() { // 如果checkable(false)，那么action不用传。
         @Override
-        public void onAlbumResult(int requestCode, @NonNull ArrayList<String> result) {
-            // TODO 接受选择结果。
+        public void onAction(int requestCode, @NonNull ArrayList<String> result) {
         }
-
+    })
+    .onCancel(new Action<String>() {
         @Override
-        public void onAlbumCancel(int requestCode) {
+        public void onAction(int requestCode, @NonNull String result) {
         }
     })
     .start(); // 千万不要忘记调用start()方法。
@@ -186,8 +202,6 @@ Album.gallery(this)
 
 ## 关于AlbumFile的说明
 `AlbumFile`是选择图片和视频的返回结果，它包含了图片和视频的路径、标题、缩略图、大小、经纬度、添加日期、修改日期以及所在文件夹；视频还可以拿到分辨率和时长。
-
-> **注意**：图片和视频的预览图，大多数情况下都是有的，如果不是本机拍的，而是导入的，某一部分手机没有预览图。
 
 ### 返回的如果是图片
 ```java
@@ -202,7 +216,7 @@ public long getModifyDate(); // 文件修改日期，一定不为空。
 public float getLatitude(); // 文件被加入库时的纬度，可能为0。
 public float getLongitude(); // 文件被加入库时的经度，可能为0。
 public long getSize(); // 文件大小，单位是bytes。
-public String getThumbPath(); // 图片的预览图，大多数情况有，相册内拍照时返回的一定是原图路径。
+public String getThumbPath(); // 图片的预览图，一定是一张小于200k的图片。
 ```
 
 ### 选择图片时的有效参数
@@ -220,7 +234,7 @@ public float getLongitude(); // 文件被加入库时的经度，可能为0。
 public long getSize(); // 文件大小，单位是byte。
 public long getDuration(); // 视频时长，一定有。
 public String getResolution(); // 视频分辨率，一定有。
-public String getThumbPath(); // 视频的预览图，大多数情况有，相册内录视频时返回的一定是视频路径。
+public String getThumbPath(); // 视频的预览图，只要视频存在就不会null。
 public int getWidth(); // 视频宽，一定有。
 public int getHeight(); // 视频高，一定有。
 ```

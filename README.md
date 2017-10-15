@@ -1,12 +1,12 @@
 # Album
-`Album` is an Material Design Style open source album, support internationalization, support for international expansion; main function modules: select image and video, take picture, record video, gallery.
+Album is a MaterialDesign-style album, support internationalization, support for international expansion; main function modules: select image and video, take picture, record video, gallery.
 
 <image src="./image/logo.png"/>  
   
 [中文文档](./README-CN.md)  
 
 # Feature
-1. Stream Api.
+1. Stream Api, support labmda.
 2. Select Image, selecte video, select a mix of pictures and videos, all support single-select mode and multi-select mode.
 3. The camera function to support taking pictures and recording video, and support for use in the album's item.
 4. Gallery, support for zoom, support for browsing local images with network images, or a mix of local images and network images.
@@ -14,8 +14,9 @@
 6. Multi-select mode supports setting the number of choices.
 7. Support setting number of column, support setting the camera appears in the Item.
 8. StatusBar and Toolbar's background can be customized, and support light-colored background, such as white.
-9. Support other `ImageLoader`, for example: `Glide`, `Picasso`...
-10. Support and image cropping framework [Durban](https://github.com/yanzhenjie/Durban) in combination, `Durban` it supports cutting multiple images at the same time.
+9. Support for display filters, such as file format, file size, and video duration.
+10. Support other `ImageLoader`, for example: `Glide`, `Picasso`...
+11. Support and image cropping framework [Durban](https://github.com/yanzhenjie/Durban) in combination, `Durban` it supports cutting multiple images at the same time.
 
 > **Note**: Starting from version 2.0-alpha, return the data for the `AlbumFile` object, developer can get image and video path, title, thumbnail, size, latitude and longitude, added and modified date, the folder; video can also get the resolution and duration.
 
@@ -29,7 +30,7 @@ White StatusBar, because Android5.0 does not support the StatusBar dark font, so
 # Dependencies
 * Gradle：
 ```groovy
-compile 'com.yanzhenjie:album:2.0.0-alpha'
+compile 'com.yanzhenjie:album:2.0.0'
 ```
 
 * Maven:
@@ -37,7 +38,7 @@ compile 'com.yanzhenjie:album:2.0.0-alpha'
 <dependency>
   <groupId>com.yanzhenjie</groupId>
   <artifactId>album</artifactId>
-  <version>2.0.0-alpha</version>
+  <version>2.0.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -51,19 +52,23 @@ The function modules of Album: select image and video, take picture, record vide
 ```java
 Album.album(this) // Image and video mix options.
     .multipleChoice() // Multi-Mode, Single-Mode: singleChoice().
-    .requestCode(200) // The request code will be returned in the listener.
-    .columnCount(2) // The number of columns in the page list.
-    .selectCount(6)  // Choose up to a few images.
-    .camera(true) // Whether the camera appears in the Item.
-    .checkedList(mAlbumFiles) // To reverse the list.
-    .listener(new AlbumListener<ArrayList<AlbumFile>>() {
+    .requestCode() // The request code will be returned in the listener.
+    .columnCount() // The number of columns in the page list.
+    .selectCount()  // Choose up to a few images.
+    .camera() // Whether the camera appears in the Item.
+    .checkedList() // To reverse the list.
+    .filterSize() // Filter the file size.
+    .filterMimeType() // Filter file format.
+    .filterDuration() // Filter video duration.
+    .onResult(new Action<ArrayList<AlbumFile>>() {
         @Override
-        public void onAlbumResult(int requestCode, @NonNull ArrayList<AlbumFile> result) {
+        public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
             // TODO accept the result.
         }
-
+    })
+    .onCancel(new Action<String>() {
         @Override
-        public void onAlbumCancel(int requestCode) {
+        public void onAction(int requestCode, @NonNull String result) {
             // The user canceled the operation.
         }
     })
@@ -74,18 +79,21 @@ Album.album(this) // Image and video mix options.
 ```java
 Album.image(this) // Image selection.
     .multipleChoice()
-    .requestCode(200)
-    .camera(true)
-    .columnCount(2)
-    .selectCount(6)
+    .requestCode()
+    .camera()
+    .columnCount()
+    .selectCount()
     .checkedList(mAlbumFiles)
-    .listener(new AlbumListener<ArrayList<AlbumFile>>() {
+    .filterSize() // Filter the file size.
+    .filterMimeType() // Filter file format.
+    .onResult(new Action<ArrayList<AlbumFile>>() {
         @Override
-        public void onAlbumResult(int requestCode, @NonNull ArrayList<AlbumFile> result) {
+        public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
         }
-
+    })
+    .onCancel(new Action<String>() {
         @Override
-        public void onAlbumCancel(int requestCode) {
+        public void onAction(int requestCode, @NonNull String result) {
         }
     })
     .start();
@@ -102,13 +110,17 @@ Album.video(this) // Video selection.
     .columnCount(2)
     .selectCount(6)
     .checkedList(mAlbumFiles)
-    .listener(new AlbumListener<ArrayList<AlbumFile>>() {
+    .filterSize()
+    .filterMimeType()
+    .filterDuration()
+    .onResult(new Action<ArrayList<AlbumFile>>() {
         @Override
-        public void onAlbumResult(int requestCode, @NonNull ArrayList<AlbumFile> result) {
+        public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
         }
-
+    })
+    .onCancel(new Action<String>() {
         @Override
-        public void onAlbumCancel(int requestCode) {
+        public void onAction(int requestCode, @NonNull String result) {
         }
     })
     .start();
@@ -118,7 +130,7 @@ Album.video(this) // Video selection.
 ```
 Album.camera(this) // Camera function.
     .image() // Take Picture.
-    // .filePath() // File save path, not required.
+    .filePath() // File save path, not required.
     .requestCode(2)
     .listener(new AlbumListener<String>() {
         @Override
@@ -138,7 +150,7 @@ If developer want to crop the image, please use [Durban](https://github.com/yanz
 ```
 Album.camera(this)
     .video() // Record Video.
-    // .filePath()
+    .filePath()
     .requestCode(2)
     .quality(1) // Video quality, [0, 1].
     .limitDuration(Long.MAX_VALUE) // The longest duration of the video is in milliseconds.
@@ -169,13 +181,14 @@ Album.gallery(this)
     .checkedList(imageList) // List of image to view: ArrayList<String>.
     .navigationAlpha(80) // Virtual NavigationBar alpha of Android5.0+.
     .checkable(true) // Whether there is a selection function.
-    .listener(new AlbumListener<ArrayList<String>>() { // If checkable(false), listener not required.
+    .onResult(new Action<ArrayList<String>>() { // If checkable(false), action not required.
         @Override
-        public void onAlbumResult(int requestCode, @NonNull ArrayList<String> result) {
+        public void onAction(int requestCode, @NonNull ArrayList<String> result) {
         }
-
+    })
+    .onCancel(new Action<String>() {
         @Override
-        public void onAlbumCancel(int requestCode) {
+        public void onAction(int requestCode, @NonNull String result) {
         }
     })
     .start();
@@ -185,8 +198,6 @@ Album.gallery(this)
 
 ## Capabilities of AlbumFile
 `AlbumFile` is the result of the selection of images and videos, which contains the path and title of the image and video, the title, thumbnail, size, latitude and longitude, added and modified date, and folder; video can also get resolution and duration.
-
-> **Note**: thumbnail of image and video, in most cases are there, if not locally produced, but imported via externally, a part of the phone did not.
 
 ### Image
 ```java
@@ -201,9 +212,7 @@ public long getModifyDate(); // File to modification date, must not be empty.
 public float getLatitude(); // The latitude of the file, may be zero.
 public float getLongitude(); // The longitude of the file, may be zero.
 public long getSize(); // File size in bytes.
-
-// The thumb of image, Returns the path of file when taking pictures in the album.
-public String getThumbPath();
+public String getThumbPath(); // A picture no more than 200kb.
 ```
 
 ### Video
@@ -223,9 +232,7 @@ public long getDuration(); // Video duration, must have.
 public String getResolution(); // Video resolution, must have.
 public int getWidth(); // Video wide, must have.
 public int getHeight(); // Video height, must have.
-
-// The thumb of video, Returns the path of file when recording video in the album.
-public String getThumbPath();
+public String getThumbPath(); // Video preview, as long as the video is not null.
 ```
 
 ## Customize UI
