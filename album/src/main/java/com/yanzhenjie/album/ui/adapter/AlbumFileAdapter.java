@@ -22,12 +22,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yanzhenjie.album.Album;
-import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.AlbumFile;
+import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.impl.OnItemCheckedListener;
 import com.yanzhenjie.album.impl.OnItemClickListener;
 import com.yanzhenjie.album.util.AlbumUtils;
@@ -196,6 +197,8 @@ public class AlbumFileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         private ImageView mIvImage;
         private AppCompatCheckBox mCheckBox;
 
+        private FrameLayout mLayoutLayer;
+
         ImageHolder(View itemView, int itemSize, boolean hasCamera, @Album.ChoiceMode int choiceMode, ColorStateList selector,
                     OnItemClickListener itemClickListener, OnItemCheckedListener itemCheckedListener) {
             super(itemView);
@@ -209,9 +212,11 @@ public class AlbumFileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             mIvImage = (ImageView) itemView.findViewById(R.id.iv_album_content_image);
             mCheckBox = (AppCompatCheckBox) itemView.findViewById(R.id.cb_album_check);
+            mLayoutLayer = (FrameLayout) itemView.findViewById(R.id.layout_layer);
 
             itemView.setOnClickListener(this);
             mCheckBox.setOnClickListener(this);
+            mLayoutLayer.setOnClickListener(this);
             if (mChoiceMode == Album.MODE_MULTIPLE) {
                 mCheckBox.setVisibility(View.VISIBLE);
                 mCheckBox.setSupportButtonTintList(selector);
@@ -225,6 +230,8 @@ public class AlbumFileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             Album.getAlbumConfig()
                     .getAlbumLoader()
                     .loadAlbumFile(mIvImage, albumFile, itemSize, itemSize);
+
+            mLayoutLayer.setVisibility(albumFile.isEnable() ? View.GONE : View.VISIBLE);
         }
 
         @Override
@@ -252,6 +259,11 @@ public class AlbumFileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     boolean isChecked = mCheckBox.isChecked();
                     int camera = hasCamera ? 1 : 0;
                     mItemCheckedListener.onCheckedChanged(mCheckBox, getAdapterPosition() - camera, isChecked);
+                }
+            } else if (v == mLayoutLayer) {
+                if (mItemClickListener != null) {
+                    int camera = hasCamera ? 1 : 0;
+                    mItemClickListener.onItemClick(v, getAdapterPosition() - camera);
                 }
             }
         }
@@ -271,6 +283,8 @@ public class AlbumFileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         private AppCompatCheckBox mCheckBox;
         private TextView mTvDuration;
 
+        private FrameLayout mLayoutLayer;
+
         VideoHolder(View itemView, int itemSize, boolean hasCamera, @Album.ChoiceMode int choiceMode, ColorStateList selector,
                     OnItemClickListener itemClickListener, OnItemCheckedListener itemCheckedListener) {
             super(itemView);
@@ -285,9 +299,11 @@ public class AlbumFileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             mIvImage = (ImageView) itemView.findViewById(R.id.iv_album_content_image);
             mCheckBox = (AppCompatCheckBox) itemView.findViewById(R.id.cb_album_check);
             mTvDuration = (TextView) itemView.findViewById(R.id.tv_duration);
+            mLayoutLayer = (FrameLayout) itemView.findViewById(R.id.layout_layer);
 
             itemView.setOnClickListener(this);
             mCheckBox.setOnClickListener(this);
+            mLayoutLayer.setOnClickListener(this);
             if (mChoiceMode == Album.MODE_MULTIPLE) {
                 mCheckBox.setVisibility(View.VISIBLE);
                 mCheckBox.setSupportButtonTintList(selector);
@@ -300,6 +316,8 @@ public class AlbumFileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             Album.getAlbumConfig().getAlbumLoader().loadAlbumFile(mIvImage, albumFile, itemSize, itemSize);
             mCheckBox.setChecked(albumFile.isChecked());
             mTvDuration.setText(AlbumUtils.convertDuration(albumFile.getDuration()));
+
+            mLayoutLayer.setVisibility(albumFile.isEnable() ? View.GONE : View.VISIBLE);
         }
 
         @Override
@@ -327,6 +345,11 @@ public class AlbumFileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     boolean isChecked = mCheckBox.isChecked();
                     int camera = hasCamera ? 1 : 0;
                     mItemCheckedListener.onCheckedChanged(mCheckBox, getAdapterPosition() - camera, isChecked);
+                }
+            } else if (v == mLayoutLayer) {
+                if (mItemClickListener != null) {
+                    int camera = hasCamera ? 1 : 0;
+                    mItemClickListener.onItemClick(v, getAdapterPosition() - camera);
                 }
             }
         }

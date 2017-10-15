@@ -21,6 +21,7 @@ import android.support.annotation.NonNull;
 
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
+import com.yanzhenjie.album.Filter;
 import com.yanzhenjie.album.ui.AlbumActivity;
 
 import java.util.ArrayList;
@@ -30,12 +31,25 @@ import java.util.ArrayList;
  */
 public final class VideoSingleWrapper extends BasicChoiceWrapper<VideoSingleWrapper, ArrayList<AlbumFile>, String, AlbumFile> {
 
+    private Filter<Long> mDurationFilter;
+
     public VideoSingleWrapper(@NonNull Context context) {
         super(context);
     }
 
+    /**
+     * Filter video duration.
+     */
+    public VideoSingleWrapper filterDuration(Filter<Long> filter) {
+        this.mDurationFilter = filter;
+        return this;
+    }
+
     @Override
     public void start() {
+        AlbumActivity.mSizeFilter = mSizeFilter;
+        AlbumActivity.mMimeFilter = mMimeTypeFilter;
+        AlbumActivity.mDurationFilter = mDurationFilter;
         AlbumActivity.sResult = mResult;
         AlbumActivity.sCancel = mCancel;
         Intent intent = new Intent(mContext, AlbumActivity.class);
@@ -47,6 +61,7 @@ public final class VideoSingleWrapper extends BasicChoiceWrapper<VideoSingleWrap
         intent.putExtra(Album.KEY_INPUT_COLUMN_COUNT, mColumnCount);
         intent.putExtra(Album.KEY_INPUT_ALLOW_CAMERA, mHasCamera);
         intent.putExtra(Album.KEY_INPUT_LIMIT_COUNT, 1);
+        intent.putExtra(Album.KEY_INPUT_FILTER_VISIBILITY, mFilterVisibility);
         mContext.startActivity(intent);
     }
 }

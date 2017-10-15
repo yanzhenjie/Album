@@ -72,4 +72,6 @@
         <item quantity="other">Você atingiu o limite de %1$d arquivos selecionada.</item>
     </plurals>
 
+    <string name="album_item_unavailable">Não disponível</string>
+
 </resources>

@@ -71,4 +71,6 @@
         <item quantity="one">You can only select %1$d file, anti-election after the operation.</item>
         <item quantity="other">You can only select %1$d files, anti-election after the operation.</item>
     </plurals>
+
+    <string name="album_item_unavailable">Unavailable</string>
 </resources>

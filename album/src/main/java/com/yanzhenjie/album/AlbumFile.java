@@ -106,9 +106,13 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
      */
     private int mMediaType;
     /**
-     * isChecked.
+     * Checked.
      */
     private boolean isChecked;
+    /**
+     * Enabled.
+     */
+    private boolean isEnable = true;
 
     public AlbumFile() {
     }
@@ -285,6 +289,14 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
         isChecked = checked;
     }
 
+    public boolean isEnable() {
+        return isEnable;
+    }
+
+    public void setEnable(boolean enable) {
+        isEnable = enable;
+    }
+
     protected AlbumFile(Parcel in) {
         mPath = in.readString();
         mName = in.readString();
@@ -304,6 +316,7 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
         mHeight = in.readInt();
         mMediaType = in.readInt();
         isChecked = in.readByte() != 0;
+        isEnable = in.readByte() != 0;
     }
 
     @Override
@@ -326,6 +339,7 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
         dest.writeInt(mHeight);
         dest.writeInt(mMediaType);
         dest.writeByte((byte) (isChecked ? 1 : 0));
+        dest.writeByte((byte) (isEnable ? 1 : 0));
     }
 
     @Override

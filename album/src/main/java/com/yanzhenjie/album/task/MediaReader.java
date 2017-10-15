@@ -24,6 +24,7 @@ import android.text.TextUtils;
 
 import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.AlbumFolder;
+import com.yanzhenjie.album.Filter;
 import com.yanzhenjie.album.R;
 
 import java.io.File;
@@ -39,15 +40,24 @@ public class MediaReader {
 
     private Context mContext;
 
-    public MediaReader(Context context) {
-        mContext = context;
+    private Filter<Long> mSizeFilter;
+    private Filter<String> mMimeFilter;
+    private Filter<Long> mDurationFilter;
+    private boolean mFilterVisibility;
+
+    public MediaReader(Context context, Filter<Long> sizeFilter, Filter<String> mimeFilter, Filter<Long> durationFilter, boolean filterVisibility) {
+        this.mContext = context;
+
+        this.mSizeFilter = sizeFilter;
+        this.mMimeFilter = mimeFilter;
+        this.mDurationFilter = durationFilter;
+        this.mFilterVisibility = filterVisibility;
     }
 
     /**
      * Image attribute.
      */
     private static final String[] IMAGES = {
-            MediaStore.Images.Media._ID,
             MediaStore.Images.Media.DATA,
             MediaStore.Images.Media.DISPLAY_NAME,
             MediaStore.Images.Media.TITLE,
@@ -65,7 +75,6 @@ public class MediaReader {
      * Video attribute.
      */
     private static final String[] VIDEOS = {
-            MediaStore.Video.Media._ID,
             MediaStore.Video.Media.DATA,
             MediaStore.Video.Media.DISPLAY_NAME,
             MediaStore.Video.Media.TITLE,
@@ -95,22 +104,21 @@ public class MediaReader {
 
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                int id = cursor.getInt(cursor.getColumnIndex(IMAGES[0]));
-                String path = cursor.getString(cursor.getColumnIndex(IMAGES[1]));
+                String path = cursor.getString(cursor.getColumnIndex(IMAGES[0]));
 
                 File file = new File(path);
                 if (!file.exists() || !file.canRead()) continue;
 
-                String name = cursor.getString(cursor.getColumnIndex(IMAGES[2]));
-                String title = cursor.getString(cursor.getColumnIndex(IMAGES[3]));
-                int bucketId = cursor.getInt(cursor.getColumnIndex(IMAGES[4]));
-                String bucketName = cursor.getString(cursor.getColumnIndex(IMAGES[5]));
-                String mimeType = cursor.getString(cursor.getColumnIndex(IMAGES[6]));
-                long addDate = cursor.getLong(cursor.getColumnIndex(IMAGES[7]));
-                long modifyDate = cursor.getLong(cursor.getColumnIndex(IMAGES[8]));
-                float latitude = cursor.getFloat(cursor.getColumnIndex(IMAGES[9]));
-                float longitude = cursor.getFloat(cursor.getColumnIndex(IMAGES[10]));
-                long size = cursor.getLong(cursor.getColumnIndex(IMAGES[11]));
+                String name = cursor.getString(cursor.getColumnIndex(IMAGES[1]));
+                String title = cursor.getString(cursor.getColumnIndex(IMAGES[2]));
+                int bucketId = cursor.getInt(cursor.getColumnIndex(IMAGES[3]));
+                String bucketName = cursor.getString(cursor.getColumnIndex(IMAGES[4]));
+                String mimeType = cursor.getString(cursor.getColumnIndex(IMAGES[5]));
+                long addDate = cursor.getLong(cursor.getColumnIndex(IMAGES[6]));
+                long modifyDate = cursor.getLong(cursor.getColumnIndex(IMAGES[7]));
+                float latitude = cursor.getFloat(cursor.getColumnIndex(IMAGES[8]));
+                float longitude = cursor.getFloat(cursor.getColumnIndex(IMAGES[9]));
+                long size = cursor.getLong(cursor.getColumnIndex(IMAGES[10]));
 
                 AlbumFile imageFile = new AlbumFile();
                 imageFile.setMediaType(AlbumFile.TYPE_IMAGE);
@@ -125,6 +133,16 @@ public class MediaReader {
                 imageFile.setLatitude(latitude);
                 imageFile.setLongitude(longitude);
                 imageFile.setSize(size);
+
+                // Filter.
+                if (mSizeFilter != null && mSizeFilter.filter(size)) {
+                    if (!mFilterVisibility) continue;
+                    imageFile.setEnable(false);
+                }
+                if (mMimeFilter != null && mMimeFilter.filter(mimeType)) {
+                    if (!mFilterVisibility) continue;
+                    imageFile.setEnable(false);
+                }
 
                 allFileFolder.addAlbumFile(imageFile);
                 AlbumFolder albumFolder = albumFolderMap.get(bucketName);
@@ -158,24 +176,23 @@ public class MediaReader {
 
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                int id = cursor.getInt(cursor.getColumnIndex(VIDEOS[0]));
-                String path = cursor.getString(cursor.getColumnIndex(VIDEOS[1]));
+                String path = cursor.getString(cursor.getColumnIndex(VIDEOS[0]));
 
                 File file = new File(path);
                 if (!file.exists() || !file.canRead()) continue;
 
-                String name = cursor.getString(cursor.getColumnIndex(VIDEOS[2]));
-                String title = cursor.getString(cursor.getColumnIndex(VIDEOS[3]));
-                int bucketId = cursor.getInt(cursor.getColumnIndex(VIDEOS[4]));
-                String bucketName = cursor.getString(cursor.getColumnIndex(VIDEOS[5]));
-                String mimeType = cursor.getString(cursor.getColumnIndex(VIDEOS[6]));
-                long addDate = cursor.getLong(cursor.getColumnIndex(VIDEOS[7]));
-                long modifyDate = cursor.getLong(cursor.getColumnIndex(VIDEOS[8]));
-                float latitude = cursor.getFloat(cursor.getColumnIndex(VIDEOS[9]));
-                float longitude = cursor.getFloat(cursor.getColumnIndex(VIDEOS[10]));
-                long size = cursor.getLong(cursor.getColumnIndex(VIDEOS[11]));
-                long duration = cursor.getLong(cursor.getColumnIndex(VIDEOS[12]));
-                String resolution = cursor.getString(cursor.getColumnIndex(VIDEOS[13]));
+                String name = cursor.getString(cursor.getColumnIndex(VIDEOS[1]));
+                String title = cursor.getString(cursor.getColumnIndex(VIDEOS[2]));
+                int bucketId = cursor.getInt(cursor.getColumnIndex(VIDEOS[3]));
+                String bucketName = cursor.getString(cursor.getColumnIndex(VIDEOS[4]));
+                String mimeType = cursor.getString(cursor.getColumnIndex(VIDEOS[5]));
+                long addDate = cursor.getLong(cursor.getColumnIndex(VIDEOS[6]));
+                long modifyDate = cursor.getLong(cursor.getColumnIndex(VIDEOS[7]));
+                float latitude = cursor.getFloat(cursor.getColumnIndex(VIDEOS[8]));
+                float longitude = cursor.getFloat(cursor.getColumnIndex(VIDEOS[9]));
+                long size = cursor.getLong(cursor.getColumnIndex(VIDEOS[10]));
+                long duration = cursor.getLong(cursor.getColumnIndex(VIDEOS[11]));
+                String resolution = cursor.getString(cursor.getColumnIndex(VIDEOS[12]));
 
                 AlbumFile videoFile = new AlbumFile();
                 videoFile.setMediaType(AlbumFile.TYPE_VIDEO);
@@ -200,6 +217,20 @@ public class MediaReader {
                 }
                 videoFile.setWidth(width);
                 videoFile.setHeight(height);
+
+                // Filter.
+                if (mSizeFilter != null && mSizeFilter.filter(size)) {
+                    if (!mFilterVisibility) continue;
+                    videoFile.setEnable(false);
+                }
+                if (mMimeFilter != null && mMimeFilter.filter(mimeType)) {
+                    if (!mFilterVisibility) continue;
+                    videoFile.setEnable(false);
+                }
+                if (mDurationFilter != null && mDurationFilter.filter(duration)) {
+                    if (!mFilterVisibility) continue;
+                    videoFile.setEnable(false);
+                }
 
                 allFileFolder.addAlbumFile(videoFile);
                 AlbumFolder albumFolder = albumFolderMap.get(bucketName);

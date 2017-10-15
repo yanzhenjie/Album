@@ -27,6 +27,7 @@ import android.support.v7.app.AlertDialog;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
+import com.yanzhenjie.album.Filter;
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.api.widget.Widget;
 import com.yanzhenjie.album.impl.AlbumCallback;
@@ -49,6 +50,10 @@ public class AlbumActivity extends CompatActivity implements AlbumCallback {
     private static final int PERMISSION_STORAGE_ALBUM = 1;
     private static final int PERMISSION_STORAGE_IMAGE = 2;
     private static final int PERMISSION_STORAGE_VIDEO = 3;
+
+    public static Filter<Long> mSizeFilter;
+    public static Filter<String> mMimeFilter;
+    public static Filter<Long> mDurationFilter;
 
     public static Action<ArrayList<AlbumFile>> sResult;
     public static Action<String> sCancel;
@@ -153,6 +158,9 @@ public class AlbumActivity extends CompatActivity implements AlbumCallback {
             case PERMISSION_STORAGE_IMAGE:
             case PERMISSION_STORAGE_VIDEO: {
                 AlbumFragment albumFragment = fragment(AlbumFragment.class, mArgument);
+                albumFragment.setSizeFilter(mSizeFilter);
+                albumFragment.setMimeFilter(mMimeFilter);
+                albumFragment.setDurationFilter(mDurationFilter);
                 startFragment(albumFragment);
                 break;
             }

@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
+import com.yanzhenjie.album.Filter;
 import com.yanzhenjie.album.ui.AlbumActivity;
 
 import java.util.ArrayList;
@@ -34,6 +35,8 @@ public class AlbumMultipleWrapper extends BasicChoiceWrapper<AlbumMultipleWrappe
 
     @IntRange(from = 1, to = Integer.MAX_VALUE)
     private int mLimitCount = Integer.MAX_VALUE;
+
+    private Filter<Long> mDurationFilter;
 
     public AlbumMultipleWrapper(@NonNull Context context) {
         super(context);
@@ -55,8 +58,19 @@ public class AlbumMultipleWrapper extends BasicChoiceWrapper<AlbumMultipleWrappe
         return this;
     }
 
+    /**
+     * Filter video duration.
+     */
+    public AlbumMultipleWrapper filterDuration(Filter<Long> filter) {
+        this.mDurationFilter = filter;
+        return this;
+    }
+
     @Override
     public void start() {
+        AlbumActivity.mSizeFilter = mSizeFilter;
+        AlbumActivity.mMimeFilter = mMimeTypeFilter;
+        AlbumActivity.mDurationFilter = mDurationFilter;
         AlbumActivity.sResult = mResult;
         AlbumActivity.sCancel = mCancel;
         Intent intent = new Intent(mContext, AlbumActivity.class);
@@ -69,6 +83,7 @@ public class AlbumMultipleWrapper extends BasicChoiceWrapper<AlbumMultipleWrappe
         intent.putExtra(Album.KEY_INPUT_COLUMN_COUNT, mColumnCount);
         intent.putExtra(Album.KEY_INPUT_ALLOW_CAMERA, mHasCamera);
         intent.putExtra(Album.KEY_INPUT_LIMIT_COUNT, mLimitCount);
+        intent.putExtra(Album.KEY_INPUT_FILTER_VISIBILITY, mFilterVisibility);
         mContext.startActivity(intent);
     }
 }

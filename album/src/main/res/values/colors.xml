@@ -32,4 +32,6 @@
     <color name="album_ColorPrimaryBlack">#FF2B2B2B</color>
 
     <color name="album_SheetBackground">#CC2B2B2B</color>
+
+    <color name="album_ItemLayer">#CC2B2B2B</color>
 </resources>

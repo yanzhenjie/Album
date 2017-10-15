@@ -42,6 +42,7 @@ import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.AlbumFolder;
+import com.yanzhenjie.album.Filter;
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.api.widget.Widget;
 import com.yanzhenjie.album.impl.AlbumCallback;
@@ -101,10 +102,26 @@ public class AlbumFragment extends NoFragment {
     private MediaScanner mMediaScanner;
     private AlbumCallback mCallback;
 
+    private Filter<Long> mSizeFilter;
+    private Filter<String> mMimeFilter;
+    private Filter<Long> mDurationFilter;
+
+    public void setSizeFilter(Filter<Long> sizeFilter) {
+        this.mSizeFilter = sizeFilter;
+    }
+
+    public void setMimeFilter(Filter<String> mimeFilter) {
+        this.mMimeFilter = mimeFilter;
+    }
+
+    public void setDurationFilter(Filter<Long> durationFilter) {
+        this.mDurationFilter = durationFilter;
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mCallback = (AlbumCallback) context;
+        this.mCallback = (AlbumCallback) context;
     }
 
     @Override
@@ -191,7 +208,9 @@ public class AlbumFragment extends NoFragment {
         });
         mRvContentList.setAdapter(mAlbumContentAdapter);
 
-        MediaReadTask scanTask = new MediaReadTask(getContext(), mFunction, mScanCallback, mCheckedList);
+        boolean filterVisibility = argument.getBoolean(Album.KEY_INPUT_FILTER_VISIBILITY, true);
+        MediaReadTask scanTask = new MediaReadTask(getContext(), mFunction, mScanCallback, mCheckedList,
+                mSizeFilter, mMimeFilter, mDurationFilter, filterVisibility);
         ArrayList<AlbumFile> checkedList = argument.getParcelableArrayList(Album.KEY_INPUT_CHECKED_LIST);
         //noinspection unchecked
         scanTask.execute(checkedList);
@@ -506,7 +525,7 @@ public class AlbumFragment extends NoFragment {
      *
      * @param count number.
      */
-    public void setCheckedCountUI(int count) {
+    private void setCheckedCountUI(int count) {
         mBtnPreview.setText(" (" + count + ")");
         mToolbar.setSubtitle(count + "/" + mLimitCount);
     }

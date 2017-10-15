@@ -22,6 +22,7 @@ import android.os.AsyncTask;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.AlbumFolder;
+import com.yanzhenjie.album.Filter;
 import com.yanzhenjie.loading.dialog.LoadingDialog;
 
 import java.util.ArrayList;
@@ -48,13 +49,25 @@ public class MediaReadTask extends AsyncTask<ArrayList<AlbumFile>, Void, ArrayLi
     private Callback mCallback;
     private List<AlbumFile> mCheckedFiles;
 
+    private Filter<Long> mSizeFilter;
+    private Filter<String> mMimeFilter;
+    private Filter<Long> mDurationFilter;
+    private boolean mFilterVisibility;
+
     private Dialog mWaitDialog;
 
-    public MediaReadTask(Context context, @Album.ChoiceFunction int function, Callback callback, List<AlbumFile> checkedFiles) {
+    public MediaReadTask(Context context, @Album.ChoiceFunction int function, Callback callback, List<AlbumFile> checkedFiles,
+                         Filter<Long> sizeFilter, Filter<String> mimeFilter, Filter<Long> durationFilter, boolean filterVisibility) {
         this.mContext = context;
         this.mFunction = function;
         this.mCallback = callback;
         this.mCheckedFiles = checkedFiles;
+
+        this.mSizeFilter = sizeFilter;
+        this.mMimeFilter = mimeFilter;
+        this.mDurationFilter = durationFilter;
+        this.mFilterVisibility = filterVisibility;
+
         this.mWaitDialog = new LoadingDialog(context);
     }
 
@@ -74,18 +87,19 @@ public class MediaReadTask extends AsyncTask<ArrayList<AlbumFile>, Void, ArrayLi
     @Override
     protected final ArrayList<AlbumFolder> doInBackground(ArrayList<AlbumFile>... params) {
         ArrayList<AlbumFolder> albumFolders;
+        MediaReader mediaReader = new MediaReader(mContext, mSizeFilter, mMimeFilter, mDurationFilter, mFilterVisibility);
         switch (mFunction) {
             case Album.FUNCTION_CHOICE_IMAGE: {
-                albumFolders = new MediaReader(mContext).getAllImage();
+                albumFolders = mediaReader.getAllImage();
                 break;
             }
             case Album.FUNCTION_CHOICE_VIDEO: {
-                albumFolders = new MediaReader(mContext).getAllVideo();
+                albumFolders = mediaReader.getAllVideo();
                 break;
             }
             case Album.FUNCTION_CHOICE_ALBUM:
             default: {
-                albumFolders = new MediaReader(mContext).getAllMedia();
+                albumFolders = mediaReader.getAllMedia();
                 break;
             }
         }

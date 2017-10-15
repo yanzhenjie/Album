@@ -19,6 +19,8 @@ import android.content.Context;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
+import com.yanzhenjie.album.Filter;
+
 /**
  * Created by YanZhenjie on 2017/8/16.
  */
@@ -27,6 +29,11 @@ public abstract class BasicChoiceWrapper<T extends BasicChoiceWrapper, Result, C
     boolean mHasCamera = true;
     @IntRange(from = 1, to = 4)
     int mColumnCount = 2;
+
+    Filter<Long> mSizeFilter;
+    Filter<String> mMimeTypeFilter;
+
+    boolean mFilterVisibility = true;
 
     BasicChoiceWrapper(@NonNull Context context) {
         super(context);
@@ -45,6 +52,30 @@ public abstract class BasicChoiceWrapper<T extends BasicChoiceWrapper, Result, C
      */
     public T columnCount(@IntRange(from = 1, to = 4) int count) {
         this.mColumnCount = count;
+        return (T) this;
+    }
+
+    /**
+     * Filter the file size.
+     */
+    public T filterSize(Filter<Long> filter) {
+        this.mSizeFilter = filter;
+        return (T) this;
+    }
+
+    /**
+     * Filter the file extension.
+     */
+    public T filterMimeType(Filter<String> filter) {
+        this.mMimeTypeFilter = filter;
+        return (T) this;
+    }
+
+    /**
+     * The visibility of the filtered file.
+     */
+    public T afterFilterVisibility(boolean visibility) {
+        this.mFilterVisibility = visibility;
         return (T) this;
     }
 

@@ -56,6 +56,8 @@ public final class ImageMultipleWrapper extends BasicChoiceWrapper<ImageMultiple
 
     @Override
     public void start() {
+        AlbumActivity.mSizeFilter = mSizeFilter;
+        AlbumActivity.mMimeFilter = mMimeTypeFilter;
         AlbumActivity.sResult = mResult;
         AlbumActivity.sCancel = mCancel;
         Intent intent = new Intent(mContext, AlbumActivity.class);
@@ -68,6 +70,7 @@ public final class ImageMultipleWrapper extends BasicChoiceWrapper<ImageMultiple
         intent.putExtra(Album.KEY_INPUT_COLUMN_COUNT, mColumnCount);
         intent.putExtra(Album.KEY_INPUT_ALLOW_CAMERA, mHasCamera);
         intent.putExtra(Album.KEY_INPUT_LIMIT_COUNT, mLimitCount);
+        intent.putExtra(Album.KEY_INPUT_FILTER_VISIBILITY, mFilterVisibility);
         mContext.startActivity(intent);
     }
 }

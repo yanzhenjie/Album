@@ -63,4 +63,6 @@
     <plurals name="album_check_album_limit_camera">
         <item quantity="other">您只能选择%1$d个文件，请反选后再操作</item>
     </plurals>
+
+    <string name="album_item_unavailable">不可用</string>
 </resources>

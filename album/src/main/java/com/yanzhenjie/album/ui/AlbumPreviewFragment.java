@@ -27,6 +27,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +54,7 @@ public class AlbumPreviewFragment extends NoFragment {
     private ViewPager mViewPager;
     private TextView mTvDuration;
     private AppCompatCheckBox mCheckBox;
+    private FrameLayout mLayoutLayer;
 
     @Album.ChoiceFunction
     private int mFunction;
@@ -75,6 +77,7 @@ public class AlbumPreviewFragment extends NoFragment {
         mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
         mTvDuration = (TextView) view.findViewById(R.id.tv_duration);
         mCheckBox = (AppCompatCheckBox) view.findViewById(R.id.cb_album_check);
+        mLayoutLayer = (FrameLayout) view.findViewById(R.id.layout_layer);
 
         setToolbar(toolbar);
     }
@@ -160,6 +163,7 @@ public class AlbumPreviewFragment extends NoFragment {
                 mCurrentItemPosition = position;
                 AlbumFile albumFile = mAlbumFiles.get(mCurrentItemPosition);
                 mCheckBox.setChecked(albumFile.isChecked());
+                mCheckBox.setEnabled(albumFile.isEnable());
                 setTitle(mCurrentItemPosition + 1 + " / " + mAlbumFiles.size());
 
                 if (albumFile.getMediaType() == AlbumFile.TYPE_VIDEO) {
@@ -168,6 +172,8 @@ public class AlbumPreviewFragment extends NoFragment {
                 } else {
                     mTvDuration.setVisibility(View.GONE);
                 }
+
+                mLayoutLayer.setVisibility(albumFile.isEnable() ? View.GONE : View.VISIBLE);
             }
         };
         mViewPager.addOnPageChangeListener(pageChangeListener);
