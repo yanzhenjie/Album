@@ -41,5 +41,9 @@
     <string name="canceled">Canceled</string>
     <string name="no_selected">Please select, first.</string>
 
-    <string name="hint_image_preview_click">Click on a item to preview theme.</string>
+    <string name="hint_image_preview_click">Click on a item to preview them.</string>
+
+    <string name="hint_filter_after_visibility">Did you show the filtered files?</string>
+    <string name="filter_after_visibility_visible">Show</string>
+    <string name="filter_after_visibility_gone">Hide</string>
 </resources>

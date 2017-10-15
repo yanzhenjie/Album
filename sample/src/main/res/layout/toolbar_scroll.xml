@@ -14,18 +14,14 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<resources>
-    <dimen name="dp_1">1dp</dimen>
-    <dimen name="dp_5">5dp</dimen>
-    <dimen name="dp_10">10dp</dimen>
-    <dimen name="dp_20">20dp</dimen>
-    <dimen name="dp_90">90dp</dimen>
-    <dimen name="dp_100">100dp</dimen>
-    <dimen name="dp_120">120dp</dimen>
+<android.support.design.widget.AppBarLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/WrapContent.WidthMatchParent">
 
-    <dimen name="sp_12">12sp</dimen>
-    <dimen name="sp_14">14sp</dimen>
-    <dimen name="sp_16">16sp</dimen>
-    <dimen name="sp_18">18sp</dimen>
-    <dimen name="sp_20">20sp</dimen>
-</resources>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/Toolbar"
+        app:layout_scrollFlags="enterAlways|snap|enterAlwaysCollapsed"/>
+
+</android.support.design.widget.AppBarLayout>

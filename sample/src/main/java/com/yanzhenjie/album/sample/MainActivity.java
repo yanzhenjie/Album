@@ -22,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.yanzhenjie.album.sample.feature.AlbumActivity;
+import com.yanzhenjie.album.sample.feature.AlbumFilterActivity;
 import com.yanzhenjie.album.sample.feature.AlbumUIActivity;
 import com.yanzhenjie.album.sample.feature.CameraActivity;
 import com.yanzhenjie.album.sample.feature.GalleryActivity;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn_album).setOnClickListener(this);
         findViewById(R.id.btn_gallery).setOnClickListener(this);
         findViewById(R.id.btn_chang_ui).setOnClickListener(this);
+        findViewById(R.id.btn_filter).setOnClickListener(this);
     }
 
     @Override
@@ -79,6 +81,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             case R.id.btn_chang_ui: {
                 startActivity(new Intent(this, AlbumUIActivity.class));
+                break;
+            }
+            case R.id.btn_filter: {
+                startActivity(new Intent(this, AlbumFilterActivity.class));
                 break;
             }
         }

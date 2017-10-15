@@ -73,6 +73,11 @@
             android:name=".feature.GalleryActivity"
             android:label="@string/title_gallery"
             android:theme="@style/AppTheme"/>
+
+        <activity
+            android:name=".feature.AlbumFilterActivity"
+            android:label="@string/title_album_select"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

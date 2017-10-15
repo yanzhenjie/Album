@@ -19,9 +19,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/MatchParent">
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar_scroll"/>
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         style="@style/album_MatchParent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -32,7 +32,7 @@
             <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/btn_camera"
                 style="@style/Button.Primary.WrapContent.WidthMatchParent"
-                android:minHeight="@dimen/dp_100"
+                android:minHeight="@dimen/dp_90"
                 android:src="@drawable/btn_camera_photo_white"/>
 
             <LinearLayout
@@ -44,7 +44,7 @@
                     style="@style/Button.Primary.WrapContent.WidthMatchParent"
                     android:layout_weight="1"
                     android:contentDescription="@string/app_name"
-                    android:minHeight="@dimen/dp_100"
+                    android:minHeight="@dimen/dp_90"
                     android:src="@drawable/btn_image_white"/>
 
                 <android.support.v7.widget.AppCompatImageButton
@@ -52,7 +52,7 @@
                     style="@style/Button.Primary.WrapContent.WidthMatchParent"
                     android:layout_weight="1"
                     android:contentDescription="@string/app_name"
-                    android:minHeight="@dimen/dp_100"
+                    android:minHeight="@dimen/dp_90"
                     android:src="@drawable/btn_video_white"/>
             </LinearLayout>
 
@@ -60,23 +60,30 @@
                 android:id="@+id/btn_album"
                 style="@style/Button.Primary.WrapContent.WidthMatchParent"
                 android:contentDescription="@string/app_name"
-                android:minHeight="@dimen/dp_100"
+                android:minHeight="@dimen/dp_90"
                 android:src="@drawable/btn_album"/>
 
             <ImageButton
                 android:id="@+id/btn_gallery"
                 style="@style/Button.Primary.WrapContent.WidthMatchParent"
                 android:contentDescription="@string/app_name"
-                android:minHeight="@dimen/dp_100"
+                android:minHeight="@dimen/dp_90"
                 android:src="@drawable/btn_gallery"/>
 
             <ImageButton
                 android:id="@+id/btn_chang_ui"
                 style="@style/Button.Primary.WrapContent.WidthMatchParent"
                 android:contentDescription="@string/app_name"
-                android:minHeight="@dimen/dp_100"
+                android:minHeight="@dimen/dp_90"
                 android:src="@drawable/btn_change_ui"/>
+
+            <ImageButton
+                android:id="@+id/btn_filter"
+                style="@style/Button.Primary.WrapContent.WidthMatchParent"
+                android:contentDescription="@string/app_name"
+                android:minHeight="@dimen/dp_90"
+                android:src="@drawable/btn_filter"/>
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -43,4 +43,8 @@
     <string name="no_selected">请先选择媒体文件</string>
 
     <string name="hint_image_preview_click">点击一个Item去预览全部的媒体文件</string>
+
+    <string name="hint_filter_after_visibility">是否显示被过滤掉的文件？</string>
+    <string name="filter_after_visibility_visible">显示</string>
+    <string name="filter_after_visibility_gone">不显示</string>
 </resources>

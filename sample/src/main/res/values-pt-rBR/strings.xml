@@ -42,5 +42,9 @@
 
     <string name="no_selected">Selecione o arquivo de mídia primeiro</string>
 
-    <string name="hint_image_preview_click">Clique em um item para visualizar todos os arquivos de mídia</string>
+    <string name="hint_image_preview_click">Clique em um item para visualizá-los.</string>
+
+    <string name="hint_filter_after_visibility">Você mostrou os arquivos filtrados?</string>
+    <string name="filter_after_visibility_visible">Exposição</string>
+    <string name="filter_after_visibility_gone">Ocultar</string>
 </resources>
