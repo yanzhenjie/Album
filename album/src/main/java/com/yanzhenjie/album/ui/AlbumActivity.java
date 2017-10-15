@@ -220,6 +220,7 @@ public class AlbumActivity extends CompatActivity implements AlbumCallback {
     @Override
     protected void onDestroy() {
         sResult = null;
+        sCancel = null;
         super.onDestroy();
     }
 }

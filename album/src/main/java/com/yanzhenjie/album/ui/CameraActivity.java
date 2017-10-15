@@ -270,6 +270,7 @@ public class CameraActivity extends Activity {
     @Override
     protected void onDestroy() {
         sResult = null;
+        sCancel = null;
         super.onDestroy();
     }
 }

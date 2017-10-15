@@ -322,6 +322,7 @@ public class GalleryAlbumActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         sResult = null;
+        sCancel = null;
         super.onDestroy();
     }
 }
