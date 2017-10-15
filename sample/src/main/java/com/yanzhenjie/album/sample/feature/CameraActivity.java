@@ -26,8 +26,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
-import com.yanzhenjie.album.AlbumListener;
 import com.yanzhenjie.album.sample.R;
 import com.yanzhenjie.album.task.DefaultAlbumLoader;
 
@@ -56,17 +56,18 @@ public class CameraActivity extends AppCompatActivity {
                 .image()
 //                .filePath()
                 .requestCode(2)
-                .listener(new AlbumListener<String>() {
+                .onResult(new Action<String>() {
                     @Override
-                    public void onAlbumResult(int requestCode, @NonNull String result) {
+                    public void onAction(int requestCode, @NonNull String result) {
                         mTextView.setText(result);
 
                         DefaultAlbumLoader.getInstance()
                                 .loadImage(mImageView, result, 720, 1280);
                     }
-
+                })
+                .onCancel(new Action<String>() {
                     @Override
-                    public void onAlbumCancel(int requestCode) {
+                    public void onAction(int requestCode, @NonNull String result) {
                         Toast.makeText(CameraActivity.this, R.string.canceled, Toast.LENGTH_LONG).show();
                     }
                 })
@@ -81,17 +82,18 @@ public class CameraActivity extends AppCompatActivity {
                 .quality(1)
                 .limitDuration(Long.MAX_VALUE)
                 .limitBytes(Long.MAX_VALUE)
-                .listener(new AlbumListener<String>() {
+                .onResult(new Action<String>() {
                     @Override
-                    public void onAlbumResult(int requestCode, @NonNull String result) {
+                    public void onAction(int requestCode, @NonNull String result) {
                         mTextView.setText(result);
 
                         DefaultAlbumLoader.getInstance()
                                 .loadVideo(mImageView, result, 720, 1280);
                     }
-
+                })
+                .onCancel(new Action<String>() {
                     @Override
-                    public void onAlbumCancel(int requestCode) {
+                    public void onAction(int requestCode, @NonNull String result) {
                         Toast.makeText(CameraActivity.this, R.string.canceled, Toast.LENGTH_LONG).show();
                     }
                 })

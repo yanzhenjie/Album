@@ -24,8 +24,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 
+import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
-import com.yanzhenjie.album.AlbumListener;
 import com.yanzhenjie.album.api.widget.Widget;
 import com.yanzhenjie.album.sample.R;
 
@@ -92,14 +92,10 @@ public class GalleryActivity extends AppCompatActivity {
                                 .title(mToolbar.getTitle().toString())
                                 .build()
                 )
-                .listener(new AlbumListener<ArrayList<String>>() {
+                .onResult(new Action<ArrayList<String>>() {
                     @Override
-                    public void onAlbumResult(int requestCode, @NonNull ArrayList<String> result) {
+                    public void onAction(int requestCode, @NonNull ArrayList<String> result) {
                         // TODO If it is optional, here you can accept the results of user selection.
-                    }
-
-                    @Override
-                    public void onAlbumCancel(int requestCode) {
                     }
                 })
                 .start();

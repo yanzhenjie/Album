@@ -30,9 +30,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
-import com.yanzhenjie.album.AlbumListener;
 import com.yanzhenjie.album.api.widget.Widget;
 import com.yanzhenjie.album.impl.OnItemClickListener;
 import com.yanzhenjie.album.sample.R;
@@ -109,16 +109,17 @@ public class AlbumUIActivity extends AppCompatActivity {
                                 )
                                 .build()
                 )
-                .listener(new AlbumListener<ArrayList<AlbumFile>>() {
+                .onResult(new Action<ArrayList<AlbumFile>>() {
                     @Override
-                    public void onAlbumResult(int requestCode, @NonNull ArrayList<AlbumFile> result) {
+                    public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
                         mAlbumFiles = result;
                         mAdapter.notifyDataSetChanged(mAlbumFiles);
                         mTvMessage.setVisibility(result.size() > 0 ? View.VISIBLE : View.GONE);
                     }
-
+                })
+                .onCancel(new Action<String>() {
                     @Override
-                    public void onAlbumCancel(int requestCode) {
+                    public void onAction(int requestCode, @NonNull String result) {
                         Toast.makeText(AlbumUIActivity.this, R.string.canceled, Toast.LENGTH_LONG).show();
                     }
                 })
@@ -149,16 +150,12 @@ public class AlbumUIActivity extends AppCompatActivity {
                                     )
                                     .build()
                     )
-                    .listener(new AlbumListener<ArrayList<AlbumFile>>() {
+                    .onResult(new Action<ArrayList<AlbumFile>>() {
                         @Override
-                        public void onAlbumResult(int requestCode, @NonNull ArrayList<AlbumFile> result) {
+                        public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
                             mAlbumFiles = result;
                             mAdapter.notifyDataSetChanged(mAlbumFiles);
                             mTvMessage.setVisibility(result.size() > 0 ? View.VISIBLE : View.GONE);
-                        }
-
-                        @Override
-                        public void onAlbumCancel(int requestCode) {
                         }
                     })
                     .start();
