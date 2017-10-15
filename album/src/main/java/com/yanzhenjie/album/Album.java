@@ -191,14 +191,14 @@ public final class Album {
     /**
      * Preview picture.
      */
-    public static BasicGalleryWrapper<GalleryWrapper, String, String> gallery(Activity activity) {
+    public static BasicGalleryWrapper<GalleryWrapper, String, String, String> gallery(Activity activity) {
         return new GalleryWrapper(activity);
     }
 
     /**
      * Preview Album.
      */
-    public static BasicGalleryWrapper<GalleryAlbumWrapper, AlbumFile, AlbumFile> galleryAlbum(Activity activity) {
+    public static BasicGalleryWrapper<GalleryAlbumWrapper, AlbumFile, String, AlbumFile> galleryAlbum(Activity activity) {
         return new GalleryAlbumWrapper(activity);
     }
 
@@ -233,14 +233,14 @@ public final class Album {
     /**
      * Preview picture.
      */
-    public static BasicGalleryWrapper<GalleryWrapper, String, String> gallery(Fragment fragment) {
+    public static BasicGalleryWrapper<GalleryWrapper, String, String, String> gallery(Fragment fragment) {
         return new GalleryWrapper(fragment.getActivity());
     }
 
     /**
      * Preview Album.
      */
-    public static BasicGalleryWrapper<GalleryAlbumWrapper, AlbumFile, AlbumFile> galleryAlbum(Fragment fragment) {
+    public static BasicGalleryWrapper<GalleryAlbumWrapper, AlbumFile, String, AlbumFile> galleryAlbum(Fragment fragment) {
         return new GalleryAlbumWrapper(fragment.getActivity());
     }
 
@@ -275,14 +275,14 @@ public final class Album {
     /**
      * Preview picture.
      */
-    public static BasicGalleryWrapper<GalleryWrapper, String, String> gallery(android.support.v4.app.Fragment fragment) {
+    public static BasicGalleryWrapper<GalleryWrapper, String, String, String> gallery(android.support.v4.app.Fragment fragment) {
         return new GalleryWrapper(fragment.getContext());
     }
 
     /**
      * Preview Album.
      */
-    public static BasicGalleryWrapper<GalleryAlbumWrapper, AlbumFile, AlbumFile> galleryAlbum(android.support.v4.app.Fragment fragment) {
+    public static BasicGalleryWrapper<GalleryAlbumWrapper, AlbumFile, String, AlbumFile> galleryAlbum(android.support.v4.app.Fragment fragment) {
         return new GalleryAlbumWrapper(fragment.getContext());
     }
 }

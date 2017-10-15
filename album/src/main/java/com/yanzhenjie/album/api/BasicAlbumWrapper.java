@@ -19,18 +19,19 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.yanzhenjie.album.AlbumListener;
+import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.api.widget.Widget;
 
 /**
  * <p>Album basic wrapper.</p>
  * Created by yanzhenjie on 17-3-29.
  */
-public abstract class BasicAlbumWrapper<T extends BasicAlbumWrapper, Result, Checked> {
+public abstract class BasicAlbumWrapper<T extends BasicAlbumWrapper, Result, Cancel, Checked> {
 
     @NonNull
     final Context mContext;
-    AlbumListener<Result> mAlbumListener;
+    Action<Result> mResult;
+    Action<Cancel> mCancel;
     int mRequestCode;
     @Nullable
     Widget mWidget;
@@ -43,10 +44,18 @@ public abstract class BasicAlbumWrapper<T extends BasicAlbumWrapper, Result, Che
     }
 
     /**
-     * Set the results to listener.
+     * Set the action when result.
      */
-    public final T listener(AlbumListener<Result> albumListener) {
-        this.mAlbumListener = albumListener;
+    public final T onResult(Action<Result> result) {
+        this.mResult = result;
+        return (T) this;
+    }
+
+    /**
+     * Set the action when canceling.
+     */
+    public final T onCancel(Action<Cancel> cancel) {
+        this.mCancel = cancel;
         return (T) this;
     }
 

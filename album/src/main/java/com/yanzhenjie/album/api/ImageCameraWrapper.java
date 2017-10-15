@@ -33,7 +33,8 @@ public class ImageCameraWrapper extends BasicCameraWrapper<ImageCameraWrapper> {
     }
 
     public void start() {
-        CameraActivity.sAlbumListener = mAlbumListener;
+        CameraActivity.sResult = mResult;
+        CameraActivity.sCancel = mCancel;
         Intent intent = new Intent(mContext, CameraActivity.class);
         intent.putExtra(Album.KEY_INPUT_REQUEST_CODE, mRequestCode);
 

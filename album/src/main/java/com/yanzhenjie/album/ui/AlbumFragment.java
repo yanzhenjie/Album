@@ -38,10 +38,10 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.AlbumFolder;
-import com.yanzhenjie.album.AlbumListener;
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.api.widget.Widget;
 import com.yanzhenjie.album.impl.AlbumCallback;
@@ -271,7 +271,7 @@ public class AlbumFragment extends NoFragment {
                     String extension = MimeTypeMap.getFileExtensionFromUrl(imagePath);
                     String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
                     if (!TextUtils.isEmpty(mimeType)) {
-                        mCameraListener.onAlbumResult(mimeType.contains("image") ? REQUEST_CODE_CAMERA_IMAGE : REQUEST_CODE_CAMERA_VIDEO, imagePath);
+                        mCameraAction.onAction(mimeType.contains("image") ? REQUEST_CODE_CAMERA_IMAGE : REQUEST_CODE_CAMERA_VIDEO, imagePath);
                     }
                 } else {
                     mCallback.onAlbumCancel();
@@ -341,7 +341,7 @@ public class AlbumFragment extends NoFragment {
                         Album.camera(getContext())
                                 .image()
                                 .requestCode(REQUEST_CODE_CAMERA_IMAGE)
-                                .listener(mCameraListener)
+                                .onResult(mCameraAction)
                                 .start();
                         break;
                     }
@@ -349,7 +349,7 @@ public class AlbumFragment extends NoFragment {
                         Album.camera(getContext())
                                 .video()
                                 .requestCode(REQUEST_CODE_CAMERA_VIDEO)
-                                .listener(mCameraListener)
+                                .onResult(mCameraAction)
                                 .start();
                         break;
                     }
@@ -378,22 +378,22 @@ public class AlbumFragment extends NoFragment {
                 Album.camera(getContext())
                         .image()
                         .requestCode(REQUEST_CODE_CAMERA_IMAGE)
-                        .listener(mCameraListener)
+                        .onResult(mCameraAction)
                         .start();
             } else if (id == R.id.album_menu_camera_video) {
                 Album.camera(getContext())
                         .video()
                         .requestCode(REQUEST_CODE_CAMERA_VIDEO)
-                        .listener(mCameraListener)
+                        .onResult(mCameraAction)
                         .start();
             }
             return true;
         }
     };
 
-    private AlbumListener<String> mCameraListener = new AlbumListener<String>() {
+    private Action<String> mCameraAction = new Action<String>() {
         @Override
-        public void onAlbumResult(int requestCode, @NonNull String result) {
+        public void onAction(int requestCode, @NonNull String result) {
             // Add media lib.
             if (mMediaScanner == null) {
                 mMediaScanner = new MediaScanner(getContext());
@@ -415,7 +415,6 @@ public class AlbumFragment extends NoFragment {
             albumFile.setAddDate(nowTime);
             albumFile.setModifyDate(nowTime);
             albumFile.setSize(file.length());
-            albumFile.setThumbPath(result);
             albumFile.setMediaType(requestCode == REQUEST_CODE_CAMERA_IMAGE ? AlbumFile.TYPE_IMAGE : AlbumFile.TYPE_VIDEO);
             albumFile.setChecked(true);
 
@@ -444,10 +443,6 @@ public class AlbumFragment extends NoFragment {
                     break;
                 }
             }
-        }
-
-        @Override
-        public void onAlbumCancel(int requestCode) {
         }
     };
 

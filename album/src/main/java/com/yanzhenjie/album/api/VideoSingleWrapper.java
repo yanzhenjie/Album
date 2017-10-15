@@ -28,7 +28,7 @@ import java.util.ArrayList;
 /**
  * Created by YanZhenjie on 2017/8/16.
  */
-public final class VideoSingleWrapper extends BasicChoiceWrapper<VideoSingleWrapper, ArrayList<AlbumFile>, AlbumFile> {
+public final class VideoSingleWrapper extends BasicChoiceWrapper<VideoSingleWrapper, ArrayList<AlbumFile>, String, AlbumFile> {
 
     public VideoSingleWrapper(@NonNull Context context) {
         super(context);
@@ -36,7 +36,8 @@ public final class VideoSingleWrapper extends BasicChoiceWrapper<VideoSingleWrap
 
     @Override
     public void start() {
-        AlbumActivity.sAlbumListener = mAlbumListener;
+        AlbumActivity.sResult = mResult;
+        AlbumActivity.sCancel = mCancel;
         Intent intent = new Intent(mContext, AlbumActivity.class);
         intent.putExtra(Album.KEY_INPUT_REQUEST_CODE, mRequestCode);
         intent.putExtra(Album.KEY_INPUT_WIDGET, mWidget);

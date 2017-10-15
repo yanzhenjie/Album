@@ -29,7 +29,7 @@ import java.util.ArrayList;
  * <p>Album wrapper.</p>
  * Created by yanzhenjie on 17-3-29.
  */
-public class AlbumSingleWrapper extends BasicChoiceWrapper<AlbumSingleWrapper, ArrayList<AlbumFile>, AlbumFile> {
+public class AlbumSingleWrapper extends BasicChoiceWrapper<AlbumSingleWrapper, ArrayList<AlbumFile>, String, AlbumFile> {
 
     public AlbumSingleWrapper(@NonNull Context context) {
         super(context);
@@ -37,7 +37,8 @@ public class AlbumSingleWrapper extends BasicChoiceWrapper<AlbumSingleWrapper, A
 
     @Override
     public void start() {
-        AlbumActivity.sAlbumListener = mAlbumListener;
+        AlbumActivity.sResult = mResult;
+        AlbumActivity.sCancel = mCancel;
         Intent intent = new Intent(mContext, AlbumActivity.class);
         intent.putExtra(Album.KEY_INPUT_REQUEST_CODE, mRequestCode);
         intent.putExtra(Album.KEY_INPUT_WIDGET, mWidget);

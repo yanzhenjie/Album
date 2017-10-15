@@ -23,7 +23,7 @@ import java.util.ArrayList;
 /**
  * Created by YanZhenjie on 2017/8/19.
  */
-public abstract class BasicGalleryWrapper<T extends BasicGalleryWrapper, Result, Checked> extends BasicAlbumWrapper<T, ArrayList<Result>, ArrayList<Checked>> {
+public abstract class BasicGalleryWrapper<T extends BasicGalleryWrapper, Result, Cancel, Checked> extends BasicAlbumWrapper<T, ArrayList<Result>, Cancel, ArrayList<Checked>> {
 
     @IntRange(from = 1, to = Integer.MAX_VALUE)
     int mCurrentPosition = 0;

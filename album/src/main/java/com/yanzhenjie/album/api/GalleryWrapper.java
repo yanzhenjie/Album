@@ -25,7 +25,7 @@ import com.yanzhenjie.album.ui.GalleryActivity;
  * <p>Gallery wrapper.</p>
  * Created by yanzhenjie on 17-3-29.
  */
-public class GalleryWrapper extends BasicGalleryWrapper<GalleryWrapper, String, String> {
+public class GalleryWrapper extends BasicGalleryWrapper<GalleryWrapper, String, String, String> {
 
     public GalleryWrapper(Context context) {
         super(context);
@@ -33,7 +33,8 @@ public class GalleryWrapper extends BasicGalleryWrapper<GalleryWrapper, String, 
 
     @Override
     public void start() {
-        GalleryActivity.sAlbumListener = mAlbumListener;
+        GalleryActivity.sResult = mResult;
+        GalleryActivity.sCancel = mCancel;
         Intent intent = new Intent(mContext, GalleryActivity.class);
         intent.putExtra(Album.KEY_INPUT_REQUEST_CODE, mRequestCode);
         intent.putExtra(Album.KEY_INPUT_WIDGET, mWidget);

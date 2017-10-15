@@ -20,7 +20,7 @@ import com.yanzhenjie.album.AlbumFile;
 import java.util.ArrayList;
 
 /**
- * <p>Callback album results.</p>
+ * <p>Action album results.</p>
  * Created by yanzhenjie on 17-3-28.
  */
 public interface AlbumCallback {

@@ -22,7 +22,7 @@ import android.support.annotation.NonNull;
 /**
  * Created by YanZhenjie on 2017/8/16.
  */
-public abstract class BasicChoiceWrapper<T extends BasicChoiceWrapper, Result, Checked> extends BasicAlbumWrapper<T, Result, Checked> {
+public abstract class BasicChoiceWrapper<T extends BasicChoiceWrapper, Result, Cancel, Checked> extends BasicAlbumWrapper<T, Result, Cancel, Checked> {
 
     boolean mHasCamera = true;
     @IntRange(from = 1, to = 4)

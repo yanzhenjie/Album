@@ -29,8 +29,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 
+import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
-import com.yanzhenjie.album.AlbumListener;
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.util.AlbumUtils;
 import com.yanzhenjie.album.util.PermissionUtils;
@@ -57,7 +57,8 @@ public class CameraActivity extends Activity {
     private static final int REQUEST_CODE_CAMERA_IMAGE = 1;
     private static final int REQUEST_CODE_CAMERA_VIDEO = 2;
 
-    public static AlbumListener<String> sAlbumListener;
+    public static Action<String> sResult;
+    public static Action<String> sCancel;
     private int mRequestCode;
 
     @Album.CameraFunction
@@ -253,22 +254,22 @@ public class CameraActivity extends Activity {
     }
 
     private void onCameraResult() {
-        if (sAlbumListener != null)
-            sAlbumListener.onAlbumResult(mRequestCode, mCameraFilePath);
+        if (sResult != null)
+            sResult.onAction(mRequestCode, mCameraFilePath);
         setResult(RESULT_OK);
         finish();
     }
 
     private void onCameraCancel() {
-        if (sAlbumListener != null)
-            sAlbumListener.onAlbumCancel(mRequestCode);
+        if (sCancel != null)
+            sCancel.onAction(mRequestCode, "User canceled.");
         setResult(RESULT_CANCELED);
         finish();
     }
 
     @Override
     protected void onDestroy() {
-        sAlbumListener = null;
+        sResult = null;
         super.onDestroy();
     }
 }

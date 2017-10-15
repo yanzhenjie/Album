@@ -24,9 +24,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 
+import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
-import com.yanzhenjie.album.AlbumListener;
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.api.widget.Widget;
 import com.yanzhenjie.album.impl.AlbumCallback;
@@ -50,7 +50,8 @@ public class AlbumActivity extends CompatActivity implements AlbumCallback {
     private static final int PERMISSION_STORAGE_IMAGE = 2;
     private static final int PERMISSION_STORAGE_VIDEO = 3;
 
-    public static AlbumListener<ArrayList<AlbumFile>> sAlbumListener;
+    public static Action<ArrayList<AlbumFile>> sResult;
+    public static Action<String> sCancel;
 
     private Bundle mArgument;
     private int mRequestCode;
@@ -200,8 +201,8 @@ public class AlbumActivity extends CompatActivity implements AlbumCallback {
         new ThumbnailBuildTask(this, albumFiles, new ThumbnailBuildTask.Callback() {
             @Override
             public void onThumbnailCallback(ArrayList<AlbumFile> albumFiles) {
-                if (sAlbumListener != null)
-                    sAlbumListener.onAlbumResult(mRequestCode, albumFiles);
+                if (sResult != null)
+                    sResult.onAction(mRequestCode, albumFiles);
                 setResult(RESULT_OK);
                 finish();
             }
@@ -210,15 +211,15 @@ public class AlbumActivity extends CompatActivity implements AlbumCallback {
 
     @Override
     public void onAlbumCancel() {
-        if (sAlbumListener != null)
-            sAlbumListener.onAlbumCancel(mRequestCode);
+        if (sCancel != null)
+            sCancel.onAction(mRequestCode, "User canceled.");
         setResult(RESULT_CANCELED);
         finish();
     }
 
     @Override
     protected void onDestroy() {
-        sAlbumListener = null;
+        sResult = null;
         super.onDestroy();
     }
 }

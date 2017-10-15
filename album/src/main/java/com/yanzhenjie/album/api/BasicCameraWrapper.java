@@ -19,7 +19,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.yanzhenjie.album.AlbumListener;
+import com.yanzhenjie.album.Action;
 
 /**
  * Created by YanZhenjie on 2017/8/18.
@@ -28,7 +28,8 @@ public abstract class BasicCameraWrapper<T extends BasicCameraWrapper> {
 
     @NonNull
     final Context mContext;
-    AlbumListener<String> mAlbumListener;
+    Action<String> mResult;
+    Action<String> mCancel;
     int mRequestCode;
     @Nullable
     String mFilePath;
@@ -38,10 +39,18 @@ public abstract class BasicCameraWrapper<T extends BasicCameraWrapper> {
     }
 
     /**
-     * Set the results to listener.
+     * Set the action when result.
      */
-    public T listener(AlbumListener<String> albumListener) {
-        this.mAlbumListener = albumListener;
+    public final T onResult(Action<String> result) {
+        this.mResult = result;
+        return (T) this;
+    }
+
+    /**
+     * Set the action when canceling.
+     */
+    public final T onCancel(Action<String> cancel) {
+        this.mCancel = cancel;
         return (T) this;
     }
 

@@ -19,25 +19,18 @@ import android.support.annotation.NonNull;
 
 /**
  * <p>
- *     All the results callback.
+ *      Represents an action.
  * </p>
  * Created by YanZhenjie on 2017/8/16.
  */
-public interface AlbumListener<T> {
+public interface Action<T> {
 
     /**
-     * The results callback, only when the success of the callback.
+     * When the action responds.
      *
      * @param requestCode requestCode.
-     * @param result      it might be a AlbumFile list or a String, depending on what function you use.
+     * @param result      The result of the action.
      */
-    void onAlbumResult(int requestCode, @NonNull T result);
-
-    /**
-     * Callback when operation is canceled.
-     *
-     * @param requestCode requestCode.
-     */
-    void onAlbumCancel(int requestCode);
+    void onAction(int requestCode, @NonNull T result);
 
 }

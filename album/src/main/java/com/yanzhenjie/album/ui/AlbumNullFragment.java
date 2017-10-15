@@ -28,8 +28,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
-import com.yanzhenjie.album.AlbumListener;
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.api.widget.Widget;
 import com.yanzhenjie.album.util.AlbumUtils;
@@ -173,28 +173,24 @@ public class AlbumNullFragment extends NoFragment {
             if (id == R.id.btn_camera_image) {
                 Album.camera(getContext())
                         .image()
-                        .listener(mCameraListener)
+                        .onResult(mCameraAction)
                         .start();
             } else if (id == R.id.btn_camera_video) {
                 Album.camera(getContext())
                         .video()
-                        .listener(mCameraListener)
+                        .onResult(mCameraAction)
                         .start();
             }
         }
     };
 
-    private AlbumListener<String> mCameraListener = new AlbumListener<String>() {
+    private Action<String> mCameraAction = new Action<String>() {
         @Override
-        public void onAlbumResult(int requestCode, @NonNull String result) {
+        public void onAction(int requestCode, @NonNull String result) {
             Bundle bundle = new Bundle();
             bundle.putString(KEY_OUTPUT_IMAGE_PATH, result);
             setResult(RESULT_OK, bundle);
             finish();
-        }
-
-        @Override
-        public void onAlbumCancel(int requestCode) {
         }
     };
 }

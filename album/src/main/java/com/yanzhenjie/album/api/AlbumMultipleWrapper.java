@@ -30,7 +30,7 @@ import java.util.ArrayList;
  * <p>Album wrapper.</p>
  * Created by yanzhenjie on 17-3-29.
  */
-public class AlbumMultipleWrapper extends BasicChoiceWrapper<AlbumMultipleWrapper, ArrayList<AlbumFile>, ArrayList<AlbumFile>> {
+public class AlbumMultipleWrapper extends BasicChoiceWrapper<AlbumMultipleWrapper, ArrayList<AlbumFile>, String, ArrayList<AlbumFile>> {
 
     @IntRange(from = 1, to = Integer.MAX_VALUE)
     private int mLimitCount = Integer.MAX_VALUE;
@@ -57,7 +57,8 @@ public class AlbumMultipleWrapper extends BasicChoiceWrapper<AlbumMultipleWrappe
 
     @Override
     public void start() {
-        AlbumActivity.sAlbumListener = mAlbumListener;
+        AlbumActivity.sResult = mResult;
+        AlbumActivity.sCancel = mCancel;
         Intent intent = new Intent(mContext, AlbumActivity.class);
         intent.putExtra(Album.KEY_INPUT_REQUEST_CODE, mRequestCode);
         intent.putExtra(Album.KEY_INPUT_WIDGET, mWidget);
@@ -71,4 +72,3 @@ public class AlbumMultipleWrapper extends BasicChoiceWrapper<AlbumMultipleWrappe
         mContext.startActivity(intent);
     }
 }
-

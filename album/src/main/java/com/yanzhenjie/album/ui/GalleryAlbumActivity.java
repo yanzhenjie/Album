@@ -35,9 +35,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
-import com.yanzhenjie.album.AlbumListener;
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.api.widget.Widget;
 import com.yanzhenjie.album.ui.adapter.AlbumFilePreviewAdapter;
@@ -59,7 +59,8 @@ public class GalleryAlbumActivity extends AppCompatActivity {
     private static final String TAG = "AlbumGallery";
     private static final int PERMISSION_STORAGE = 1;
 
-    public static AlbumListener<ArrayList<AlbumFile>> sAlbumListener;
+    public static Action<ArrayList<AlbumFile>> sResult;
+    public static Action<String> sCancel;
 
     private Toolbar mToolbar;
     private MenuItem mFinishMenuItem;
@@ -300,27 +301,27 @@ public class GalleryAlbumActivity extends AppCompatActivity {
     }
 
     private void onGalleryResult() {
-        if (sAlbumListener != null) {
+        if (sResult != null) {
             ArrayList<AlbumFile> checkedList = new ArrayList<>();
             for (Map.Entry<AlbumFile, Boolean> entry : mCheckedMap.entrySet()) {
                 if (entry.getValue()) checkedList.add(entry.getKey());
             }
-            sAlbumListener.onAlbumResult(mRequestCode, checkedList);
+            sResult.onAction(mRequestCode, checkedList);
         }
         setResult(RESULT_OK);
         finish();
     }
 
     private void onGalleryCancel() {
-        if (sAlbumListener != null)
-            sAlbumListener.onAlbumCancel(mRequestCode);
+        if (sCancel != null)
+            sCancel.onAction(mRequestCode, "User canceled.");
         setResult(RESULT_CANCELED);
         finish();
     }
 
     @Override
     protected void onDestroy() {
-        sAlbumListener = null;
+        sResult = null;
         super.onDestroy();
     }
 }
