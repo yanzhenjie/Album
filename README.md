@@ -132,13 +132,14 @@ Album.camera(this) // Camera function.
     .image() // Take Picture.
     .filePath() // File save path, not required.
     .requestCode(2)
-    .listener(new AlbumListener<String>() {
+    .onResult(new Action<String>() {
         @Override
-        public void onAlbumResult(int requestCode, @NonNull String result) {
+        public void onAction(int requestCode, @NonNull String result) {
         }
-
+    })
+    .onCancel(new Action<String>() {
         @Override
-        public void onAlbumCancel(int requestCode) {
+        public void onAction(int requestCode, @NonNull String result) {
         }
     })
     .start();
@@ -155,13 +156,14 @@ Album.camera(this)
     .quality(1) // Video quality, [0, 1].
     .limitDuration(Long.MAX_VALUE) // The longest duration of the video is in milliseconds.
     .limitBytes(Long.MAX_VALUE) // Maximum size of the video, in bytes.
-    .listener(new AlbumListener<String>() {
+    .onResult(new Action<String>() {
         @Override
-        public void onAlbumResult(int requestCode, @NonNull String result) {
+        public void onAction(int requestCode, @NonNull String result) {
         }
-
+    })
+    .onCancel(new Action<String>() {
         @Override
-        public void onAlbumCancel(int requestCode) {
+        public void onAction(int requestCode, @NonNull String result) {
         }
     })
     .start();
