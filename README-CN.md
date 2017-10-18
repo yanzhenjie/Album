@@ -31,7 +31,7 @@
 # 依赖
 * Gradle：
 ```groovy
-compile 'com.yanzhenjie:album:2.0.0'
+compile 'com.yanzhenjie:album:2.0.1'
 ```
 
 * Maven:
@@ -39,7 +39,7 @@ compile 'com.yanzhenjie:album:2.0.0'
 <dependency>
   <groupId>com.yanzhenjie</groupId>
   <artifactId>album</artifactId>
-  <version>2.0.0</version>
+  <version>2.0.1</version>
   <type>pom</type>
 </dependency>
 ```
@@ -61,6 +61,7 @@ Album.album(this) // 图片和视频混选。
     .filterSize() // 文件大小的过滤。
     .filterMimeType() // 文件格式的过滤。
     .filterDuration() // 视频时长的过滤。
+    .afterFilterVisibility() // 显示被过滤掉的文件，但它们是不可用的。
     .onResult(new Action<ArrayList<AlbumFile>>() {
         @Override
         public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
@@ -87,6 +88,7 @@ Album.image(this) // 选择图片。
     .checkedList()
     .filterSize()
     .filterMimeType()
+    .afterFilterVisibility() // 显示被过滤掉的文件，但它们是不可用的。
     .onResult(new Action<ArrayList<AlbumFile>>() {
         @Override
         public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
@@ -114,6 +116,7 @@ Album.video(this) // 选择视频。
     .filterSize()
     .filterMimeType()
     .filterDuration()
+    .afterFilterVisibility() // 显示被过滤掉的文件，但它们是不可用的。
     .onResult(new Action<ArrayList<AlbumFile>>() {
         @Override
         public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
