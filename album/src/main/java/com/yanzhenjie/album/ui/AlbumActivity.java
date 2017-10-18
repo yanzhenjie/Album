@@ -227,6 +227,9 @@ public class AlbumActivity extends CompatActivity implements AlbumCallback {
 
     @Override
     protected void onDestroy() {
+        mSizeFilter = null;
+        mMimeFilter = null;
+        mDurationFilter = null;
         sResult = null;
         sCancel = null;
         super.onDestroy();
