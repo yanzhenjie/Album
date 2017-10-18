@@ -30,7 +30,7 @@ White StatusBar, because Android5.0 does not support the StatusBar dark font, so
 # Dependencies
 * Gradle：
 ```groovy
-compile 'com.yanzhenjie:album:2.0.0'
+compile 'com.yanzhenjie:album:2.0.1'
 ```
 
 * Maven:
@@ -38,7 +38,7 @@ compile 'com.yanzhenjie:album:2.0.0'
 <dependency>
   <groupId>com.yanzhenjie</groupId>
   <artifactId>album</artifactId>
-  <version>2.0.0</version>
+  <version>2.0.1</version>
   <type>pom</type>
 </dependency>
 ```
@@ -60,6 +60,7 @@ Album.album(this) // Image and video mix options.
     .filterSize() // Filter the file size.
     .filterMimeType() // Filter file format.
     .filterDuration() // Filter video duration.
+    .afterFilterVisibility() // Show the filtered files, but they are not available.
     .onResult(new Action<ArrayList<AlbumFile>>() {
         @Override
         public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
@@ -86,6 +87,7 @@ Album.image(this) // Image selection.
     .checkedList(mAlbumFiles)
     .filterSize() // Filter the file size.
     .filterMimeType() // Filter file format.
+    .afterFilterVisibility() // Show the filtered files, but they are not available.
     .onResult(new Action<ArrayList<AlbumFile>>() {
         @Override
         public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
@@ -113,6 +115,7 @@ Album.video(this) // Video selection.
     .filterSize()
     .filterMimeType()
     .filterDuration()
+    .afterFilterVisibility() // Show the filtered files, but they are not available.
     .onResult(new Action<ArrayList<AlbumFile>>() {
         @Override
         public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
