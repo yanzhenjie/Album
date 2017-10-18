@@ -14,12 +14,12 @@ ext {
             minSdkVersion    : 11,
             targetSdkVersion : 25,
 
-            versionCode      : 20,
-            versionName      : "2.0.0",
+            versionCode      : 21,
+            versionName      : "2.0.1",
     ]
 
     bintray = [
-            version       : "2.0.0",
+            version       : "2.0.1",
 
             siteUrl       : 'https://github.com/yanzhenjie/Album',
             gitUrl        : 'git@github.com:yanzhenjie/Album.git',
@@ -61,7 +61,7 @@ ext {
             loading     : 'com.yanzhenjie:loading:1.0.2',
             statusView  : 'com.yanzhenjie:statusview:1.0.3',
 
-            album       : 'com.yanzhenjie:album:2.0.0',
+            album       : 'com.yanzhenjie:album:2.0.1',
             picasso     : 'com.squareup.picasso:picasso:2.5.2',
             glide       : 'com.github.bumptech.glide:glide:3.8.0',
     ]
