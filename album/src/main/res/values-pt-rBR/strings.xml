@@ -73,5 +73,5 @@
     </plurals>
 
     <string name="album_item_unavailable">Não disponível</string>
-
+    <string name="album_take_file_unavailable">Arquivo indisponível, tente novamente.</string>
 </resources>

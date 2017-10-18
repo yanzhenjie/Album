@@ -49,6 +49,7 @@ import com.yanzhenjie.album.impl.AlbumCallback;
 import com.yanzhenjie.album.impl.OnItemCheckedListener;
 import com.yanzhenjie.album.impl.OnItemClickListener;
 import com.yanzhenjie.album.task.MediaReadTask;
+import com.yanzhenjie.album.task.PathConvertTask;
 import com.yanzhenjie.album.ui.adapter.AlbumFileAdapter;
 import com.yanzhenjie.album.util.AlbumUtils;
 import com.yanzhenjie.album.util.DisplayUtils;
@@ -57,7 +58,6 @@ import com.yanzhenjie.fragment.NoFragment;
 import com.yanzhenjie.mediascanner.MediaScanner;
 import com.yanzhenjie.statusview.StatusView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,6 +105,9 @@ public class AlbumFragment extends NoFragment {
     private Filter<Long> mSizeFilter;
     private Filter<String> mMimeFilter;
     private Filter<Long> mDurationFilter;
+    private boolean mFilterVisibility;
+
+    private PathConvertTask mConvertTask;
 
     public void setSizeFilter(Filter<Long> sizeFilter) {
         this.mSizeFilter = sizeFilter;
@@ -208,9 +211,9 @@ public class AlbumFragment extends NoFragment {
         });
         mRvContentList.setAdapter(mAlbumContentAdapter);
 
-        boolean filterVisibility = argument.getBoolean(Album.KEY_INPUT_FILTER_VISIBILITY, true);
+        mFilterVisibility = argument.getBoolean(Album.KEY_INPUT_FILTER_VISIBILITY, true);
         MediaReadTask scanTask = new MediaReadTask(getContext(), mFunction, mScanCallback, mCheckedList,
-                mSizeFilter, mMimeFilter, mDurationFilter, filterVisibility);
+                mSizeFilter, mMimeFilter, mDurationFilter, mFilterVisibility);
         ArrayList<AlbumFile> checkedList = argument.getParcelableArrayList(Album.KEY_INPUT_CHECKED_LIST);
         //noinspection unchecked
         scanTask.execute(checkedList);
@@ -419,51 +422,60 @@ public class AlbumFragment extends NoFragment {
             }
             mMediaScanner.scan(result);
 
-            File file = new File(result);
-            String name = file.getName();
-            AlbumFile albumFile = new AlbumFile();
-            albumFile.setPath(result);
-            albumFile.setName(name);
-            String title = name;
-            if (name.contains("."))
-                title = name.split("\\.")[0];
-            albumFile.setTitle(title);
-            String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(result));
-            albumFile.setMimeType(mimeType);
-            long nowTime = System.currentTimeMillis();
-            albumFile.setAddDate(nowTime);
-            albumFile.setModifyDate(nowTime);
-            albumFile.setSize(file.length());
-            albumFile.setMediaType(requestCode == REQUEST_CODE_CAMERA_IMAGE ? AlbumFile.TYPE_IMAGE : AlbumFile.TYPE_VIDEO);
-            albumFile.setChecked(true);
+            if (mConvertTask == null)
+                mConvertTask = new PathConvertTask(getContext(), mConvertCallback, mSizeFilter, mMimeFilter, mDurationFilter);
 
-            mCheckedList.add(albumFile);
-            setCheckedCountUI(mCheckedList.size());
+            mConvertTask.execute(result);
+        }
+    };
 
-            List<AlbumFile> albumFiles = mAlbumFolders.get(0).getAlbumFiles();
-            if (albumFiles.size() > 0) {
-                albumFiles.add(0, albumFile);
+    private PathConvertTask.Callback mConvertCallback = new PathConvertTask.Callback() {
+        @Override
+        public void onConvertCallback(AlbumFile albumFile) {
+            albumFile.setChecked(albumFile.isEnable());
 
-                if (mCurrentFolder == 0) {
-                    mAlbumContentAdapter.notifyItemInserted(mHasCamera ? 1 : 0);
-                } else showAlbumFileFromFolder(0);
-            } else {
-                albumFiles.add(albumFile);
-                showAlbumFileFromFolder(0);
+            if (albumFile.isEnable()) {
+                mCheckedList.add(albumFile);
+                setCheckedCountUI(mCheckedList.size());
             }
 
-            switch (mChoiceMode) {
-                case Album.MODE_SINGLE: {
-                    AlbumFragment.this.onAlbumResult();
-                    break;
-                }
-                case Album.MODE_MULTIPLE: {
-                    // Nothing.
-                    break;
-                }
+            if (albumFile.isEnable()) {
+                addFileToList(albumFile);
+            } else {
+                if (mFilterVisibility)
+                    addFileToList(albumFile);
+                else
+                    Toast.makeText(getContext(),
+                            getString(R.string.album_take_file_unavailable),
+                            Toast.LENGTH_LONG).show();
             }
         }
     };
+
+    private void addFileToList(AlbumFile albumFile) {
+        List<AlbumFile> albumFiles = mAlbumFolders.get(0).getAlbumFiles();
+        if (albumFiles.size() > 0) {
+            albumFiles.add(0, albumFile);
+
+            if (mCurrentFolder == 0) {
+                mAlbumContentAdapter.notifyItemInserted(mHasCamera ? 1 : 0);
+            } else showAlbumFileFromFolder(0);
+        } else {
+            albumFiles.add(albumFile);
+            showAlbumFileFromFolder(0);
+        }
+
+        switch (mChoiceMode) {
+            case Album.MODE_SINGLE: {
+                AlbumFragment.this.onAlbumResult();
+                break;
+            }
+            case Album.MODE_MULTIPLE: {
+                // Nothing.
+                break;
+            }
+        }
+    }
 
     /**
      * When a picture is selected.

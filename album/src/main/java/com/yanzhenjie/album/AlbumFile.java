@@ -86,10 +86,6 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
      */
     private long mDuration;
     /**
-     * Resolution.
-     */
-    private String mResolution;
-    /**
      * Thumb path.
      */
     private String mThumbPath;
@@ -240,14 +236,6 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
         mDuration = duration;
     }
 
-    public String getResolution() {
-        return mResolution;
-    }
-
-    public void setResolution(String resolution) {
-        mResolution = resolution;
-    }
-
     public String getThumbPath() {
         return mThumbPath;
     }
@@ -310,7 +298,6 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
         mLongitude = in.readFloat();
         mSize = in.readLong();
         mDuration = in.readLong();
-        mResolution = in.readString();
         mThumbPath = in.readString();
         mWidth = in.readInt();
         mHeight = in.readInt();
@@ -333,7 +320,6 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
         dest.writeFloat(mLongitude);
         dest.writeLong(mSize);
         dest.writeLong(mDuration);
-        dest.writeString(mResolution);
         dest.writeString(mThumbPath);
         dest.writeInt(mWidth);
         dest.writeInt(mHeight);
