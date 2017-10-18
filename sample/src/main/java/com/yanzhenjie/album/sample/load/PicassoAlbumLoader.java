@@ -22,6 +22,7 @@ import com.squareup.picasso.Picasso;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.AlbumLoader;
+import com.yanzhenjie.album.task.DefaultAlbumLoader;
 
 import java.io.File;
 
@@ -40,9 +41,8 @@ public class PicassoAlbumLoader implements AlbumLoader {
                     .resize(viewWidth, viewHeight)
                     .into(imageView);
         } else {
-            Album.getAlbumConfig().
-                    getAlbumLoader().
-                    loadAlbumFile(imageView, albumFile, viewWidth, viewHeight);
+            DefaultAlbumLoader.getInstance()
+                    .loadAlbumFile(imageView, albumFile, viewWidth, viewHeight);
         }
     }
 
