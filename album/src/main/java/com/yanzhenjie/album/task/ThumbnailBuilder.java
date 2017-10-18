@@ -160,6 +160,18 @@ public class ThumbnailBuilder {
         if (!cacheDir.exists())
             //noinspection ResultOfMethodCallIgnored
             cacheDir.mkdirs();
+        File noMediaFile = new File(cacheDir, ".nomedia");
+        if (noMediaFile.exists() && noMediaFile.isDirectory())
+            //noinspection ResultOfMethodCallIgnored
+            noMediaFile.delete();
+        if (!noMediaFile.exists()) {
+            try {
+                //noinspection ResultOfMethodCallIgnored
+                noMediaFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return cacheDir;
     }
 
