@@ -40,7 +40,7 @@ public class ThumbnailBuildTask extends AsyncTask<Void, Void, ArrayList<AlbumFil
         this.mCallback = callback;
 
         this.mDialog = new LoadingDialog(context);
-        mThumbnailBuilder = new ThumbnailBuilder(context);
+        this.mThumbnailBuilder = new ThumbnailBuilder(context);
     }
 
     @Override
@@ -66,6 +66,8 @@ public class ThumbnailBuildTask extends AsyncTask<Void, Void, ArrayList<AlbumFil
 
     @Override
     protected void onPostExecute(ArrayList<AlbumFile> albumFiles) {
+        if(mDialog.isShowing())
+            mDialog.dismiss();
         mCallback.onThumbnailCallback(albumFiles);
     }
 
