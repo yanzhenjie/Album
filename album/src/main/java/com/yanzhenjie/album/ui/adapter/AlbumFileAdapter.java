@@ -195,6 +195,7 @@ public class AlbumFileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         private final OnItemCheckedListener mItemCheckedListener;
 
         private ImageView mIvImage;
+        private FrameLayout mLayoutCheck;
         private AppCompatCheckBox mCheckBox;
 
         private FrameLayout mLayoutLayer;
@@ -211,11 +212,12 @@ public class AlbumFileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             this.mItemCheckedListener = itemCheckedListener;
 
             mIvImage = (ImageView) itemView.findViewById(R.id.iv_album_content_image);
+            mLayoutCheck = (FrameLayout) itemView.findViewById(R.id.layout_album_check);
             mCheckBox = (AppCompatCheckBox) itemView.findViewById(R.id.cb_album_check);
             mLayoutLayer = (FrameLayout) itemView.findViewById(R.id.layout_layer);
 
             itemView.setOnClickListener(this);
-            mCheckBox.setOnClickListener(this);
+            mLayoutCheck.setOnClickListener(this);
             mLayoutLayer.setOnClickListener(this);
             if (mChoiceMode == Album.MODE_MULTIPLE) {
                 mCheckBox.setVisibility(View.VISIBLE);
@@ -254,7 +256,8 @@ public class AlbumFileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         break;
                     }
                 }
-            } else if (v == mCheckBox) {
+            } else if (v == mLayoutCheck) {
+                mCheckBox.toggle();
                 if (mItemCheckedListener != null) {
                     boolean isChecked = mCheckBox.isChecked();
                     int camera = hasCamera ? 1 : 0;
@@ -280,6 +283,7 @@ public class AlbumFileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         private final OnItemCheckedListener mItemCheckedListener;
 
         private ImageView mIvImage;
+        private FrameLayout mLayoutCheck;
         private AppCompatCheckBox mCheckBox;
         private TextView mTvDuration;
 
@@ -297,12 +301,13 @@ public class AlbumFileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             this.mItemCheckedListener = itemCheckedListener;
 
             mIvImage = (ImageView) itemView.findViewById(R.id.iv_album_content_image);
+            mLayoutCheck = (FrameLayout) itemView.findViewById(R.id.layout_album_check);
             mCheckBox = (AppCompatCheckBox) itemView.findViewById(R.id.cb_album_check);
             mTvDuration = (TextView) itemView.findViewById(R.id.tv_duration);
             mLayoutLayer = (FrameLayout) itemView.findViewById(R.id.layout_layer);
 
             itemView.setOnClickListener(this);
-            mCheckBox.setOnClickListener(this);
+            mLayoutCheck.setOnClickListener(this);
             mLayoutLayer.setOnClickListener(this);
             if (mChoiceMode == Album.MODE_MULTIPLE) {
                 mCheckBox.setVisibility(View.VISIBLE);
@@ -340,7 +345,8 @@ public class AlbumFileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         break;
                     }
                 }
-            } else if (v == mCheckBox) {
+            } else if (v == mLayoutCheck) {
+                mCheckBox.toggle();
                 if (mItemCheckedListener != null) {
                     boolean isChecked = mCheckBox.isChecked();
                     int camera = hasCamera ? 1 : 0;

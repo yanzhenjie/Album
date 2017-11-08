@@ -37,7 +37,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_content_list"
         style="@style/album_WrapContent.WidthMatchParent"
-        android:layout_below="@+id/app_bar_layout"/>
+        android:layout_below="@id/app_bar_layout"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
