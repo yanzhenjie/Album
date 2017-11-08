@@ -107,8 +107,6 @@ public class AlbumFragment extends NoFragment {
     private Filter<Long> mDurationFilter;
     private boolean mFilterVisibility;
 
-    private PathConvertTask mConvertTask;
-
     public void setSizeFilter(Filter<Long> sizeFilter) {
         this.mSizeFilter = sizeFilter;
     }
@@ -422,10 +420,7 @@ public class AlbumFragment extends NoFragment {
             }
             mMediaScanner.scan(result);
 
-            if (mConvertTask == null)
-                mConvertTask = new PathConvertTask(getContext(), mConvertCallback, mSizeFilter, mMimeFilter, mDurationFilter);
-
-            mConvertTask.execute(result);
+            new PathConvertTask(getContext(), mConvertCallback, mSizeFilter, mMimeFilter, mDurationFilter).execute(result);
         }
     };
 
