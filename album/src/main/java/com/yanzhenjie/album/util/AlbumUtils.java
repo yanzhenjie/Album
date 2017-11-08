@@ -274,7 +274,7 @@ public class AlbumUtils {
         String minuteValue;
         String secondValue;
         if (hour > 0) {
-            if (hour > 10) {
+            if (hour >= 10) {
                 hourValue = Integer.toString(hour);
             } else {
                 hourValue = "0" + hour;
@@ -282,7 +282,7 @@ public class AlbumUtils {
             hourValue += ":";
         }
         if (minute > 0) {
-            if (minute > 10) {
+            if (minute >= 10) {
                 minuteValue = Integer.toString(minute);
             } else {
                 minuteValue = "0" + minute;
@@ -292,7 +292,7 @@ public class AlbumUtils {
         }
         minuteValue += ":";
         if (second > 0) {
-            if (second > 10) {
+            if (second >= 10) {
                 secondValue = Integer.toString(second);
             } else {
                 secondValue = "0" + second;
