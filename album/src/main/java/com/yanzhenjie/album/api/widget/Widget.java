@@ -150,7 +150,7 @@ public class Widget implements Parcelable {
         dest.writeInt(mStatusBarColor);
         dest.writeInt(mToolBarColor);
         dest.writeInt(mNavigationBarColor);
-        dest.writeString(mTitle.toString());
+        dest.writeString(mTitle);
         dest.writeParcelable(mMediaItemCheckSelector, flags);
         dest.writeParcelable(mBucketItemCheckSelector, flags);
         dest.writeParcelable(mButtonStyle, flags);

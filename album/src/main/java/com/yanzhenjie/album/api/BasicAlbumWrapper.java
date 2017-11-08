@@ -26,7 +26,7 @@ import com.yanzhenjie.album.api.widget.Widget;
  * <p>Album basic wrapper.</p>
  * Created by yanzhenjie on 17-3-29.
  */
-public abstract class BasicAlbumWrapper<T extends BasicAlbumWrapper, Result, Cancel, Checked> {
+public abstract class BasicAlbumWrapper<Returner extends BasicAlbumWrapper, Result, Cancel, Checked> {
 
     @NonNull
     final Context mContext;
@@ -46,33 +46,33 @@ public abstract class BasicAlbumWrapper<T extends BasicAlbumWrapper, Result, Can
     /**
      * Set the action when result.
      */
-    public final T onResult(Action<Result> result) {
+    public final Returner onResult(Action<Result> result) {
         this.mResult = result;
-        return (T) this;
+        return (Returner) this;
     }
 
     /**
      * Set the action when canceling.
      */
-    public final T onCancel(Action<Cancel> cancel) {
+    public final Returner onCancel(Action<Cancel> cancel) {
         this.mCancel = cancel;
-        return (T) this;
+        return (Returner) this;
     }
 
     /**
      * Request tag.
      */
-    public final T requestCode(int requestCode) {
+    public final Returner requestCode(int requestCode) {
         this.mRequestCode = requestCode;
-        return (T) this;
+        return (Returner) this;
     }
 
     /**
      * Set the widget property.
      */
-    public final T widget(@Nullable Widget widget) {
+    public final Returner widget(@Nullable Widget widget) {
         this.mWidget = widget;
-        return (T) this;
+        return (Returner) this;
     }
 
     /**

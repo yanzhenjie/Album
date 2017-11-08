@@ -19,6 +19,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -107,6 +108,13 @@ public class AlbumFragment extends NoFragment {
     private Filter<Long> mDurationFilter;
     private boolean mFilterVisibility;
 
+    @IntRange(from = 0, to = 1)
+    private int mQuality = 1;
+    @IntRange(from = 1, to = Long.MAX_VALUE)
+    private long mLimitDuration;
+    @IntRange(from = 1, to = Long.MAX_VALUE)
+    private long mLimitBytes;
+
     public void setSizeFilter(Filter<Long> sizeFilter) {
         this.mSizeFilter = sizeFilter;
     }
@@ -180,6 +188,9 @@ public class AlbumFragment extends NoFragment {
         mColumnCount = argument.getInt(Album.KEY_INPUT_COLUMN_COUNT);
         mHasCamera = argument.getBoolean(Album.KEY_INPUT_ALLOW_CAMERA);
         mLimitCount = argument.getInt(Album.KEY_INPUT_LIMIT_COUNT);
+        mQuality = argument.getInt(Album.KEY_INPUT_CAMERA_QUALITY, 1);
+        mLimitDuration = argument.getLong(Album.KEY_INPUT_CAMERA_DURATION, Long.MAX_VALUE);
+        mLimitBytes = argument.getLong(Album.KEY_INPUT_CAMERA_BYTES, Long.MAX_VALUE);
 
         initializeWidget();
 
@@ -368,6 +379,9 @@ public class AlbumFragment extends NoFragment {
                     case Album.FUNCTION_CHOICE_VIDEO: {
                         Album.camera(getContext())
                                 .video()
+                                .quality(mQuality)
+                                .limitDuration(mLimitDuration)
+                                .limitBytes(mLimitBytes)
                                 .requestCode(REQUEST_CODE_CAMERA_VIDEO)
                                 .onResult(mCameraAction)
                                 .start();

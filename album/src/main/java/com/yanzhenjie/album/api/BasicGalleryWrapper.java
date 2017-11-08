@@ -23,7 +23,7 @@ import java.util.ArrayList;
 /**
  * Created by YanZhenjie on 2017/8/19.
  */
-public abstract class BasicGalleryWrapper<T extends BasicGalleryWrapper, Result, Cancel, Checked> extends BasicAlbumWrapper<T, ArrayList<Result>, Cancel, ArrayList<Checked>> {
+public abstract class BasicGalleryWrapper<Returner extends BasicGalleryWrapper, Result, Cancel, Checked> extends BasicAlbumWrapper<Returner, ArrayList<Result>, Cancel, ArrayList<Checked>> {
 
     @IntRange(from = 1, to = Integer.MAX_VALUE)
     int mCurrentPosition = 0;
@@ -38,32 +38,32 @@ public abstract class BasicGalleryWrapper<T extends BasicGalleryWrapper, Result,
     /**
      * Set the list has been selected.
      */
-    public final T checkedList(ArrayList<Checked> checked) {
+    public final Returner checkedList(ArrayList<Checked> checked) {
         this.mChecked = checked;
-        return (T) this;
+        return (Returner) this;
     }
 
     /**
      * Set the show position of List.
      */
-    public T currentPosition(@IntRange(from = 1, to = Integer.MAX_VALUE) int currentPosition) {
+    public Returner currentPosition(@IntRange(from = 1, to = Integer.MAX_VALUE) int currentPosition) {
         this.mCurrentPosition = currentPosition;
-        return (T) this;
+        return (Returner) this;
     }
 
     /**
      * The ability to select pictures.
      */
-    public T checkable(boolean checkable) {
+    public Returner checkable(boolean checkable) {
         this.mCheckable = checkable;
-        return (T) this;
+        return (Returner) this;
     }
 
     /**
      * Set alpha of NavigationBar.
      */
-    public T navigationAlpha(@IntRange(from = 0, to = 255) int alpha) {
+    public Returner navigationAlpha(@IntRange(from = 0, to = 255) int alpha) {
         this.mNavigationAlpha = alpha;
-        return (T) this;
+        return (Returner) this;
     }
 }

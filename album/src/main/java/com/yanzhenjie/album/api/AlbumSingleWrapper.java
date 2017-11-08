@@ -30,7 +30,7 @@ import java.util.ArrayList;
  * <p>Album wrapper.</p>
  * Created by yanzhenjie on 17-3-29.
  */
-public class AlbumSingleWrapper extends BasicChoiceWrapper<AlbumSingleWrapper, ArrayList<AlbumFile>, String, AlbumFile> {
+public class AlbumSingleWrapper extends BasicChoiceVideoWrapper<AlbumSingleWrapper, ArrayList<AlbumFile>, String, AlbumFile> {
 
     private Filter<Long> mDurationFilter;
 
@@ -63,6 +63,9 @@ public class AlbumSingleWrapper extends BasicChoiceWrapper<AlbumSingleWrapper, A
         intent.putExtra(Album.KEY_INPUT_ALLOW_CAMERA, mHasCamera);
         intent.putExtra(Album.KEY_INPUT_LIMIT_COUNT, 1);
         intent.putExtra(Album.KEY_INPUT_FILTER_VISIBILITY, mFilterVisibility);
+        intent.putExtra(Album.KEY_INPUT_CAMERA_QUALITY, mQuality);
+        intent.putExtra(Album.KEY_INPUT_CAMERA_DURATION, mLimitDuration);
+        intent.putExtra(Album.KEY_INPUT_CAMERA_BYTES, mLimitBytes);
         mContext.startActivity(intent);
     }
 }
