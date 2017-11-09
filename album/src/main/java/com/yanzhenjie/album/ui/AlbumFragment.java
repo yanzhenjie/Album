@@ -59,6 +59,7 @@ import com.yanzhenjie.fragment.NoFragment;
 import com.yanzhenjie.mediascanner.MediaScanner;
 import com.yanzhenjie.statusview.StatusView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -267,10 +268,13 @@ public class AlbumFragment extends NoFragment {
         @Override
         public void onScanCallback(ArrayList<AlbumFolder> folders) {
             mAlbumFolders = folders;
+            showAlbumFileFromFolder(0);
+
             if (mAlbumFolders.get(0).getAlbumFiles().size() == 0) {
                 AlbumNullFragment nullFragment = fragment(AlbumNullFragment.class, getArguments());
                 startFragmentForResult(nullFragment, REQUEST_CODE_FRAGMENT_NULL);
-            } else showAlbumFileFromFolder(0);
+            }
+
             setCheckedCountUI(mCheckedList.size());
         }
     };
@@ -369,16 +373,32 @@ public class AlbumFragment extends NoFragment {
             } else {
                 switch (mFunction) {
                     case Album.FUNCTION_CHOICE_IMAGE: {
+                        String filePath;
+                        if (mCurrentFolder == 0) {
+                            filePath = AlbumUtils.randomJPGPath();
+                        } else {
+                            File file = new File(mAlbumFolders.get(mCurrentFolder).getAlbumFiles().get(0).getPath());
+                            filePath = AlbumUtils.randomJPGPath(file.getParentFile());
+                        }
                         Album.camera(getContext())
                                 .image()
+                                .filePath(filePath)
                                 .requestCode(REQUEST_CODE_CAMERA_IMAGE)
                                 .onResult(mCameraAction)
                                 .start();
                         break;
                     }
                     case Album.FUNCTION_CHOICE_VIDEO: {
+                        String filePath;
+                        if (mCurrentFolder == 0) {
+                            filePath = AlbumUtils.randomMP4Path();
+                        } else {
+                            File file = new File(mAlbumFolders.get(mCurrentFolder).getAlbumFiles().get(0).getPath());
+                            filePath = AlbumUtils.randomMP4Path(file.getParentFile());
+                        }
                         Album.camera(getContext())
                                 .video()
+                                .filePath(filePath)
                                 .quality(mQuality)
                                 .limitDuration(mLimitDuration)
                                 .limitBytes(mLimitBytes)
@@ -442,7 +462,6 @@ public class AlbumFragment extends NoFragment {
         @Override
         public void onConvertCallback(AlbumFile albumFile) {
             albumFile.setChecked(albumFile.isEnable());
-
             if (albumFile.isEnable()) {
                 mCheckedList.add(albumFile);
                 setCheckedCountUI(mCheckedList.size());
@@ -462,16 +481,19 @@ public class AlbumFragment extends NoFragment {
     };
 
     private void addFileToList(AlbumFile albumFile) {
-        List<AlbumFile> albumFiles = mAlbumFolders.get(0).getAlbumFiles();
+        if (mCurrentFolder != 0) {
+            List<AlbumFile> albumFiles = mAlbumFolders.get(0).getAlbumFiles();
+            if (albumFiles.size() > 0) albumFiles.add(0, albumFile);
+            else albumFiles.add(albumFile);
+        }
+
+        List<AlbumFile> albumFiles = mAlbumFolders.get(mCurrentFolder).getAlbumFiles();
         if (albumFiles.size() > 0) {
             albumFiles.add(0, albumFile);
-
-            if (mCurrentFolder == 0) {
-                mAlbumContentAdapter.notifyItemInserted(mHasCamera ? 1 : 0);
-            } else showAlbumFileFromFolder(0);
+            mAlbumContentAdapter.notifyItemInserted(mHasCamera ? 1 : 0);
         } else {
             albumFiles.add(albumFile);
-            showAlbumFileFromFolder(0);
+            mAlbumContentAdapter.notifyDataSetChanged();
         }
 
         switch (mChoiceMode) {

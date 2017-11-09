@@ -138,15 +138,15 @@ public class AlbumUtils {
     @NonNull
     public static String randomJPGPath() {
         File bucket = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        return randomJPGPath(bucket.getAbsolutePath());
+        return randomJPGPath(bucket);
     }
 
     /**
      * A random name for the image path.
      */
     @NonNull
-    public static String randomJPGPath(String bucketPath) {
-        return randomMediaPath(bucketPath, ".jpg");
+    public static String randomJPGPath(File bucket) {
+        return randomMediaPath(bucket, ".jpg");
     }
 
     /**
@@ -155,20 +155,19 @@ public class AlbumUtils {
     @NonNull
     public static String randomMP4Path() {
         File bucket = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
-        return randomMP4Path(bucket.getAbsolutePath());
+        return randomMP4Path(bucket);
     }
 
     /**
      * A random name for the image path.
      */
     @NonNull
-    public static String randomMP4Path(String bucketPath) {
-        return randomMediaPath(bucketPath, ".mp4");
+    public static String randomMP4Path(File bucket) {
+        return randomMediaPath(bucket, ".mp4");
     }
 
     @NonNull
-    private static String randomMediaPath(String bucketPath, String extension) {
-        File bucket = new File(bucketPath);
+    private static String randomMediaPath(File bucket, String extension) {
         if (!bucket.exists()) //noinspection ResultOfMethodCallIgnored
             bucket.mkdirs();
         String outFilePath = AlbumUtils.getNowDateTime("yyyyMMdd_HHmmssSSS") + "_" + getMD5ForString(UUID.randomUUID().toString()) + extension;
