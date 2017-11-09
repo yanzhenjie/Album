@@ -20,6 +20,12 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    testCompile rootProject.ext.dependencies.junit
+    androidTestCompile(rootProject.ext.dependencies.expressoCore, {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
     compile rootProject.ext.dependencies.album
 
     compile rootProject.ext.dependencies.appCompat

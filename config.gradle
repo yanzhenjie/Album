@@ -14,12 +14,12 @@ ext {
             minSdkVersion    : 14,
             targetSdkVersion : 26,
 
-            versionCode      : 21,
-            versionName      : "2.0.1",
+            versionCode      : 22,
+            versionName      : "2.0.2",
     ]
 
     bintray = [
-            version       : "2.0.1",
+            version       : "2.0.2",
 
             siteUrl       : 'https://github.com/yanzhenjie/Album',
             gitUrl        : 'git@github.com:yanzhenjie/Album.git',
