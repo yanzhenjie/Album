@@ -65,11 +65,11 @@ public class GalleryActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mCheckBox = (CheckBox) findViewById(R.id.checkbox);
+        mCheckBox = findViewById(R.id.checkbox);
         findViewById(R.id.btn_gallery).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

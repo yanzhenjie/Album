@@ -61,7 +61,7 @@ ext {
             loading     : 'com.yanzhenjie:loading:1.0.2',
             statusView  : 'com.yanzhenjie:statusview:1.0.3',
 
-            album       : 'com.yanzhenjie:album:2.0.1',
+            album       : 'com.yanzhenjie:album:2.0.2',
             picasso     : 'com.squareup.picasso:picasso:2.5.2',
             glide       : 'com.github.bumptech.glide:glide:3.8.0',
     ]
