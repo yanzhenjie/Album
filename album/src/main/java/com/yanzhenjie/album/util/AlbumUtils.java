@@ -137,13 +137,16 @@ public class AlbumUtils {
      */
     @NonNull
     public static String randomJPGPath() {
-        File dcimBucket = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        if (!dcimBucket.exists()) //noinspection ResultOfMethodCallIgnored
-            dcimBucket.mkdirs();
-        String outFileFolder = dcimBucket.getAbsolutePath();
-        String outFilePath = AlbumUtils.getNowDateTime("yyyyMMdd_HHmmssSSS") + "_" + getMD5ForString(UUID.randomUUID().toString()) + ".jpg";
-        File file = new File(outFileFolder, outFilePath);
-        return file.getAbsolutePath();
+        File bucket = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+        return randomJPGPath(bucket.getAbsolutePath());
+    }
+
+    /**
+     * A random name for the image path.
+     */
+    @NonNull
+    public static String randomJPGPath(String bucketPath) {
+        return randomMediaPath(bucketPath, ".jpg");
     }
 
     /**
@@ -151,12 +154,25 @@ public class AlbumUtils {
      */
     @NonNull
     public static String randomMP4Path() {
-        File moviesBucket = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
-        if (!moviesBucket.exists()) //noinspection ResultOfMethodCallIgnored
-            moviesBucket.mkdirs();
-        String outFileFolder = moviesBucket.getAbsolutePath();
-        String outFilePath = AlbumUtils.getNowDateTime("yyyyMMdd_HHmmssSSS") + "_" + getMD5ForString(UUID.randomUUID().toString()) + ".mp4";
-        File file = new File(outFileFolder, outFilePath);
+        File bucket = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+        return randomMP4Path(bucket.getAbsolutePath());
+    }
+
+    /**
+     * A random name for the image path.
+     */
+    @NonNull
+    public static String randomMP4Path(String bucketPath) {
+        return randomMediaPath(bucketPath, ".mp4");
+    }
+
+    @NonNull
+    private static String randomMediaPath(String bucketPath, String extension) {
+        File bucket = new File(bucketPath);
+        if (!bucket.exists()) //noinspection ResultOfMethodCallIgnored
+            bucket.mkdirs();
+        String outFilePath = AlbumUtils.getNowDateTime("yyyyMMdd_HHmmssSSS") + "_" + getMD5ForString(UUID.randomUUID().toString()) + extension;
+        File file = new File(bucket, outFilePath);
         return file.getAbsolutePath();
     }
 
