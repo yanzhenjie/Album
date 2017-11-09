@@ -24,7 +24,7 @@ import com.yanzhenjie.album.Action;
 /**
  * Created by YanZhenjie on 2017/8/18.
  */
-public abstract class BasicCameraWrapper<T extends BasicCameraWrapper> {
+public abstract class BasicCameraWrapper<Returner extends BasicCameraWrapper> {
 
     @NonNull
     final Context mContext;
@@ -41,33 +41,33 @@ public abstract class BasicCameraWrapper<T extends BasicCameraWrapper> {
     /**
      * Set the action when result.
      */
-    public final T onResult(Action<String> result) {
+    public final Returner onResult(Action<String> result) {
         this.mResult = result;
-        return (T) this;
+        return (Returner) this;
     }
 
     /**
      * Set the action when canceling.
      */
-    public final T onCancel(Action<String> cancel) {
+    public final Returner onCancel(Action<String> cancel) {
         this.mCancel = cancel;
-        return (T) this;
+        return (Returner) this;
     }
 
     /**
      * Request tag.
      */
-    public T requestCode(int requestCode) {
+    public Returner requestCode(int requestCode) {
         this.mRequestCode = requestCode;
-        return (T) this;
+        return (Returner) this;
     }
 
     /**
      * Set the image storage path.
      */
-    public T filePath(@Nullable String filePath) {
+    public Returner filePath(@Nullable String filePath) {
         this.mFilePath = filePath;
-        return (T) this;
+        return (Returner) this;
     }
 
     /**

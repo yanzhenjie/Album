@@ -28,11 +28,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.yanzhenjie.album.R;
-import com.yanzhenjie.album.ui.adapter.AlbumFolderAdapter;
 import com.yanzhenjie.album.AlbumFolder;
-import com.yanzhenjie.album.impl.OnItemClickListener;
+import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.api.widget.Widget;
+import com.yanzhenjie.album.impl.OnItemClickListener;
+import com.yanzhenjie.album.ui.adapter.AlbumFolderAdapter;
 
 import java.util.List;
 
@@ -41,6 +41,9 @@ import java.util.List;
  * Created by Yan Zhenjie on 2016/10/18.
  */
 public class AlbumFolderDialog extends BottomSheetDialog {
+
+    private AlbumFolderAdapter mFolderAdapter;
+    private List<AlbumFolder> mAlbumFolders;
 
     private int mCurrentPosition = 0;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -56,24 +59,33 @@ public class AlbumFolderDialog extends BottomSheetDialog {
         setWindowBarColor(widget.getStatusBarColor(), widget.getNavigationBarColor());
         fixRestart();
 
+        this.mAlbumFolders = albumFolders;
+        this.mItemClickListener = itemClickListener;
+
         RecyclerView recyclerView = (RecyclerView) getDelegate().findViewById(R.id.rv_content_list);
         assert recyclerView != null;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        AlbumFolderAdapter folderAdapter = new AlbumFolderAdapter(context, albumFolders, widget.getBucketItemCheckSelector());
-        folderAdapter.setItemClickListener(new OnItemClickListener() {
+        mFolderAdapter = new AlbumFolderAdapter(context, mAlbumFolders, widget.getBucketItemCheckSelector());
+        mFolderAdapter.setItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(final View view, final int position) {
                 behaviorHide();
-                if (mItemClickListener != null && mCurrentPosition != position) {
+                if (mCurrentPosition != position) {
+                    mAlbumFolders.get(mCurrentPosition).setChecked(false);
+                    mFolderAdapter.notifyItemChanged(mCurrentPosition);
+
                     mCurrentPosition = position;
-                    mItemClickListener.onItemClick(view, position);
+                    mAlbumFolders.get(mCurrentPosition).setChecked(true);
+                    mFolderAdapter.notifyItemChanged(mCurrentPosition);
+
+                    if (mItemClickListener != null) {
+                        mItemClickListener.onItemClick(view, position);
+                    }
                 }
             }
         });
-        recyclerView.setAdapter(folderAdapter);
-
-        mItemClickListener = itemClickListener;
+        recyclerView.setAdapter(mFolderAdapter);
     }
 
     /**

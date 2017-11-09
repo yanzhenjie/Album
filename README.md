@@ -18,8 +18,6 @@ Album is a MaterialDesign-style album, support internationalization, support for
 10. Support other `ImageLoader`, for example: `Glide`, `Picasso`...
 11. Support and image cropping framework [Durban](https://github.com/yanzhenjie/Durban) in combination, `Durban` it supports cutting multiple images at the same time.
 
-> **Note**: Starting from version 2.0-alpha, return the data for the `AlbumFile` object, developer can get image and video path, title, thumbnail, size, latitude and longitude, added and modified date, the folder; video can also get the resolution and duration.
-
 # Screenshot
 <image src="./image/1.gif" width="210px"/> <image src="./image/2.gif" width="210px"/> <image src="./image/3.gif" width="210px"/> <image src="./image/4.gif" width="210px"/>  
 
@@ -30,7 +28,7 @@ White StatusBar, because Android5.0 does not support the StatusBar dark font, so
 # Dependencies
 * Gradle：
 ```groovy
-compile 'com.yanzhenjie:album:2.0.1'
+compile 'com.yanzhenjie:album:2.0.2'
 ```
 
 * Maven:
@@ -38,12 +36,10 @@ compile 'com.yanzhenjie:album:2.0.1'
 <dependency>
   <groupId>com.yanzhenjie</groupId>
   <artifactId>album</artifactId>
-  <version>2.0.1</version>
+  <version>2.0.2</version>
   <type>pom</type>
 </dependency>
 ```
-
-> The `support` library version is `25.3.1`. If the `support` library version is higher than `25.3.1`, please specify the version of `CardView` or use the `exlude` syntax to filter it.
 
 # Usege
 The function modules of Album: select image and video, take picture, record video, gallery.
@@ -56,6 +52,9 @@ Album.album(this) // Image and video mix options.
     .columnCount() // The number of columns in the page list.
     .selectCount()  // Choose up to a few images.
     .camera() // Whether the camera appears in the Item.
+    .cameraVideoQuality(1) // Video quality, [0, 1].
+    .cameraVideoLimitDuration(Long.MAX_VALUE) // The longest duration of the video is in milliseconds.
+    .cameraVideoLimitBytes()(Long.MAX_VALUE) // Maximum size of the video, in bytes.
     .checkedList() // To reverse the list.
     .filterSize() // Filter the file size.
     .filterMimeType() // Filter file format.
@@ -370,10 +369,22 @@ public void onCreate() {
 If the language is not enough, then please copy the `string.xml` in the Library to target project. And then do the corresponding translation can be.
 
 # Proguard-rules
-Not necessary, if there is a problem, add the rule to the proguard-rules:
+Not necessary, if you want to keep Album not be confused
 ```txt
 -dontwarn com.yanzhenjie.album.**
 -keep class com.yanzhenjie.album.**{*;}
+
+-dontwarn com.yanzhenjie.fragment.**
+-keep class com.yanzhenjie.fragment.**{*;}
+
+-dontwarn com.yanzhenjie.mediascanner.**
+-keep class com.yanzhenjie.mediascanner.**{*;}
+
+-dontwarn com.yanzhenjie.loading.**
+-keep class com.yanzhenjie.loading.**{*;}
+
+-dontwarn com.yanzhenjie.statusview.**
+-keep class com.yanzhenjie.statusview.**{*;}
 ```
 
 # Thanks

@@ -19,8 +19,6 @@
 10. 支持配置第三方ImageLoader，例如使用：Glide、Picasso、ImageLoader实现。
 11. 支持和图片裁剪框架[Durban](https://github.com/yanzhenjie/Durban)结合使用，Durban支持一次性裁剪多张图片。
 
-> **注意**：从2.0-alpha版本开始，可以拿到图片和视频的路径、标题、缩略图、大小、经纬度、添加日期、修改日期以及所在文件夹；视频还可以拿到分辨率和时长。
-
 # 截图
 <image src="./image/1.gif" width="210px"/> <image src="./image/2.gif" width="210px"/> <image src="./image/3.gif" width="210px"/> <image src="./image/4.gif" width="210px"/>  
 
@@ -31,7 +29,7 @@
 # 依赖
 * Gradle：
 ```groovy
-compile 'com.yanzhenjie:album:2.0.1'
+compile 'com.yanzhenjie:album:2.0.2'
 ```
 
 * Maven:
@@ -39,12 +37,10 @@ compile 'com.yanzhenjie:album:2.0.1'
 <dependency>
   <groupId>com.yanzhenjie</groupId>
   <artifactId>album</artifactId>
-  <version>2.0.1</version>
+  <version>2.0.2</version>
   <type>pom</type>
 </dependency>
 ```
-
-> 本库使用的`support`库的版本为`25.3.1`，如果引入的`support`库版本高于`25.3.1`，请明确指定`CardView`的版本或者使用`exlude`语法过滤。
 
 # 用法
 `Album`主要功能模块：选择图片与视频、拍照、录视频、画廊。
@@ -57,6 +53,9 @@ Album.album(this) // 图片和视频混选。
     .columnCount() // 页面列表的列数。
     .selectCount()  // 最多选择几张图片。
     .camera() // 是否在Item中出现相机。
+    .cameraVideoQuality(1) // 视频质量，[0, 1]。
+    .cameraVideoLimitDuration(Long.MAX_VALUE) // 视频最长时长，单位是毫秒。
+    .cameraVideoLimitBytes(Long.MAX_VALUE) // 视频最大大小，单位byte。
     .checkedList() // 要反选的列表，比如选择一次再次选择，可以把上次选择的传入。
     .filterSize() // 文件大小的过滤。
     .filterMimeType() // 文件格式的过滤。
@@ -374,10 +373,22 @@ public void onCreate() {
 如果自带的语言类型不够用，请开发者拷贝Album库中的`string.xml`到目标项目的对应语言的文件夹下并做好翻译即可，如果需要强制指定为该语言，设置方法同上。
 
 # 混淆
-这是不必要的，如果混淆后相册出现了问题，请在混淆规则中添加：  
+这是不必要的，如果你想保持Album不被混淆：  
 ```txt
 -dontwarn com.yanzhenjie.album.**
 -keep class com.yanzhenjie.album.**{*;}
+
+-dontwarn com.yanzhenjie.fragment.**
+-keep class com.yanzhenjie.fragment.**{*;}
+
+-dontwarn com.yanzhenjie.mediascanner.**
+-keep class com.yanzhenjie.mediascanner.**{*;}
+
+-dontwarn com.yanzhenjie.loading.**
+-keep class com.yanzhenjie.loading.**{*;}
+
+-dontwarn com.yanzhenjie.statusview.**
+-keep class com.yanzhenjie.statusview.**{*;}
 ```
 
 # Thanks

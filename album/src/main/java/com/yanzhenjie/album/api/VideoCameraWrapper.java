@@ -33,6 +33,7 @@ public class VideoCameraWrapper extends BasicCameraWrapper<VideoCameraWrapper> {
     private int mQuality = 1;
     @IntRange(from = 1, to = Long.MAX_VALUE)
     private long mLimitDuration = Long.MAX_VALUE;
+    @IntRange(from = 1, to = Long.MAX_VALUE)
     private long mLimitBytes = Long.MAX_VALUE;
 
     public VideoCameraWrapper(@NonNull Context context) {

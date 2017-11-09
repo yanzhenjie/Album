@@ -56,11 +56,11 @@ public class AlbumActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-        mTvMessage = (TextView) findViewById(R.id.tv_message);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mTvMessage = findViewById(R.id.tv_message);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         Divider divider = AlbumUtils.getDivider(Color.WHITE);
         recyclerView.addItemDecoration(divider);
@@ -85,6 +85,9 @@ public class AlbumActivity extends AppCompatActivity {
                 .columnCount(2)
                 .selectCount(6)
                 .camera(true)
+                .cameraVideoQuality(1)
+                .cameraVideoLimitDuration(Integer.MAX_VALUE)
+                .cameraVideoLimitBytes(Integer.MAX_VALUE)
                 .checkedList(mAlbumFiles)
                 .widget(
                         Widget.newDarkBuilder(this)

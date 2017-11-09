@@ -30,7 +30,7 @@ import java.util.ArrayList;
 /**
  * Created by YanZhenjie on 2017/8/16.
  */
-public final class VideoMultipleWrapper extends BasicChoiceWrapper<VideoMultipleWrapper, ArrayList<AlbumFile>, String, ArrayList<AlbumFile>> {
+public final class VideoMultipleWrapper extends BasicChoiceVideoWrapper<VideoMultipleWrapper, ArrayList<AlbumFile>, String, ArrayList<AlbumFile>> {
 
     @IntRange(from = 1, to = Integer.MAX_VALUE)
     private int mLimitCount = Integer.MAX_VALUE;
@@ -83,6 +83,9 @@ public final class VideoMultipleWrapper extends BasicChoiceWrapper<VideoMultiple
         intent.putExtra(Album.KEY_INPUT_ALLOW_CAMERA, mHasCamera);
         intent.putExtra(Album.KEY_INPUT_LIMIT_COUNT, mLimitCount);
         intent.putExtra(Album.KEY_INPUT_FILTER_VISIBILITY, mFilterVisibility);
+        intent.putExtra(Album.KEY_INPUT_CAMERA_QUALITY, mQuality);
+        intent.putExtra(Album.KEY_INPUT_CAMERA_DURATION, mLimitDuration);
+        intent.putExtra(Album.KEY_INPUT_CAMERA_BYTES, mLimitBytes);
         mContext.startActivity(intent);
     }
 }

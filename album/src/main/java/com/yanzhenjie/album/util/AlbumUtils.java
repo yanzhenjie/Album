@@ -137,13 +137,16 @@ public class AlbumUtils {
      */
     @NonNull
     public static String randomJPGPath() {
-        File dcimBucket = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        if (!dcimBucket.exists()) //noinspection ResultOfMethodCallIgnored
-            dcimBucket.mkdirs();
-        String outFileFolder = dcimBucket.getAbsolutePath();
-        String outFilePath = AlbumUtils.getNowDateTime("yyyyMMdd_HHmmssSSS") + "_" + getMD5ForString(UUID.randomUUID().toString()) + ".jpg";
-        File file = new File(outFileFolder, outFilePath);
-        return file.getAbsolutePath();
+        File bucket = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+        return randomJPGPath(bucket);
+    }
+
+    /**
+     * A random name for the image path.
+     */
+    @NonNull
+    public static String randomJPGPath(File bucket) {
+        return randomMediaPath(bucket, ".jpg");
     }
 
     /**
@@ -151,12 +154,24 @@ public class AlbumUtils {
      */
     @NonNull
     public static String randomMP4Path() {
-        File moviesBucket = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
-        if (!moviesBucket.exists()) //noinspection ResultOfMethodCallIgnored
-            moviesBucket.mkdirs();
-        String outFileFolder = moviesBucket.getAbsolutePath();
-        String outFilePath = AlbumUtils.getNowDateTime("yyyyMMdd_HHmmssSSS") + "_" + getMD5ForString(UUID.randomUUID().toString()) + ".mp4";
-        File file = new File(outFileFolder, outFilePath);
+        File bucket = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+        return randomMP4Path(bucket);
+    }
+
+    /**
+     * A random name for the image path.
+     */
+    @NonNull
+    public static String randomMP4Path(File bucket) {
+        return randomMediaPath(bucket, ".mp4");
+    }
+
+    @NonNull
+    private static String randomMediaPath(File bucket, String extension) {
+        if (!bucket.exists()) //noinspection ResultOfMethodCallIgnored
+            bucket.mkdirs();
+        String outFilePath = AlbumUtils.getNowDateTime("yyyyMMdd_HHmmssSSS") + "_" + getMD5ForString(UUID.randomUUID().toString()) + extension;
+        File file = new File(bucket, outFilePath);
         return file.getAbsolutePath();
     }
 
@@ -274,7 +289,7 @@ public class AlbumUtils {
         String minuteValue;
         String secondValue;
         if (hour > 0) {
-            if (hour > 10) {
+            if (hour >= 10) {
                 hourValue = Integer.toString(hour);
             } else {
                 hourValue = "0" + hour;
@@ -282,7 +297,7 @@ public class AlbumUtils {
             hourValue += ":";
         }
         if (minute > 0) {
-            if (minute > 10) {
+            if (minute >= 10) {
                 minuteValue = Integer.toString(minute);
             } else {
                 minuteValue = "0" + minute;
@@ -292,7 +307,7 @@ public class AlbumUtils {
         }
         minuteValue += ":";
         if (second > 0) {
-            if (second > 10) {
+            if (second >= 10) {
                 secondValue = Integer.toString(second);
             } else {
                 secondValue = "0" + second;

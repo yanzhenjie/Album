@@ -59,11 +59,11 @@ public class AlbumUIActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         StatusUtils.setStatusBarColor(this, Color.WHITE);
         setContentView(R.layout.activity_album_ui);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-        mTvMessage = (TextView) findViewById(R.id.tv_message);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mTvMessage = findViewById(R.id.tv_message);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         Divider divider = AlbumUtils.getDivider(Color.WHITE);
         recyclerView.addItemDecoration(divider);

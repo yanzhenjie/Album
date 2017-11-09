@@ -19,6 +19,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -58,6 +59,7 @@ import com.yanzhenjie.fragment.NoFragment;
 import com.yanzhenjie.mediascanner.MediaScanner;
 import com.yanzhenjie.statusview.StatusView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,7 +109,12 @@ public class AlbumFragment extends NoFragment {
     private Filter<Long> mDurationFilter;
     private boolean mFilterVisibility;
 
-    private PathConvertTask mConvertTask;
+    @IntRange(from = 0, to = 1)
+    private int mQuality = 1;
+    @IntRange(from = 1, to = Long.MAX_VALUE)
+    private long mLimitDuration;
+    @IntRange(from = 1, to = Long.MAX_VALUE)
+    private long mLimitBytes;
 
     public void setSizeFilter(Filter<Long> sizeFilter) {
         this.mSizeFilter = sizeFilter;
@@ -182,6 +189,9 @@ public class AlbumFragment extends NoFragment {
         mColumnCount = argument.getInt(Album.KEY_INPUT_COLUMN_COUNT);
         mHasCamera = argument.getBoolean(Album.KEY_INPUT_ALLOW_CAMERA);
         mLimitCount = argument.getInt(Album.KEY_INPUT_LIMIT_COUNT);
+        mQuality = argument.getInt(Album.KEY_INPUT_CAMERA_QUALITY, 1);
+        mLimitDuration = argument.getLong(Album.KEY_INPUT_CAMERA_DURATION, Long.MAX_VALUE);
+        mLimitBytes = argument.getLong(Album.KEY_INPUT_CAMERA_BYTES, Long.MAX_VALUE);
 
         initializeWidget();
 
@@ -258,10 +268,13 @@ public class AlbumFragment extends NoFragment {
         @Override
         public void onScanCallback(ArrayList<AlbumFolder> folders) {
             mAlbumFolders = folders;
+            showAlbumFileFromFolder(0);
+
             if (mAlbumFolders.get(0).getAlbumFiles().size() == 0) {
                 AlbumNullFragment nullFragment = fragment(AlbumNullFragment.class, getArguments());
                 startFragmentForResult(nullFragment, REQUEST_CODE_FRAGMENT_NULL);
-            } else showAlbumFileFromFolder(0);
+            }
+
             setCheckedCountUI(mCheckedList.size());
         }
     };
@@ -360,16 +373,35 @@ public class AlbumFragment extends NoFragment {
             } else {
                 switch (mFunction) {
                     case Album.FUNCTION_CHOICE_IMAGE: {
+                        String filePath;
+                        if (mCurrentFolder == 0) {
+                            filePath = AlbumUtils.randomJPGPath();
+                        } else {
+                            File file = new File(mAlbumFolders.get(mCurrentFolder).getAlbumFiles().get(0).getPath());
+                            filePath = AlbumUtils.randomJPGPath(file.getParentFile());
+                        }
                         Album.camera(getContext())
                                 .image()
+                                .filePath(filePath)
                                 .requestCode(REQUEST_CODE_CAMERA_IMAGE)
                                 .onResult(mCameraAction)
                                 .start();
                         break;
                     }
                     case Album.FUNCTION_CHOICE_VIDEO: {
+                        String filePath;
+                        if (mCurrentFolder == 0) {
+                            filePath = AlbumUtils.randomMP4Path();
+                        } else {
+                            File file = new File(mAlbumFolders.get(mCurrentFolder).getAlbumFiles().get(0).getPath());
+                            filePath = AlbumUtils.randomMP4Path(file.getParentFile());
+                        }
                         Album.camera(getContext())
                                 .video()
+                                .filePath(filePath)
+                                .quality(mQuality)
+                                .limitDuration(mLimitDuration)
+                                .limitBytes(mLimitBytes)
                                 .requestCode(REQUEST_CODE_CAMERA_VIDEO)
                                 .onResult(mCameraAction)
                                 .start();
@@ -422,10 +454,7 @@ public class AlbumFragment extends NoFragment {
             }
             mMediaScanner.scan(result);
 
-            if (mConvertTask == null)
-                mConvertTask = new PathConvertTask(getContext(), mConvertCallback, mSizeFilter, mMimeFilter, mDurationFilter);
-
-            mConvertTask.execute(result);
+            new PathConvertTask(getContext(), mConvertCallback, mSizeFilter, mMimeFilter, mDurationFilter).execute(result);
         }
     };
 
@@ -433,7 +462,6 @@ public class AlbumFragment extends NoFragment {
         @Override
         public void onConvertCallback(AlbumFile albumFile) {
             albumFile.setChecked(albumFile.isEnable());
-
             if (albumFile.isEnable()) {
                 mCheckedList.add(albumFile);
                 setCheckedCountUI(mCheckedList.size());
@@ -453,16 +481,19 @@ public class AlbumFragment extends NoFragment {
     };
 
     private void addFileToList(AlbumFile albumFile) {
-        List<AlbumFile> albumFiles = mAlbumFolders.get(0).getAlbumFiles();
+        if (mCurrentFolder != 0) {
+            List<AlbumFile> albumFiles = mAlbumFolders.get(0).getAlbumFiles();
+            if (albumFiles.size() > 0) albumFiles.add(0, albumFile);
+            else albumFiles.add(albumFile);
+        }
+
+        List<AlbumFile> albumFiles = mAlbumFolders.get(mCurrentFolder).getAlbumFiles();
         if (albumFiles.size() > 0) {
             albumFiles.add(0, albumFile);
-
-            if (mCurrentFolder == 0) {
-                mAlbumContentAdapter.notifyItemInserted(mHasCamera ? 1 : 0);
-            } else showAlbumFileFromFolder(0);
+            mAlbumContentAdapter.notifyItemInserted(mHasCamera ? 1 : 0);
         } else {
             albumFiles.add(albumFile);
-            showAlbumFileFromFolder(0);
+            mAlbumContentAdapter.notifyDataSetChanged();
         }
 
         switch (mChoiceMode) {

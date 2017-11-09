@@ -18,6 +18,7 @@ package com.yanzhenjie.album.ui;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -66,6 +67,13 @@ public class AlbumNullFragment extends NoFragment {
     private int mFunction;
     private boolean mHasCamera;
 
+    @IntRange(from = 0, to = 1)
+    private int mQuality = 1;
+    @IntRange(from = 1, to = Long.MAX_VALUE)
+    private long mLimitDuration;
+    @IntRange(from = 1, to = Long.MAX_VALUE)
+    private long mLimitBytes;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -94,6 +102,10 @@ public class AlbumNullFragment extends NoFragment {
         //noinspection WrongConstant
         mFunction = argument.getInt(Album.KEY_INPUT_FUNCTION);
         mHasCamera = argument.getBoolean(Album.KEY_INPUT_ALLOW_CAMERA);
+
+        mQuality = argument.getInt(Album.KEY_INPUT_CAMERA_QUALITY, 1);
+        mLimitDuration = argument.getLong(Album.KEY_INPUT_CAMERA_DURATION, Long.MAX_VALUE);
+        mLimitBytes = argument.getLong(Album.KEY_INPUT_CAMERA_BYTES, Long.MAX_VALUE);
 
         initializeWidget();
     }
@@ -178,6 +190,9 @@ public class AlbumNullFragment extends NoFragment {
             } else if (id == R.id.btn_camera_video) {
                 Album.camera(getContext())
                         .video()
+                        .quality(mQuality)
+                        .limitDuration(mLimitDuration)
+                        .limitBytes(mLimitBytes)
                         .onResult(mCameraAction)
                         .start();
             }

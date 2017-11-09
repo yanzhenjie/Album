@@ -31,7 +31,7 @@ import java.util.ArrayList;
  * <p>Album wrapper.</p>
  * Created by yanzhenjie on 17-3-29.
  */
-public class AlbumMultipleWrapper extends BasicChoiceWrapper<AlbumMultipleWrapper, ArrayList<AlbumFile>, String, ArrayList<AlbumFile>> {
+public class AlbumMultipleWrapper extends BasicChoiceAlbumWrapper<AlbumMultipleWrapper, ArrayList<AlbumFile>, String, ArrayList<AlbumFile>> {
 
     @IntRange(from = 1, to = Integer.MAX_VALUE)
     private int mLimitCount = Integer.MAX_VALUE;
@@ -84,6 +84,9 @@ public class AlbumMultipleWrapper extends BasicChoiceWrapper<AlbumMultipleWrappe
         intent.putExtra(Album.KEY_INPUT_ALLOW_CAMERA, mHasCamera);
         intent.putExtra(Album.KEY_INPUT_LIMIT_COUNT, mLimitCount);
         intent.putExtra(Album.KEY_INPUT_FILTER_VISIBILITY, mFilterVisibility);
+        intent.putExtra(Album.KEY_INPUT_CAMERA_QUALITY, mQuality);
+        intent.putExtra(Album.KEY_INPUT_CAMERA_DURATION, mLimitDuration);
+        intent.putExtra(Album.KEY_INPUT_CAMERA_BYTES, mLimitBytes);
         mContext.startActivity(intent);
     }
 }
