@@ -18,12 +18,10 @@ package com.yanzhenjie.album.task;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
-import android.media.ThumbnailUtils;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 import android.text.TextUtils;
+import android.webkit.URLUtil;
 
 import com.yanzhenjie.album.util.AlbumUtils;
 
@@ -31,6 +29,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * Created by YanZhenjie on 2017/10/15.
@@ -140,7 +139,7 @@ public class ThumbnailBuilder {
 
         Bitmap bitmap = null;
         try {
-            bitmap = readVideoFrameFromPath(mContext, videoPath);
+            bitmap = readVideoFrameFromPath(videoPath);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new FileOutputStream(thumbnailFile));
         } catch (Exception ignored) {
             return null;
@@ -180,14 +179,13 @@ public class ThumbnailBuilder {
         return new File(cacheDir, outFilePath);
     }
 
-    public static Bitmap readVideoFrameFromPath(Context context, String filePath) throws Exception {
-        Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(filePath, MediaStore.Video.Thumbnails.MINI_KIND);
-
-        if (bitmap == null) {
-            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-            retriever.setDataSource(context, Uri.fromFile(new File(filePath)));
-            bitmap = retriever.getFrameAtTime();
+    public static Bitmap readVideoFrameFromPath(String filePath) throws Exception {
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        if (URLUtil.isNetworkUrl(filePath)) {
+            retriever.setDataSource(filePath, new HashMap<String, String>());
+        } else {
+            retriever.setDataSource(filePath);
         }
-        return bitmap;
+        return retriever.getFrameAtTime();
     }
 }

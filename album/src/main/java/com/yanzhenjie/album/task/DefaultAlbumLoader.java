@@ -25,6 +25,7 @@ import android.media.ExifInterface;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.util.LruCache;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -371,7 +372,9 @@ public class DefaultAlbumLoader implements AlbumLoader {
 
         @Override
         public void run() {
-            if (mTargetPath.equals(mImageView.getTag(R.id.album_image_load_tag))) {
+            if (TextUtils.isEmpty(mTargetPath)) {
+                mImageView.setImageDrawable(sErrorDrawable);
+            } else if (mTargetPath.equals(mImageView.getTag(R.id.album_image_load_tag))) {
                 if (mBitmap == null) {
                     mImageView.setImageDrawable(sErrorDrawable);
                 } else {
