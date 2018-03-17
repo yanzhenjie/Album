@@ -26,7 +26,6 @@ import com.yanzhenjie.album.AlbumFolder;
 import com.yanzhenjie.album.Filter;
 import com.yanzhenjie.album.R;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -81,10 +80,6 @@ public class MediaReader {
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 String path = cursor.getString(0);
-
-                File file = new File(path);
-                if (!file.exists() || !file.canRead()) continue;
-
                 String bucketName = cursor.getString(1);
                 String mimeType = cursor.getString(2);
                 long addDate = cursor.getLong(3);
@@ -158,10 +153,6 @@ public class MediaReader {
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 String path = cursor.getString(0);
-
-                File file = new File(path);
-                if (!file.exists() || !file.canRead()) continue;
-
                 String bucketName = cursor.getString(1);
                 String mimeType = cursor.getString(2);
                 long addDate = cursor.getLong(3);
