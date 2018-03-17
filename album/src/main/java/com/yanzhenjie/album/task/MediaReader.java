@@ -1,5 +1,5 @@
 /*
- * Copyright © Yan Zhenjie. All Rights Reserved
+ * Copyright © 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
 import android.support.annotation.WorkerThread;
-import android.text.TextUtils;
 
 import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.AlbumFolder;
@@ -59,35 +58,12 @@ public class MediaReader {
      */
     private static final String[] IMAGES = {
             MediaStore.Images.Media.DATA,
-            MediaStore.Images.Media.DISPLAY_NAME,
-            MediaStore.Images.Media.TITLE,
-            MediaStore.Images.Media.BUCKET_ID,
             MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
             MediaStore.Images.Media.MIME_TYPE,
             MediaStore.Images.Media.DATE_ADDED,
-            MediaStore.Images.Media.DATE_MODIFIED,
             MediaStore.Images.Media.LATITUDE,
             MediaStore.Images.Media.LONGITUDE,
             MediaStore.Images.Media.SIZE
-    };
-
-    /**
-     * Video attribute.
-     */
-    private static final String[] VIDEOS = {
-            MediaStore.Video.Media.DATA,
-            MediaStore.Video.Media.DISPLAY_NAME,
-            MediaStore.Video.Media.TITLE,
-            MediaStore.Video.Media.BUCKET_ID,
-            MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
-            MediaStore.Video.Media.MIME_TYPE,
-            MediaStore.Video.Media.DATE_ADDED,
-            MediaStore.Video.Media.DATE_MODIFIED,
-            MediaStore.Video.Media.LATITUDE,
-            MediaStore.Video.Media.LONGITUDE,
-            MediaStore.Video.Media.SIZE,
-            MediaStore.Video.Media.DURATION,
-            MediaStore.Video.Media.RESOLUTION
     };
 
     /**
@@ -100,36 +76,28 @@ public class MediaReader {
                 IMAGES,
                 null,
                 null,
-                MediaStore.Images.Media.DATE_ADDED);
+                null);
 
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                String path = cursor.getString(cursor.getColumnIndex(IMAGES[0]));
+                String path = cursor.getString(0);
 
                 File file = new File(path);
                 if (!file.exists() || !file.canRead()) continue;
 
-                String name = cursor.getString(cursor.getColumnIndex(IMAGES[1]));
-                String title = cursor.getString(cursor.getColumnIndex(IMAGES[2]));
-                int bucketId = cursor.getInt(cursor.getColumnIndex(IMAGES[3]));
-                String bucketName = cursor.getString(cursor.getColumnIndex(IMAGES[4]));
-                String mimeType = cursor.getString(cursor.getColumnIndex(IMAGES[5]));
-                long addDate = cursor.getLong(cursor.getColumnIndex(IMAGES[6]));
-                long modifyDate = cursor.getLong(cursor.getColumnIndex(IMAGES[7]));
-                float latitude = cursor.getFloat(cursor.getColumnIndex(IMAGES[8]));
-                float longitude = cursor.getFloat(cursor.getColumnIndex(IMAGES[9]));
-                long size = cursor.getLong(cursor.getColumnIndex(IMAGES[10]));
+                String bucketName = cursor.getString(1);
+                String mimeType = cursor.getString(2);
+                long addDate = cursor.getLong(3);
+                float latitude = cursor.getFloat(4);
+                float longitude = cursor.getFloat(5);
+                long size = cursor.getLong(6);
 
                 AlbumFile imageFile = new AlbumFile();
                 imageFile.setMediaType(AlbumFile.TYPE_IMAGE);
                 imageFile.setPath(path);
-                imageFile.setName(name);
-                imageFile.setTitle(title);
-                imageFile.setBucketId(bucketId);
                 imageFile.setBucketName(bucketName);
                 imageFile.setMimeType(mimeType);
                 imageFile.setAddDate(addDate);
-                imageFile.setModifyDate(modifyDate);
                 imageFile.setLatitude(latitude);
                 imageFile.setLongitude(longitude);
                 imageFile.setSize(size);
@@ -137,11 +105,11 @@ public class MediaReader {
                 // Filter.
                 if (mSizeFilter != null && mSizeFilter.filter(size)) {
                     if (!mFilterVisibility) continue;
-                    imageFile.setEnable(false);
+                    imageFile.setDisable(true);
                 }
                 if (mMimeFilter != null && mMimeFilter.filter(mimeType)) {
                     if (!mFilterVisibility) continue;
-                    imageFile.setEnable(false);
+                    imageFile.setDisable(true);
                 }
 
                 allFileFolder.addAlbumFile(imageFile);
@@ -151,7 +119,6 @@ public class MediaReader {
                     albumFolder.addAlbumFile(imageFile);
                 else {
                     albumFolder = new AlbumFolder();
-                    albumFolder.setId(bucketId);
                     albumFolder.setName(bucketName);
                     albumFolder.addAlbumFile(imageFile);
 
@@ -163,6 +130,20 @@ public class MediaReader {
     }
 
     /**
+     * Video attribute.
+     */
+    private static final String[] VIDEOS = {
+            MediaStore.Video.Media.DATA,
+            MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
+            MediaStore.Video.Media.MIME_TYPE,
+            MediaStore.Video.Media.DATE_ADDED,
+            MediaStore.Video.Media.LATITUDE,
+            MediaStore.Video.Media.LONGITUDE,
+            MediaStore.Video.Media.SIZE,
+            MediaStore.Video.Media.DURATION
+    };
+
+    /**
      * Scan for image files.
      */
     @WorkerThread
@@ -172,64 +153,46 @@ public class MediaReader {
                 VIDEOS,
                 null,
                 null,
-                MediaStore.Video.Media.DATE_ADDED);
+                null);
 
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                String path = cursor.getString(cursor.getColumnIndex(VIDEOS[0]));
+                String path = cursor.getString(0);
 
                 File file = new File(path);
                 if (!file.exists() || !file.canRead()) continue;
 
-                String name = cursor.getString(cursor.getColumnIndex(VIDEOS[1]));
-                String title = cursor.getString(cursor.getColumnIndex(VIDEOS[2]));
-                int bucketId = cursor.getInt(cursor.getColumnIndex(VIDEOS[3]));
-                String bucketName = cursor.getString(cursor.getColumnIndex(VIDEOS[4]));
-                String mimeType = cursor.getString(cursor.getColumnIndex(VIDEOS[5]));
-                long addDate = cursor.getLong(cursor.getColumnIndex(VIDEOS[6]));
-                long modifyDate = cursor.getLong(cursor.getColumnIndex(VIDEOS[7]));
-                float latitude = cursor.getFloat(cursor.getColumnIndex(VIDEOS[8]));
-                float longitude = cursor.getFloat(cursor.getColumnIndex(VIDEOS[9]));
-                long size = cursor.getLong(cursor.getColumnIndex(VIDEOS[10]));
-                long duration = cursor.getLong(cursor.getColumnIndex(VIDEOS[11]));
-                String resolution = cursor.getString(cursor.getColumnIndex(VIDEOS[12]));
+                String bucketName = cursor.getString(1);
+                String mimeType = cursor.getString(2);
+                long addDate = cursor.getLong(3);
+                float latitude = cursor.getFloat(4);
+                float longitude = cursor.getFloat(5);
+                long size = cursor.getLong(6);
+                long duration = cursor.getLong(7);
 
                 AlbumFile videoFile = new AlbumFile();
                 videoFile.setMediaType(AlbumFile.TYPE_VIDEO);
                 videoFile.setPath(path);
-                videoFile.setName(name);
-                videoFile.setTitle(title);
-                videoFile.setBucketId(bucketId);
                 videoFile.setBucketName(bucketName);
                 videoFile.setMimeType(mimeType);
                 videoFile.setAddDate(addDate);
-                videoFile.setModifyDate(modifyDate);
                 videoFile.setLatitude(latitude);
                 videoFile.setLongitude(longitude);
                 videoFile.setSize(size);
                 videoFile.setDuration(duration);
 
-                int width = 0, height = 0;
-                if (!TextUtils.isEmpty(resolution) && resolution.contains("x")) {
-                    String[] resolutionArray = resolution.split("x");
-                    width = Integer.valueOf(resolutionArray[0]);
-                    height = Integer.valueOf(resolutionArray[1]);
-                }
-                videoFile.setWidth(width);
-                videoFile.setHeight(height);
-
                 // Filter.
                 if (mSizeFilter != null && mSizeFilter.filter(size)) {
                     if (!mFilterVisibility) continue;
-                    videoFile.setEnable(false);
+                    videoFile.setDisable(true);
                 }
                 if (mMimeFilter != null && mMimeFilter.filter(mimeType)) {
                     if (!mFilterVisibility) continue;
-                    videoFile.setEnable(false);
+                    videoFile.setDisable(true);
                 }
                 if (mDurationFilter != null && mDurationFilter.filter(duration)) {
                     if (!mFilterVisibility) continue;
-                    videoFile.setEnable(false);
+                    videoFile.setDisable(true);
                 }
 
                 allFileFolder.addAlbumFile(videoFile);
@@ -239,7 +202,6 @@ public class MediaReader {
                     albumFolder.addAlbumFile(videoFile);
                 else {
                     albumFolder = new AlbumFolder();
-                    albumFolder.setId(bucketId);
                     albumFolder.setName(bucketName);
                     albumFolder.addAlbumFile(videoFile);
 

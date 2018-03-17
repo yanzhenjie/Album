@@ -1,5 +1,5 @@
 /*
- * Copyright © Yan Zhenjie. All Rights Reserved
+ * Copyright © 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -163,7 +163,7 @@ public class AlbumPreviewFragment extends NoFragment {
                 mCurrentItemPosition = position;
                 AlbumFile albumFile = mAlbumFiles.get(mCurrentItemPosition);
                 mCheckBox.setChecked(albumFile.isChecked());
-                mCheckBox.setEnabled(albumFile.isEnable());
+                mCheckBox.setEnabled(!albumFile.isDisable());
                 setTitle(mCurrentItemPosition + 1 + " / " + mAlbumFiles.size());
 
                 if (albumFile.getMediaType() == AlbumFile.TYPE_VIDEO) {
@@ -173,7 +173,7 @@ public class AlbumPreviewFragment extends NoFragment {
                     mTvDuration.setVisibility(View.GONE);
                 }
 
-                mLayoutLayer.setVisibility(albumFile.isEnable() ? View.GONE : View.VISIBLE);
+                mLayoutLayer.setVisibility(albumFile.isDisable() ? View.VISIBLE : View.GONE);
             }
         };
         mViewPager.addOnPageChangeListener(pageChangeListener);

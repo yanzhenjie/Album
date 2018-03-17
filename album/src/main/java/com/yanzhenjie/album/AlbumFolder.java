@@ -1,5 +1,5 @@
 /*
- * Copyright © Yan Zhenjie. All Rights Reserved
+ * Copyright © 2016 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ import java.util.ArrayList;
  */
 public class AlbumFolder implements Parcelable {
 
-    private int id;
     /**
      * Folder name.
      */
@@ -43,14 +42,6 @@ public class AlbumFolder implements Parcelable {
     public AlbumFolder() {
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -64,8 +55,7 @@ public class AlbumFolder implements Parcelable {
     }
 
     public void addAlbumFile(AlbumFile albumFile) {
-        if (!mAlbumFiles.contains(albumFile))
-            mAlbumFiles.add(albumFile);
+        mAlbumFiles.add(albumFile);
     }
 
     public boolean isChecked() {
@@ -77,7 +67,6 @@ public class AlbumFolder implements Parcelable {
     }
 
     protected AlbumFolder(Parcel in) {
-        id = in.readInt();
         name = in.readString();
         mAlbumFiles = in.createTypedArrayList(AlbumFile.CREATOR);
         isChecked = in.readByte() != 0;
@@ -85,7 +74,6 @@ public class AlbumFolder implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
         dest.writeString(name);
         dest.writeTypedList(mAlbumFiles);
         dest.writeByte((byte) (isChecked ? 1 : 0));

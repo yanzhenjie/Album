@@ -1,5 +1,5 @@
 /*
- * Copyright © Yan Zhenjie. All Rights Reserved
+ * Copyright © 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,15 +45,9 @@ public class PathConversion {
     @NonNull
     public AlbumFile convert(String filePath) {
         File file = new File(filePath);
-        String name = file.getName();
 
         AlbumFile albumFile = new AlbumFile();
         albumFile.setPath(filePath);
-        albumFile.setName(name);
-        String title = name;
-        if (name.contains("."))
-            title = name.split("\\.")[0];
-        albumFile.setTitle(title);
 
         File parentFile = file.getParentFile();
         albumFile.setBucketName(parentFile.getName());
@@ -62,9 +56,8 @@ public class PathConversion {
         albumFile.setMimeType(mimeType);
         long nowTime = System.currentTimeMillis();
         albumFile.setAddDate(nowTime);
-        albumFile.setModifyDate(nowTime);
         albumFile.setSize(file.length());
-        int mediaType = AlbumFile.TYPE_INVALID;
+        int mediaType = 0;
         if (!TextUtils.isEmpty(mimeType)) {
             if (mimeType.contains("video"))
                 mediaType = AlbumFile.TYPE_VIDEO;
@@ -75,10 +68,10 @@ public class PathConversion {
 
         // Filter.
         if (mSizeFilter != null && mSizeFilter.filter(file.length())) {
-            albumFile.setEnable(false);
+            albumFile.setDisable(true);
         }
         if (mMimeFilter != null && mMimeFilter.filter(mimeType)) {
-            albumFile.setEnable(false);
+            albumFile.setDisable(true);
         }
 
         if (mediaType == AlbumFile.TYPE_VIDEO) {
@@ -87,15 +80,13 @@ public class PathConversion {
                 player.setDataSource(filePath);
                 player.prepare();
                 albumFile.setDuration(player.getDuration());
-                albumFile.setWidth(player.getVideoWidth());
-                albumFile.setHeight(player.getVideoHeight());
             } catch (Exception ignored) {
             } finally {
                 player.release();
             }
 
             if (mDurationFilter != null && mDurationFilter.filter(albumFile.getDuration())) {
-                albumFile.setEnable(false);
+                albumFile.setDisable(true);
             }
         }
         return albumFile;

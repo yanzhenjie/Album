@@ -1,5 +1,5 @@
 /*
- * Copyright © Yan Zhenjie. All Rights Reserved
+ * Copyright © 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package com.yanzhenjie.album;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
-import android.text.TextUtils;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -28,12 +27,11 @@ import java.lang.annotation.RetentionPolicy;
  */
 public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
 
-    public static final int TYPE_INVALID = 0;
     public static final int TYPE_IMAGE = 1;
     public static final int TYPE_VIDEO = 2;
 
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({TYPE_INVALID, TYPE_IMAGE, TYPE_VIDEO})
+    @IntDef({TYPE_IMAGE, TYPE_VIDEO})
     public @interface MediaType {
     }
 
@@ -41,18 +39,6 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
      * File path.
      */
     private String mPath;
-    /**
-     * File name.
-     */
-    private String mName;
-    /**
-     * Title.
-     */
-    private String mTitle;
-    /**
-     * Folder id.
-     */
-    private int mBucketId;
     /**
      * Folder mName.
      */
@@ -65,10 +51,6 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
      * Add date.
      */
     private long mAddDate;
-    /**
-     * Modify date.
-     */
-    private long mModifyDate;
     /**
      * Latitude
      */
@@ -90,15 +72,7 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
      */
     private String mThumbPath;
     /**
-     * UI width.
-     */
-    private int mWidth;
-    /**
-     * UI height.
-     */
-    private int mHeight;
-    /**
-     * MediaType;
+     * MediaType.
      */
     private int mMediaType;
     /**
@@ -108,7 +82,7 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
     /**
      * Enabled.
      */
-    private boolean isEnable = true;
+    private boolean isDisable;
 
     public AlbumFile() {
     }
@@ -127,8 +101,9 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
     public boolean equals(Object obj) {
         if (obj != null && obj instanceof AlbumFile) {
             AlbumFile o = (AlbumFile) obj;
-            if (!TextUtils.isEmpty(mPath) && !TextUtils.isEmpty(o.getPath())) {
-                return mPath.equals(o.getPath());
+            String inPath = o.getPath();
+            if (mPath != null && inPath != null) {
+                return mPath.equals(inPath);
             }
         }
         return super.equals(obj);
@@ -136,8 +111,7 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
 
     @Override
     public int hashCode() {
-        String key = mBucketId + mPath;
-        return key.hashCode();
+        return mPath != null ? mPath.hashCode() : super.hashCode();
     }
 
     public String getPath() {
@@ -146,30 +120,6 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
 
     public void setPath(String path) {
         mPath = path;
-    }
-
-    public String getName() {
-        return mName;
-    }
-
-    public void setName(String name) {
-        mName = name;
-    }
-
-    public String getTitle() {
-        return mTitle;
-    }
-
-    public void setTitle(String title) {
-        mTitle = title;
-    }
-
-    public int getBucketId() {
-        return mBucketId;
-    }
-
-    public void setBucketId(int bucketId) {
-        mBucketId = bucketId;
     }
 
     public String getBucketName() {
@@ -194,14 +144,6 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
 
     public void setAddDate(long addDate) {
         mAddDate = addDate;
-    }
-
-    public long getModifyDate() {
-        return mModifyDate;
-    }
-
-    public void setModifyDate(long modifyDate) {
-        mModifyDate = modifyDate;
     }
 
     public float getLatitude() {
@@ -244,22 +186,6 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
         mThumbPath = thumbPath;
     }
 
-    public int getWidth() {
-        return mWidth;
-    }
-
-    public void setWidth(int width) {
-        mWidth = width;
-    }
-
-    public int getHeight() {
-        return mHeight;
-    }
-
-    public void setHeight(int height) {
-        mHeight = height;
-    }
-
     @MediaType
     public int getMediaType() {
         return mMediaType;
@@ -277,55 +203,43 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
         isChecked = checked;
     }
 
-    public boolean isEnable() {
-        return isEnable;
+    public boolean isDisable() {
+        return isDisable;
     }
 
-    public void setEnable(boolean enable) {
-        isEnable = enable;
+    public void setDisable(boolean disable) {
+        this.isDisable = disable;
     }
 
     protected AlbumFile(Parcel in) {
         mPath = in.readString();
-        mName = in.readString();
-        mTitle = in.readString();
-        mBucketId = in.readInt();
         mBucketName = in.readString();
         mMimeType = in.readString();
         mAddDate = in.readLong();
-        mModifyDate = in.readLong();
         mLatitude = in.readFloat();
         mLongitude = in.readFloat();
         mSize = in.readLong();
         mDuration = in.readLong();
         mThumbPath = in.readString();
-        mWidth = in.readInt();
-        mHeight = in.readInt();
         mMediaType = in.readInt();
         isChecked = in.readByte() != 0;
-        isEnable = in.readByte() != 0;
+        isDisable = in.readByte() != 0;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mPath);
-        dest.writeString(mName);
-        dest.writeString(mTitle);
-        dest.writeInt(mBucketId);
         dest.writeString(mBucketName);
         dest.writeString(mMimeType);
         dest.writeLong(mAddDate);
-        dest.writeLong(mModifyDate);
         dest.writeFloat(mLatitude);
         dest.writeFloat(mLongitude);
         dest.writeLong(mSize);
         dest.writeLong(mDuration);
         dest.writeString(mThumbPath);
-        dest.writeInt(mWidth);
-        dest.writeInt(mHeight);
         dest.writeInt(mMediaType);
         dest.writeByte((byte) (isChecked ? 1 : 0));
-        dest.writeByte((byte) (isEnable ? 1 : 0));
+        dest.writeByte((byte) (isDisable ? 1 : 0));
     }
 
     @Override
@@ -344,4 +258,5 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
             return new AlbumFile[size];
         }
     };
+
 }

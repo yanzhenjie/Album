@@ -1,5 +1,5 @@
 /*
- * Copyright © Yan Zhenjie. All Rights Reserved
+ * Copyright © 2016 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -233,7 +233,7 @@ public class AlbumFileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     .getAlbumLoader()
                     .loadAlbumFile(mIvImage, albumFile, itemSize, itemSize);
 
-            mLayoutLayer.setVisibility(albumFile.isEnable() ? View.GONE : View.VISIBLE);
+            mLayoutLayer.setVisibility(albumFile.isDisable() ? View.VISIBLE : View.GONE);
         }
 
         @Override
@@ -322,7 +322,7 @@ public class AlbumFileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             mCheckBox.setChecked(albumFile.isChecked());
             mTvDuration.setText(AlbumUtils.convertDuration(albumFile.getDuration()));
 
-            mLayoutLayer.setVisibility(albumFile.isEnable() ? View.GONE : View.VISIBLE);
+            mLayoutLayer.setVisibility(albumFile.isDisable() ? View.VISIBLE : View.GONE);
         }
 
         @Override
