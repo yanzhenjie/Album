@@ -52,7 +52,7 @@ public class ThumbnailBuildTask extends AsyncTask<Void, Void, ArrayList<AlbumFil
     @Override
     protected ArrayList<AlbumFile> doInBackground(Void... params) {
         for (AlbumFile albumFile : mAlbumFiles) {
-            @AlbumFile.MediaType int mediaType = albumFile.getMediaType();
+            int mediaType = albumFile.getMediaType();
             String thumbnail = null;
             if (mediaType == AlbumFile.TYPE_IMAGE) {
                 thumbnail = mThumbnailBuilder.createThumbnailForImage(albumFile.getPath());
@@ -66,7 +66,7 @@ public class ThumbnailBuildTask extends AsyncTask<Void, Void, ArrayList<AlbumFil
 
     @Override
     protected void onPostExecute(ArrayList<AlbumFile> albumFiles) {
-        if(mDialog.isShowing())
+        if (mDialog.isShowing())
             mDialog.dismiss();
         mCallback.onThumbnailCallback(albumFiles);
     }

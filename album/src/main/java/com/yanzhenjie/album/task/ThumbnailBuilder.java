@@ -54,8 +54,7 @@ public class ThumbnailBuilder {
     @WorkerThread
     @Nullable
     public String createThumbnailForImage(String imagePath) {
-        if (TextUtils.isEmpty(imagePath))
-            return null;
+        if (TextUtils.isEmpty(imagePath)) return null;
 
         File inFile = new File(imagePath);
         if (!inFile.exists())
@@ -69,15 +68,15 @@ public class ThumbnailBuilder {
         if (inBitmap == null) return imagePath;
 
         ByteArrayOutputStream compressStream = new ByteArrayOutputStream();
-        int options = 100;
+        int options = 50;
         inBitmap.compress(Bitmap.CompressFormat.JPEG, options, compressStream);
 
-        while (compressStream.toByteArray().length > 200 * 1024) {
+        while (compressStream.toByteArray().length > 100 * 1024) {
             if (options <= 0) {
                 break;
             }
             compressStream.reset();
-            options -= 10;
+            options -= 5;
             inBitmap.compress(Bitmap.CompressFormat.JPEG, options, compressStream);
         }
 
@@ -97,14 +96,11 @@ public class ThumbnailBuilder {
         try {
             writeStream = new FileOutputStream(thumbnailFile);
             writeStream.write(compressStream.toByteArray());
+            writeStream.flush();
         } catch (Exception ignored) {
             return imagePath;
         } finally {
             if (writeStream != null) {
-                try {
-                    writeStream.flush();
-                } catch (IOException ignored) {
-                }
                 try {
                     writeStream.close();
                 } catch (IOException ignored) {
@@ -140,7 +136,7 @@ public class ThumbnailBuilder {
         Bitmap bitmap = null;
         try {
             bitmap = readVideoFrameFromPath(videoPath);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new FileOutputStream(thumbnailFile));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, new FileOutputStream(thumbnailFile));
         } catch (Exception ignored) {
             return null;
         } finally {
@@ -175,7 +171,7 @@ public class ThumbnailBuilder {
     }
 
     private static File randomCacheImagePath(File cacheDir, String filePath) {
-        String outFilePath = AlbumUtils.getMD5ForString(filePath) + ".jpg";
+        String outFilePath = AlbumUtils.getMD5ForString(filePath) + ".album";
         return new File(cacheDir, outFilePath);
     }
 
