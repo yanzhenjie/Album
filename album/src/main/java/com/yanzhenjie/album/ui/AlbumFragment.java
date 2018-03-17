@@ -1,5 +1,5 @@
 /*
- * Copyright © Yan Zhenjie. All Rights Reserved
+ * Copyright © 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -461,21 +461,21 @@ public class AlbumFragment extends NoFragment {
     private PathConvertTask.Callback mConvertCallback = new PathConvertTask.Callback() {
         @Override
         public void onConvertCallback(AlbumFile albumFile) {
-            albumFile.setChecked(albumFile.isEnable());
-            if (albumFile.isEnable()) {
+            albumFile.setChecked(!albumFile.isDisable());
+            if (!albumFile.isDisable()) {
                 mCheckedList.add(albumFile);
                 setCheckedCountUI(mCheckedList.size());
             }
 
-            if (albumFile.isEnable()) {
-                addFileToList(albumFile);
-            } else {
+            if (albumFile.isDisable()) {
                 if (mFilterVisibility)
                     addFileToList(albumFile);
                 else
                     Toast.makeText(getContext(),
                             getString(R.string.album_take_file_unavailable),
                             Toast.LENGTH_LONG).show();
+            } else {
+                addFileToList(albumFile);
             }
         }
     };

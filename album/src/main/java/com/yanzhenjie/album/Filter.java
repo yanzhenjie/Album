@@ -1,5 +1,5 @@
 /*
- * Copyright © Yan Zhenjie. All Rights Reserved
+ * Copyright © 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ public interface Filter<T> {
      * Filter the file.
      *
      * @param attributes attributes of file.
-     * @return Filter returns true, otherwise false.
+     * @return filter returns true, otherwise false.
      */
     boolean filter(T attributes);
 
