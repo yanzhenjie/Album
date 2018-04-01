@@ -10,29 +10,22 @@ android {
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
-
-        compileOptions {
-            sourceCompatibility JavaVersion.VERSION_1_7
-            targetCompatibility JavaVersion.VERSION_1_7
-        }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-
-    testCompile rootProject.ext.dependencies.junit
-    androidTestCompile(rootProject.ext.dependencies.expressoCore, {
+    testImplementation rootProject.ext.dependencies.junit
+    androidTestImplementation(rootProject.ext.dependencies.expressoCore, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile rootProject.ext.dependencies.album
+//    compile rootProject.ext.dependencies.album
+    implementation project(':album')
 
-    compile rootProject.ext.dependencies.appCompat
-    compile rootProject.ext.dependencies.design
-    compile rootProject.ext.dependencies.recyclerView
+    implementation rootProject.ext.dependencies.appCompat
+    implementation rootProject.ext.dependencies.design
+    implementation rootProject.ext.dependencies.recyclerView
 
-    // define image loader.
-    compile rootProject.ext.dependencies.picasso
-    compile rootProject.ext.dependencies.glide
+    implementation rootProject.ext.dependencies.picasso
+    implementation rootProject.ext.dependencies.glide
 }
