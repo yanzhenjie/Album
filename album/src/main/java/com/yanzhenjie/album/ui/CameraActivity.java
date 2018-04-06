@@ -34,7 +34,7 @@ import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.util.AlbumUtils;
 import com.yanzhenjie.album.util.PermissionUtils;
-import com.yanzhenjie.statusview.StatusUtils;
+import com.yanzhenjie.sofia.Sofia;
 
 import java.io.File;
 import java.util.Locale;
@@ -66,15 +66,16 @@ public class CameraActivity extends Activity {
     private String mCameraFilePath;
     @IntRange(from = 0, to = 1)
     private int mQuality = 1;
-    @IntRange(from = 1, to = Long.MAX_VALUE)
+    @IntRange(from = 1)
     private long mLimitDuration;
-    @IntRange(from = 1, to = Long.MAX_VALUE)
+    @IntRange(from = 1)
     private long mLimitBytes;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatusUtils.setStatusBarColor(this, Color.TRANSPARENT);
+        Sofia.with(this)
+                .statusBarBackground(Color.TRANSPARENT);
         // Language.
         Locale locale = Album.getAlbumConfig().getLocale();
         AlbumUtils.applyLanguageForContext(this, locale);
@@ -101,12 +102,14 @@ public class CameraActivity extends Activity {
 
             switch (mFunction) {
                 case Album.FUNCTION_CAMERA_IMAGE: {
-                    if (TextUtils.isEmpty(mCameraFilePath)) mCameraFilePath = AlbumUtils.randomJPGPath();
+                    if (TextUtils.isEmpty(mCameraFilePath))
+                        mCameraFilePath = AlbumUtils.randomJPGPath();
                     requestPermission(PERMISSION_IMAGE);
                     break;
                 }
                 case Album.FUNCTION_CAMERA_VIDEO: {
-                    if (TextUtils.isEmpty(mCameraFilePath)) mCameraFilePath = AlbumUtils.randomMP4Path();
+                    if (TextUtils.isEmpty(mCameraFilePath))
+                        mCameraFilePath = AlbumUtils.randomMP4Path();
                     requestPermission(PERMISSION_VIDEO);
                     break;
                 }
@@ -191,7 +194,8 @@ public class CameraActivity extends Activity {
         switch (requestCode) {
             case PERMISSION_IMAGE:
             case PERMISSION_VIDEO: {
-                if (PermissionUtils.isGrantedResult(grantResults)) dispatchGrantedPermission(requestCode);
+                if (PermissionUtils.isGrantedResult(grantResults))
+                    dispatchGrantedPermission(requestCode);
                 else albumPermissionDenied();
                 break;
             }

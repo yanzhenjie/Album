@@ -9,7 +9,7 @@ android {
         targetSdkVersion rootProject.ext.android.targetSdkVersion
     }
 
-    resourcePrefix 'album_'
+    resourcePrefix 'album'
 }
 
 dependencies {
@@ -20,5 +20,5 @@ dependencies {
     implementation rootProject.ext.dependencies.fragment
     implementation rootProject.ext.dependencies.mediaScanner
     implementation rootProject.ext.dependencies.loading
-    implementation rootProject.ext.dependencies.statusView
+    implementation rootProject.ext.dependencies.sofia
 }

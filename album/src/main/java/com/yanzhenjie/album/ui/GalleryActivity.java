@@ -19,6 +19,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -42,7 +43,7 @@ import com.yanzhenjie.album.ui.adapter.BasicPreviewAdapter;
 import com.yanzhenjie.album.ui.adapter.PathPreviewAdapter;
 import com.yanzhenjie.album.util.AlbumUtils;
 import com.yanzhenjie.album.util.PermissionUtils;
-import com.yanzhenjie.statusview.StatusUtils;
+import com.yanzhenjie.sofia.Sofia;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,16 +80,15 @@ public class GalleryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatusUtils.setFullToStatusBar(this);
         Locale locale = Album.getAlbumConfig().getLocale();
         AlbumUtils.applyLanguageForContext(this, locale);
         setContentView(R.layout.album_activity_preview);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-        mViewPager = (ViewPager) findViewById(R.id.view_pager);
-        mCheckBox = (AppCompatCheckBox) findViewById(R.id.cb_album_check);
+        mViewPager = findViewById(R.id.view_pager);
+        mCheckBox = findViewById(R.id.cb_album_check);
 
         Intent intent = getIntent();
         mRequestCode = intent.getIntExtra(Album.KEY_INPUT_REQUEST_CODE, 0);
@@ -125,8 +125,11 @@ public class GalleryActivity extends AppCompatActivity {
     private void initializeWidget() {
         int navigationColor = mWidget.getNavigationBarColor();
         navigationColor = AlbumUtils.getAlphaColor(navigationColor, mNavigationAlpha);
-        StatusUtils.setFullToNavigationBar(this);
-        StatusUtils.setNavigationBarColor(this, navigationColor);
+        Sofia.with(this)
+                .invasionStatusBar()
+                .statusBarBackground(Color.TRANSPARENT)
+                .invasionNavigationBar()
+                .navigationBarBackground(navigationColor);
 
         setTitle(mWidget.getTitle());
 
@@ -260,7 +263,8 @@ public class GalleryActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case PERMISSION_STORAGE: {
-                if (PermissionUtils.isGrantedResult(grantResults)) dispatchGrantedPermission(requestCode);
+                if (PermissionUtils.isGrantedResult(grantResults))
+                    dispatchGrantedPermission(requestCode);
                 else albumPermissionDenied();
                 break;
             }

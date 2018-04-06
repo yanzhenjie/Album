@@ -17,7 +17,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/album_MatchParent"
-    android:background="@color/album_ColorPrimaryBlack">
+    android:background="@color/albumColorPrimaryBlack">
 
     <com.yanzhenjie.album.widget.photoview.FixViewPager
         android:id="@+id/view_pager"
@@ -28,14 +28,14 @@
         android:layout_alignParentTop="true"
         android:orientation="vertical">
 
-        <com.yanzhenjie.statusview.StatusView
+        <com.yanzhenjie.sofia.StatusView
             style="@style/album_WrapContent.WidthMatchParent"
-            android:background="@color/album_Transparent"/>
+            android:background="@color/albumTransparent"/>
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             style="@style/album_Toolbar"
-            android:background="@color/album_Transparent"/>
+            android:background="@color/albumTransparent"/>
     </LinearLayout>
 
     <LinearLayout
@@ -59,7 +59,7 @@
                 android:drawableStart="@drawable/album_tag_video_white"
                 android:gravity="center"
                 android:maxLines="1"
-                android:textColor="@color/album_FontLight"
+                android:textColor="@color/albumFontLight"
                 android:visibility="gone"/>
 
             <android.support.v7.widget.AppCompatCheckBox
@@ -71,12 +71,12 @@
                 android:layout_marginEnd="@dimen/album_dp_10"
                 android:layout_marginRight="@dimen/album_dp_10"
                 android:text="@string/album_check"
-                android:textColor="@color/album_FontLight"
+                android:textColor="@color/albumFontLight"
                 android:textSize="@dimen/album_sp_16"/>
 
         </RelativeLayout>
 
-        <com.yanzhenjie.statusview.NavigationView
+        <com.yanzhenjie.sofia.NavigationView
             android:id="@+id/navigation_view"
             style="@style/album_WrapContent.WidthMatchParent"/>
     </LinearLayout>

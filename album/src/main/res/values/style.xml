@@ -21,7 +21,7 @@
     </style>
 
     <style name="album_TransparentActivity" parent="@style/Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@color/album_Transparent</item>
+        <item name="android:windowBackground">@color/albumTransparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>
@@ -51,13 +51,13 @@
         <item name="android:theme">@style/album_ToolbarTheme</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
-        <item name="titleTextColor">@color/album_FontLight</item>
-        <item name="subtitleTextColor">@color/album_FontLight</item>
+        <item name="titleTextColor">@color/albumFontLight</item>
+        <item name="subtitleTextColor">@color/albumFontLight</item>
         <item name="navigationIcon">@drawable/album_ic_back_white</item>
     </style>
 
     <style name="album_ToolbarTheme">
-        <item name="actionMenuTextColor">@color/album_FontLight</item>
+        <item name="actionMenuTextColor">@color/albumFontLight</item>
     </style>
 
     <!-- CheckBox -->
@@ -77,7 +77,7 @@
     </style>
 
     <style name="album_DialogStyle.Folder">
-        <item name="android:windowBackground">@color/album_Transparent</item>
+        <item name="android:windowBackground">@color/albumTransparent</item>
     </style>
 
     <!-- Button -->

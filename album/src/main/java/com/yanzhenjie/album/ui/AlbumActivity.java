@@ -36,7 +36,8 @@ import com.yanzhenjie.album.util.AlbumUtils;
 import com.yanzhenjie.album.util.DisplayUtils;
 import com.yanzhenjie.album.util.PermissionUtils;
 import com.yanzhenjie.fragment.CompatActivity;
-import com.yanzhenjie.statusview.StatusUtils;
+import com.yanzhenjie.sofia.Sofia;
+import com.yanzhenjie.sofia.Utils;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -61,7 +62,7 @@ public class AlbumActivity extends CompatActivity implements AlbumCallback {
     private Bundle mArgument;
     private int mRequestCode;
 
-    private boolean isSucceedLightStatus = false;
+    private boolean mLightStyle;
 
     @Override
     protected int fragmentLayoutId() {
@@ -71,8 +72,6 @@ public class AlbumActivity extends CompatActivity implements AlbumCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatusUtils.setFullToStatusBar(this);
-        StatusUtils.setFullToNavigationBar(this);
         DisplayUtils.initScreen(this);
         // Language.
         Locale locale = Album.getAlbumConfig().getLocale();
@@ -108,19 +107,14 @@ public class AlbumActivity extends CompatActivity implements AlbumCallback {
         int navigationColor = widget.getNavigationBarColor();
 
         if (widget.getStyle() == Widget.STYLE_LIGHT) {
-            if (StatusUtils.setStatusBarDarkFont(this, true)) {
-                isSucceedLightStatus = true;
-            }
+            mLightStyle = Utils.setStatusBarDarkFont(this, true);
         }
 
-        StatusUtils.setNavigationBarColor(this, navigationColor);
+        Sofia.with(this).navigationBarBackground(navigationColor);
     }
 
-    /**
-     * Successfully set the status bar to light background.
-     */
-    public boolean isSucceedLightStatus() {
-        return isSucceedLightStatus;
+    public boolean isLightStyle() {
+        return mLightStyle;
     }
 
     /**
@@ -174,7 +168,8 @@ public class AlbumActivity extends CompatActivity implements AlbumCallback {
             case PERMISSION_STORAGE_ALBUM:
             case PERMISSION_STORAGE_IMAGE:
             case PERMISSION_STORAGE_VIDEO: {
-                if (PermissionUtils.isGrantedResult(grantResults)) dispatchGrantedPermission(requestCode);
+                if (PermissionUtils.isGrantedResult(grantResults))
+                    dispatchGrantedPermission(requestCode);
                 else albumPermissionDenied();
                 break;
             }

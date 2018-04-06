@@ -19,7 +19,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/album_MatchParent"
     android:foreground="?selectableItemBackground"
-    app:cardBackgroundColor="@color/album_ColorPrimaryBlack"
+    app:cardBackgroundColor="@color/albumColorPrimaryBlack"
     app:cardCornerRadius="@dimen/album_dp_2"
     app:cardElevation="@dimen/album_dp_2"
     app:cardPreventCornerOverlap="false">
@@ -51,13 +51,13 @@
     <FrameLayout
         android:id="@+id/layout_layer"
         style="@style/album_MatchParent"
-        android:background="@color/album_ItemLayer">
+        android:background="@color/albumItemLayer">
 
         <TextView
             style="@style/album_WrapContent"
             android:layout_gravity="center"
             android:text="@string/album_item_unavailable"
-            android:textColor="@color/album_White"
+            android:textColor="@color/albumWhite"
             android:textSize="@dimen/album_sp_16"/>
 
     </FrameLayout>

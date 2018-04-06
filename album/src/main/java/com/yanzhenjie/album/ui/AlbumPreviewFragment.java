@@ -73,11 +73,11 @@ public class AlbumPreviewFragment extends NoFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
-        mTvDuration = (TextView) view.findViewById(R.id.tv_duration);
-        mCheckBox = (AppCompatCheckBox) view.findViewById(R.id.cb_album_check);
-        mLayoutLayer = (FrameLayout) view.findViewById(R.id.layout_layer);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        mViewPager = view.findViewById(R.id.view_pager);
+        mTvDuration = view.findViewById(R.id.tv_duration);
+        mCheckBox = view.findViewById(R.id.cb_album_check);
+        mLayoutLayer = view.findViewById(R.id.layout_layer);
 
         setToolbar(toolbar);
     }

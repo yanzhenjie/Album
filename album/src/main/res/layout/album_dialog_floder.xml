@@ -19,5 +19,5 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rv_content_list"
     style="@style/album_WrapContent.WidthMatchParent"
-    android:background="@color/album_White"
+    android:background="@color/albumWhite"
     app:behavior_hideable="true"/>

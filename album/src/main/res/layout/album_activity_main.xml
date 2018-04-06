@@ -14,18 +14,17 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/album_MatchParent">
 
-    <com.yanzhenjie.statusview.NavigationView
+    <com.yanzhenjie.sofia.NavigationView
         android:id="@+id/navigation_view"
         style="@style/album_WrapContent.WidthMatchParent"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true" />
 
     <FrameLayout
         android:id="@+id/album_root_frame_layout"
         style="@style/album_MatchParent"
         android:layout_above="@id/navigation_view"
-        android:background="@color/album_White"/>
+        android:background="@color/albumWhite" />
 </RelativeLayout>

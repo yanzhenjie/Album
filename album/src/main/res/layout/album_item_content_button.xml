@@ -19,7 +19,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/album_MatchParent"
     android:foreground="?selectableItemBackground"
-    app:cardBackgroundColor="@color/album_ColorPrimaryBlack"
+    app:cardBackgroundColor="@color/albumColorPrimaryBlack"
     app:cardCornerRadius="@dimen/album_dp_2"
     app:cardElevation="@dimen/album_dp_2"
     app:cardPreventCornerOverlap="false">

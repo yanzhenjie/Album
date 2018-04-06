@@ -35,7 +35,7 @@ import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.api.widget.Widget;
 import com.yanzhenjie.album.util.AlbumUtils;
 import com.yanzhenjie.fragment.NoFragment;
-import com.yanzhenjie.statusview.StatusView;
+import com.yanzhenjie.sofia.StatusView;
 
 /**
  * <p>Display when there is no picture in the multimedia library.</p>
@@ -82,13 +82,13 @@ public class AlbumNullFragment extends NoFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        mStatusView = (StatusView) view.findViewById(R.id.status_view);
-        mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        mStatusView = view.findViewById(R.id.status_view);
+        mToolbar = view.findViewById(R.id.toolbar);
         setToolbar(mToolbar);
 
-        mTvMessage = (TextView) view.findViewById(R.id.tv_message);
-        mBtnCameraImage = (AppCompatButton) view.findViewById(R.id.btn_camera_image);
-        mBtnCameraVideo = (AppCompatButton) view.findViewById(R.id.btn_camera_video);
+        mTvMessage = view.findViewById(R.id.tv_message);
+        mBtnCameraImage = view.findViewById(R.id.btn_camera_image);
+        mBtnCameraVideo = view.findViewById(R.id.btn_camera_video);
 
         mBtnCameraImage.setOnClickListener(mCameraClickListener);
         mBtnCameraVideo.setOnClickListener(mCameraClickListener);
@@ -114,16 +114,16 @@ public class AlbumNullFragment extends NoFragment {
         int statusBarColor = mWidget.getStatusBarColor();
         Drawable navigationIcon = ContextCompat.getDrawable(getContext(), R.drawable.album_ic_back_white);
         if (mWidget.getStyle() == Widget.STYLE_LIGHT) {
-            if (((AlbumActivity) getActivity()).isSucceedLightStatus()) {
+            if (((AlbumActivity) getActivity()).isLightStyle()) {
                 mStatusView.setBackgroundColor(statusBarColor);
             } else {
-                mStatusView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.album_ColorPrimaryBlack));
+                mStatusView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.albumColorPrimaryBlack));
             }
 
-            mToolbar.setTitleTextColor(ContextCompat.getColor(getContext(), R.color.album_FontDark));
-            mToolbar.setSubtitleTextColor(ContextCompat.getColor(getContext(), R.color.album_FontDark));
+            mToolbar.setTitleTextColor(ContextCompat.getColor(getContext(), R.color.albumFontDark));
+            mToolbar.setSubtitleTextColor(ContextCompat.getColor(getContext(), R.color.albumFontDark));
 
-            AlbumUtils.setDrawableTint(navigationIcon, ContextCompat.getColor(getContext(), R.color.album_IconDark));
+            AlbumUtils.setDrawableTint(navigationIcon, ContextCompat.getColor(getContext(), R.color.albumIconDark));
             displayHomeAsUpEnabled(navigationIcon);
         } else {
             mStatusView.setBackgroundColor(statusBarColor);
@@ -159,15 +159,15 @@ public class AlbumNullFragment extends NoFragment {
             mBtnCameraVideo.setSupportBackgroundTintList(buttonSelector);
             if (buttonStyle.getButtonStyle() == Widget.STYLE_LIGHT) {
                 Drawable drawable = mBtnCameraImage.getCompoundDrawables()[0];
-                AlbumUtils.setDrawableTint(drawable, ContextCompat.getColor(getContext(), R.color.album_IconDark));
+                AlbumUtils.setDrawableTint(drawable, ContextCompat.getColor(getContext(), R.color.albumIconDark));
                 mBtnCameraImage.setCompoundDrawables(drawable, null, null, null);
 
                 drawable = mBtnCameraVideo.getCompoundDrawables()[0];
-                AlbumUtils.setDrawableTint(drawable, ContextCompat.getColor(getContext(), R.color.album_IconDark));
+                AlbumUtils.setDrawableTint(drawable, ContextCompat.getColor(getContext(), R.color.albumIconDark));
                 mBtnCameraVideo.setCompoundDrawables(drawable, null, null, null);
 
-                mBtnCameraImage.setTextColor(ContextCompat.getColor(getContext(), R.color.album_FontDark));
-                mBtnCameraVideo.setTextColor(ContextCompat.getColor(getContext(), R.color.album_FontDark));
+                mBtnCameraImage.setTextColor(ContextCompat.getColor(getContext(), R.color.albumFontDark));
+                mBtnCameraVideo.setTextColor(ContextCompat.getColor(getContext(), R.color.albumFontDark));
             }
         } else {
             mBtnCameraImage.setVisibility(View.GONE);

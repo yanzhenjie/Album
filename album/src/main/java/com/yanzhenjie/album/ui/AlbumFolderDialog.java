@@ -62,7 +62,7 @@ public class AlbumFolderDialog extends BottomSheetDialog {
         this.mAlbumFolders = albumFolders;
         this.mItemClickListener = itemClickListener;
 
-        RecyclerView recyclerView = (RecyclerView) getDelegate().findViewById(R.id.rv_content_list);
+        RecyclerView recyclerView = getDelegate().findViewById(R.id.rv_content_list);
         assert recyclerView != null;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

@@ -57,7 +57,7 @@ import com.yanzhenjie.album.util.DisplayUtils;
 import com.yanzhenjie.album.widget.divider.Divider;
 import com.yanzhenjie.fragment.NoFragment;
 import com.yanzhenjie.mediascanner.MediaScanner;
-import com.yanzhenjie.statusview.StatusView;
+import com.yanzhenjie.sofia.StatusView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -148,11 +148,11 @@ public class AlbumFragment extends NoFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        mStatusView = (StatusView) view.findViewById(R.id.status_view);
-        mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        mBtnPreview = (Button) view.findViewById(R.id.btn_preview);
-        mBtnSwitchFolder = (Button) view.findViewById(R.id.btn_switch_dir);
-        mRvContentList = (RecyclerView) view.findViewById(R.id.rv_content_list);
+        mStatusView = view.findViewById(R.id.status_view);
+        mToolbar = view.findViewById(R.id.toolbar);
+        mBtnPreview = view.findViewById(R.id.btn_preview);
+        mBtnSwitchFolder = view.findViewById(R.id.btn_switch_dir);
+        mRvContentList = view.findViewById(R.id.rv_content_list);
         setToolbar(mToolbar);
 
         mBtnSwitchFolder.setOnClickListener(mSwitchDirClick);
@@ -233,24 +233,24 @@ public class AlbumFragment extends NoFragment {
         int statusBarColor = mWidget.getStatusBarColor();
         Drawable navigationIcon = ContextCompat.getDrawable(getContext(), R.drawable.album_ic_back_white);
         if (mWidget.getStyle() == Widget.STYLE_LIGHT) {
-            if (((AlbumActivity) getActivity()).isSucceedLightStatus()) {
+            if (((AlbumActivity) getActivity()).isLightStyle()) {
                 mStatusView.setBackgroundColor(statusBarColor);
             } else {
-                mStatusView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.album_ColorPrimaryBlack));
+                mStatusView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.albumColorPrimaryBlack));
             }
 
-            mToolbar.setTitleTextColor(ContextCompat.getColor(getContext(), R.color.album_FontDark));
-            mToolbar.setSubtitleTextColor(ContextCompat.getColor(getContext(), R.color.album_FontDark));
+            mToolbar.setTitleTextColor(ContextCompat.getColor(getContext(), R.color.albumFontDark));
+            mToolbar.setSubtitleTextColor(ContextCompat.getColor(getContext(), R.color.albumFontDark));
 
-            AlbumUtils.setDrawableTint(navigationIcon, ContextCompat.getColor(getContext(), R.color.album_IconDark));
+            AlbumUtils.setDrawableTint(navigationIcon, ContextCompat.getColor(getContext(), R.color.albumIconDark));
             displayHomeAsUpEnabled(navigationIcon);
 
-            AlbumUtils.setDrawableTint(mFinishMenuItem.getIcon(), ContextCompat.getColor(getContext(), R.color.album_IconDark));
+            AlbumUtils.setDrawableTint(mFinishMenuItem.getIcon(), ContextCompat.getColor(getContext(), R.color.albumIconDark));
             CharSequence title = mFinishMenuItem.getTitle();
             title = AlbumUtils.getColorText(title,
                     0,
                     title.length(),
-                    ContextCompat.getColor(getContext(), R.color.album_FontDark));
+                    ContextCompat.getColor(getContext(), R.color.albumFontDark));
             mFinishMenuItem.setTitle(title);
         } else {
             mStatusView.setBackgroundColor(statusBarColor);

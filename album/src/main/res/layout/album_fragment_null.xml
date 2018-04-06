@@ -17,16 +17,16 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/album_MatchParent"
-    android:background="@color/album_White">
+    android:background="@color/albumWhite">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
         style="@style/album_WrapContent.WidthMatchParent">
 
-        <com.yanzhenjie.statusview.StatusView
+        <com.yanzhenjie.sofia.StatusView
             android:id="@+id/status_view"
             style="@style/album_WrapContent.WidthMatchParent"
-            android:background="@color/album_ColorPrimaryDark"/>
+            android:background="@color/albumColorPrimaryDark"/>
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -43,7 +43,7 @@
         <TextView
             android:id="@+id/tv_message"
             style="@style/album_WrapContent"
-            android:textColor="@color/album_FontHint"/>
+            android:textColor="@color/albumFontHint"/>
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_camera_image"
@@ -54,7 +54,7 @@
             android:drawableStart="@drawable/album_ic_image_camera_white"
             android:gravity="center"
             android:text="@string/album_camera_image_capture"
-            android:textColor="@color/album_FontLight"/>
+            android:textColor="@color/albumFontLight"/>
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_camera_video"
@@ -65,7 +65,7 @@
             android:drawableStart="@drawable/album_ic_video_camera_white"
             android:gravity="center"
             android:text="@string/album_camera_video_capture"
-            android:textColor="@color/album_FontLight"/>
+            android:textColor="@color/albumFontLight"/>
 
     </LinearLayout>
 </RelativeLayout>
