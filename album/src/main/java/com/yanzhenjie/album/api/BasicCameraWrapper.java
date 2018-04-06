@@ -30,7 +30,6 @@ public abstract class BasicCameraWrapper<Returner extends BasicCameraWrapper> {
     final Context mContext;
     Action<String> mResult;
     Action<String> mCancel;
-    int mRequestCode;
     @Nullable
     String mFilePath;
 
@@ -51,14 +50,6 @@ public abstract class BasicCameraWrapper<Returner extends BasicCameraWrapper> {
      */
     public final Returner onCancel(Action<String> cancel) {
         this.mCancel = cancel;
-        return (Returner) this;
-    }
-
-    /**
-     * Request tag.
-     */
-    public Returner requestCode(int requestCode) {
-        this.mRequestCode = requestCode;
         return (Returner) this;
     }
 

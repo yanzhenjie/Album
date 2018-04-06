@@ -32,7 +32,6 @@ public abstract class BasicAlbumWrapper<Returner extends BasicAlbumWrapper, Resu
     final Context mContext;
     Action<Result> mResult;
     Action<Cancel> mCancel;
-    int mRequestCode;
     @Nullable
     Widget mWidget;
     @Nullable
@@ -56,14 +55,6 @@ public abstract class BasicAlbumWrapper<Returner extends BasicAlbumWrapper, Resu
      */
     public final Returner onCancel(Action<Cancel> cancel) {
         this.mCancel = cancel;
-        return (Returner) this;
-    }
-
-    /**
-     * Request tag.
-     */
-    public final Returner requestCode(int requestCode) {
-        this.mRequestCode = requestCode;
         return (Returner) this;
     }
 

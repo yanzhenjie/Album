@@ -36,7 +36,6 @@ public class GalleryWrapper extends BasicGalleryWrapper<GalleryWrapper, String, 
         GalleryActivity.sResult = mResult;
         GalleryActivity.sCancel = mCancel;
         Intent intent = new Intent(mContext, GalleryActivity.class);
-        intent.putExtra(Album.KEY_INPUT_REQUEST_CODE, mRequestCode);
         intent.putExtra(Album.KEY_INPUT_WIDGET, mWidget);
         intent.putStringArrayListExtra(Album.KEY_INPUT_CHECKED_LIST, mChecked);
         intent.putExtra(Album.KEY_INPUT_CURRENT_POSITION, mCurrentPosition);

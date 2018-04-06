@@ -48,7 +48,6 @@ import java.lang.annotation.RetentionPolicy;
 public final class Album {
 
     // All.
-    public static final String KEY_INPUT_REQUEST_CODE = "KEY_INPUT_REQUEST_CODE";
     public static final String KEY_INPUT_WIDGET = "KEY_INPUT_WIDGET";
     public static final String KEY_INPUT_CHECKED_LIST = "KEY_INPUT_CHECKED_LIST";
 

@@ -53,7 +53,6 @@ public final class VideoSingleWrapper extends BasicChoiceVideoWrapper<VideoSingl
         AlbumActivity.sResult = mResult;
         AlbumActivity.sCancel = mCancel;
         Intent intent = new Intent(mContext, AlbumActivity.class);
-        intent.putExtra(Album.KEY_INPUT_REQUEST_CODE, mRequestCode);
         intent.putExtra(Album.KEY_INPUT_WIDGET, mWidget);
 
         intent.putExtra(Album.KEY_INPUT_FUNCTION, Album.FUNCTION_CHOICE_VIDEO);

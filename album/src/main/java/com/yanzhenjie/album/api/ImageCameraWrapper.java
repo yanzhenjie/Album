@@ -36,7 +36,6 @@ public class ImageCameraWrapper extends BasicCameraWrapper<ImageCameraWrapper> {
         CameraActivity.sResult = mResult;
         CameraActivity.sCancel = mCancel;
         Intent intent = new Intent(mContext, CameraActivity.class);
-        intent.putExtra(Album.KEY_INPUT_REQUEST_CODE, mRequestCode);
 
         intent.putExtra(Album.KEY_INPUT_FUNCTION, Album.FUNCTION_CAMERA_IMAGE);
         intent.putExtra(Album.KEY_INPUT_FILE_PATH, mFilePath);

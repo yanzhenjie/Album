@@ -19,7 +19,7 @@ import android.support.annotation.NonNull;
 
 /**
  * <p>
- *      Represents an action.
+ * Represents an action.
  * </p>
  * Created by YanZhenjie on 2017/8/16.
  */
@@ -28,9 +28,8 @@ public interface Action<T> {
     /**
      * When the action responds.
      *
-     * @param requestCode requestCode.
-     * @param result      The result of the action.
+     * @param result The result of the action.
      */
-    void onAction(int requestCode, @NonNull T result);
+    void onAction(@NonNull T result);
 
 }
