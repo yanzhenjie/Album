@@ -63,7 +63,7 @@ public abstract class BaseView<Presenter extends BasePresenter> {
     private BaseView(Source source, Presenter presenter) {
         this.mSource = source;
         this.mPresenter = presenter;
-        this.mSource.bind(this);
+        this.mSource.prepare();
 
         invalidateOptionsMenu();
         mSource.setMenuClickListener(new Source.MenuClickListener() {
@@ -122,7 +122,6 @@ public abstract class BaseView<Presenter extends BasePresenter> {
     private void destroy() {
         closeInputMethod();
         onDestroy();
-        mSource.unbind(this);
     }
 
     protected void onDestroy() {

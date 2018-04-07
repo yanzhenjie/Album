@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.yanzhenjie.album.R;
-import com.yanzhenjie.album.mvp.ioc.IocInject;
 
 /**
  * Created by YanZhenjie on 2017/12/8.
@@ -41,8 +40,7 @@ class ActivitySource extends Source<Activity> {
     }
 
     @Override
-    void bind(Object target) {
-        IocInject.bind(getSource());
+    void prepare() {
         Toolbar toolbar = getSource().findViewById(R.id.toolbar);
         setActionBar(toolbar);
     }
@@ -158,10 +156,5 @@ class ActivitySource extends Source<Activity> {
                 manager.hideSoftInputFromWindow(focusView.getWindowToken(), 0);
             }
         }
-    }
-
-    @Override
-    void unbind(Object target) {
-        IocInject.unBind(target);
     }
 }

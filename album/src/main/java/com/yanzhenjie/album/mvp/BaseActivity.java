@@ -15,16 +15,30 @@
  */
 package com.yanzhenjie.album.mvp;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
 
 import com.yanzhenjie.album.util.DisplayUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by YanZhenjie on 2018/4/6.
  */
 public class BaseActivity extends AppCompatActivity implements Bye {
+
+    public static final String[] PERMISSION_CAMERA = new String[]{"android.permission.CAMERA"};
+    public static final String[] PERMISSION_MICROPHONE = new String[]{"android.permission.RECORD_AUDIO"};
+    public static final String[] PERMISSION_STORAGE = new String[]{"android.permission.READ_EXTERNAL_STORAGE",
+            "android.permission.WRITE_EXTERNAL_STORAGE"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,8 +46,55 @@ public class BaseActivity extends AppCompatActivity implements Bye {
         DisplayUtils.initScreen(this);
     }
 
+    /**
+     * Request permission.
+     */
+    protected void requestPermission(String[] permissions, int code) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            List<String> deniedPermissions = getDeniedPermissions(this, permissions);
+            if (deniedPermissions.isEmpty()) {
+                onPermissionGranted(code);
+            } else {
+                permissions = new String[deniedPermissions.size()];
+                deniedPermissions.toArray(permissions);
+                ActivityCompat.requestPermissions(this, permissions, code);
+            }
+        } else {
+            onPermissionGranted(code);
+        }
+    }
+
+    @Override
+    public final void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (isGrantedResult(requestCode)) onPermissionGranted(requestCode);
+        else onPermissionDenied(requestCode);
+    }
+
+    protected void onPermissionGranted(int code) {
+    }
+
+    protected void onPermissionDenied(int code) {
+    }
+
     @Override
     public void bye() {
         onBackPressed();
+    }
+
+    private static List<String> getDeniedPermissions(Context context, String... permissions) {
+        List<String> deniedList = new ArrayList<>(2);
+        for (String permission : permissions) {
+            if (PermissionChecker.checkSelfPermission(context, permission) != PermissionChecker.PERMISSION_GRANTED) {
+                deniedList.add(permission);
+            }
+        }
+        return deniedList;
+    }
+
+    private static boolean isGrantedResult(int... grantResults) {
+        for (int result : grantResults) {
+            if (result == PackageManager.PERMISSION_DENIED) return false;
+        }
+        return true;
     }
 }

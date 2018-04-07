@@ -40,7 +40,7 @@ abstract class Source<Source> {
         return mSource;
     }
 
-    abstract void bind(Object target);
+    abstract void prepare();
 
     abstract void setActionBar(Toolbar actionBar);
 
@@ -69,8 +69,6 @@ abstract class Source<Source> {
     abstract View getHostView();
 
     abstract void closeInputMethod();
-
-    abstract void unbind(Object target);
 
     interface MenuClickListener {
 
