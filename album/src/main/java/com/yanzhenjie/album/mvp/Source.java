@@ -28,16 +28,16 @@ import android.view.View;
 /**
  * Created by YanZhenjie on 2017/12/8.
  */
-abstract class Source<Source> {
+abstract class Source<Host> {
 
-    private Source mSource;
+    private Host mHost;
 
-    public Source(Source source) {
-        mSource = source;
+    public Source(Host host) {
+        mHost = host;
     }
 
-    public Source getSource() {
-        return mSource;
+    public Host getHost() {
+        return mHost;
     }
 
     abstract void prepare();
@@ -66,7 +66,7 @@ abstract class Source<Source> {
 
     abstract Context getContext();
 
-    abstract View getHostView();
+    abstract View getView();
 
     abstract void closeInputMethod();
 

@@ -28,7 +28,7 @@ import com.yanzhenjie.album.R;
  */
 class ActivitySource extends Source<Activity> {
 
-    private View mSourceView;
+    private View mView;
 
     private Toolbar mActionBar;
     private Drawable mActionBarIcon;
@@ -36,12 +36,12 @@ class ActivitySource extends Source<Activity> {
 
     ActivitySource(Activity activity) {
         super(activity);
-        mSourceView = activity.findViewById(android.R.id.content);
+        mView = activity.findViewById(android.R.id.content);
     }
 
     @Override
     void prepare() {
-        Toolbar toolbar = getSource().findViewById(R.id.toolbar);
+        Toolbar toolbar = getHost().findViewById(R.id.toolbar);
         setActionBar(toolbar);
     }
 
@@ -49,7 +49,7 @@ class ActivitySource extends Source<Activity> {
     void setActionBar(Toolbar actionBar) {
         this.mActionBar = actionBar;
 
-        Activity activity = getSource();
+        Activity activity = getHost();
         if (mActionBar != null) {
             setTitle(activity.getTitle());
             mActionBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -138,17 +138,17 @@ class ActivitySource extends Source<Activity> {
 
     @Override
     Context getContext() {
-        return getSource();
+        return getHost();
     }
 
     @Override
-    View getHostView() {
-        return mSourceView;
+    View getView() {
+        return mView;
     }
 
     @Override
     void closeInputMethod() {
-        Activity activity = getSource();
+        Activity activity = getHost();
         View focusView = activity.getCurrentFocus();
         if (focusView != null) {
             InputMethodManager manager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);

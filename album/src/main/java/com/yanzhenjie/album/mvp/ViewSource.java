@@ -44,7 +44,7 @@ class ViewSource extends Source<View> {
 
     @Override
     void prepare() {
-        Toolbar toolbar = getSource().findViewById(R.id.toolbar);
+        Toolbar toolbar = getHost().findViewById(R.id.toolbar);
         setActionBar(toolbar);
     }
 
@@ -138,17 +138,17 @@ class ViewSource extends Source<View> {
 
     @Override
     Context getContext() {
-        return getSource().getContext();
+        return getHost().getContext();
     }
 
     @Override
-    View getHostView() {
-        return getSource();
+    View getView() {
+        return getHost();
     }
 
     @Override
     void closeInputMethod() {
-        View focusView = getHostView().findFocus();
+        View focusView = getView().findFocus();
         if (focusView != null) {
             InputMethodManager manager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             if (manager != null) {

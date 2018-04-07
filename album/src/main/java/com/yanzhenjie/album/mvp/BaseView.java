@@ -359,7 +359,7 @@ public abstract class BaseView<Presenter extends BasePresenter> {
     }
 
     public void snackBar(CharSequence message) {
-        Snackbar snackbar = Snackbar.make(mSource.getHostView(), message, Snackbar.LENGTH_SHORT);
+        Snackbar snackbar = Snackbar.make(mSource.getView(), message, Snackbar.LENGTH_SHORT);
         View view = snackbar.getView();
         view.setBackgroundColor(getColor(R.color.albumColorPrimaryBlack));
         TextView textView = view.findViewById(android.support.design.R.id.snackbar_text);
@@ -368,7 +368,7 @@ public abstract class BaseView<Presenter extends BasePresenter> {
     }
 
     public void snackBar(@StringRes int message) {
-        Snackbar snackbar = Snackbar.make(mSource.getHostView(), message, Snackbar.LENGTH_SHORT);
+        Snackbar snackbar = Snackbar.make(mSource.getView(), message, Snackbar.LENGTH_SHORT);
         View view = snackbar.getView();
         view.setBackgroundColor(getColor(R.color.albumColorPrimaryBlack));
         TextView textView = view.findViewById(android.support.design.R.id.snackbar_text);
