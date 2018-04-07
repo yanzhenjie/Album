@@ -25,11 +25,9 @@ import java.util.ArrayList;
  */
 public abstract class BasicGalleryWrapper<Returner extends BasicGalleryWrapper, Result, Cancel, Checked> extends BasicAlbumWrapper<Returner, ArrayList<Result>, Cancel, ArrayList<Checked>> {
 
-    @IntRange(from = 1, to = Integer.MAX_VALUE)
-    int mCurrentPosition = 0;
-    boolean mCheckable = true;
-    @IntRange(from = 0, to = 255)
-    int mNavigationAlpha = 80;
+    int mCurrentPosition;
+    boolean mCheckable;
+    int mNavigationAlpha;
 
     public BasicGalleryWrapper(Context context) {
         super(context);
@@ -46,7 +44,7 @@ public abstract class BasicGalleryWrapper<Returner extends BasicGalleryWrapper, 
     /**
      * Set the show position of List.
      */
-    public Returner currentPosition(@IntRange(from = 1, to = Integer.MAX_VALUE) int currentPosition) {
+    public Returner currentPosition(@IntRange(from = 0, to = Integer.MAX_VALUE) int currentPosition) {
         this.mCurrentPosition = currentPosition;
         return (Returner) this;
     }

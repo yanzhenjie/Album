@@ -34,7 +34,7 @@ public final class ImageMultipleWrapper extends BasicChoiceWrapper<ImageMultiple
     @IntRange(from = 1, to = Integer.MAX_VALUE)
     private int mLimitCount = Integer.MAX_VALUE;
 
-    public ImageMultipleWrapper(@NonNull Context context) {
+    public ImageMultipleWrapper(Context context) {
         super(context);
     }
 

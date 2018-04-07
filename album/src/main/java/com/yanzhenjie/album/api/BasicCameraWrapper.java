@@ -16,7 +16,6 @@
 package com.yanzhenjie.album.api;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.yanzhenjie.album.Action;
@@ -26,14 +25,12 @@ import com.yanzhenjie.album.Action;
  */
 public abstract class BasicCameraWrapper<Returner extends BasicCameraWrapper> {
 
-    @NonNull
-    final Context mContext;
+    Context mContext;
     Action<String> mResult;
     Action<String> mCancel;
-    @Nullable
     String mFilePath;
 
-    public BasicCameraWrapper(@NonNull Context context) {
+    public BasicCameraWrapper(Context context) {
         this.mContext = context;
     }
 

@@ -30,7 +30,7 @@ import java.util.ArrayList;
  */
 public final class ImageSingleWrapper extends BasicChoiceWrapper<ImageSingleWrapper, ArrayList<AlbumFile>, String, AlbumFile> {
 
-    public ImageSingleWrapper(@NonNull Context context) {
+    public ImageSingleWrapper(Context context) {
         super(context);
     }
 

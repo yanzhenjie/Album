@@ -33,12 +33,10 @@ import java.util.ArrayList;
  */
 public class AlbumMultipleWrapper extends BasicChoiceAlbumWrapper<AlbumMultipleWrapper, ArrayList<AlbumFile>, String, ArrayList<AlbumFile>> {
 
-    @IntRange(from = 1, to = Integer.MAX_VALUE)
     private int mLimitCount = Integer.MAX_VALUE;
-
     private Filter<Long> mDurationFilter;
 
-    public AlbumMultipleWrapper(@NonNull Context context) {
+    public AlbumMultipleWrapper(Context context) {
         super(context);
     }
 

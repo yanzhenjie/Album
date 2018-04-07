@@ -28,7 +28,7 @@ import com.yanzhenjie.album.ui.CameraActivity;
  */
 public class ImageCameraWrapper extends BasicCameraWrapper<ImageCameraWrapper> {
 
-    public ImageCameraWrapper(@NonNull Context context) {
+    public ImageCameraWrapper(Context context) {
         super(context);
     }
 

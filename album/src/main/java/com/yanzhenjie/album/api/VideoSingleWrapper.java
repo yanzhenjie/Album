@@ -33,7 +33,7 @@ public final class VideoSingleWrapper extends BasicChoiceVideoWrapper<VideoSingl
 
     private Filter<Long> mDurationFilter;
 
-    public VideoSingleWrapper(@NonNull Context context) {
+    public VideoSingleWrapper(Context context) {
         super(context);
     }
 

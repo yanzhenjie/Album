@@ -16,7 +16,6 @@
 package com.yanzhenjie.album.api;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.yanzhenjie.album.Action;
@@ -28,16 +27,13 @@ import com.yanzhenjie.album.api.widget.Widget;
  */
 public abstract class BasicAlbumWrapper<Returner extends BasicAlbumWrapper, Result, Cancel, Checked> {
 
-    @NonNull
     final Context mContext;
     Action<Result> mResult;
     Action<Cancel> mCancel;
-    @Nullable
     Widget mWidget;
-    @Nullable
     Checked mChecked;
 
-    BasicAlbumWrapper(@NonNull Context context) {
+    BasicAlbumWrapper(Context context) {
         this.mContext = context;
         mWidget = Widget.getDefaultWidget(context);
     }

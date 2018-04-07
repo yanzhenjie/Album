@@ -27,7 +27,6 @@ import com.yanzhenjie.album.Filter;
 public abstract class BasicChoiceWrapper<Returner extends BasicChoiceWrapper, Result, Cancel, Checked> extends BasicAlbumWrapper<Returner, Result, Cancel, Checked> {
 
     boolean mHasCamera = true;
-    @IntRange(from = 1, to = 4)
     int mColumnCount = 2;
 
     Filter<Long> mSizeFilter;
@@ -35,7 +34,7 @@ public abstract class BasicChoiceWrapper<Returner extends BasicChoiceWrapper, Re
 
     boolean mFilterVisibility = true;
 
-    BasicChoiceWrapper(@NonNull Context context) {
+    BasicChoiceWrapper(Context context) {
         super(context);
     }
 

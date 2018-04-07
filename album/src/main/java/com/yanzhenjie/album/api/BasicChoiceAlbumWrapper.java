@@ -24,15 +24,12 @@ import android.support.annotation.NonNull;
  */
 public abstract class BasicChoiceAlbumWrapper<Returner extends BasicChoiceAlbumWrapper, Result, Cancel, Checked> extends BasicChoiceWrapper<Returner, Result, Cancel, Checked> {
 
-    BasicChoiceAlbumWrapper(@NonNull Context context) {
+    BasicChoiceAlbumWrapper(Context context) {
         super(context);
     }
 
-    @IntRange(from = 0, to = 1)
     int mQuality = 1;
-    @IntRange(from = 1, to = Long.MAX_VALUE)
     long mLimitDuration = Long.MAX_VALUE;
-    @IntRange(from = 1, to = Long.MAX_VALUE)
     long mLimitBytes = Long.MAX_VALUE;
 
     /**
@@ -46,7 +43,7 @@ public abstract class BasicChoiceAlbumWrapper<Returner extends BasicChoiceAlbumW
     /**
      * Specify the maximum allowed recording duration in seconds.
      */
-    public Returner cameraVideoLimitDuration(@IntRange(from = 1, to = Long.MAX_VALUE) long duration) {
+    public Returner cameraVideoLimitDuration(@IntRange(from = 1) long duration) {
         this.mLimitDuration = duration;
         return (Returner) this;
     }
@@ -54,7 +51,7 @@ public abstract class BasicChoiceAlbumWrapper<Returner extends BasicChoiceAlbumW
     /**
      * Specify the maximum allowed size.
      */
-    public Returner cameraVideoLimitBytes(@IntRange(from = 1, to = Long.MAX_VALUE) long bytes) {
+    public Returner cameraVideoLimitBytes(@IntRange(from = 1) long bytes) {
         this.mLimitBytes = bytes;
         return (Returner) this;
     }

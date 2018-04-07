@@ -17,22 +17,18 @@ package com.yanzhenjie.album.api;
 
 import android.content.Context;
 import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
 
 /**
  * Created by YanZhenjie on 2017/11/8.
  */
 public abstract class BasicChoiceVideoWrapper<Returner extends BasicChoiceVideoWrapper, Result, Cancel, Checked> extends BasicChoiceWrapper<Returner, Result, Cancel, Checked> {
 
-    BasicChoiceVideoWrapper(@NonNull Context context) {
+    BasicChoiceVideoWrapper(Context context) {
         super(context);
     }
 
-    @IntRange(from = 0, to = 1)
     int mQuality = 1;
-    @IntRange(from = 1, to = Long.MAX_VALUE)
     long mLimitDuration = Long.MAX_VALUE;
-    @IntRange(from = 1, to = Long.MAX_VALUE)
     long mLimitBytes = Long.MAX_VALUE;
 
     /**
@@ -46,7 +42,7 @@ public abstract class BasicChoiceVideoWrapper<Returner extends BasicChoiceVideoW
     /**
      * Specify the maximum allowed recording duration in seconds.
      */
-    public Returner limitDuration(@IntRange(from = 1, to = Long.MAX_VALUE) long duration) {
+    public Returner limitDuration(@IntRange(from = 1) long duration) {
         this.mLimitDuration = duration;
         return (Returner) this;
     }
@@ -54,7 +50,7 @@ public abstract class BasicChoiceVideoWrapper<Returner extends BasicChoiceVideoW
     /**
      * Specify the maximum allowed size.
      */
-    public Returner limitBytes(@IntRange(from = 1, to = Long.MAX_VALUE) long bytes) {
+    public Returner limitBytes(@IntRange(from = 1) long bytes) {
         this.mLimitBytes = bytes;
         return (Returner) this;
     }

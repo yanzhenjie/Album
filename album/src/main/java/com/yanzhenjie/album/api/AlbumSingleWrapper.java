@@ -34,7 +34,7 @@ public class AlbumSingleWrapper extends BasicChoiceVideoWrapper<AlbumSingleWrapp
 
     private Filter<Long> mDurationFilter;
 
-    public AlbumSingleWrapper(@NonNull Context context) {
+    public AlbumSingleWrapper(Context context) {
         super(context);
     }
 
