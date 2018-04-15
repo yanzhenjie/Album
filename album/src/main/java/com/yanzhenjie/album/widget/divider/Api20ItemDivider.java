@@ -21,10 +21,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
 /**
+ * <p>The implementation of divider does not add dividers around the list.</p>
  * Created by YanZhenjie on 2017/8/14.
  */
 public class Api20ItemDivider extends Divider {
@@ -34,7 +37,7 @@ public class Api20ItemDivider extends Divider {
     private int mDividerHeight;
 
     /**
-     * @param color divider color.
+     * @param color divider line color.
      */
     public Api20ItemDivider(@ColorInt int color) {
         this(color, 4, 4);
@@ -46,128 +49,220 @@ public class Api20ItemDivider extends Divider {
      * @param dividerHeight line height.
      */
     public Api20ItemDivider(@ColorInt int color, int dividerWidth, int dividerHeight) {
-        mDivider = new ColorDrawable(color);
-        mDividerWidth = dividerWidth;
-        mDividerHeight = dividerHeight;
+        this.mDivider = new ColorDrawable(color);
+        this.mDividerWidth = dividerWidth;
+        this.mDividerHeight = dividerHeight;
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        int position = parent.getChildLayoutPosition(view);
-        int columnCount = getSpanCount(parent);
-        int childCount = parent.getAdapter().getItemCount();
+        RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
+        if (layoutManager instanceof LinearLayoutManager) {
+            int orientation = getOrientation(layoutManager);
+            int position = parent.getChildLayoutPosition(view);
+            int spanCount = getSpanCount(layoutManager);
+            int childCount = parent.getAdapter().getItemCount();
 
-        boolean firstRaw = isFirstRaw(position, columnCount);
-        boolean lastRaw = isLastRaw(position, columnCount, childCount);
-        boolean firstColumn = isFirstColumn(position, columnCount);
-        boolean lastColumn = isLastColumn(position, columnCount);
+            boolean firstRaw = isFirstRaw(orientation, position, spanCount, childCount);
+            boolean lastRaw = isLastRaw(orientation, position, spanCount, childCount);
+            boolean firstColumn = isFirstColumn(orientation, position, spanCount, childCount);
+            boolean lastColumn = isLastColumn(orientation, position, spanCount, childCount);
 
-        if (columnCount == 1) {
-            if (firstRaw) {
-                outRect.set(0, 0, 0, mDividerHeight / 2);
-            } else if (lastRaw) {
-                outRect.set(0, mDividerHeight / 2, 0, 0);
+            if (orientation == RecyclerView.VERTICAL) {
+                if (spanCount == 1) {
+                    if (firstRaw) {
+                        outRect.set(0, 0, 0, 0); // xxxx
+                    } else if (lastRaw) {
+                        outRect.set(0, mDividerHeight, 0, 0); // x-xx
+                    } else {
+                        outRect.set(0, mDividerHeight, 0, 0); // x-xx
+                    }
+                } else {
+                    if (firstRaw && firstColumn) {
+                        outRect.set(0, 0, 0, 0); // xxxx
+                    } else if (firstRaw && lastColumn) {
+                        outRect.set(mDividerWidth, 0, 0, mDividerHeight); // |xx-
+                    } else if (firstRaw) {
+                        outRect.set(mDividerWidth, 0, 0, mDividerHeight); // |xx-
+                    } else if (lastRaw && firstColumn) {
+                        outRect.set(0, mDividerHeight, 0, 0); // x-xx
+                    } else if (lastRaw && lastColumn) {
+                        outRect.set(mDividerWidth, 0, 0, 0); // |xxx
+                    } else if (lastRaw) {
+                        outRect.set(mDividerWidth, 0, 0, 0); // |xxx
+                    } else if (firstColumn) {
+                        outRect.set(0, mDividerHeight, 0, 0); // x-xx
+                    } else if (lastColumn) {
+                        outRect.set(mDividerWidth, 0, 0, mDividerHeight); // |xx-
+                    } else {
+                        outRect.set(mDividerWidth, 0, 0, mDividerHeight); // |xx-
+                    }
+                }
             } else {
-                outRect.set(0, mDividerHeight / 2, 0, mDividerHeight / 2);
+                if (spanCount == 1) {
+                    if (firstColumn) {
+                        outRect.set(0, 0, 0, 0); // xxxx
+                    } else if (lastColumn) {
+                        outRect.set(0, mDividerHeight, 0, 0); // |xxx
+                    } else {
+                        outRect.set(0, mDividerHeight, 0, 0); // |xxx
+                    }
+                } else {
+                    if (firstColumn && firstRaw) {
+                        outRect.set(0, 0, 0, 0); // xxxx
+                    } else if (firstColumn && lastRaw) {
+                        outRect.set(0, mDividerHeight, 0, 0); // x━xx
+                    } else if (firstColumn) {
+                        outRect.set(0, mDividerHeight, 0, 0); // x━xx
+                    } else if (lastColumn && firstRaw) {
+                        outRect.set(mDividerWidth, 0, 0, mDividerHeight); // ┃xx━
+                    } else if (lastColumn && lastRaw) {
+                        outRect.set(mDividerWidth, 0, 0, 0); // ┃xxx
+                    } else if (lastColumn) {
+                        outRect.set(mDividerWidth, 0, 0, mDividerHeight); // ┃xx━
+                    } else if (firstRaw) {
+                        outRect.set(mDividerWidth, 0, 0, mDividerHeight); // ┃xx━
+                    } else if (lastRaw) {
+                        outRect.set(mDividerWidth, 0, 0, 0); // ┃xxx
+                    } else {
+                        outRect.set(mDividerWidth, 0, 0, mDividerHeight); // ┃xx━
+                    }
+                }
             }
-        } else {
-            if (firstRaw && firstColumn) {
-                outRect.set(0, 0, mDividerWidth / 2, mDividerHeight / 2);
-            } else if (firstRaw && lastColumn) {
-                outRect.set(mDividerWidth / 2, 0, 0, mDividerHeight / 2);
-            } else if (firstRaw) {
-                outRect.set(mDividerWidth / 2, 0, mDividerWidth / 2, mDividerHeight / 2);
-            } else if (lastRaw && firstColumn) {
-                outRect.set(0, mDividerHeight / 2, mDividerWidth / 2, 0);
-            } else if (lastRaw && lastColumn) {
-                outRect.set(mDividerWidth / 2, mDividerHeight / 2, 0, 0);
-            } else if (lastRaw) {
-                outRect.set(mDividerWidth / 2, mDividerHeight / 2, mDividerWidth / 2, 0);
-            } else if (firstColumn) {
-                outRect.set(0, mDividerHeight / 2, mDividerWidth / 2, mDividerHeight / 2);
-            } else if (lastColumn) {
-                outRect.set(mDividerWidth / 2, mDividerHeight / 2, 0, mDividerHeight / 2);
-            } else {
-                outRect.set(mDividerWidth / 2, mDividerHeight / 2, mDividerWidth / 2, mDividerHeight / 2);
-            }
+        } else if (layoutManager instanceof StaggeredGridLayoutManager) {
+            outRect.set(mDividerWidth, mDividerHeight, mDividerWidth, mDividerHeight); // |-|-
         }
     }
 
-    private int getSpanCount(RecyclerView parent) {
-        RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
+    private int getOrientation(RecyclerView.LayoutManager layoutManager) {
+        if (layoutManager instanceof LinearLayoutManager) {
+            return ((LinearLayoutManager) layoutManager).getOrientation();
+        }
+        return RecyclerView.VERTICAL;
+    }
+
+    private int getSpanCount(RecyclerView.LayoutManager layoutManager) {
         if (layoutManager instanceof GridLayoutManager) {
             return ((GridLayoutManager) layoutManager).getSpanCount();
+        } else if (layoutManager instanceof StaggeredGridLayoutManager) {
+            return ((StaggeredGridLayoutManager) layoutManager).getSpanCount();
         }
         return 1;
     }
 
-    private boolean isFirstRaw(int position, int columnCount) {
-        return position < columnCount;
+    private boolean isFirstRaw(int orientation, int position, int columnCount, int childCount) {
+        if (orientation == RecyclerView.VERTICAL) {
+            return position < columnCount;
+        } else {
+            if (columnCount == 1) return true;
+            return position % columnCount == 0;
+        }
     }
 
-    private boolean isLastRaw(int position, int columnCount, int childCount) {
-        if (columnCount == 1)
-            return position + 1 == childCount;
-        else {
-            int lastRawItemCount = childCount % columnCount;
-            int rawCount = (childCount - lastRawItemCount) / columnCount + (lastRawItemCount > 0 ? 1 : 0);
-
-            int rawPositionJudge = (position + 1) % columnCount;
-            if (rawPositionJudge == 0) {
-                int rawPosition = (position + 1) / columnCount;
-                return rawCount == rawPosition;
+    private boolean isLastRaw(int orientation, int position, int columnCount, int childCount) {
+        if (orientation == RecyclerView.VERTICAL) {
+            if (columnCount == 1) {
+                return position + 1 == childCount;
             } else {
-                int rawPosition = (position + 1 - rawPositionJudge) / columnCount + 1;
-                return rawCount == rawPosition;
+                int lastRawItemCount = childCount % columnCount;
+                int rawCount = (childCount - lastRawItemCount) / columnCount + (lastRawItemCount > 0 ? 1 : 0);
+
+                int rawPositionJudge = (position + 1) % columnCount;
+                if (rawPositionJudge == 0) {
+                    int rawPosition = (position + 1) / columnCount;
+                    return rawCount == rawPosition;
+                } else {
+                    int rawPosition = (position + 1 - rawPositionJudge) / columnCount + 1;
+                    return rawCount == rawPosition;
+                }
+            }
+        } else {
+            if (columnCount == 1) return true;
+            return (position + 1) % columnCount == 0;
+        }
+    }
+
+    private boolean isFirstColumn(int orientation, int position, int columnCount, int childCount) {
+        if (orientation == RecyclerView.VERTICAL) {
+            if (columnCount == 1) return true;
+            return position % columnCount == 0;
+        } else {
+            return position < columnCount;
+        }
+    }
+
+    private boolean isLastColumn(int orientation, int position, int columnCount, int childCount) {
+        if (orientation == RecyclerView.VERTICAL) {
+            if (columnCount == 1) return true;
+            return (position + 1) % columnCount == 0;
+        } else {
+            if (columnCount == 1) {
+                return position + 1 == childCount;
+            } else {
+                int lastRawItemCount = childCount % columnCount;
+                int rawCount = (childCount - lastRawItemCount) / columnCount + (lastRawItemCount > 0 ? 1 : 0);
+
+                int rawPositionJudge = (position + 1) % columnCount;
+                if (rawPositionJudge == 0) {
+                    int rawPosition = (position + 1) / columnCount;
+                    return rawCount == rawPosition;
+                } else {
+                    int rawPosition = (position + 1 - rawPositionJudge) / columnCount + 1;
+                    return rawCount == rawPosition;
+                }
             }
         }
     }
 
-    private boolean isFirstColumn(int position, int columnCount) {
-        if (columnCount == 1)
-            return true;
-        return position % columnCount == 0;
-    }
-
-    private boolean isLastColumn(int position, int columnCount) {
-        if (columnCount == 1)
-            return true;
-        return (position + 1) % columnCount == 0;
-    }
-
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-        drawHorizontal(c, parent);
-        drawVertical(c, parent);
+        RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
+        drawHorizontal(c, layoutManager);
+        drawVertical(c, layoutManager);
     }
 
-    public void drawHorizontal(Canvas c, RecyclerView parent) {
+    public void drawHorizontal(Canvas c, RecyclerView.LayoutManager layoutManager) {
         c.save();
-        int childCount = parent.getChildCount();
+        int orientation = getOrientation(layoutManager);
+        int spanCount = getSpanCount(layoutManager);
+        int childCount = layoutManager.getChildCount();
+
         for (int i = 0; i < childCount; i++) {
-            final View child = parent.getChildAt(i);
-            final int left = child.getLeft();
-            final int top = child.getBottom();
-            final int right = child.getRight();
-            final int bottom = top + mDividerHeight;
-            mDivider.setBounds(left, top, right, bottom);
-            mDivider.draw(c);
+            final View child = layoutManager.getChildAt(i);
+            // Top, nothing.
+
+            // Bottom, draw.
+            if (!isLastRaw(orientation, i, spanCount, childCount)) {
+                final int left = child.getLeft();
+                final int top = child.getBottom();
+                final int right = child.getRight() + (isLastColumn(orientation, i, spanCount, childCount) ? 0 : mDividerWidth);
+                final int bottom = top + mDividerHeight;
+                mDivider.setBounds(left, top, right, bottom);
+                mDivider.draw(c);
+            }
         }
         c.restore();
     }
 
-    public void drawVertical(Canvas c, RecyclerView parent) {
+    public void drawVertical(Canvas c, RecyclerView.LayoutManager layoutManager) {
         c.save();
-        final int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            final View child = parent.getChildAt(i);
-            final int left = child.getRight();
-            final int top = child.getTop();
-            final int right = left + mDividerWidth;
-            final int bottom = child.getBottom();
+        int orientation = getOrientation(layoutManager);
+        int spanCount = getSpanCount(layoutManager);
+        int childCount = layoutManager.getChildCount();
 
-            mDivider.setBounds(left, top, right, bottom);
-            mDivider.draw(c);
+        for (int i = 0; i < childCount; i++) {
+            final View child = layoutManager.getChildAt(i);
+            // Left, nothing.
+
+            // Right, draw.
+            if (!isLastColumn(orientation, i, spanCount, childCount)) {
+                final int left = child.getRight();
+                final int top = child.getTop();
+                final int right = left + mDividerWidth;
+                final int bottom = child.getBottom() + (isLastRaw(orientation, i, spanCount, childCount) ? 0 : mDividerWidth);
+                mDivider.setBounds(left, top, right, bottom);
+                mDivider.draw(c);
+            }
         }
         c.restore();
     }
