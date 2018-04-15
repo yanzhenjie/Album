@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 Yan Zhenjie.
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,29 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.album.impl;
+package com.yanzhenjie.album.app.gallery;
 
+import android.content.Context;
+import android.widget.ImageView;
+
+import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
 
 import java.util.ArrayList;
 
 /**
- * <p>Action album results.</p>
- * Created by yanzhenjie on 17-3-28.
+ * <p>Adapter of preview the big picture.</p>
+ * Created by yanzhenjie on 17-3-29.
  */
-public interface AlbumCallback {
+public class PreviewAlbumAdapter extends PreviewAdapter<AlbumFile> {
 
-    /**
-     * Photo album callback selection result.
-     *
-     * @param albumFiles file path list.
-     */
-    void onAlbumResult(ArrayList<AlbumFile> albumFiles);
+    public PreviewAlbumAdapter(Context context, ArrayList<AlbumFile> previewList) {
+        super(context, previewList);
+    }
 
-    /**
-     * The album canceled the operation.
-     */
-    void onAlbumCancel();
-
-
+    @Override
+    protected void loadPreview(ImageView imageView, AlbumFile item, int position) {
+        Album.getAlbumConfig().getAlbumLoader().load(imageView, item);
+    }
 }

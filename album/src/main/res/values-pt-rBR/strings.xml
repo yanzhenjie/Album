@@ -15,9 +15,13 @@
     limitations under the License.
 -->
 <resources>
-    <string name="album_not_found_image">Nenhum arquivo de imagem encontrado</string>
-    <string name="album_not_found_video">Nenhum arquivo de vídeo encontrado</string>
-    <string name="album_not_found_album">Nenhum arquivo de mídia encontrado</string>
+    <string name="album_loading">Carregando&#8230;</string>
+    <string name="album_converting">Carregando&#8230;</string>
+    <string name="album_thumbnail">Criando miniaturas&#8230;</string>
+
+    <string name="album_not_found_image">Nenhum item de imagem encontrado</string>
+    <string name="album_not_found_video">Nenhum item de vídeo encontrado</string>
+    <string name="album_not_found_album">Nenhum item de mídia encontrado</string>
 
     <string name="album_camera_image_capture">Tire foto</string>
     <string name="album_camera_video_capture">Gravação vídeo</string>
@@ -27,51 +31,51 @@
     <string name="album_all_videos">Todos Vídeos</string>
     <string name="album_all_images_videos">Todas Imagens/Vídeos</string>
 
-    <string name="album_check_image_little">Você ainda não escolheu o arquivo de imagem</string>
-    <string name="album_check_video_little">Você ainda não escolheu o arquivo de vídeo</string>
-    <string name="album_check_album_little">Você ainda não escolheu o arquivo de mídia</string>
+    <string name="album_ok">Está bem</string>
+    <string name="album_confirm">Confirme</string>
+    <string name="album_cancel">Cancelar</string>
+
+    <string name="album_check_image_little">Por favor, selecione um item de imagem.</string>
+    <string name="album_check_video_little">Por favor, selecione um item de vídeo.</string>
+    <string name="album_check_album_little">Por favor, selecione um item de mídia.</string>
     <string name="album_menu_finish">Finalizar</string>
     <string name="album_check">Selecionado</string>
 
-    <string name="album_menu_camera_image">Tire foto</string>
-    <string name="album_menu_camera_video">Gravação vídeo</string>
-
-    <string name="album_title_permission_failed">Falha ao acessar</string>
-    <string name="album_permission_storage_failed_hint">Falha ao obter permissão de Armazenamento, por favor autorize nas Configurações antes de usar.</string>
-    <string name="album_permission_camera_image_failed_hint">Falha ao obter permissões de Câmera/Armazenamento, autorize nas Configurações antes de usar.</string>
-    <string name="album_permission_camera_video_failed_hint">Falha ao obter permissões de Câmera/Armazenamento/Microfone, autorize nas Configurações antes de usar.</string>
-    <string name="album_dialog_sure">Confirmar</string>
+    <string name="album_title_permission_failed">Permissão negada</string>
+    <string name="album_permission_storage_failed_hint">Nenhuma permissão de armazenamento, por favor autorize antes de usar.</string>
+    <string name="album_permission_camera_image_failed_hint">Não há permissão de câmera ou permissão de armazenamento, por favor autorize antes de usar.</string>
+    <string name="album_permission_camera_video_failed_hint">Não há permissão de câmera, permissão de armazenamento ou permissão de microfone, por favor autorize antes de usar.</string>
 
     <plurals name="album_check_image_limit">
-        <item quantity="one">Você pode selecionar apenas %1$d imagem.</item>
-        <item quantity="other">Você pode selecionar apenas %1$d imagens.</item>
+        <item quantity="one">Você só pode selecionar %1$d item de imagem.</item>
+        <item quantity="other">Você só pode selecionar %1$d itens de imagem.</item>
     </plurals>
 
     <plurals name="album_check_image_limit_camera">
-        <item quantity="one">Você atingiu o limite de %1$d imagem selecionada.</item>
-        <item quantity="other">Você atingiu o limite de %1$d imagens selecionada.</item>
+        <item quantity="one">Você só pode selecionar %1$d item de imagem, não pode usar a câmera.</item>
+        <item quantity="other">Você só pode selecionar %1$d itens de imagem, não pode usar a câmera.</item>
     </plurals>
 
     <plurals name="album_check_video_limit">
-        <item quantity="one">Você pode selecionar apenas %1$d vídeo.</item>
-        <item quantity="other">Você pode selecionar apenas %1$d vídeos.</item>
+        <item quantity="one">Você só pode selecionar %1$d item de vídeo.</item>
+        <item quantity="other">Você só pode selecionar %1$d itens de vídeo.</item>
     </plurals>
 
     <plurals name="album_check_video_limit_camera">
-        <item quantity="one">Você atingiu o limite de %1$d vídeo selecionada.</item>
-        <item quantity="other">Você atingiu o limite de %1$d vídeos selecionada.</item>
+        <item quantity="one">Você só pode selecionar %1$d item de vídeo, não pode usar a câmera.</item>
+        <item quantity="other">Você só pode selecionar %1$d itens de vídeo, não pode usar a câmera.</item>
     </plurals>
 
     <plurals name="album_check_album_limit">
-        <item quantity="one">Você pode selecionar apenas %1$d arquivo.</item>
-        <item quantity="other">Você pode selecionar apenas %1$d arquivos.</item>
+        <item quantity="one">Você só pode selecionar %1$d item de mídia.</item>
+        <item quantity="other">Você só pode selecionar %1$d itens de mídia.</item>
     </plurals>
 
     <plurals name="album_check_album_limit_camera">
-        <item quantity="one">Você atingiu o limite de %1$d arquivo selecionada.</item>
-        <item quantity="other">Você atingiu o limite de %1$d arquivos selecionada.</item>
+        <item quantity="one">Você só pode selecionar %1$d item de mídia, não pode usar a câmera.</item>
+        <item quantity="other">Você só pode selecionar %1$d itens de mídia, não pode usar a câmera.</item>
     </plurals>
 
     <string name="album_item_unavailable">Não disponível</string>
-    <string name="album_take_file_unavailable">Arquivo indisponível, tente novamente.</string>
+    <string name="album_take_file_unavailable">Arquivo indisponível, por favor tente novamente.</string>
 </resources>

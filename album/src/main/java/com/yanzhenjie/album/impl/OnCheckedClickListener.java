@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 Yan Zhenjie.
+ * Copyright 2018 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,18 +18,15 @@ package com.yanzhenjie.album.impl;
 import android.widget.CompoundButton;
 
 /**
- * <p>Listens on the selected state of Item.</p>
- * Created by Yan Zhenjie on 2016/10/18.
+ * Created by YanZhenjie on 2018/4/11.
  */
-public interface OnItemCheckedListener {
+public interface OnCheckedClickListener {
 
     /**
-     * When the selected state of Item changes.
+     * Compound button is clicked.
      *
-     * @param compoundButton {@link CompoundButton}.
-     * @param position       item position.
-     * @param isChecked      checked state.
+     * @param button   view.
+     * @param position the position in the list.
      */
-    void onCheckedChanged(CompoundButton compoundButton, int position, boolean isChecked);
-
+    void onCheckedClick(CompoundButton button, int position);
 }

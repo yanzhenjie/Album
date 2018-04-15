@@ -14,58 +14,52 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/album_MatchParent"
-    android:background="@color/albumWhite">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Album.MatchParent"
+    android:background="@color/albumPageLight">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
-        style="@style/album_WrapContent.WidthMatchParent">
-
-        <com.yanzhenjie.sofia.StatusView
-            android:id="@+id/status_view"
-            style="@style/album_WrapContent.WidthMatchParent"
-            android:background="@color/albumColorPrimaryDark"/>
+        style="@style/Album.AppBarDark.General">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            style="@style/album_Toolbar"/>
+            style="@style/Album.Toolbar" />
 
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
-        style="@style/album_MatchParent"
+        style="@style/Album.MatchParent"
         android:layout_below="@+id/app_bar_layout"
         android:gravity="center"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_message"
-            style="@style/album_WrapContent"
-            android:textColor="@color/albumFontHint"/>
+            style="@style/Album.WrapContent"
+            android:textColor="@color/albumFontHint" />
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_camera_image"
-            style="@style/album_WrapContent"
+            style="@style/Album.Button.WrapContent"
             android:layout_marginTop="@dimen/album_dp_15"
             android:drawableLeft="@drawable/album_ic_image_camera_white"
             android:drawablePadding="@dimen/album_dp_6"
             android:drawableStart="@drawable/album_ic_image_camera_white"
             android:gravity="center"
             android:text="@string/album_camera_image_capture"
-            android:textColor="@color/albumFontLight"/>
+            android:textColor="@color/albumFontLight" />
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_camera_video"
-            style="@style/album_WrapContent"
+            style="@style/Album.Button.WrapContent"
             android:layout_marginTop="@dimen/album_dp_15"
             android:drawableLeft="@drawable/album_ic_video_camera_white"
             android:drawablePadding="@dimen/album_dp_6"
             android:drawableStart="@drawable/album_ic_video_camera_white"
             android:gravity="center"
             android:text="@string/album_camera_video_capture"
-            android:textColor="@color/albumFontLight"/>
+            android:textColor="@color/albumFontLight" />
 
     </LinearLayout>
 </RelativeLayout>

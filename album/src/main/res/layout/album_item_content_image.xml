@@ -14,51 +14,40 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/album_MatchParent"
-    android:foreground="?selectableItemBackground"
-    app:cardBackgroundColor="@color/albumColorPrimaryBlack"
-    app:cardCornerRadius="@dimen/album_dp_2"
-    app:cardElevation="@dimen/album_dp_2"
-    app:cardPreventCornerOverlap="false">
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Album.Item.Card.MatchParent">
 
-    <RelativeLayout
-        style="@style/album_MatchParent">
+    <RelativeLayout style="@style/Album.MatchParent">
 
         <ImageView
             android:id="@+id/iv_album_content_image"
-            style="@style/album_MatchParent"
+            style="@style/Album.MatchParent"
             android:contentDescription="@string/album_title"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop" />
 
-        <FrameLayout
-            android:id="@+id/layout_album_check"
-            style="@style/album_WrapContent"
+        <com.yanzhenjie.album.widget.TransferLayout
+            style="@style/Album.WrapContent.Transfer"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:padding="@dimen/album_dp_10">
+            android:layout_alignParentRight="true">
 
             <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/cb_album_check"
-                android:clickable="false"
-                style="@style/album_CheckBox.WrapContent"/>
-        </FrameLayout>
+                android:id="@+id/check_box"
+                style="@style/Album.CheckBox.WrapContent" />
+        </com.yanzhenjie.album.widget.TransferLayout>
 
     </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/layout_layer"
-        style="@style/album_MatchParent"
-        android:background="@color/albumItemLayer">
+        style="@style/Album.MatchParent"
+        android:background="@color/albumSheetLayer">
 
         <TextView
-            style="@style/album_WrapContent"
+            style="@style/Album.WrapContent"
             android:layout_gravity="center"
             android:text="@string/album_item_unavailable"
-            android:textColor="@color/albumWhite"
-            android:textSize="@dimen/album_sp_16"/>
+            android:textColor="@color/albumFontLight"
+            android:textSize="@dimen/album_sp_16" />
 
     </FrameLayout>
 

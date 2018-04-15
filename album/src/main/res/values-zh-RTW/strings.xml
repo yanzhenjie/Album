@@ -15,6 +15,10 @@
     limitations under the License.
 -->
 <resources>
+    <string name="album_loading">加載中&#8230;</string>
+    <string name="album_converting">加載中&#8230;</string>
+    <string name="album_thumbnail">正在創建縮略圖&#8230;</string>
+
     <string name="album_not_found_image">沒有發現圖片文件</string>
     <string name="album_not_found_video">沒有發現視頻文件</string>
     <string name="album_not_found_album">沒有發現媒體文件</string>
@@ -27,43 +31,43 @@
     <string name="album_all_videos">所有視頻</string>
     <string name="album_all_images_videos">所有圖片/視頻</string>
 
-    <string name="album_check_image_little">妳還沒有選擇圖片</string>
-    <string name="album_check_video_little">妳還沒有選擇視頻</string>
-    <string name="album_check_album_little">妳還沒有選擇媒體文件</string>
+    <string name="album_ok">好的</string>
+    <string name="album_confirm">確定</string>
+    <string name="album_cancel">取消</string>
+
+    <string name="album_check_image_little">請選擇一個圖片文件</string>
+    <string name="album_check_video_little">請選擇一個視頻文件</string>
+    <string name="album_check_album_little">請選擇一個媒體文件</string>
     <string name="album_menu_finish">完成</string>
     <string name="album_check">選擇</string>
 
-    <string name="album_menu_camera_image">拍照片</string>
-    <string name="album_menu_camera_video">錄視頻</string>
-
     <string name="album_title_permission_failed">沒有權限</string>
-    <string name="album_permission_storage_failed_hint">獲取存儲權限失敗，請在使用之前在系統設置中授權。</string>
-    <string name="album_permission_camera_image_failed_hint">獲取相機、存儲權限失敗，請在使用之前在系統設置中授權。</string>
-    <string name="album_permission_camera_video_failed_hint">獲取相機、存儲、錄音權限失敗，請在使用之前在系統設置中授權。</string>
-    <string name="album_dialog_sure">好的</string>
+    <string name="album_permission_storage_failed_hint">沒有存儲權限，請在使用之前授權。</string>
+    <string name="album_permission_camera_image_failed_hint">沒有相機或者存儲權限，請在使用前授權。</string>
+    <string name="album_permission_camera_video_failed_hint">沒有相機、存儲或者錄音權限，請在使用前授權。</string>
 
     <plurals name="album_check_image_limit">
-        <item quantity="other">您只能選擇%1$d張圖片</item>
+        <item quantity="other">您只能選擇%1$d個圖片文件</item>
     </plurals>
 
     <plurals name="album_check_image_limit_camera">
-        <item quantity="other">您只能選擇%1$d張圖片，請反選後再操作</item>
+        <item quantity="other">您只能選擇%1$d個圖片文件，不能使用相機</item>
     </plurals>
     <plurals name="album_check_video_limit">
-        <item quantity="other">您只能選擇%1$d個視頻</item>
+        <item quantity="other">您只能選擇%1$d個視頻文件</item>
     </plurals>
 
     <plurals name="album_check_video_limit_camera">
-        <item quantity="other">您只能選擇%1$d個視頻，請反選後再操作</item>
+        <item quantity="other">您只能選擇%1$d個視頻文件，不能使用相機</item>
     </plurals>
     <plurals name="album_check_album_limit">
-        <item quantity="other">您只能選擇%1$d個文件</item>
+        <item quantity="other">您只能選擇%1$d個媒體文件</item>
     </plurals>
 
     <plurals name="album_check_album_limit_camera">
-        <item quantity="other">您只能選擇%1$d個文件，請反選後再操作</item>
+        <item quantity="other">您只能選擇%1$d個媒體文件，不能使用相機</item>
     </plurals>
 
     <string name="album_item_unavailable">不可用</string>
-    <string name="album_take_file_unavailable">不可用的文件，請重試。</string>
+    <string name="album_take_file_unavailable">不可用的文件，請重試</string>
 </resources>

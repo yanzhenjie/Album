@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 Yan Zhenjie.
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.album.task;
+package com.yanzhenjie.album.app.album.data;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -97,7 +97,6 @@ public class MediaReader {
                 imageFile.setLongitude(longitude);
                 imageFile.setSize(size);
 
-                // Filter.
                 if (mSizeFilter != null && mSizeFilter.filter(size)) {
                     if (!mFilterVisibility) continue;
                     imageFile.setDisable(true);
@@ -172,7 +171,6 @@ public class MediaReader {
                 videoFile.setSize(size);
                 videoFile.setDuration(duration);
 
-                // Filter.
                 if (mSizeFilter != null && mSizeFilter.filter(size)) {
                     if (!mFilterVisibility) continue;
                     videoFile.setDisable(true);

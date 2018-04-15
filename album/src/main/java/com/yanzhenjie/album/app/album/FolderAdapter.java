@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 Yan Zhenjie.
+ * Copyright 2016 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.album.ui.adapter;
+package com.yanzhenjie.album.app.album;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -30,7 +30,6 @@ import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.AlbumFolder;
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.impl.OnItemClickListener;
-import com.yanzhenjie.album.util.DisplayUtils;
 
 import java.util.List;
 
@@ -38,16 +37,15 @@ import java.util.List;
  * <p>BottomSheet dialog adapter, show all folder.</p>
  * Created by Yan Zhenjie on 2016/10/18.
  */
-public class AlbumFolderAdapter extends RecyclerView.Adapter<AlbumFolderAdapter.FolderViewHolder> {
+class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderViewHolder> {
 
     private LayoutInflater mInflater;
     private List<AlbumFolder> mAlbumFolders;
     private ColorStateList mSelector;
 
-    private int mImageSize = DisplayUtils.dip2px(80);
     private OnItemClickListener mItemClickListener;
 
-    public AlbumFolderAdapter(Context context, List<AlbumFolder> mAlbumFolders, ColorStateList buttonTint) {
+    public FolderAdapter(Context context, List<AlbumFolder> mAlbumFolders, ColorStateList buttonTint) {
         this.mInflater = LayoutInflater.from(context);
         this.mSelector = buttonTint;
         this.mAlbumFolders = mAlbumFolders;
@@ -60,7 +58,6 @@ public class AlbumFolderAdapter extends RecyclerView.Adapter<AlbumFolderAdapter.
     @Override
     public FolderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new FolderViewHolder(mInflater.inflate(R.layout.album_item_dialog_folder, parent, false),
-                mImageSize,
                 mSelector,
                 new OnItemClickListener() {
 
@@ -96,22 +93,20 @@ public class AlbumFolderAdapter extends RecyclerView.Adapter<AlbumFolderAdapter.
 
     static class FolderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private int mImageSize;
         private OnItemClickListener mItemClickListener;
 
         private ImageView mIvImage;
         private TextView mTvTitle;
         private AppCompatRadioButton mCheckBox;
 
-        private FolderViewHolder(View itemView, int imageSize, ColorStateList selector, OnItemClickListener itemClickListener) {
+        private FolderViewHolder(View itemView, ColorStateList selector, OnItemClickListener itemClickListener) {
             super(itemView);
 
-            this.mImageSize = imageSize;
             this.mItemClickListener = itemClickListener;
 
-            mIvImage = (ImageView) itemView.findViewById(R.id.iv_gallery_preview_image);
-            mTvTitle = (TextView) itemView.findViewById(R.id.tv_gallery_preview_title);
-            mCheckBox = (AppCompatRadioButton) itemView.findViewById(R.id.rb_gallery_preview_check);
+            mIvImage = itemView.findViewById(R.id.iv_gallery_preview_image);
+            mTvTitle = itemView.findViewById(R.id.tv_gallery_preview_title);
+            mCheckBox = itemView.findViewById(R.id.rb_gallery_preview_check);
 
             itemView.setOnClickListener(this);
 
@@ -123,7 +118,7 @@ public class AlbumFolderAdapter extends RecyclerView.Adapter<AlbumFolderAdapter.
             mTvTitle.setText("(" + albumFiles.size() + ") " + albumFolder.getName());
             mCheckBox.setChecked(albumFolder.isChecked());
 
-            Album.getAlbumConfig().getAlbumLoader().loadAlbumFile(mIvImage, albumFiles.get(0), mImageSize, mImageSize);
+            Album.getAlbumConfig().getAlbumLoader().load(mIvImage, albumFiles.get(0));
         }
 
         @Override

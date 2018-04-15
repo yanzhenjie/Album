@@ -14,76 +14,150 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
-    <style name="album_ChoiceActivity" parent="@style/Theme.AppCompat.Light.NoActionBar">
-        <item name="android:textAllCaps" tools:targetApi="ice_cream_sandwich">false</item>
+    <style name="Album">
+        <item name="android:textAllCaps">false</item>
     </style>
 
-    <style name="album_TransparentActivity" parent="@style/Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@color/albumTransparent</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowIsTranslucent">true</item>
+    <style name="Album.Theme" />
+
+    <style name="Album.Theme.Activity" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowBackground">@color/albumTransparent</item>
     </style>
 
-    <!-- MatchParent -->
+    <style name="Album.Theme.Activity.Transparent">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
 
-    <style name="album_MatchParent">
+    <style name="Album.MatchParent">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
     </style>
 
-    <!-- WrapContent -->
+    <style name="Album.MatchParent.SheetBottom">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/album_dp_45</item>
+    </style>
 
-    <style name="album_WrapContent">
+    <style name="Album.WrapContent">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="album_WrapContent.WidthMatchParent">
+    <style name="Album.WrapContent.WidthMatchParent">
         <item name="android:layout_width">match_parent</item>
     </style>
 
-    <style name="album_Toolbar" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:theme">@style/album_ToolbarTheme</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">?attr/actionBarSize</item>
-        <item name="titleTextColor">@color/albumFontLight</item>
-        <item name="subtitleTextColor">@color/albumFontLight</item>
-        <item name="navigationIcon">@drawable/album_ic_back_white</item>
+    <style name="Album.WrapContent.Transfer">
+        <item name="android:clickable">true</item>
+        <item name="android:padding">@dimen/album_dp_10</item>
     </style>
 
-    <style name="album_ToolbarTheme">
+    <style name="Album.AppBarDark">
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="android:background">@color/albumTransparent</item>
+    </style>
+
+    <style name="Album.AppBarDark.General">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="elevation">@dimen/album_dp_0</item>
+    </style>
+
+    <style name="Album.Theme.PopupLight" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:textColor">@color/albumFontDark</item>
+    </style>
+
+    <style name="Album.Theme.ItemDark" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="actionMenuTextColor">@color/albumFontLight</item>
     </style>
 
-    <!-- CheckBox -->
+    <style name="Album.Toolbar" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:theme">@style/Album.Theme.ItemDark</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="titleTextColor">@color/albumFontLight</item>
+        <item name="subtitleTextColor">@color/albumFontLight</item>
+        <item name="popupTheme">@style/Album.Theme.PopupLight</item>
+    </style>
 
-    <style name="album_CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox"/>
+    <style name="Album.Item" />
 
-    <style name="album_CheckBox.WrapContent">
+    <style name="Album.Item.Card">
+        <item name="android:foreground">?selectableItemBackground</item>
+        <item name="cardCornerRadius">@dimen/album_dp_2</item>
+        <item name="cardElevation">@dimen/album_dp_2</item>
+        <item name="cardPreventCornerOverlap">false</item>
+    </style>
+
+    <style name="Album.Item.Card.MatchParent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="Album.CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox" />
+
+    <style name="Album.CheckBox.WrapContent">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="album_DialogStyle" parent="Theme.AppCompat.Light.Dialog">
+    <style name="Album.Dialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
-    <style name="album_DialogStyle.Folder">
+    <style name="Album.Dialog.Folder">
         <item name="android:windowBackground">@color/albumTransparent</item>
+        <item name="android:windowIsFloating">false</item>
     </style>
 
-    <!-- Button -->
-    <style name="album_ButtonText" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+    <style name="Album.Progress" parent="Widget.AppCompat.ProgressBar" />
+
+    <style name="Album.Progress.Loading">
+        <item name="android:minWidth">@dimen/album_dp_40</item>
+        <item name="android:maxWidth">@dimen/album_dp_40</item>
+        <item name="android:minHeight">@dimen/album_dp_40</item>
+        <item name="android:maxHeight">@dimen/album_dp_40</item>
+        <item name="android:layout_width">@dimen/album_dp_40</item>
+        <item name="android:layout_height">@dimen/album_dp_40</item>
+    </style>
+
+    <style name="Album.Theme.Button" parent="@style/Theme.AppCompat.Light" />
+
+    <style name="Album.Button" parent="Widget.AppCompat.Button">
+        <item name="android:theme">@style/Album.Theme.Button</item>
+    </style>
+
+    <style name="Album.Button.WrapContent">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Album.TextButton" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog" />
+
+    <style name="Album.TextButton.WrapContent">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Album.TextButton.WrapContent.SheetBottom">
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:maxWidth">@dimen/album_dp_200</item>
+        <item name="android:textColor">@color/albumFontLight</item>
     </style>
 
 </resources>

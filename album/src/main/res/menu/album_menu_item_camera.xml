@@ -20,11 +20,11 @@
 
     <item
         android:id="@+id/album_menu_camera_image"
-        android:title="@string/album_menu_camera_image"
+        android:title="@string/album_camera_image_capture"
         app:showAsAction="always|withText"/>
 
     <item
         android:id="@+id/album_menu_camera_video"
-        android:title="@string/album_menu_camera_video"
+        android:title="@string/album_camera_video_capture"
         app:showAsAction="always|withText"/>
 </menu>

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 Yan Zhenjie.
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,7 @@ package com.yanzhenjie.album;
 import android.support.annotation.NonNull;
 
 /**
- * <p>
- * Represents an action.
- * </p>
+ * <p>Any action takes place.</p>
  * Created by YanZhenjie on 2017/8/16.
  */
 public interface Action<T> {
@@ -28,7 +26,7 @@ public interface Action<T> {
     /**
      * When the action responds.
      *
-     * @param result The result of the action.
+     * @param result the result of the action.
      */
     void onAction(@NonNull T result);
 

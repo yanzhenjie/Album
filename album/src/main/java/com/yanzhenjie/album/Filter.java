@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 Yan Zhenjie.
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,7 @@
 package com.yanzhenjie.album;
 
 /**
- * <p>
- * File filter.
- * </p>
+ * <p>Filter.</p>
  * Created by YanZhenjie on 2017/10/15.
  */
 public interface Filter<T> {

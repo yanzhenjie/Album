@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 Yan Zhenjie.
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.album.ui.adapter;
+package com.yanzhenjie.album.app.gallery;
 
 import android.content.Context;
 import android.widget.ImageView;
 
 import com.yanzhenjie.album.Album;
-import com.yanzhenjie.album.util.DisplayUtils;
 
 import java.util.List;
 
@@ -27,17 +26,14 @@ import java.util.List;
  * <p>Preview local image.</p>
  * Created by yanzhenjie on 17-3-29.
  */
-public class PathPreviewAdapter extends BasicPreviewAdapter<String> {
+public class PreviewPathAdapter extends PreviewAdapter<String> {
 
-    public PathPreviewAdapter(Context context, List<String> previewList) {
+    public PreviewPathAdapter(Context context, List<String> previewList) {
         super(context, previewList);
     }
 
     @Override
-    protected boolean loadPreview(ImageView imageView, String s, int position) {
-        Album.getAlbumConfig()
-                .getAlbumLoader()
-                .loadImage(imageView, s, DisplayUtils.sScreenWidth, DisplayUtils.sScreenHeight);
-        return true;
+    protected void loadPreview(ImageView imageView, String item, int position) {
+        Album.getAlbumConfig().getAlbumLoader().load(imageView, item);
     }
 }

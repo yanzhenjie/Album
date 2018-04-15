@@ -14,49 +14,60 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yanzhenjie.album">
 
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application>
         <activity
-            android:name=".ui.AlbumActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/album_ChoiceActivity"
-            android:windowSoftInputMode="stateAlwaysHidden|stateHidden"/>
+            android:name=".app.album.AlbumActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Album.Theme.Activity"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
 
         <activity
-            android:name=".ui.GalleryActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/album_ChoiceActivity"
-            android:windowSoftInputMode="stateAlwaysHidden|stateHidden"/>
+            android:name=".app.album.GalleryActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Album.Theme.Activity"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
 
         <activity
-            android:name=".ui.GalleryAlbumActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/album_ChoiceActivity"
-            android:windowSoftInputMode="stateAlwaysHidden|stateHidden"/>
+            android:name=".app.album.NullActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Album.Theme.Activity"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
 
         <activity
-            android:name=".ui.CameraActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/album_TransparentActivity"
-            android:windowSoftInputMode="stateAlwaysHidden|stateHidden"/>
+            android:name=".app.gallery.GalleryActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Album.Theme.Activity"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
+
+        <activity
+            android:name=".app.gallery.GalleryAlbumActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Album.Theme.Activity"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
+
+        <activity
+            android:name=".app.camera.CameraActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Album.Theme.Activity.Transparent"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
 
         <provider
             android:name=".provider.CameraFileProvider"
-            android:authorities="${applicationId}.album.camera.provider"
+            android:authorities="${applicationId}.app.file.provider"
             android:exported="false"
             android:grantUriPermissions="true"
             android:multiprocess="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/album_camera_provider"/>
+                android:resource="@xml/album_camera_provider" />
         </provider>
     </application>
 

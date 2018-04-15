@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 Yan Zhenjie.
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.album.task;
+package com.yanzhenjie.album.app.album.data;
 
 import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 import android.text.TextUtils;
-import android.webkit.MimeTypeMap;
 
 import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.Filter;
+import com.yanzhenjie.album.util.AlbumUtils;
 
 import java.io.File;
 
@@ -52,7 +52,7 @@ public class PathConversion {
         File parentFile = file.getParentFile();
         albumFile.setBucketName(parentFile.getName());
 
-        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(filePath));
+        String mimeType = AlbumUtils.getMimeType(filePath);
         albumFile.setMimeType(mimeType);
         long nowTime = System.currentTimeMillis();
         albumFile.setAddDate(nowTime);
@@ -66,7 +66,6 @@ public class PathConversion {
         }
         albumFile.setMediaType(mediaType);
 
-        // Filter.
         if (mSizeFilter != null && mSizeFilter.filter(file.length())) {
             albumFile.setDisable(true);
         }

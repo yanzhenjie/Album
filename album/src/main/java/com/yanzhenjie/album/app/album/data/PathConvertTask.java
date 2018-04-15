@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 Yan Zhenjie.
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.album.task;
+package com.yanzhenjie.album.app.album.data;
 
-import android.app.Dialog;
-import android.content.Context;
 import android.os.AsyncTask;
 
 import com.yanzhenjie.album.AlbumFile;
-import com.yanzhenjie.album.Filter;
-import com.yanzhenjie.loading.dialog.LoadingDialog;
 
 /**
  * Created by YanZhenjie on 2017/10/18.
@@ -29,38 +25,39 @@ import com.yanzhenjie.loading.dialog.LoadingDialog;
 public class PathConvertTask extends AsyncTask<String, Void, AlbumFile> {
 
     public interface Callback {
+        /**
+         * The task begins.
+         */
+        void onConvertStart();
+
+        /**
+         * Callback results.
+         *
+         * @param albumFile result.
+         */
         void onConvertCallback(AlbumFile albumFile);
     }
 
-    private Dialog mDialog;
+    private PathConversion mConversion;
     private Callback mCallback;
 
-    private PathConversion mConversion;
-
-    public PathConvertTask(Context context, Callback callback,
-                           Filter<Long> sizeFilter, Filter<String> mimeFilter, Filter<Long> durationFilter) {
-        this.mDialog = new LoadingDialog(context);
+    public PathConvertTask(PathConversion conversion, Callback callback) {
+        this.mConversion = conversion;
         this.mCallback = callback;
-
-        this.mConversion = new PathConversion(sizeFilter, mimeFilter, durationFilter);
     }
 
     @Override
     protected void onPreExecute() {
-        if (!mDialog.isShowing())
-            mDialog.show();
+        mCallback.onConvertStart();
     }
 
     @Override
     protected AlbumFile doInBackground(String... params) {
         return mConversion.convert(params[0]);
-
     }
 
     @Override
     protected void onPostExecute(AlbumFile file) {
-        if (mDialog.isShowing())
-            mDialog.dismiss();
         mCallback.onConvertCallback(file);
     }
 }
