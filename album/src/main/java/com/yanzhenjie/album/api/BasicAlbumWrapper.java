@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 Yan Zhenjie.
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,8 @@ public abstract class BasicAlbumWrapper<Returner extends BasicAlbumWrapper, Resu
 
     /**
      * Set the action when result.
+     *
+     * @param result action when producing result.
      */
     public final Returner onResult(Action<Result> result) {
         this.mResult = result;
@@ -48,6 +50,8 @@ public abstract class BasicAlbumWrapper<Returner extends BasicAlbumWrapper, Resu
 
     /**
      * Set the action when canceling.
+     *
+     * @param cancel action when canceled.
      */
     public final Returner onCancel(Action<Cancel> cancel) {
         this.mCancel = cancel;
@@ -56,6 +60,8 @@ public abstract class BasicAlbumWrapper<Returner extends BasicAlbumWrapper, Resu
 
     /**
      * Set the widget property.
+     *
+     * @param widget the widget.
      */
     public final Returner widget(@Nullable Widget widget) {
         this.mWidget = widget;

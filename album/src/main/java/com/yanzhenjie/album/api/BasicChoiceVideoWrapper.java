@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 Yan Zhenjie.
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,9 @@ public abstract class BasicChoiceVideoWrapper<Returner extends BasicChoiceVideoW
     long mLimitBytes = Long.MAX_VALUE;
 
     /**
-     * Currently value 0 means low quality, suitable for MMS messages, and  value 1 means high quality.
+     * Set the quality when taking video, should be 0 or 1. Currently value 0 means low quality, and value 1 means high quality.
+     *
+     * @param quality should be 0 or 1.
      */
     public Returner quality(@IntRange(from = 0, to = 1) int quality) {
         this.mQuality = quality;
@@ -41,6 +43,8 @@ public abstract class BasicChoiceVideoWrapper<Returner extends BasicChoiceVideoW
 
     /**
      * Specify the maximum allowed recording duration in seconds.
+     *
+     * @param duration the maximum number of seconds.
      */
     public Returner limitDuration(@IntRange(from = 1) long duration) {
         this.mLimitDuration = duration;
@@ -49,6 +53,8 @@ public abstract class BasicChoiceVideoWrapper<Returner extends BasicChoiceVideoW
 
     /**
      * Specify the maximum allowed size.
+     *
+     * @param bytes the size of the byte.
      */
     public Returner limitBytes(@IntRange(from = 1) long bytes) {
         this.mLimitBytes = bytes;

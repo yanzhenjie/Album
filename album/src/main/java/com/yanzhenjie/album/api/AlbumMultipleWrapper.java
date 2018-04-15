@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 Yan Zhenjie.
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,11 @@ package com.yanzhenjie.album.api;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
 
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.Filter;
-import com.yanzhenjie.album.ui.AlbumActivity;
+import com.yanzhenjie.album.app.album.AlbumActivity;
 
 import java.util.ArrayList;
 
@@ -42,6 +41,8 @@ public class AlbumMultipleWrapper extends BasicChoiceAlbumWrapper<AlbumMultipleW
 
     /**
      * Set the list has been selected.
+     *
+     * @param checked the data list.
      */
     public final AlbumMultipleWrapper checkedList(ArrayList<AlbumFile> checked) {
         this.mChecked = checked;
@@ -50,6 +51,8 @@ public class AlbumMultipleWrapper extends BasicChoiceAlbumWrapper<AlbumMultipleW
 
     /**
      * Set the maximum number to be selected.
+     *
+     * @param count the maximum number.
      */
     public AlbumMultipleWrapper selectCount(@IntRange(from = 1, to = Integer.MAX_VALUE) int count) {
         this.mLimitCount = count;
@@ -58,6 +61,8 @@ public class AlbumMultipleWrapper extends BasicChoiceAlbumWrapper<AlbumMultipleW
 
     /**
      * Filter video duration.
+     *
+     * @param filter filter.
      */
     public AlbumMultipleWrapper filterDuration(Filter<Long> filter) {
         this.mDurationFilter = filter;
@@ -66,9 +71,9 @@ public class AlbumMultipleWrapper extends BasicChoiceAlbumWrapper<AlbumMultipleW
 
     @Override
     public void start() {
-        AlbumActivity.mSizeFilter = mSizeFilter;
-        AlbumActivity.mMimeFilter = mMimeTypeFilter;
-        AlbumActivity.mDurationFilter = mDurationFilter;
+        AlbumActivity.sSizeFilter = mSizeFilter;
+        AlbumActivity.sMimeFilter = mMimeTypeFilter;
+        AlbumActivity.sDurationFilter = mDurationFilter;
         AlbumActivity.sResult = mResult;
         AlbumActivity.sCancel = mCancel;
         Intent intent = new Intent(mContext, AlbumActivity.class);

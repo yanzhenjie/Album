@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 Yan Zhenjie.
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,11 @@ public class Widget implements Parcelable {
     public static final int STYLE_LIGHT = 1;
     public static final int STYLE_DARK = 2;
 
+    @IntDef({STYLE_DARK, STYLE_LIGHT})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface UiStyle {
+    }
+
     /**
      * Use when the status bar and the Toolbar are dark.
      */
@@ -51,11 +56,6 @@ public class Widget implements Parcelable {
      */
     public static Builder newLightBuilder(Context context) {
         return new Builder(context, STYLE_LIGHT);
-    }
-
-    @IntDef({STYLE_DARK, STYLE_LIGHT})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface UiStyle {
     }
 
     private Context mContext;
@@ -75,8 +75,8 @@ public class Widget implements Parcelable {
         this.mToolBarColor = builder.mToolBarColor == 0 ? getColor(R.color.albumColorPrimary) : builder.mToolBarColor;
         this.mNavigationBarColor = builder.mNavigationBarColor == 0 ? getColor(R.color.albumColorPrimaryBlack) : builder.mNavigationBarColor;
         this.mTitle = TextUtils.isEmpty(builder.mTitle) ? mContext.getString(R.string.album_title) : builder.mTitle;
-        this.mMediaItemCheckSelector = builder.mMediaItemCheckSelector == null ? AlbumUtils.getColorStateList(getColor(R.color.albumWhiteGray), getColor(R.color.albumColorPrimary)) : builder.mMediaItemCheckSelector;
-        this.mBucketItemCheckSelector = builder.mBucketItemCheckSelector == null ? AlbumUtils.getColorStateList(getColor(R.color.albumWhiteGray), getColor(R.color.albumColorPrimary)) : builder.mBucketItemCheckSelector;
+        this.mMediaItemCheckSelector = builder.mMediaItemCheckSelector == null ? AlbumUtils.getColorStateList(getColor(R.color.albumSelectorNormal), getColor(R.color.albumColorPrimary)) : builder.mMediaItemCheckSelector;
+        this.mBucketItemCheckSelector = builder.mBucketItemCheckSelector == null ? AlbumUtils.getColorStateList(getColor(R.color.albumSelectorNormal), getColor(R.color.albumColorPrimary)) : builder.mBucketItemCheckSelector;
         this.mButtonStyle = builder.mButtonStyle == null ? ButtonStyle.newDarkBuilder(mContext).build() : builder.mButtonStyle;
     }
 
@@ -325,6 +325,12 @@ public class Widget implements Parcelable {
                 this.mUiStyle = style;
             }
 
+            /**
+             * Set button click effect.
+             *
+             * @param normalColor    normal color.
+             * @param highLightColor feedback color.
+             */
             public Builder setButtonSelector(@ColorInt int normalColor, @ColorInt int highLightColor) {
                 mButtonSelector = AlbumUtils.getColorStateList(normalColor, highLightColor);
                 return this;
@@ -345,9 +351,9 @@ public class Widget implements Parcelable {
                 .toolBarColor(ContextCompat.getColor(context, R.color.albumColorPrimary))
                 .navigationBarColor(ContextCompat.getColor(context, R.color.albumColorPrimaryBlack))
                 .title(R.string.album_title)
-                .mediaItemCheckSelector(ContextCompat.getColor(context, R.color.albumWhiteGray),
+                .mediaItemCheckSelector(ContextCompat.getColor(context, R.color.albumSelectorNormal),
                         ContextCompat.getColor(context, R.color.albumColorPrimary))
-                .bucketItemCheckSelector(ContextCompat.getColor(context, R.color.albumWhiteGray),
+                .bucketItemCheckSelector(ContextCompat.getColor(context, R.color.albumSelectorNormal),
                         ContextCompat.getColor(context, R.color.albumColorPrimary))
                 .buttonStyle(
                         ButtonStyle.newDarkBuilder(context)

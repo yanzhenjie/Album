@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 Yan Zhenjie.
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,8 @@ public abstract class BasicCameraWrapper<Returner extends BasicCameraWrapper> {
 
     /**
      * Set the action when result.
+     *
+     * @param result action when producing result.
      */
     public final Returner onResult(Action<String> result) {
         this.mResult = result;
@@ -44,6 +46,8 @@ public abstract class BasicCameraWrapper<Returner extends BasicCameraWrapper> {
 
     /**
      * Set the action when canceling.
+     *
+     * @param cancel action when canceled.
      */
     public final Returner onCancel(Action<String> cancel) {
         this.mCancel = cancel;
@@ -52,6 +56,8 @@ public abstract class BasicCameraWrapper<Returner extends BasicCameraWrapper> {
 
     /**
      * Set the image storage path.
+     *
+     * @param filePath storage path.
      */
     public Returner filePath(@Nullable String filePath) {
         this.mFilePath = filePath;

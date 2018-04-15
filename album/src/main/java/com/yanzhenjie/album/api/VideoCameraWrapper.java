@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 Yan Zhenjie.
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import android.content.Intent;
 import android.support.annotation.IntRange;
 
 import com.yanzhenjie.album.Album;
-import com.yanzhenjie.album.ui.CameraActivity;
+import com.yanzhenjie.album.app.camera.CameraActivity;
 
 /**
  * <p>Camera wrapper.</p>
@@ -38,6 +38,8 @@ public class VideoCameraWrapper extends BasicCameraWrapper<VideoCameraWrapper> {
 
     /**
      * Currently value 0 means low quality, suitable for MMS messages, and  value 1 means high quality.
+     *
+     * @param quality should be 0 or 1.
      */
     public VideoCameraWrapper quality(@IntRange(from = 0, to = 1) int quality) {
         this.mQuality = quality;
@@ -46,6 +48,8 @@ public class VideoCameraWrapper extends BasicCameraWrapper<VideoCameraWrapper> {
 
     /**
      * Specify the maximum allowed recording duration in seconds.
+     *
+     * @param duration the maximum number of seconds.
      */
     public VideoCameraWrapper limitDuration(@IntRange(from = 1) long duration) {
         this.mLimitDuration = duration;
@@ -54,6 +58,8 @@ public class VideoCameraWrapper extends BasicCameraWrapper<VideoCameraWrapper> {
 
     /**
      * Specify the maximum allowed size.
+     *
+     * @param bytes the size of the byte.
      */
     public VideoCameraWrapper limitBytes(@IntRange(from = 1) long bytes) {
         this.mLimitBytes = bytes;

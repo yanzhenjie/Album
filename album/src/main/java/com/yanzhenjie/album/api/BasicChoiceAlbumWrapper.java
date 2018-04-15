@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 Yan Zhenjie.
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package com.yanzhenjie.album.api;
 
 import android.content.Context;
 import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
 
 /**
  * Created by YanZhenjie on 2017/11/8.
@@ -33,7 +32,9 @@ public abstract class BasicChoiceAlbumWrapper<Returner extends BasicChoiceAlbumW
     long mLimitBytes = Long.MAX_VALUE;
 
     /**
-     * Currently value 0 means low quality, suitable for MMS messages, and  value 1 means high quality.
+     * Set the quality when taking video, should be 0 or 1. Currently value 0 means low quality, and value 1 means high quality.
+     *
+     * @param quality should be 0 or 1.
      */
     public Returner cameraVideoQuality(@IntRange(from = 0, to = 1) int quality) {
         this.mQuality = quality;
@@ -41,7 +42,9 @@ public abstract class BasicChoiceAlbumWrapper<Returner extends BasicChoiceAlbumW
     }
 
     /**
-     * Specify the maximum allowed recording duration in seconds.
+     * Set the maximum number of seconds to take video.
+     *
+     * @param duration seconds.
      */
     public Returner cameraVideoLimitDuration(@IntRange(from = 1) long duration) {
         this.mLimitDuration = duration;
@@ -49,7 +52,9 @@ public abstract class BasicChoiceAlbumWrapper<Returner extends BasicChoiceAlbumW
     }
 
     /**
-     * Specify the maximum allowed size.
+     * Set the maximum file size when taking video.
+     *
+     * @param bytes the size of the byte.
      */
     public Returner cameraVideoLimitBytes(@IntRange(from = 1) long bytes) {
         this.mLimitBytes = bytes;
