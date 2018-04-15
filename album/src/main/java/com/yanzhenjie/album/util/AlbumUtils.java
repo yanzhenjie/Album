@@ -255,6 +255,7 @@ public class AlbumUtils {
      * @return extension.
      */
     public static String getExtension(String url) {
+        url = TextUtils.isEmpty(url) ? "" : url.toLowerCase();
         String extension = MimeTypeMap.getFileExtensionFromUrl(url);
         return TextUtils.isEmpty(extension) ? "" : extension;
     }
