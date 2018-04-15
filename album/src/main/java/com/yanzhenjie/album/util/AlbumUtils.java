@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 Yan Zhenjie.
+ * Copyright 2016 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.webkit.MimeTypeMap;
 
 import com.yanzhenjie.album.provider.CameraFileProvider;
 import com.yanzhenjie.album.widget.divider.Api20ItemDivider;
@@ -48,28 +50,32 @@ import java.util.Locale;
 import java.util.UUID;
 
 /**
- * <p>Helper for camera.</p>
+ * <p>Helper for album.</p>
  * Created by Yan Zhenjie on 2016/10/30.
  */
 public class AlbumUtils {
 
+    private static final String CACHE_DIRECTORY = "AlbumCache";
+
     /**
      * Get a writable root directory.
      *
+     * @param context context.
      * @return {@link File}.
      */
+    @NonNull
     public static File getAlbumRootPath(Context context) {
         if (sdCardIsAvailable()) {
-            return Environment.getExternalStorageDirectory();
+            return new File(Environment.getExternalStorageDirectory(), CACHE_DIRECTORY);
         } else {
-            return context.getFilesDir();
+            return new File(context.getFilesDir(), CACHE_DIRECTORY);
         }
     }
 
     /**
      * SD card is available.
      *
-     * @return true, other wise is false.
+     * @return true when available, other wise is false.
      */
     public static boolean sdCardIsAvailable() {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -79,44 +85,10 @@ public class AlbumUtils {
     }
 
     /**
-     * Take pictures.
-     *
-     * @param activity    activity.
-     * @param requestCode code.
-     * @param outPath     file path.
-     */
-    public static void imageCapture(@NonNull Activity activity, int requestCode, File outPath) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Uri uri = getUri(activity, outPath);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        activity.startActivityForResult(intent, requestCode);
-    }
-
-    /**
-     * Record videos.
-     *
-     * @param activity    activity.
-     * @param requestCode code.
-     * @param outPath     file path.
-     * @param quality     currently value 0 means low quality, suitable for MMS messages, and  value 1 means high quality.
-     * @param duration    specify the maximum allowed recording duration in seconds.
-     * @param limitBytes  specify the maximum allowed size.
-     */
-    public static void videoCapture(@NonNull Activity activity, int requestCode, File outPath,
-                                    @IntRange(from = 0, to = 1) int quality,
-                                    @IntRange(from = 1, to = Long.MAX_VALUE) long duration,
-                                    @IntRange(from = 1, to = Long.MAX_VALUE) long limitBytes) {
-        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        Uri uri = getUri(activity, outPath);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, quality);
-        intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, duration);
-        intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, limitBytes);
-        activity.startActivityForResult(intent, requestCode);
-    }
-
-    /**
      * Setting {@link Locale} for {@link Context}.
+     *
+     * @param context to set the specified locale context.
+     * @param locale  locale.
      */
     @NonNull
     public static Context applyLanguageForContext(@NonNull Context context, @NonNull Locale locale) {
@@ -133,7 +105,68 @@ public class AlbumUtils {
     }
 
     /**
-     * A random name for the image path.
+     * Take picture.
+     *
+     * @param activity    activity.
+     * @param requestCode code, see {@link Activity#onActivityResult(int, int, Intent)}.
+     * @param outPath     file path.
+     */
+    public static void takeImage(@NonNull Activity activity, int requestCode, File outPath) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Uri uri = getUri(activity, outPath);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        activity.startActivityForResult(intent, requestCode);
+    }
+
+    /**
+     * Take video.
+     *
+     * @param activity    activity.
+     * @param requestCode code, see {@link Activity#onActivityResult(int, int, Intent)}.
+     * @param outPath     file path.
+     * @param quality     currently value 0 means low quality, suitable for MMS messages, and  value 1 means high quality.
+     * @param duration    specify the maximum allowed recording duration in seconds.
+     * @param limitBytes  specify the maximum allowed size.
+     */
+    public static void takeVideo(@NonNull Activity activity, int requestCode, File outPath,
+                                 @IntRange(from = 0, to = 1) int quality,
+                                 @IntRange(from = 1) long duration,
+                                 @IntRange(from = 1) long limitBytes) {
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        Uri uri = getUri(activity, outPath);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, quality);
+        intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, duration);
+        intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, limitBytes);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        activity.startActivityForResult(intent, requestCode);
+    }
+
+    /**
+     * Generates an externally accessed URI based on path.
+     *
+     * @param context context.
+     * @param outPath file path.
+     * @return the uri address of the file.
+     */
+    @NonNull
+    public static Uri getUri(@NonNull Context context, @NonNull File outPath) {
+        Uri uri;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            uri = Uri.fromFile(outPath);
+        } else {
+            uri = CameraFileProvider.getUriForFile(context, CameraFileProvider.getProviderName(context), outPath);
+        }
+        return uri;
+    }
+
+    /**
+     * Generate a random jpg file path.
+     *
+     * @return file path.
      */
     @NonNull
     public static String randomJPGPath() {
@@ -142,7 +175,10 @@ public class AlbumUtils {
     }
 
     /**
-     * A random name for the image path.
+     * Generates a random jpg file path in the specified directory.
+     *
+     * @param bucket specify the directory.
+     * @return file path.
      */
     @NonNull
     public static String randomJPGPath(File bucket) {
@@ -150,7 +186,9 @@ public class AlbumUtils {
     }
 
     /**
-     * A random name for the image path.
+     * Generate a random mp4 file path.
+     *
+     * @return file path.
      */
     @NonNull
     public static String randomMP4Path() {
@@ -159,44 +197,66 @@ public class AlbumUtils {
     }
 
     /**
-     * A random name for the image path.
+     * Generates a random mp4 file path in the specified directory.
+     *
+     * @return file path.
      */
     @NonNull
     public static String randomMP4Path(File bucket) {
         return randomMediaPath(bucket, ".mp4");
     }
 
+    /**
+     * Generates a random file path using the specified suffix name in the specified directory.
+     *
+     * @param bucket    specify the directory.
+     * @param extension extension.
+     * @return file path.
+     */
     @NonNull
     private static String randomMediaPath(File bucket, String extension) {
-        if (!bucket.exists()) //noinspection ResultOfMethodCallIgnored
-            bucket.mkdirs();
+        if (bucket.exists() && bucket.isFile()) bucket.delete();
+        if (!bucket.exists()) bucket.mkdirs();
         String outFilePath = AlbumUtils.getNowDateTime("yyyyMMdd_HHmmssSSS") + "_" + getMD5ForString(UUID.randomUUID().toString()) + extension;
         File file = new File(bucket, outFilePath);
         return file.getAbsolutePath();
     }
 
     /**
-     * Generates an externally accessed URI based on path.
-     */
-    @NonNull
-    public static Uri getUri(@NonNull Context context, @NonNull File outPath) {
-        Uri uri;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            uri = Uri.fromFile(outPath);
-        } else {
-            uri = CameraFileProvider.getUriForFile(context, CameraFileProvider.getFileProviderName(context), outPath);
-        }
-        return uri;
-    }
-
-    /**
      * Format the current time in the specified format.
+     *
+     * @return the time string.
      */
     @NonNull
     public static String getNowDateTime(@NonNull String format) {
         SimpleDateFormat formatter = new SimpleDateFormat(format, Locale.ENGLISH);
         Date curDate = new Date(System.currentTimeMillis());
         return formatter.format(curDate);
+    }
+
+    /**
+     * Get the mime type of the file in the url.
+     *
+     * @param url file url.
+     * @return mime type.
+     */
+    public static String getMimeType(String url) {
+        String extension = getExtension(url);
+        if (!MimeTypeMap.getSingleton().hasExtension(extension)) return "";
+
+        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        return TextUtils.isEmpty(mimeType) ? "" : mimeType;
+    }
+
+    /**
+     * Get the file extension in url.
+     *
+     * @param url file url.
+     * @return extension.
+     */
+    public static String getExtension(String url) {
+        String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+        return TextUtils.isEmpty(extension) ? "" : extension;
     }
 
     /**
@@ -259,17 +319,32 @@ public class AlbumUtils {
     }
 
     /**
-     * Get impl Divider.
+     * Return a color-int from alpha, red, green, blue components.
+     *
+     * @param color color.
+     * @param alpha alpha, alpha component [0..255] of the color.
      */
-    @NonNull
+    @ColorInt
+    public static int getAlphaColor(@ColorInt int color, @IntRange(from = 0, to = 255) int alpha) {
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+        return Color.argb(alpha, red, green, blue);
+    }
+
+    /**
+     * Generate divider.
+     *
+     * @param color color.
+     * @return {@link Divider}.
+     * @deprecated use {@code new Api21ItemDivider()} instead.
+     */
+    @Deprecated
     public static Divider getDivider(@ColorInt int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            int size = DisplayUtils.dip2px(6);
-            return new Api21ItemDivider(color, size, size);
-        } else {
-            int size = DisplayUtils.dip2px(2);
-            return new Api20ItemDivider(color, size, size);
+            return new Api21ItemDivider(color);
         }
+        return new Api20ItemDivider(color);
     }
 
     /**
@@ -279,7 +354,7 @@ public class AlbumUtils {
      * @return such as: {@code 00:00:00}, {@code 00:00}.
      */
     @NonNull
-    public static String convertDuration(@IntRange(from = 1, to = Long.MAX_VALUE) long duration) {
+    public static String convertDuration(@IntRange(from = 1) long duration) {
         duration /= 1000;
         int hour = (int) (duration / 3600);
         int minute = (int) ((duration - hour * 3600) / 60);
@@ -344,19 +419,5 @@ public class AlbumUtils {
             return Integer.toString(content.hashCode());
         }
         return md5Buffer.toString();
-    }
-
-    /**
-     * Return a color-int from alpha, red, green, blue components.
-     *
-     * @param color color.
-     * @param alpha alpha, alpha component [0..255] of the color.
-     */
-    @ColorInt
-    public static int getAlphaColor(@ColorInt int color, @IntRange(from = 0, to = 255) int alpha) {
-        int red = Color.red(color);
-        int green = Color.green(color);
-        int blue = Color.blue(color);
-        return Color.argb(alpha, red, green, blue);
     }
 }
