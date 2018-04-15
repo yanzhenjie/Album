@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 Yan Zhenjie.
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,31 +18,35 @@ package com.yanzhenjie.album;
 import android.widget.ImageView;
 
 /**
- * <p>
- *      Customizing the Album Loader, you can do some optimization work.
- * </p>
+ * <p>Used to load the preview, it should be customized.</p>
  * Created by Yan Zhenjie on 2017/3/31.
  */
 public interface AlbumLoader {
 
+    AlbumLoader DEFAULT = new AlbumLoader() {
+        @Override
+        public void load(ImageView imageView, AlbumFile albumFile) {
+        }
+
+        @Override
+        public void load(ImageView imageView, String url) {
+        }
+    };
+
     /**
      * Load a preview of the album file.
      *
-     * @param imageView  {@link ImageView}.
-     * @param albumFile  the media object may be a picture or video.
-     * @param viewWidth  the width fo target view.
-     * @param viewHeight the width fo target view.
+     * @param imageView {@link ImageView}.
+     * @param albumFile the media object may be a picture or video.
      */
-    void loadAlbumFile(ImageView imageView, AlbumFile albumFile, int viewWidth, int viewHeight);
+    void load(ImageView imageView, AlbumFile albumFile);
 
     /**
-     * Load a preview of the picture.
+     * Load thumbnails of pictures or videos, either local file or remote file.
      *
-     * @param imageView  {@link ImageView}.
-     * @param imagePath  file path, which may be a local path or a network path.
-     * @param viewWidth  the width fo target view.
-     * @param viewHeight the width fo target view.
+     * @param imageView {@link ImageView}.
+     * @param url       The url of the file, local path or remote path.
      */
-    void loadImage(ImageView imageView, String imagePath, int viewWidth, int viewHeight);
+    void load(ImageView imageView, String url);
 
 }
