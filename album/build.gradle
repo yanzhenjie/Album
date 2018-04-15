@@ -17,8 +17,7 @@ dependencies {
     implementation rootProject.ext.dependencies.design
     implementation rootProject.ext.dependencies.recyclerView
     implementation rootProject.ext.dependencies.cardView
-    implementation rootProject.ext.dependencies.fragment
-    implementation rootProject.ext.dependencies.mediaScanner
-    implementation rootProject.ext.dependencies.loading
-    implementation rootProject.ext.dependencies.sofia
+    api rootProject.ext.dependencies.mediaScanner
 }
+
+apply from: 'https://raw.githubusercontent.com/yanzhenjie/bintray/master/maven.gradle'
