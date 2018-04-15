@@ -24,14 +24,14 @@ import android.support.annotation.RestrictTo;
 import android.util.DisplayMetrics;
 import android.view.Display;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static android.support.annotation.RestrictTo.Scope.LIBRARY;
 
 /**
  * <p>Display helper.</p>
  * Created by Yan Zhenjie on 2016/7/7.
  */
-@RestrictTo(LIBRARY_GROUP)
-public class DisplayHelper {
+@RestrictTo(LIBRARY)
+public final class DisplayHelper {
 
     private static DisplayHelper sInstance;
 
@@ -53,7 +53,7 @@ public class DisplayHelper {
     private int mLandscapeSize;
     private int mPortraitSize;
 
-    @RestrictTo(LIBRARY_GROUP)
+    @RestrictTo(LIBRARY)
     public void create(Activity activity) {
         if (isCreated) return;
         this.isCreated = true;
@@ -77,7 +77,7 @@ public class DisplayHelper {
         this.mPortraitSize = metrics.heightPixels;
     }
 
-    @RestrictTo(LIBRARY_GROUP)
+    @RestrictTo(LIBRARY)
     public void changeConfig(Configuration config) {
         if (mOrientation != config.orientation) {
             mOrientation = config.orientation;
@@ -95,7 +95,7 @@ public class DisplayHelper {
      * @param column      column count.
      * @return item size.
      */
-    @RestrictTo(LIBRARY_GROUP)
+    @RestrictTo(LIBRARY)
     public int getItemSize(Context context, int dividerSize, int column) {
         switch (mOrientation) {
             case Configuration.ORIENTATION_PORTRAIT: {
@@ -116,7 +116,7 @@ public class DisplayHelper {
      *
      * @return size.
      */
-    @RestrictTo(LIBRARY_GROUP)
+    @RestrictTo(LIBRARY)
     public int getMinSize() {
         return Math.min(mLandscapeSize, mPortraitSize);
     }
