@@ -1,5 +1,5 @@
 /*
- * Copyright © Yan Zhenjie
+ * Copyright 2018 Yan Zhenjie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -198,6 +198,10 @@ public abstract class BaseView<Presenter extends BasePresenter> {
     }
 
     protected final void setHomeAsUpIndicator(@DrawableRes int icon) {
+        mSource.setHomeAsUpIndicator(icon);
+    }
+
+    protected final void setHomeAsUpIndicator(Drawable icon) {
         mSource.setHomeAsUpIndicator(icon);
     }
 

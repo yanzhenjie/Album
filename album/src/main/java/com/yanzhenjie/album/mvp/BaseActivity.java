@@ -17,6 +17,7 @@ package com.yanzhenjie.album.mvp;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,25 +26,35 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
 
-import com.yanzhenjie.album.util.DisplayUtils;
+import com.yanzhenjie.album.Album;
+import com.yanzhenjie.album.util.AlbumUtils;
+import com.yanzhenjie.album.util.DisplayHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by YanZhenjie on 2018/4/6.
  */
 public class BaseActivity extends AppCompatActivity implements Bye {
 
-    public static final String[] PERMISSION_CAMERA = new String[]{"android.permission.CAMERA"};
-    public static final String[] PERMISSION_MICROPHONE = new String[]{"android.permission.RECORD_AUDIO"};
-    public static final String[] PERMISSION_STORAGE = new String[]{"android.permission.READ_EXTERNAL_STORAGE",
-            "android.permission.WRITE_EXTERNAL_STORAGE"};
+    public static final String[] PERMISSION_TAKE_PICTURE = {"android.permission.CAMERA", "android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"};
+    public static final String[] PERMISSION_TAKE_VIDEO = {"android.permission.CAMERA", "android.permission.RECORD_AUDIO", "android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"};
+    public static final String[] PERMISSION_STORAGE = {"android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DisplayUtils.initScreen(this);
+        Locale locale = Album.getAlbumConfig().getLocale();
+        AlbumUtils.applyLanguageForContext(this, locale);
+        DisplayHelper.getInstance().create(this);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        DisplayHelper.getInstance().changeConfig(newConfig);
     }
 
     /**

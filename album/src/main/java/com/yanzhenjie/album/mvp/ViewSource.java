@@ -1,5 +1,5 @@
 /*
- * Copyright © Yan Zhenjie
+ * Copyright 2018 Yan Zhenjie
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.view.SupportMenuInflater;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -76,7 +77,7 @@ class ViewSource extends Source<View> {
 
     @Override
     MenuInflater getMenuInflater() {
-        return new MenuInflater(getContext());
+        return new SupportMenuInflater(getContext());
     }
 
     @Override
