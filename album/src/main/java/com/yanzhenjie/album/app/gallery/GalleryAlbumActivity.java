@@ -22,6 +22,7 @@ import android.view.View;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
+import com.yanzhenjie.album.ItemAction;
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.api.widget.Widget;
 import com.yanzhenjie.album.app.Contract;
@@ -38,7 +39,9 @@ public class GalleryAlbumActivity extends BaseActivity implements Contract.Galle
 
     public static Action<ArrayList<AlbumFile>> sResult;
     public static Action<String> sCancel;
-    public static Action<AlbumFile> sLongClick;
+
+    public static ItemAction<AlbumFile> sClick;
+    public static ItemAction<AlbumFile> sLongClick;
 
     private Widget mWidget;
     private ArrayList<AlbumFile> mAlbumFiles;
@@ -62,11 +65,19 @@ public class GalleryAlbumActivity extends BaseActivity implements Contract.Galle
         mView.setTitle(mWidget.getTitle());
         mView.setupViews(mWidget, checkable);
         PreviewAdapter<AlbumFile> adapter = new PreviewAlbumAdapter(this, mAlbumFiles);
-        if (sLongClick != null) {
-            adapter.setLongClickListener(new OnItemClickListener() {
+        if (sClick != null) {
+            adapter.setItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    sLongClick.onAction(mAlbumFiles.get(mCurrentPosition));
+                    sClick.onAction(GalleryAlbumActivity.this, mAlbumFiles.get(mCurrentPosition));
+                }
+            });
+        }
+        if (sLongClick != null) {
+            adapter.setItemLongClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    sLongClick.onAction(GalleryAlbumActivity.this, mAlbumFiles.get(mCurrentPosition));
                 }
             });
         }
@@ -122,18 +133,21 @@ public class GalleryAlbumActivity extends BaseActivity implements Contract.Galle
             }
             sResult.onAction(checkedList);
         }
-        sResult = null;
-        sCancel = null;
-        sLongClick = null;
         finish();
     }
 
     @Override
     public void onBackPressed() {
         if (sCancel != null) sCancel.onAction("User canceled.");
+        finish();
+    }
+
+    @Override
+    public void finish() {
         sResult = null;
         sCancel = null;
+        sClick = null;
         sLongClick = null;
-        finish();
+        super.finish();
     }
 }

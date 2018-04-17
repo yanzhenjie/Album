@@ -20,6 +20,7 @@ import android.content.Intent;
 
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.app.gallery.GalleryActivity;
+import com.yanzhenjie.album.app.gallery.GalleryAlbumActivity;
 
 /**
  * <p>Gallery wrapper.</p>
@@ -35,7 +36,8 @@ public class GalleryWrapper extends BasicGalleryWrapper<GalleryWrapper, String, 
     public void start() {
         GalleryActivity.sResult = mResult;
         GalleryActivity.sCancel = mCancel;
-        GalleryActivity.sLongClick = mLongClick;
+        GalleryActivity.sClick = mItemClick;
+        GalleryActivity.sLongClick = mItemLongClick;
         Intent intent = new Intent(mContext, GalleryActivity.class);
         intent.putExtra(Album.KEY_INPUT_WIDGET, mWidget);
         intent.putStringArrayListExtra(Album.KEY_INPUT_CHECKED_LIST, mChecked);

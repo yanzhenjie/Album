@@ -419,20 +419,6 @@ public class AlbumActivity extends BaseActivity implements
                 albumFile.setChecked(true);
                 mCheckedList.add(albumFile);
                 setCheckedCount();
-
-                switch (mChoiceMode) {
-                    case Album.MODE_SINGLE: {
-                        callbackResult();
-                        break;
-                    }
-                    case Album.MODE_MULTIPLE: {
-                        // Nothing.
-                        break;
-                    }
-                    default: {
-                        throw new AssertionError("This should not be the case.");
-                    }
-                }
             }
         } else {
             albumFile.setChecked(false);
@@ -449,13 +435,31 @@ public class AlbumActivity extends BaseActivity implements
 
     @Override
     public void tryPreviewItem(int position) {
-        GalleryActivity.sAlbumFiles = mAlbumFolders.get(mCurrentFolder).getAlbumFiles();
-        GalleryActivity.sCheckedCount = mCheckedList.size();
-        GalleryActivity.sCurrentPosition = position;
-        GalleryActivity.sCallback = this;
-        Intent intent = new Intent(this, GalleryActivity.class);
-        intent.putExtras(getIntent());
-        startActivity(intent);
+        switch (mChoiceMode) {
+            case Album.MODE_SINGLE: {
+                AlbumFile albumFile = mAlbumFolders.get(mCurrentFolder).getAlbumFiles().get(position);
+//                albumFile.setChecked(true);
+//                mView.notifyItem(position);
+                mCheckedList.add(albumFile);
+                setCheckedCount();
+
+                callbackResult();
+                break;
+            }
+            case Album.MODE_MULTIPLE: {
+                GalleryActivity.sAlbumFiles = mAlbumFolders.get(mCurrentFolder).getAlbumFiles();
+                GalleryActivity.sCheckedCount = mCheckedList.size();
+                GalleryActivity.sCurrentPosition = position;
+                GalleryActivity.sCallback = this;
+                Intent intent = new Intent(this, GalleryActivity.class);
+                intent.putExtras(getIntent());
+                startActivity(intent);
+                break;
+            }
+            default: {
+                throw new AssertionError("This should not be the case.");
+            }
+        }
     }
 
     @Override
@@ -542,11 +546,6 @@ public class AlbumActivity extends BaseActivity implements
     public void onThumbnailCallback(ArrayList<AlbumFile> albumFiles) {
         if (sResult != null) sResult.onAction(albumFiles);
         dismissLoadingDialog();
-        sSizeFilter = null;
-        sMimeFilter = null;
-        sDurationFilter = null;
-        sResult = null;
-        sCancel = null;
         finish();
     }
 
@@ -555,11 +554,6 @@ public class AlbumActivity extends BaseActivity implements
      */
     private void callbackCancel() {
         if (sCancel != null) sCancel.onAction("User canceled.");
-        sSizeFilter = null;
-        sMimeFilter = null;
-        sDurationFilter = null;
-        sResult = null;
-        sCancel = null;
         finish();
     }
 
@@ -583,5 +577,15 @@ public class AlbumActivity extends BaseActivity implements
         if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
             mLoadingDialog.dismiss();
         }
+    }
+
+    @Override
+    public void finish() {
+        sSizeFilter = null;
+        sMimeFilter = null;
+        sDurationFilter = null;
+        sResult = null;
+        sCancel = null;
+        super.finish();
     }
 }

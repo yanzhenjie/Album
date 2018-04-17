@@ -19,6 +19,7 @@ import android.content.Context;
 import android.support.annotation.IntRange;
 
 import com.yanzhenjie.album.Action;
+import com.yanzhenjie.album.ItemAction;
 
 import java.util.ArrayList;
 
@@ -27,7 +28,8 @@ import java.util.ArrayList;
  */
 public abstract class BasicGalleryWrapper<Returner extends BasicGalleryWrapper, Result, Cancel, Checked> extends BasicAlbumWrapper<Returner, ArrayList<Result>, Cancel, ArrayList<Checked>> {
 
-    Action<Checked> mLongClick;
+    ItemAction<Checked> mItemClick;
+    ItemAction<Checked> mItemLongClick;
     int mCurrentPosition;
     boolean mCheckable;
 
@@ -46,12 +48,22 @@ public abstract class BasicGalleryWrapper<Returner extends BasicGalleryWrapper, 
     }
 
     /**
-     * When the preview item is pressed long.
+     * When the preview item is clicked.
+     *
+     * @param click action.
+     */
+    public Returner itemClick(ItemAction<Checked> click) {
+        this.mItemClick = click;
+        return (Returner) this;
+    }
+
+    /**
+     * When the preview item is clicked long.
      *
      * @param longClick action.
      */
-    public Returner onLongClick(Action<Checked> longClick) {
-        this.mLongClick = longClick;
+    public Returner itemLongClick(ItemAction<Checked> longClick) {
+        this.mItemLongClick = longClick;
         return (Returner) this;
     }
 

@@ -37,7 +37,8 @@ public class GalleryAlbumWrapper extends BasicGalleryWrapper<GalleryAlbumWrapper
     public void start() {
         GalleryAlbumActivity.sResult = mResult;
         GalleryAlbumActivity.sCancel = mCancel;
-        GalleryAlbumActivity.sLongClick = mLongClick;
+        GalleryAlbumActivity.sClick = mItemClick;
+        GalleryAlbumActivity.sLongClick = mItemLongClick;
         Intent intent = new Intent(mContext, GalleryAlbumActivity.class);
         intent.putExtra(Album.KEY_INPUT_WIDGET, mWidget);
         intent.putParcelableArrayListExtra(Album.KEY_INPUT_CHECKED_LIST, mChecked);

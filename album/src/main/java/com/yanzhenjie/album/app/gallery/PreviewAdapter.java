@@ -30,12 +30,14 @@ import java.util.List;
  * <p>Adapter of preview the big picture.</p>
  * Created by Yan Zhenjie on 2016/10/19.
  */
-public abstract class PreviewAdapter<T> extends PagerAdapter implements View.OnLongClickListener {
+public abstract class PreviewAdapter<T> extends PagerAdapter
+        implements View.OnClickListener, View.OnLongClickListener {
 
     private Context mContext;
     private List<T> mPreviewList;
 
-    private OnItemClickListener mLongClickListener;
+    private OnItemClickListener mItemClickListener;
+    private OnItemClickListener mItemLongClickListener;
 
     public PreviewAdapter(Context context, List<T> previewList) {
         this.mContext = context;
@@ -43,12 +45,21 @@ public abstract class PreviewAdapter<T> extends PagerAdapter implements View.OnL
     }
 
     /**
-     * Set Item long press listen.
+     * Set item click listener.
+     *
+     * @param onClickListener listener.
+     */
+    public void setItemClickListener(OnItemClickListener onClickListener) {
+        this.mItemClickListener = onClickListener;
+    }
+
+    /**
+     * Set item long click listener.
      *
      * @param longClickListener listener.
      */
-    public void setLongClickListener(OnItemClickListener longClickListener) {
-        this.mLongClickListener = longClickListener;
+    public void setItemLongClickListener(OnItemClickListener longClickListener) {
+        this.mItemLongClickListener = longClickListener;
     }
 
     @Override
@@ -70,8 +81,11 @@ public abstract class PreviewAdapter<T> extends PagerAdapter implements View.OnL
         T t = mPreviewList.get(position);
         loadPreview(imageView, t, position);
 
-        if (mLongClickListener != null) {
-            imageView.setId(position);
+        imageView.setId(position);
+        if (mItemClickListener != null) {
+            imageView.setOnClickListener(this);
+        }
+        if (mItemLongClickListener != null) {
             imageView.setOnLongClickListener(this);
         }
 
@@ -85,8 +99,13 @@ public abstract class PreviewAdapter<T> extends PagerAdapter implements View.OnL
     }
 
     @Override
+    public void onClick(View v) {
+        mItemClickListener.onItemClick(v, v.getId());
+    }
+
+    @Override
     public boolean onLongClick(View v) {
-        mLongClickListener.onItemClick(v, v.getId());
+        mItemLongClickListener.onItemClick(v, v.getId());
         return true;
     }
 

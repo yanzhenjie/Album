@@ -128,7 +128,7 @@ public class GalleryActivity extends BaseActivity implements Contract.GalleryPre
 
         setCheckedCount();
     }
-    
+
     @Override
     public void complete() {
         if (sCheckedCount == 0) {
@@ -153,21 +153,22 @@ public class GalleryActivity extends BaseActivity implements Contract.GalleryPre
             mView.toast(messageRes);
         } else {
             sCallback.onPreviewComplete();
-            sAlbumFiles = null;
-            sCheckedCount = 0;
-            sCurrentPosition = 0;
-            sCallback = null;
             finish();
         }
     }
 
     @Override
     public void onBackPressed() {
+        finish();
+    }
+
+    @Override
+    public void finish() {
         sAlbumFiles = null;
         sCheckedCount = 0;
         sCurrentPosition = 0;
         sCallback = null;
-        finish();
+        super.finish();
     }
 
     public interface Callback {
