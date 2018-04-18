@@ -46,6 +46,7 @@ public class GalleryAlbumActivity extends BaseActivity implements Contract.Galle
     private Widget mWidget;
     private ArrayList<AlbumFile> mAlbumFiles;
     private int mCurrentPosition;
+    private boolean mCheckable;
 
     private Contract.GalleryView<AlbumFile> mView;
 
@@ -60,10 +61,10 @@ public class GalleryAlbumActivity extends BaseActivity implements Contract.Galle
         mWidget = argument.getParcelable(Album.KEY_INPUT_WIDGET);
         mAlbumFiles = argument.getParcelableArrayList(Album.KEY_INPUT_CHECKED_LIST);
         mCurrentPosition = argument.getInt(Album.KEY_INPUT_CURRENT_POSITION);
-        boolean checkable = argument.getBoolean(Album.KEY_INPUT_GALLERY_CHECKABLE);
+        mCheckable = argument.getBoolean(Album.KEY_INPUT_GALLERY_CHECKABLE);
 
         mView.setTitle(mWidget.getTitle());
-        mView.setupViews(mWidget, checkable);
+        mView.setupViews(mWidget, mCheckable);
         PreviewAdapter<AlbumFile> adapter = new PreviewAlbumAdapter(this, mAlbumFiles);
         if (sClick != null) {
             adapter.setItemClickListener(new OnItemClickListener() {
@@ -105,13 +106,15 @@ public class GalleryAlbumActivity extends BaseActivity implements Contract.Galle
         mView.setSubTitle(position + 1 + " / " + mAlbumFiles.size());
 
         AlbumFile albumFile = mAlbumFiles.get(position);
-        mView.setChecked(albumFile.isChecked());
+        if (mCheckable) mView.setChecked(albumFile.isChecked());
         mView.setLayerDisplay(albumFile.isDisable());
 
         if (albumFile.getMediaType() == AlbumFile.TYPE_VIDEO) {
+            if (!mCheckable) mView.setBottomDisplay(true);
             mView.setDuration(AlbumUtils.convertDuration(albumFile.getDuration()));
             mView.setDurationDisplay(true);
         } else {
+            if (!mCheckable) mView.setBottomDisplay(false);
             mView.setDurationDisplay(false);
         }
     }

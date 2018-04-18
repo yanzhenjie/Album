@@ -24,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yanzhenjie.album.R;
@@ -41,6 +42,7 @@ public class GalleryView<Data> extends Contract.GalleryView<Data> implements Vie
     private MenuItem mCompleteMenu;
 
     private ViewPager mViewPager;
+    private RelativeLayout mLayoutBottom;
     private TextView mTvDuration;
     private AppCompatCheckBox mCheckBox;
     private FrameLayout mLayoutLayer;
@@ -49,6 +51,7 @@ public class GalleryView<Data> extends Contract.GalleryView<Data> implements Vie
         super(activity, presenter);
         this.mActivity = activity;
         this.mViewPager = activity.findViewById(R.id.view_pager);
+        this.mLayoutBottom = activity.findViewById(R.id.layout_bottom);
         this.mTvDuration = activity.findViewById(R.id.tv_duration);
         this.mCheckBox = activity.findViewById(R.id.check_box);
         this.mLayoutLayer = activity.findViewById(R.id.layout_layer);
@@ -121,6 +124,11 @@ public class GalleryView<Data> extends Contract.GalleryView<Data> implements Vie
     @Override
     public void setChecked(boolean checked) {
         mCheckBox.setChecked(checked);
+    }
+
+    @Override
+    public void setBottomDisplay(boolean display) {
+        mLayoutBottom.setVisibility(display ? View.VISIBLE : View.GONE);
     }
 
     @Override

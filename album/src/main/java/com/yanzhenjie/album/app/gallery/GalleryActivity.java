@@ -46,6 +46,7 @@ public class GalleryActivity extends BaseActivity implements Contract.GalleryPre
     private Widget mWidget;
     private ArrayList<String> mPathList;
     private int mCurrentPosition;
+    private boolean mCheckable;
 
     private Map<String, Boolean> mCheckedMap;
 
@@ -62,13 +63,17 @@ public class GalleryActivity extends BaseActivity implements Contract.GalleryPre
         mWidget = argument.getParcelable(Album.KEY_INPUT_WIDGET);
         mPathList = argument.getStringArrayList(Album.KEY_INPUT_CHECKED_LIST);
         mCurrentPosition = argument.getInt(Album.KEY_INPUT_CURRENT_POSITION);
-        boolean checkable = argument.getBoolean(Album.KEY_INPUT_GALLERY_CHECKABLE);
+        mCheckable = argument.getBoolean(Album.KEY_INPUT_GALLERY_CHECKABLE);
 
         mCheckedMap = new HashMap<>();
         for (String path : mPathList) mCheckedMap.put(path, true);
 
         mView.setTitle(mWidget.getTitle());
-        mView.setupViews(mWidget, checkable);
+        mView.setupViews(mWidget, mCheckable);
+        if (!mCheckable) mView.setBottomDisplay(false);
+        mView.setLayerDisplay(false);
+        mView.setDurationDisplay(false);
+
         PreviewAdapter<String> adapter = new PreviewPathAdapter(this, mPathList);
         if (sClick != null) {
             adapter.setItemClickListener(new OnItemClickListener() {
@@ -109,9 +114,7 @@ public class GalleryActivity extends BaseActivity implements Contract.GalleryPre
         mCurrentPosition = position;
         mView.setSubTitle(position + 1 + " / " + mPathList.size());
 
-        mView.setChecked(mCheckedMap.get(mPathList.get(position)));
-        mView.setLayerDisplay(false);
-        mView.setDurationDisplay(false);
+        if (mCheckable) mView.setChecked(mCheckedMap.get(mPathList.get(position)));
     }
 
     @Override

@@ -246,6 +246,13 @@ public final class Contract {
         public abstract void setChecked(boolean checked);
 
         /**
+         * Set bottom visibility.
+         *
+         * @param display true is displayed, otherwise it is not displayed.
+         */
+        public abstract void setBottomDisplay(boolean display);
+
+        /**
          * Set layer visibility.
          *
          * @param display true is displayed, otherwise it is not displayed.
