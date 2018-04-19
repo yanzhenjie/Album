@@ -17,7 +17,6 @@ package com.yanzhenjie.album.mvp;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,7 +27,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.util.AlbumUtils;
-import com.yanzhenjie.album.util.DisplayHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,13 +46,6 @@ public class BaseActivity extends AppCompatActivity implements Bye {
         super.onCreate(savedInstanceState);
         Locale locale = Album.getAlbumConfig().getLocale();
         AlbumUtils.applyLanguageForContext(this, locale);
-        DisplayHelper.getInstance().create(this);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        DisplayHelper.getInstance().changeConfig(newConfig);
     }
 
     /**

@@ -76,7 +76,7 @@ public class GalleryActivity extends BaseActivity implements Contract.GalleryPre
     @Override
     public void onCurrentChanged(int position) {
         sCurrentPosition = position;
-        setTitle(sCurrentPosition + 1 + " / " + sAlbumFiles.size());
+        mView.setTitle(sCurrentPosition + 1 + " / " + sAlbumFiles.size());
 
         AlbumFile albumFile = sAlbumFiles.get(position);
         mView.setChecked(albumFile.isChecked());

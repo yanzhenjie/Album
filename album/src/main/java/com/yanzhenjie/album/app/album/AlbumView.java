@@ -150,7 +150,6 @@ class AlbumView extends Contract.AlbumView implements View.OnClickListener {
                 getPresenter().tryPreviewItem(position);
             }
         });
-        mAdapter.setItemSize(dividerSize, column);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -163,10 +162,6 @@ class AlbumView extends Contract.AlbumView implements View.OnClickListener {
     public void onConfigurationChanged(Configuration newConfig) {
         int position = mLayoutManager.findFirstVisibleItemPosition();
         mLayoutManager.setOrientation(getOrientation(newConfig));
-
-        int dividerSize = getResources().getDimensionPixelSize(R.dimen.album_dp_4);
-        int spanCount = mLayoutManager.getSpanCount();
-        mAdapter.setItemSize(dividerSize, spanCount);
         mRecyclerView.setAdapter(mAdapter);
         mLayoutManager.scrollToPosition(position);
     }

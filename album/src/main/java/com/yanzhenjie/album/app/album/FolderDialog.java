@@ -23,6 +23,8 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.widget.FrameLayout;
@@ -31,7 +33,6 @@ import com.yanzhenjie.album.AlbumFolder;
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.api.widget.Widget;
 import com.yanzhenjie.album.impl.OnItemClickListener;
-import com.yanzhenjie.album.util.DisplayHelper;
 
 import java.util.List;
 
@@ -90,7 +91,12 @@ public class FolderDialog extends BottomSheetDialog {
         super.onCreate(savedInstanceState);
         Window window = getWindow();
         if (window != null) {
-            window.setLayout(DisplayHelper.getInstance().getMinSize(), -1);
+            Display display = window.getWindowManager().getDefaultDisplay();
+            DisplayMetrics metrics = new DisplayMetrics();
+            if (Build.VERSION.SDK_INT >= 17) display.getRealMetrics(metrics);
+            else display.getMetrics(metrics);
+            int minSize = Math.min(metrics.widthPixels, metrics.heightPixels);
+            window.setLayout(minSize, -1);
             if (Build.VERSION.SDK_INT >= 21) {
                 window.setStatusBarColor(Color.TRANSPARENT);
                 window.setNavigationBarColor(mWidget.getNavigationBarColor());

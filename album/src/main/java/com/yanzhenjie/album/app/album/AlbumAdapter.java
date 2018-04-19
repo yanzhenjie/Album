@@ -17,7 +17,6 @@ package com.yanzhenjie.album.app.album;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.RecyclerView;
@@ -34,7 +33,6 @@ import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.impl.OnCheckedClickListener;
 import com.yanzhenjie.album.impl.OnItemClickListener;
 import com.yanzhenjie.album.util.AlbumUtils;
-import com.yanzhenjie.album.util.DisplayHelper;
 
 import java.util.List;
 
@@ -59,8 +57,6 @@ public class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private OnItemClickListener mItemClickListener;
     private OnCheckedClickListener mCheckedClickListener;
 
-    private int mItemSize;
-
     public AlbumAdapter(Context context, boolean hasCamera, int choiceMode, ColorStateList selector) {
         this.mInflater = LayoutInflater.from(context);
         this.hasCamera = hasCamera;
@@ -82,10 +78,6 @@ public class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public void setCheckedClickListener(OnCheckedClickListener checkedClickListener) {
         this.mCheckedClickListener = checkedClickListener;
-    }
-
-    public void setItemSize(int dividerSize, int column) {
-        this.mItemSize = DisplayHelper.getInstance().getItemSize(mInflater.getContext(), dividerSize, column);
     }
 
     @Override
@@ -111,12 +103,9 @@ public class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder viewHolder;
         switch (viewType) {
             case TYPE_BUTTON: {
-                viewHolder = new ButtonViewHolder(mInflater.inflate(R.layout.album_item_content_button, parent, false),
-                        mAddPhotoClickListener);
-                break;
+                return new ButtonViewHolder(mInflater.inflate(R.layout.album_item_content_button, parent, false), mAddPhotoClickListener);
             }
             case TYPE_IMAGE: {
                 ImageHolder imageViewHolder = new ImageHolder(mInflater.inflate(R.layout.album_item_content_image, parent, false),
@@ -130,8 +119,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 } else {
                     imageViewHolder.mCheckBox.setVisibility(View.GONE);
                 }
-                viewHolder = imageViewHolder;
-                break;
+                return imageViewHolder;
             }
             case TYPE_VIDEO: {
                 VideoHolder videoViewHolder = new VideoHolder(mInflater.inflate(R.layout.album_item_content_video, parent, false),
@@ -145,31 +133,12 @@ public class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 } else {
                     videoViewHolder.mCheckBox.setVisibility(View.GONE);
                 }
-                viewHolder = videoViewHolder;
-                break;
+                return videoViewHolder;
             }
             default: {
                 throw new AssertionError("This should not be the case.");
             }
         }
-        Configuration config = parent.getResources().getConfiguration();
-        ViewGroup.LayoutParams layoutParams = viewHolder.itemView.getLayoutParams();
-        switch (config.orientation) {
-            case Configuration.ORIENTATION_PORTRAIT: {
-                layoutParams.width = -1;
-                layoutParams.height = mItemSize;
-                break;
-            }
-            case Configuration.ORIENTATION_LANDSCAPE: {
-                layoutParams.width = mItemSize;
-                layoutParams.height = -1;
-                break;
-            }
-            default: {
-                throw new AssertionError("This should not be the case.");
-            }
-        }
-        return viewHolder;
     }
 
     @Override
@@ -179,21 +148,17 @@ public class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 // Nothing.
                 break;
             }
-            case TYPE_IMAGE: {
-                ImageHolder imageHolder = (ImageHolder) holder;
+            case TYPE_IMAGE:
+            case TYPE_VIDEO: {
+                MediaViewHolder mediaHolder = (MediaViewHolder) holder;
                 int camera = hasCamera ? 1 : 0;
                 position = holder.getAdapterPosition() - camera;
                 AlbumFile albumFile = mAlbumFiles.get(position);
-                imageHolder.setData(albumFile);
+                mediaHolder.setData(albumFile);
                 break;
             }
-            case TYPE_VIDEO: {
-                VideoHolder videoHolder = (VideoHolder) holder;
-                int camera = hasCamera ? 1 : 0;
-                position = holder.getAdapterPosition() - camera;
-                AlbumFile albumFile = mAlbumFiles.get(position);
-                videoHolder.setData(albumFile);
-                break;
+            default: {
+                throw new AssertionError("This should not be the case.");
             }
         }
     }
@@ -217,7 +182,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    private static class ImageHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private static class ImageHolder extends MediaViewHolder implements View.OnClickListener {
 
         private final boolean hasCamera;
         private final int mChoiceMode;
@@ -247,7 +212,8 @@ public class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mLayoutLayer.setOnClickListener(this);
         }
 
-        void setData(AlbumFile albumFile) {
+        @Override
+        public void setData(AlbumFile albumFile) {
             mCheckBox.setChecked(albumFile.isChecked());
             Album.getAlbumConfig()
                     .getAlbumLoader()
@@ -281,7 +247,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    private static class VideoHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private static class VideoHolder extends MediaViewHolder implements View.OnClickListener {
 
         private final boolean hasCamera;
         private final int mChoiceMode;
@@ -313,7 +279,8 @@ public class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mLayoutLayer.setOnClickListener(this);
         }
 
-        void setData(AlbumFile albumFile) {
+        @Override
+        public void setData(AlbumFile albumFile) {
             Album.getAlbumConfig().getAlbumLoader().load(mIvImage, albumFile);
             mCheckBox.setChecked(albumFile.isChecked());
             mTvDuration.setText(AlbumUtils.convertDuration(albumFile.getDuration()));
@@ -346,5 +313,16 @@ public class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 }
             }
         }
+    }
+
+    private abstract static class MediaViewHolder extends RecyclerView.ViewHolder {
+        public MediaViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        /**
+         * Bind Item data.
+         */
+        public abstract void setData(AlbumFile albumFile);
     }
 }
