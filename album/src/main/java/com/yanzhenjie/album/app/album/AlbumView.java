@@ -34,6 +34,7 @@ import com.yanzhenjie.album.AlbumFolder;
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.api.widget.Widget;
 import com.yanzhenjie.album.app.Contract;
+import com.yanzhenjie.album.impl.DoubleClickWrapper;
 import com.yanzhenjie.album.impl.OnCheckedClickListener;
 import com.yanzhenjie.album.impl.OnItemClickListener;
 import com.yanzhenjie.album.util.AlbumUtils;
@@ -74,6 +75,7 @@ class AlbumView extends Contract.AlbumView implements View.OnClickListener {
         this.mLayoutLoading = activity.findViewById(R.id.layout_loading);
         this.mProgressBar = activity.findViewById(R.id.progress_bar);
 
+        this.mToolbar.setOnClickListener(new DoubleClickWrapper(this));
         this.mBtnSwitchFolder.setOnClickListener(this);
         this.mBtnPreview.setOnClickListener(this);
     }
@@ -207,7 +209,9 @@ class AlbumView extends Contract.AlbumView implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (v == mBtnSwitchFolder) {
+        if (v == mToolbar) {
+            mRecyclerView.smoothScrollToPosition(0);
+        } else if (v == mBtnSwitchFolder) {
             getPresenter().clickFolderSwitch();
         } else if (v == mBtnPreview) {
             getPresenter().tryPreviewChecked();
