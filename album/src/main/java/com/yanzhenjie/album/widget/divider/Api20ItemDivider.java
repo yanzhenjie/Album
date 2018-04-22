@@ -17,8 +17,6 @@ package com.yanzhenjie.album.widget.divider;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,9 +30,9 @@ import android.view.View;
  */
 public class Api20ItemDivider extends Divider {
 
-    private Drawable mDivider;
-    private int mDividerWidth;
-    private int mDividerHeight;
+    private final int mWidth;
+    private final int mHeight;
+    private final Drawer mDrawer;
 
     /**
      * @param color divider line color.
@@ -44,14 +42,14 @@ public class Api20ItemDivider extends Divider {
     }
 
     /**
-     * @param color         line color.
-     * @param dividerWidth  line width.
-     * @param dividerHeight line height.
+     * @param color  line color.
+     * @param width  line width.
+     * @param height line height.
      */
-    public Api20ItemDivider(@ColorInt int color, int dividerWidth, int dividerHeight) {
-        this.mDivider = new ColorDrawable(color);
-        this.mDividerWidth = dividerWidth;
-        this.mDividerHeight = dividerHeight;
+    public Api20ItemDivider(@ColorInt int color, int width, int height) {
+        this.mWidth = Math.round(width / 2F);
+        this.mHeight = Math.round(height / 2F);
+        this.mDrawer = new ColorDrawer(color, mWidth, mHeight);
     }
 
     @Override
@@ -61,82 +59,101 @@ public class Api20ItemDivider extends Divider {
             int orientation = getOrientation(layoutManager);
             int position = parent.getChildLayoutPosition(view);
             int spanCount = getSpanCount(layoutManager);
-            int childCount = parent.getAdapter().getItemCount();
-
-            boolean firstRaw = isFirstRaw(orientation, position, spanCount, childCount);
-            boolean lastRaw = isLastRaw(orientation, position, spanCount, childCount);
-            boolean firstColumn = isFirstColumn(orientation, position, spanCount, childCount);
-            boolean lastColumn = isLastColumn(orientation, position, spanCount, childCount);
+            int childCount = layoutManager.getItemCount();
 
             if (orientation == RecyclerView.VERTICAL) {
-                if (spanCount == 1) {
-                    if (firstRaw) {
-                        outRect.set(0, 0, 0, 0); // xxxx
-                    } else if (lastRaw) {
-                        outRect.set(0, mDividerHeight, 0, 0); // x-xx
-                    } else {
-                        outRect.set(0, mDividerHeight, 0, 0); // x-xx
-                    }
-                } else {
-                    if (firstRaw && firstColumn) {
-                        outRect.set(0, 0, 0, 0); // xxxx
-                    } else if (firstRaw && lastColumn) {
-                        outRect.set(mDividerWidth, 0, 0, mDividerHeight); // |xx-
-                    } else if (firstRaw) {
-                        outRect.set(mDividerWidth, 0, 0, mDividerHeight); // |xx-
-                    } else if (lastRaw && firstColumn) {
-                        outRect.set(0, mDividerHeight, 0, 0); // x-xx
-                    } else if (lastRaw && lastColumn) {
-                        outRect.set(mDividerWidth, 0, 0, 0); // |xxx
-                    } else if (lastRaw) {
-                        outRect.set(mDividerWidth, 0, 0, 0); // |xxx
-                    } else if (firstColumn) {
-                        outRect.set(0, mDividerHeight, 0, 0); // x-xx
-                    } else if (lastColumn) {
-                        outRect.set(mDividerWidth, 0, 0, mDividerHeight); // |xx-
-                    } else {
-                        outRect.set(mDividerWidth, 0, 0, mDividerHeight); // |xx-
-                    }
-                }
+                offsetVertical(outRect, position, spanCount, childCount);
             } else {
-                if (spanCount == 1) {
-                    if (firstColumn) {
-                        outRect.set(0, 0, 0, 0); // xxxx
-                    } else if (lastColumn) {
-                        outRect.set(0, mDividerHeight, 0, 0); // |xxx
-                    } else {
-                        outRect.set(0, mDividerHeight, 0, 0); // |xxx
-                    }
-                } else {
-                    if (firstColumn && firstRaw) {
-                        outRect.set(0, 0, 0, 0); // xxxx
-                    } else if (firstColumn && lastRaw) {
-                        outRect.set(0, mDividerHeight, 0, 0); // x━xx
-                    } else if (firstColumn) {
-                        outRect.set(0, mDividerHeight, 0, 0); // x━xx
-                    } else if (lastColumn && firstRaw) {
-                        outRect.set(mDividerWidth, 0, 0, mDividerHeight); // ┃xx━
-                    } else if (lastColumn && lastRaw) {
-                        outRect.set(mDividerWidth, 0, 0, 0); // ┃xxx
-                    } else if (lastColumn) {
-                        outRect.set(mDividerWidth, 0, 0, mDividerHeight); // ┃xx━
-                    } else if (firstRaw) {
-                        outRect.set(mDividerWidth, 0, 0, mDividerHeight); // ┃xx━
-                    } else if (lastRaw) {
-                        outRect.set(mDividerWidth, 0, 0, 0); // ┃xxx
-                    } else {
-                        outRect.set(mDividerWidth, 0, 0, mDividerHeight); // ┃xx━
-                    }
-                }
+                offsetHorizontal(outRect, position, spanCount, childCount);
             }
         } else if (layoutManager instanceof StaggeredGridLayoutManager) {
-            outRect.set(mDividerWidth, mDividerHeight, mDividerWidth, mDividerHeight); // |-|-
+            outRect.set(mWidth, mHeight, mWidth, mHeight); // |-|-
+        }
+    }
+
+    private void offsetHorizontal(Rect outRect, int position, int spanCount, int childCount) {
+        boolean firstRaw = isFirstRaw(RecyclerView.HORIZONTAL, position, spanCount, childCount);
+        boolean lastRaw = isLastRaw(RecyclerView.HORIZONTAL, position, spanCount, childCount);
+        boolean firstColumn = isFirstColumn(RecyclerView.HORIZONTAL, position, spanCount, childCount);
+        boolean lastColumn = isLastColumn(RecyclerView.HORIZONTAL, position, spanCount, childCount);
+
+        if (spanCount == 1) {
+            if (firstColumn && lastColumn) { // xxxx
+                outRect.set(0, 0, 0, 0);
+            } else if (firstColumn) { // xx|x
+                outRect.set(0, 0, mWidth, 0);
+            } else if (lastColumn) { // |xxx
+                outRect.set(mWidth, 0, 0, 0);
+            } else { // |x|x
+                outRect.set(mWidth, 0, mWidth, 0);
+            }
+        } else {
+            if (firstColumn && firstRaw) { // xx|-
+                outRect.set(0, 0, mWidth, mHeight);
+            } else if (firstColumn && lastRaw) { // x-|x
+                outRect.set(0, mHeight, mWidth, 0);
+            } else if (lastColumn && firstRaw) { // |xx-
+                outRect.set(mWidth, 0, 0, mHeight);
+            } else if (lastColumn && lastRaw) { // |-xx
+                outRect.set(mWidth, mHeight, 0, 0);
+            } else if (firstColumn) { // x-|-
+                outRect.set(0, mHeight, mWidth, mHeight);
+            } else if (lastColumn) { // |-x-
+                outRect.set(mWidth, mHeight, 0, mHeight);
+            } else if (firstRaw) { // |x|-
+                outRect.set(mWidth, 0, mWidth, mHeight);
+            } else if (lastRaw) { // |-|x
+                outRect.set(mWidth, mHeight, mWidth, 0);
+            } else { // |-|-
+                outRect.set(mWidth, mHeight, mWidth, mHeight);
+            }
+        }
+    }
+
+    private void offsetVertical(Rect outRect, int position, int spanCount, int childCount) {
+        boolean firstRaw = isFirstRaw(RecyclerView.VERTICAL, position, spanCount, childCount);
+        boolean lastRaw = isLastRaw(RecyclerView.VERTICAL, position, spanCount, childCount);
+        boolean firstColumn = isFirstColumn(RecyclerView.VERTICAL, position, spanCount, childCount);
+        boolean lastColumn = isLastColumn(RecyclerView.VERTICAL, position, spanCount, childCount);
+
+        if (spanCount == 1) {
+            if (firstRaw && lastRaw) { // xxxx
+                outRect.set(0, 0, 0, 0);
+            } else if (firstRaw) { // xxx-
+                outRect.set(0, 0, 0, mHeight);
+            } else if (lastRaw) { // x-xx
+                outRect.set(0, mHeight, 0, 0);
+            } else { // x-x-
+                outRect.set(0, mHeight, 0, mHeight);
+            }
+        } else {
+            if (firstRaw && firstColumn) { // xx|-
+                outRect.set(0, 0, mWidth, mHeight);
+            } else if (firstRaw && lastColumn) { // |xx-
+                outRect.set(mWidth, 0, 0, mHeight);
+            } else if (lastRaw && firstColumn) { // x-|x
+                outRect.set(0, mHeight, mWidth, 0);
+            } else if (lastRaw && lastColumn) { // |-xx
+                outRect.set(mWidth, mHeight, 0, 0);
+            } else if (firstRaw) { // |x|-
+                outRect.set(mWidth, 0, mWidth, mHeight);
+            } else if (lastRaw) { // |-|x
+                outRect.set(mWidth, mHeight, mWidth, 0);
+            } else if (firstColumn) { // x-|-
+                outRect.set(0, mHeight, mWidth, mHeight);
+            } else if (lastColumn) { // |-x-
+                outRect.set(mWidth, mHeight, 0, mHeight);
+            } else { // |-|-
+                outRect.set(mWidth, mHeight, mWidth, mHeight);
+            }
         }
     }
 
     private int getOrientation(RecyclerView.LayoutManager layoutManager) {
         if (layoutManager instanceof LinearLayoutManager) {
             return ((LinearLayoutManager) layoutManager).getOrientation();
+        } else if (layoutManager instanceof StaggeredGridLayoutManager) {
+            return ((StaggeredGridLayoutManager) layoutManager).getOrientation();
         }
         return RecyclerView.VERTICAL;
     }
@@ -169,8 +186,8 @@ public class Api20ItemDivider extends Divider {
 
                 int rawPositionJudge = (position + 1) % columnCount;
                 if (rawPositionJudge == 0) {
-                    int rawPosition = (position + 1) / columnCount;
-                    return rawCount == rawPosition;
+                    int positionRaw = (position + 1) / columnCount;
+                    return rawCount == positionRaw;
                 } else {
                     int rawPosition = (position + 1 - rawPositionJudge) / columnCount + 1;
                     return rawCount == rawPosition;
@@ -204,8 +221,8 @@ public class Api20ItemDivider extends Divider {
 
                 int rawPositionJudge = (position + 1) % columnCount;
                 if (rawPositionJudge == 0) {
-                    int rawPosition = (position + 1) / columnCount;
-                    return rawCount == rawPosition;
+                    int positionRaw = (position + 1) / columnCount;
+                    return rawCount == positionRaw;
                 } else {
                     int rawPosition = (position + 1 - rawPositionJudge) / columnCount + 1;
                     return rawCount == rawPosition;
@@ -215,65 +232,155 @@ public class Api20ItemDivider extends Divider {
     }
 
     @Override
-    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+    public void onDraw(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
         RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
-        drawHorizontal(c, layoutManager);
-        drawVertical(c, layoutManager);
-    }
-
-    public void drawHorizontal(Canvas c, RecyclerView.LayoutManager layoutManager) {
-        c.save();
         int orientation = getOrientation(layoutManager);
         int spanCount = getSpanCount(layoutManager);
         int childCount = layoutManager.getChildCount();
 
-        for (int i = 0; i < childCount; i++) {
-            final View child = layoutManager.getChildAt(i);
-            // Top, nothing.
+        if (layoutManager instanceof LinearLayoutManager) {
+            canvas.save();
+            for (int i = 0; i < childCount; i++) {
+                View view = layoutManager.getChildAt(i);
+                int position = parent.getChildLayoutPosition(view);
 
-            // Bottom, draw.
-            if (!isLastRaw(orientation, i, spanCount, childCount)) {
-                final int left = child.getLeft();
-                final int top = child.getBottom();
-                final int right = child.getRight() + (isLastColumn(orientation, i, spanCount, childCount) ? 0 : mDividerWidth);
-                final int bottom = top + mDividerHeight;
-                mDivider.setBounds(left, top, right, bottom);
-                mDivider.draw(c);
+                if (orientation == RecyclerView.VERTICAL) {
+                    drawVertical(canvas, view, position, spanCount, childCount);
+                } else {
+                    drawHorizontal(canvas, view, position, spanCount, childCount);
+                }
             }
+            canvas.restore();
+        } else if (layoutManager instanceof StaggeredGridLayoutManager) {
+            canvas.save();
+            for (int i = 0; i < childCount; i++) {
+                View view = layoutManager.getChildAt(i);
+                mDrawer.drawLeft(view, canvas);
+                mDrawer.drawTop(view, canvas);
+                mDrawer.drawRight(view, canvas);
+                mDrawer.drawBottom(view, canvas);
+            }
+            canvas.restore();
         }
-        c.restore();
     }
 
-    public void drawVertical(Canvas c, RecyclerView.LayoutManager layoutManager) {
-        c.save();
-        int orientation = getOrientation(layoutManager);
-        int spanCount = getSpanCount(layoutManager);
-        int childCount = layoutManager.getChildCount();
+    private void drawHorizontal(Canvas canvas, View view, int position, int spanCount, int childCount) {
+        boolean firstRaw = isFirstRaw(RecyclerView.HORIZONTAL, position, spanCount, childCount);
+        boolean lastRaw = isLastRaw(RecyclerView.HORIZONTAL, position, spanCount, childCount);
+        boolean firstColumn = isFirstColumn(RecyclerView.HORIZONTAL, position, spanCount, childCount);
+        boolean lastColumn = isLastColumn(RecyclerView.HORIZONTAL, position, spanCount, childCount);
 
-        for (int i = 0; i < childCount; i++) {
-            final View child = layoutManager.getChildAt(i);
-            // Left, nothing.
-
-            // Right, draw.
-            if (!isLastColumn(orientation, i, spanCount, childCount)) {
-                final int left = child.getRight();
-                final int top = child.getTop();
-                final int right = left + mDividerWidth;
-                final int bottom = child.getBottom() + (isLastRaw(orientation, i, spanCount, childCount) ? 0 : mDividerWidth);
-                mDivider.setBounds(left, top, right, bottom);
-                mDivider.draw(c);
+        if (spanCount == 1) {
+            if (firstRaw && lastColumn) { // xxxx
+                // Nothing.
+            } else if (firstColumn) { // xx|x
+                mDrawer.drawRight(view, canvas);
+            } else if (lastColumn) { // |xxx
+                mDrawer.drawLeft(view, canvas);
+            } else { // |x|x
+                mDrawer.drawLeft(view, canvas);
+                mDrawer.drawRight(view, canvas);
+            }
+        } else {
+            if (firstColumn && firstRaw) { // xx|-
+                mDrawer.drawRight(view, canvas);
+                mDrawer.drawBottom(view, canvas);
+            } else if (firstColumn && lastRaw) { // x-|x
+                mDrawer.drawTop(view, canvas);
+                mDrawer.drawRight(view, canvas);
+            } else if (lastColumn && firstRaw) { // |xx-
+                mDrawer.drawLeft(view, canvas);
+                mDrawer.drawBottom(view, canvas);
+            } else if (lastColumn && lastRaw) { // |-xx
+                mDrawer.drawLeft(view, canvas);
+                mDrawer.drawTop(view, canvas);
+            } else if (firstColumn) { // x-|-
+                mDrawer.drawTop(view, canvas);
+                mDrawer.drawRight(view, canvas);
+                mDrawer.drawBottom(view, canvas);
+            } else if (lastColumn) { // |-x-
+                mDrawer.drawLeft(view, canvas);
+                mDrawer.drawTop(view, canvas);
+                mDrawer.drawBottom(view, canvas);
+            } else if (firstRaw) { // |x|-
+                mDrawer.drawLeft(view, canvas);
+                mDrawer.drawRight(view, canvas);
+                mDrawer.drawBottom(view, canvas);
+            } else if (lastRaw) { // |-|x
+                mDrawer.drawLeft(view, canvas);
+                mDrawer.drawTop(view, canvas);
+                mDrawer.drawRight(view, canvas);
+            } else { // |-|-
+                mDrawer.drawLeft(view, canvas);
+                mDrawer.drawTop(view, canvas);
+                mDrawer.drawRight(view, canvas);
+                mDrawer.drawBottom(view, canvas);
             }
         }
-        c.restore();
+    }
+
+    private void drawVertical(Canvas canvas, View view, int position, int spanCount, int childCount) {
+        boolean firstRaw = isFirstRaw(RecyclerView.VERTICAL, position, spanCount, childCount);
+        boolean lastRaw = isLastRaw(RecyclerView.VERTICAL, position, spanCount, childCount);
+        boolean firstColumn = isFirstColumn(RecyclerView.VERTICAL, position, spanCount, childCount);
+        boolean lastColumn = isLastColumn(RecyclerView.VERTICAL, position, spanCount, childCount);
+
+        if (spanCount == 1) {
+            if (firstRaw && lastRaw) { // xxxx
+                // Nothing.
+            } else if (firstRaw) { // xxx-
+                mDrawer.drawBottom(view, canvas);
+            } else if (lastRaw) { // x-xx
+                mDrawer.drawTop(view, canvas);
+            } else { // x-x-
+                mDrawer.drawTop(view, canvas);
+                mDrawer.drawBottom(view, canvas);
+            }
+        } else {
+            if (firstRaw && firstColumn) { // xx|-
+                mDrawer.drawRight(view, canvas);
+                mDrawer.drawBottom(view, canvas);
+            } else if (firstRaw && lastColumn) { // |xx-
+                mDrawer.drawLeft(view, canvas);
+                mDrawer.drawBottom(view, canvas);
+            } else if (lastRaw && firstColumn) { // x-|x
+                mDrawer.drawTop(view, canvas);
+                mDrawer.drawRight(view, canvas);
+            } else if (lastRaw && lastColumn) { // |-xx
+                mDrawer.drawLeft(view, canvas);
+                mDrawer.drawTop(view, canvas);
+            } else if (firstRaw) { // |x|-
+                mDrawer.drawLeft(view, canvas);
+                mDrawer.drawRight(view, canvas);
+                mDrawer.drawBottom(view, canvas);
+            } else if (lastRaw) { // |-|x
+                mDrawer.drawLeft(view, canvas);
+                mDrawer.drawTop(view, canvas);
+                mDrawer.drawRight(view, canvas);
+            } else if (firstColumn) { // x-|-
+                mDrawer.drawTop(view, canvas);
+                mDrawer.drawRight(view, canvas);
+                mDrawer.drawBottom(view, canvas);
+            } else if (lastColumn) { // |-x-
+                mDrawer.drawLeft(view, canvas);
+                mDrawer.drawTop(view, canvas);
+                mDrawer.drawBottom(view, canvas);
+            } else { // |-|-
+                mDrawer.drawLeft(view, canvas);
+                mDrawer.drawTop(view, canvas);
+                mDrawer.drawRight(view, canvas);
+                mDrawer.drawBottom(view, canvas);
+            }
+        }
     }
 
     @Override
     public int getHeight() {
-        return mDividerHeight;
+        return mHeight;
     }
 
     @Override
     public int getWidth() {
-        return mDividerWidth;
+        return mWidth;
     }
 }

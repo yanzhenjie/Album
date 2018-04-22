@@ -338,9 +338,7 @@ public class AlbumUtils {
      *
      * @param color color.
      * @return {@link Divider}.
-     * @deprecated use {@code new Api21ItemDivider()} instead.
      */
-    @Deprecated
     public static Divider getDivider(@ColorInt int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             return new Api21ItemDivider(color);
