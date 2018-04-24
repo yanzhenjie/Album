@@ -99,7 +99,6 @@ class AlbumView extends Contract.AlbumView implements View.OnClickListener {
         SystemBar.setNavigationBarColor(mActivity, widget.getNavigationBarColor());
 
         int statusBarColor = widget.getStatusBarColor();
-        Drawable navigationIcon = getDrawable(R.drawable.album_ic_back_white);
         if (widget.getUiStyle() == Widget.STYLE_LIGHT) {
             if (SystemBar.setStatusBarDarkFont(mActivity, true)) {
                 SystemBar.setStatusBarColor(mActivity, statusBarColor);
@@ -108,23 +107,18 @@ class AlbumView extends Contract.AlbumView implements View.OnClickListener {
             }
 
             mProgressBar.setColorFilter(getColor(R.color.albumLoadingDark));
-            mToolbar.setTitleTextColor(getColor(R.color.albumFontDark));
-            mToolbar.setSubtitleTextColor(getColor(R.color.albumFontDark));
 
+            Drawable navigationIcon = getDrawable(R.drawable.album_ic_back_white);
             AlbumUtils.setDrawableTint(navigationIcon, getColor(R.color.albumIconDark));
             setHomeAsUpIndicator(navigationIcon);
 
             Drawable completeIcon = mCompleteMenu.getIcon();
             AlbumUtils.setDrawableTint(completeIcon, getColor(R.color.albumIconDark));
             mCompleteMenu.setIcon(completeIcon);
-
-            CharSequence title = mCompleteMenu.getTitle();
-            title = AlbumUtils.getColorText(title, 0, title.length(), getColor(R.color.albumFontDark));
-            mCompleteMenu.setTitle(title);
         } else {
             mProgressBar.setColorFilter(widget.getToolBarColor());
             SystemBar.setStatusBarColor(mActivity, statusBarColor);
-            setHomeAsUpIndicator(navigationIcon);
+            setHomeAsUpIndicator(R.drawable.album_ic_back_white);
         }
         mToolbar.setBackgroundColor(widget.getToolBarColor());
 

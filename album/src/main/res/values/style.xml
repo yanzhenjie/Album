@@ -75,11 +75,36 @@
         <item name="elevation">@dimen/album_dp_0</item>
     </style>
 
+    <style name="Album.Theme.Toolbar" />
+
+    <style name="Album.Theme.Toolbar.Dark" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="actionMenuTextColor">@color/albumFontLight</item>
+    </style>
+
+    <style name="Album.Theme.Toolbar.Light" parent="ThemeOverlay.AppCompat.Light">
+        <item name="actionMenuTextColor">@color/albumFontDark</item>
+    </style>
+
+    <style name="Album.Theme.Toolbar.Popup" parent="ThemeOverlay.AppCompat.Light">
+        <item name="actionMenuTextColor">@color/albumFontDark</item>
+    </style>
+
     <style name="Album.Toolbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="popupTheme">@style/Album.Theme.Toolbar.Popup</item>
+    </style>
+
+    <style name="Album.Toolbar.Dark">
+        <item name="android:theme">@style/Album.Theme.Toolbar.Dark</item>
         <item name="titleTextColor">@color/albumFontLight</item>
         <item name="subtitleTextColor">@color/albumFontLight</item>
+    </style>
+
+    <style name="Album.Toolbar.Light">
+        <item name="android:theme">@style/Album.Theme.Toolbar.Light</item>
+        <item name="titleTextColor">@color/albumFontDark</item>
+        <item name="subtitleTextColor">@color/albumFontDark</item>
     </style>
 
     <style name="Album.Item" />

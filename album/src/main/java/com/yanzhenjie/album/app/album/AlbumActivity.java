@@ -100,9 +100,9 @@ public class AlbumActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.album_activity_album);
-        mView = new AlbumView(this, this);
         initializeArgument();
+        setContentView(createView());
+        mView = new AlbumView(this, this);
         mView.setupViews(mWidget, mColumnCount, mHasCamera, mChoiceMode);
         mView.setTitle(mWidget.getTitle());
         mView.setCompleteDisplay(false);
@@ -124,6 +124,25 @@ public class AlbumActivity extends BaseActivity implements
         mLimitDuration = argument.getLong(Album.KEY_INPUT_CAMERA_DURATION);
         mLimitBytes = argument.getLong(Album.KEY_INPUT_CAMERA_BYTES);
         mFilterVisibility = argument.getBoolean(Album.KEY_INPUT_FILTER_VISIBILITY);
+    }
+
+    /**
+     * Use different layouts depending on the style.
+     *
+     * @return layout id.
+     */
+    private int createView() {
+        switch (mWidget.getUiStyle()) {
+            case Widget.STYLE_DARK: {
+                return R.layout.album_activity_album_dark;
+            }
+            case Widget.STYLE_LIGHT: {
+                return R.layout.album_activity_album_light;
+            }
+            default: {
+                throw new AssertionError("This should not be the case.");
+            }
+        }
     }
 
     @Override

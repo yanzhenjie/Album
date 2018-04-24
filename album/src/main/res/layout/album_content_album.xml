@@ -14,20 +14,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Album.MatchParent"
-    android:background="@color/albumPageLight">
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar_layout"
-        style="@style/Album.AppBar.General">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            style="@style/Album.Toolbar" />
-
-    </android.support.design.widget.AppBarLayout>
-
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         style="@style/Album.WrapContent.WidthMatchParent"
@@ -76,4 +63,4 @@
             android:textSize="@dimen/album_sp_16" />
 
     </LinearLayout>
-</RelativeLayout>
+</merge>

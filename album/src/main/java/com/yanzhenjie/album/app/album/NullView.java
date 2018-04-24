@@ -66,9 +66,6 @@ class NullView extends Contract.NullView implements View.OnClickListener {
                 SystemBar.setStatusBarColor(mActivity, getColor(R.color.albumColorPrimaryBlack));
             }
 
-            mToolbar.setTitleTextColor(getColor(R.color.albumFontDark));
-            mToolbar.setSubtitleTextColor(getColor(R.color.albumFontDark));
-
             AlbumUtils.setDrawableTint(navigationIcon, getColor(R.color.albumIconDark));
             setHomeAsUpIndicator(navigationIcon);
         } else {
