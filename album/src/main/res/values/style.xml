@@ -16,9 +16,7 @@
 -->
 <resources>
 
-    <style name="Album">
-        <item name="android:textAllCaps">false</item>
-    </style>
+    <style name="Album"/>
 
     <style name="Album.Theme" />
 
@@ -29,6 +27,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowDisablePreview">true</item>
         <item name="android:windowBackground">@color/albumTransparent</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="Album.Theme.Activity.Transparent">
@@ -79,14 +78,17 @@
 
     <style name="Album.Theme.Toolbar.Dark" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="actionMenuTextColor">@color/albumFontLight</item>
+        <item name="textAllCaps">false</item>
     </style>
 
     <style name="Album.Theme.Toolbar.Light" parent="ThemeOverlay.AppCompat.Light">
         <item name="actionMenuTextColor">@color/albumFontDark</item>
+        <item name="textAllCaps">false</item>
     </style>
 
     <style name="Album.Theme.Toolbar.Popup" parent="ThemeOverlay.AppCompat.Light">
         <item name="actionMenuTextColor">@color/albumFontDark</item>
+        <item name="textAllCaps">false</item>
     </style>
 
     <style name="Album.Toolbar">
