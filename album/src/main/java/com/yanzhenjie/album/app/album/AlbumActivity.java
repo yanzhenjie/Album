@@ -149,6 +149,7 @@ public class AlbumActivity extends BaseActivity implements
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mView.onConfigurationChanged(newConfig);
+        if (mFolderDialog != null && !mFolderDialog.isShowing()) mFolderDialog = null;
     }
 
     @Override

@@ -49,16 +49,12 @@ public class FolderDialog extends BottomSheetDialog {
     private int mCurrentPosition = 0;
     private OnItemClickListener mItemClickListener;
 
-    private BottomSheetBehavior mBehavior;
-
     public FolderDialog(Context context, Widget widget, List<AlbumFolder> albumFolders, OnItemClickListener itemClickListener) {
         super(context, R.style.Album_Dialog_Folder);
         setContentView(R.layout.album_dialog_floder);
         this.mWidget = widget;
         this.mAlbumFolders = albumFolders;
         this.mItemClickListener = itemClickListener;
-
-        defineBehavior();
 
         RecyclerView recyclerView = getDelegate().findViewById(R.id.rv_content_list);
         assert recyclerView != null;
@@ -68,7 +64,6 @@ public class FolderDialog extends BottomSheetDialog {
         mFolderAdapter.setItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(final View view, final int position) {
-                mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 if (mCurrentPosition != position) {
                     mAlbumFolders.get(mCurrentPosition).setChecked(false);
                     mFolderAdapter.notifyItemChanged(mCurrentPosition);
@@ -81,6 +76,7 @@ public class FolderDialog extends BottomSheetDialog {
                         mItemClickListener.onItemClick(view, position);
                     }
                 }
+                dismiss();
             }
         });
         recyclerView.setAdapter(mFolderAdapter);
@@ -102,13 +98,5 @@ public class FolderDialog extends BottomSheetDialog {
                 window.setNavigationBarColor(mWidget.getNavigationBarColor());
             }
         }
-    }
-
-    private void defineBehavior() {
-        setCanceledOnTouchOutside(false);
-        FrameLayout bottomSheet = findViewById(android.support.design.R.id.design_bottom_sheet);
-        assert bottomSheet != null;
-        mBehavior = BottomSheetBehavior.from(bottomSheet);
-        mBehavior.setHideable(true);
     }
 }
