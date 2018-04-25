@@ -1,5 +1,5 @@
 /*
- * Copyright © Yan Zhenjie. All Rights Reserved
+ * Copyright 2016 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.support.annotation.IntDef;
+import android.util.Log;
 
 import com.yanzhenjie.album.api.AlbumMultipleWrapper;
 import com.yanzhenjie.album.api.AlbumSingleWrapper;
@@ -48,7 +49,6 @@ import java.lang.annotation.RetentionPolicy;
 public final class Album {
 
     // All.
-    public static final String KEY_INPUT_REQUEST_CODE = "KEY_INPUT_REQUEST_CODE";
     public static final String KEY_INPUT_WIDGET = "KEY_INPUT_WIDGET";
     public static final String KEY_INPUT_CHECKED_LIST = "KEY_INPUT_CHECKED_LIST";
 
@@ -71,7 +71,6 @@ public final class Album {
     // Gallery.
     public static final String KEY_INPUT_CURRENT_POSITION = "KEY_INPUT_CURRENT_POSITION";
     public static final String KEY_INPUT_GALLERY_CHECKABLE = "KEY_INPUT_GALLERY_CHECKABLE";
-    public static final String KEY_INPUT_NAVIGATION_ALPHA = "KEY_INPUT_NAVIGATION_ALPHA";
 
     // Camera.
     public static final String KEY_INPUT_FILE_PATH = "KEY_INPUT_FILE_PATH";
@@ -105,8 +104,8 @@ public final class Album {
      * @param albumConfig {@link AlbumConfig}.
      */
     public static void initialize(AlbumConfig albumConfig) {
-        if (sAlbumConfig == null)
-            sAlbumConfig = albumConfig;
+        if (sAlbumConfig == null) sAlbumConfig = albumConfig;
+        else Log.w("Album", new IllegalStateException("Illegal operation, only allowed to configure once."));
     }
 
     /**
@@ -114,12 +113,10 @@ public final class Album {
      */
     public static AlbumConfig getAlbumConfig() {
         if (sAlbumConfig == null) {
-            sAlbumConfig = AlbumConfig.newBuilder(null)
-                    .build();
+            sAlbumConfig = AlbumConfig.newBuilder(null).build();
         }
         return sAlbumConfig;
     }
-
 
     /**
      * Open the camera from the activity.

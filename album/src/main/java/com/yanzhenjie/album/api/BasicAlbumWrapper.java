@@ -1,5 +1,5 @@
 /*
- * Copyright © Yan Zhenjie. All Rights Reserved
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 package com.yanzhenjie.album.api;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.yanzhenjie.album.Action;
@@ -28,23 +27,21 @@ import com.yanzhenjie.album.api.widget.Widget;
  */
 public abstract class BasicAlbumWrapper<Returner extends BasicAlbumWrapper, Result, Cancel, Checked> {
 
-    @NonNull
     final Context mContext;
     Action<Result> mResult;
     Action<Cancel> mCancel;
-    int mRequestCode;
-    @Nullable
     Widget mWidget;
-    @Nullable
     Checked mChecked;
 
-    BasicAlbumWrapper(@NonNull Context context) {
+    BasicAlbumWrapper(Context context) {
         this.mContext = context;
         mWidget = Widget.getDefaultWidget(context);
     }
 
     /**
      * Set the action when result.
+     *
+     * @param result action when producing result.
      */
     public final Returner onResult(Action<Result> result) {
         this.mResult = result;
@@ -53,6 +50,8 @@ public abstract class BasicAlbumWrapper<Returner extends BasicAlbumWrapper, Resu
 
     /**
      * Set the action when canceling.
+     *
+     * @param cancel action when canceled.
      */
     public final Returner onCancel(Action<Cancel> cancel) {
         this.mCancel = cancel;
@@ -60,15 +59,9 @@ public abstract class BasicAlbumWrapper<Returner extends BasicAlbumWrapper, Resu
     }
 
     /**
-     * Request tag.
-     */
-    public final Returner requestCode(int requestCode) {
-        this.mRequestCode = requestCode;
-        return (Returner) this;
-    }
-
-    /**
      * Set the widget property.
+     *
+     * @param widget the widget.
      */
     public final Returner widget(@Nullable Widget widget) {
         this.mWidget = widget;

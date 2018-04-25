@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Copyright 2017 Yan Zhenjie
+    Copyright 2017 Yan Zhenjie.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -17,9 +17,6 @@
 <resources>
     <color name="colorPrimary">#2196F3</color>
     <color name="colorPrimaryDark">#1E88E5</color>
-    <color name="colorAccent">@color/colorPrimary</color>
+    <color name="colorAccent">#dc572e</color>
     <color name="colorPrimaryBlack">#FF2B2B2B</color>
-
-    <color name="colorWhite">#FFF</color>
-    <color name="colorFont">#333</color>
 </resources>

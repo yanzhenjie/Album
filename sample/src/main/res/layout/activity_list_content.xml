@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Copyright 2017 Yan Zhenjie
+    Copyright 2017 Yan Zhenjie.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -14,27 +14,25 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/MatchParent"
+    style="@style/Album.MatchParent"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <TextView
         android:id="@+id/tv_message"
-        style="@style/WrapContent"
-        android:layout_margin="@dimen/dp_10"
+        style="@style/Album.WrapContent"
+        android:layout_margin="@dimen/album_dp_10"
         android:text="@string/hint_image_preview_click"
-        android:textSize="@dimen/sp_18"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/image_view"
-        style="@style/album_WrapContent"/>
+        style="@style/Album.WrapContent" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
-        style="@style/WrapContent.WidthMatchParent"
-        android:layout_marginTop="@dimen/dp_10"/>
+        style="@style/Album.WrapContent.WidthMatchParent"
+        android:layout_marginTop="@dimen/album_dp_10" />
 </LinearLayout>

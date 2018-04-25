@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Copyright 2017 Yan Zhenjie
+    Copyright 2017 Yan Zhenjie.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -20,11 +20,11 @@
 
     <item
         android:id="@+id/album_menu_camera_image"
-        android:title="@string/album_menu_camera_image"
+        android:title="@string/album_camera_image_capture"
         app:showAsAction="always|withText"/>
 
     <item
         android:id="@+id/album_menu_camera_video"
-        android:title="@string/album_menu_camera_video"
+        android:title="@string/album_camera_video_capture"
         app:showAsAction="always|withText"/>
 </menu>

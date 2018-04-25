@@ -1,5 +1,5 @@
 /*
- * Copyright © Yan Zhenjie. All Rights Reserved
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 package com.yanzhenjie.album.api;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.yanzhenjie.album.Action;
@@ -26,20 +25,19 @@ import com.yanzhenjie.album.Action;
  */
 public abstract class BasicCameraWrapper<Returner extends BasicCameraWrapper> {
 
-    @NonNull
-    final Context mContext;
+    Context mContext;
     Action<String> mResult;
     Action<String> mCancel;
-    int mRequestCode;
-    @Nullable
     String mFilePath;
 
-    public BasicCameraWrapper(@NonNull Context context) {
+    public BasicCameraWrapper(Context context) {
         this.mContext = context;
     }
 
     /**
      * Set the action when result.
+     *
+     * @param result action when producing result.
      */
     public final Returner onResult(Action<String> result) {
         this.mResult = result;
@@ -48,6 +46,8 @@ public abstract class BasicCameraWrapper<Returner extends BasicCameraWrapper> {
 
     /**
      * Set the action when canceling.
+     *
+     * @param cancel action when canceled.
      */
     public final Returner onCancel(Action<String> cancel) {
         this.mCancel = cancel;
@@ -55,15 +55,9 @@ public abstract class BasicCameraWrapper<Returner extends BasicCameraWrapper> {
     }
 
     /**
-     * Request tag.
-     */
-    public Returner requestCode(int requestCode) {
-        this.mRequestCode = requestCode;
-        return (Returner) this;
-    }
-
-    /**
      * Set the image storage path.
+     *
+     * @param filePath storage path.
      */
     public Returner filePath(@Nullable String filePath) {
         this.mFilePath = filePath;

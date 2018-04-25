@@ -1,5 +1,5 @@
 /*
- * Copyright © Yan Zhenjie. All Rights Reserved
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,26 +17,24 @@ package com.yanzhenjie.album.api;
 
 import android.content.Context;
 import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
 
 /**
  * Created by YanZhenjie on 2017/11/8.
  */
 public abstract class BasicChoiceVideoWrapper<Returner extends BasicChoiceVideoWrapper, Result, Cancel, Checked> extends BasicChoiceWrapper<Returner, Result, Cancel, Checked> {
 
-    BasicChoiceVideoWrapper(@NonNull Context context) {
+    BasicChoiceVideoWrapper(Context context) {
         super(context);
     }
 
-    @IntRange(from = 0, to = 1)
     int mQuality = 1;
-    @IntRange(from = 1, to = Long.MAX_VALUE)
     long mLimitDuration = Long.MAX_VALUE;
-    @IntRange(from = 1, to = Long.MAX_VALUE)
     long mLimitBytes = Long.MAX_VALUE;
 
     /**
-     * Currently value 0 means low quality, suitable for MMS messages, and  value 1 means high quality.
+     * Set the quality when taking video, should be 0 or 1. Currently value 0 means low quality, and value 1 means high quality.
+     *
+     * @param quality should be 0 or 1.
      */
     public Returner quality(@IntRange(from = 0, to = 1) int quality) {
         this.mQuality = quality;
@@ -45,16 +43,20 @@ public abstract class BasicChoiceVideoWrapper<Returner extends BasicChoiceVideoW
 
     /**
      * Specify the maximum allowed recording duration in seconds.
+     *
+     * @param duration the maximum number of seconds.
      */
-    public Returner limitDuration(@IntRange(from = 1, to = Long.MAX_VALUE) long duration) {
+    public Returner limitDuration(@IntRange(from = 1) long duration) {
         this.mLimitDuration = duration;
         return (Returner) this;
     }
 
     /**
      * Specify the maximum allowed size.
+     *
+     * @param bytes the size of the byte.
      */
-    public Returner limitBytes(@IntRange(from = 1, to = Long.MAX_VALUE) long bytes) {
+    public Returner limitBytes(@IntRange(from = 1) long bytes) {
         this.mLimitBytes = bytes;
         return (Returner) this;
     }

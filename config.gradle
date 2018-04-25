@@ -8,39 +8,35 @@ ext {
 
     android = [
             applicationId    : "com.yanzhenjie.album.sample",
-            compileSdkVersion: 26,
-            buildToolsVersion: "26.0.3",
+            compileSdkVersion: 27,
+            buildToolsVersion: "27.0.3",
 
             minSdkVersion    : 14,
-            targetSdkVersion : 26,
+            targetSdkVersion : 27,
 
-            versionCode      : 22,
-            versionName      : "2.0.2",
+            versionCode      : 24,
+            versionName      : "2.1.0",
     ]
 
     bintray = [
-            version       : "2.0.2",
+            version       : "2.1.0",
 
             siteUrl       : 'https://github.com/yanzhenjie/Album',
             gitUrl        : 'git@github.com:yanzhenjie/Album.git',
 
             group         : "com.yanzhenjie",
 
-            // project
             packaging     : 'aar',
             name          : 'Album',
             description   : 'Album for android',
 
-            // project.license
             licenseName   : 'The Apache Software License, Version 2.0',
             licenseUrl    : 'http://www.apache.org/licenses/LICENSE-2.0.txt',
 
-            // project.developers
             developerId   : 'yanzhenjie',
             developerName : 'yanzhenjie',
             developerEmail: 'smallajax@foxmail.com',
 
-            // bintray
             binrayLibrary : "Album",
             bintrayRepo   : "maven",
             bintrayUser   : 'yolanda',
@@ -48,21 +44,14 @@ ext {
     ]
 
     dependencies = [
-            junit       : 'junit:junit:4.12',
-            expressoCore: 'com.android.support.test.espresso:espresso-core:2.2.2',
-
-            design      : 'com.android.support:design:26.1.0',
-            appCompat   : 'com.android.support:appcompat-v7:26.1.0',
-            recyclerView: 'com.android.support:recyclerview-v7:26.1.0',
-            cardView    : 'com.android.support:cardview-v7:26.1.0',
-
-            fragment    : 'com.yanzhenjie:fragment:1.0.1',
             mediaScanner: 'com.yanzhenjie:mediascanner:1.0.3',
-            loading     : 'com.yanzhenjie:loading:1.0.2',
-            statusView  : 'com.yanzhenjie:statusview:1.0.3',
 
-            album       : 'com.yanzhenjie:album:2.0.2',
-            picasso     : 'com.squareup.picasso:picasso:2.5.2',
-            glide       : 'com.github.bumptech.glide:glide:3.8.0',
+            design      : 'com.android.support:design:27.1.0',
+            appCompat   : 'com.android.support:appcompat-v7:27.1.0',
+            recyclerView: 'com.android.support:recyclerview-v7:27.1.0',
+            cardView    : 'com.android.support:cardview-v7:27.1.0',
+
+            album       : 'com.yanzhenjie:album:2.1.0',
+            glide       : 'com.github.bumptech.glide:glide:3.8.0'
     ]
 }

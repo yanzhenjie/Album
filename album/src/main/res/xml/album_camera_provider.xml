@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Copyright 2017 Yan Zhenjie
+    Copyright 2017 Yan Zhenjie.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,6 +16,23 @@
 -->
 <paths>
     <external-path
-        name="external_files"
+        name="external_path"
         path="."/>
+
+    <external-files-path
+        name="external_files_path"
+        path="."/>
+
+    <external-cache-path
+        name="external_cache_path"
+        path="."/>
+
+    <files-path
+        name="file_path"
+        path="."/>
+
+    <cache-path
+        name="cache_path"
+        path="."/>
+
 </paths>

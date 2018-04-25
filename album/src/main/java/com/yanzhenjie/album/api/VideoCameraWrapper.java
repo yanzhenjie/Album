@@ -1,5 +1,5 @@
 /*
- * Copyright © Yan Zhenjie. All Rights Reserved
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,9 @@ package com.yanzhenjie.album.api;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
 
 import com.yanzhenjie.album.Album;
-import com.yanzhenjie.album.ui.CameraActivity;
+import com.yanzhenjie.album.app.camera.CameraActivity;
 
 /**
  * <p>Camera wrapper.</p>
@@ -29,19 +28,18 @@ import com.yanzhenjie.album.ui.CameraActivity;
  */
 public class VideoCameraWrapper extends BasicCameraWrapper<VideoCameraWrapper> {
 
-    @IntRange(from = 0, to = 1)
     private int mQuality = 1;
-    @IntRange(from = 1, to = Long.MAX_VALUE)
-    private long mLimitDuration = Long.MAX_VALUE;
-    @IntRange(from = 1, to = Long.MAX_VALUE)
-    private long mLimitBytes = Long.MAX_VALUE;
+    private long mLimitDuration = Integer.MAX_VALUE;
+    private long mLimitBytes = Integer.MAX_VALUE;
 
-    public VideoCameraWrapper(@NonNull Context context) {
+    public VideoCameraWrapper(Context context) {
         super(context);
     }
 
     /**
      * Currently value 0 means low quality, suitable for MMS messages, and  value 1 means high quality.
+     *
+     * @param quality should be 0 or 1.
      */
     public VideoCameraWrapper quality(@IntRange(from = 0, to = 1) int quality) {
         this.mQuality = quality;
@@ -50,16 +48,20 @@ public class VideoCameraWrapper extends BasicCameraWrapper<VideoCameraWrapper> {
 
     /**
      * Specify the maximum allowed recording duration in seconds.
+     *
+     * @param duration the maximum number of seconds.
      */
-    public VideoCameraWrapper limitDuration(@IntRange(from = 1, to = Long.MAX_VALUE) long duration) {
+    public VideoCameraWrapper limitDuration(@IntRange(from = 1) long duration) {
         this.mLimitDuration = duration;
         return this;
     }
 
     /**
      * Specify the maximum allowed size.
+     *
+     * @param bytes the size of the byte.
      */
-    public VideoCameraWrapper limitBytes(@IntRange(from = 1, to = Long.MAX_VALUE) long bytes) {
+    public VideoCameraWrapper limitBytes(@IntRange(from = 1) long bytes) {
         this.mLimitBytes = bytes;
         return this;
     }
@@ -68,7 +70,6 @@ public class VideoCameraWrapper extends BasicCameraWrapper<VideoCameraWrapper> {
         CameraActivity.sResult = mResult;
         CameraActivity.sCancel = mCancel;
         Intent intent = new Intent(mContext, CameraActivity.class);
-        intent.putExtra(Album.KEY_INPUT_REQUEST_CODE, mRequestCode);
 
         intent.putExtra(Album.KEY_INPUT_FUNCTION, Album.FUNCTION_CAMERA_VIDEO);
         intent.putExtra(Album.KEY_INPUT_FILE_PATH, mFilePath);

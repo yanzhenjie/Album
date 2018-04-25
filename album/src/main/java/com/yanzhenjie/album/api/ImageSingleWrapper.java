@@ -1,5 +1,5 @@
 /*
- * Copyright © Yan Zhenjie. All Rights Reserved
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,10 @@ package com.yanzhenjie.album.api;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
-import com.yanzhenjie.album.ui.AlbumActivity;
+import com.yanzhenjie.album.app.album.AlbumActivity;
 
 import java.util.ArrayList;
 
@@ -30,18 +29,17 @@ import java.util.ArrayList;
  */
 public final class ImageSingleWrapper extends BasicChoiceWrapper<ImageSingleWrapper, ArrayList<AlbumFile>, String, AlbumFile> {
 
-    public ImageSingleWrapper(@NonNull Context context) {
+    public ImageSingleWrapper(Context context) {
         super(context);
     }
 
     @Override
     public void start() {
-        AlbumActivity.mSizeFilter = mSizeFilter;
-        AlbumActivity.mMimeFilter = mMimeTypeFilter;
+        AlbumActivity.sSizeFilter = mSizeFilter;
+        AlbumActivity.sMimeFilter = mMimeTypeFilter;
         AlbumActivity.sResult = mResult;
         AlbumActivity.sCancel = mCancel;
         Intent intent = new Intent(mContext, AlbumActivity.class);
-        intent.putExtra(Album.KEY_INPUT_REQUEST_CODE, mRequestCode);
         intent.putExtra(Album.KEY_INPUT_WIDGET, mWidget);
 
         intent.putExtra(Album.KEY_INPUT_FUNCTION, Album.FUNCTION_CHOICE_IMAGE);

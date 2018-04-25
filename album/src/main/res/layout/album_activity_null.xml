@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017 Yan Zhenjie.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Album.MatchParent"
+    android:background="@color/albumPageLight">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        style="@style/Album.AppBar.General">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/Album.Toolbar.Dark" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        style="@style/Album.MatchParent"
+        android:layout_below="@+id/app_bar_layout"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_message"
+            style="@style/Album.WrapContent"
+            android:textColor="@color/albumFontHint" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_camera_image"
+            style="@style/Album.Button.WrapContent"
+            android:layout_marginTop="@dimen/album_dp_15"
+            android:drawableLeft="@drawable/album_ic_image_camera_white"
+            android:drawablePadding="@dimen/album_dp_6"
+            android:drawableStart="@drawable/album_ic_image_camera_white"
+            android:gravity="center"
+            android:text="@string/album_camera_image_capture"
+            android:textColor="@color/albumFontLight" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_camera_video"
+            style="@style/Album.Button.WrapContent"
+            android:layout_marginTop="@dimen/album_dp_15"
+            android:drawableLeft="@drawable/album_ic_video_camera_white"
+            android:drawablePadding="@dimen/album_dp_6"
+            android:drawableStart="@drawable/album_ic_video_camera_white"
+            android:gravity="center"
+            android:text="@string/album_camera_video_capture"
+            android:textColor="@color/albumFontLight" />
+
+    </LinearLayout>
+</RelativeLayout>

@@ -1,5 +1,5 @@
 /*
- * Copyright © Yan Zhenjie. All Rights Reserved
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,9 @@ package com.yanzhenjie.album.api;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 
 import com.yanzhenjie.album.Album;
-import com.yanzhenjie.album.ui.CameraActivity;
+import com.yanzhenjie.album.app.camera.CameraActivity;
 
 /**
  * <p>Camera wrapper.</p>
@@ -28,7 +27,7 @@ import com.yanzhenjie.album.ui.CameraActivity;
  */
 public class ImageCameraWrapper extends BasicCameraWrapper<ImageCameraWrapper> {
 
-    public ImageCameraWrapper(@NonNull Context context) {
+    public ImageCameraWrapper(Context context) {
         super(context);
     }
 
@@ -36,7 +35,6 @@ public class ImageCameraWrapper extends BasicCameraWrapper<ImageCameraWrapper> {
         CameraActivity.sResult = mResult;
         CameraActivity.sCancel = mCancel;
         Intent intent = new Intent(mContext, CameraActivity.class);
-        intent.putExtra(Album.KEY_INPUT_REQUEST_CODE, mRequestCode);
 
         intent.putExtra(Album.KEY_INPUT_FUNCTION, Album.FUNCTION_CAMERA_IMAGE);
         intent.putExtra(Album.KEY_INPUT_FILE_PATH, mFilePath);

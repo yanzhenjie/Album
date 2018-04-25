@@ -1,5 +1,5 @@
 /*
- * Copyright © Yan Zhenjie. All Rights Reserved
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,8 @@ import android.content.Intent;
 
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
-import com.yanzhenjie.album.ui.GalleryAlbumActivity;
+import com.yanzhenjie.album.app.gallery.GalleryActivity;
+import com.yanzhenjie.album.app.gallery.GalleryAlbumActivity;
 
 /**
  * <p>Gallery wrapper.</p>
@@ -36,13 +37,13 @@ public class GalleryAlbumWrapper extends BasicGalleryWrapper<GalleryAlbumWrapper
     public void start() {
         GalleryAlbumActivity.sResult = mResult;
         GalleryAlbumActivity.sCancel = mCancel;
+        GalleryAlbumActivity.sClick = mItemClick;
+        GalleryAlbumActivity.sLongClick = mItemLongClick;
         Intent intent = new Intent(mContext, GalleryAlbumActivity.class);
-        intent.putExtra(Album.KEY_INPUT_REQUEST_CODE, mRequestCode);
         intent.putExtra(Album.KEY_INPUT_WIDGET, mWidget);
         intent.putParcelableArrayListExtra(Album.KEY_INPUT_CHECKED_LIST, mChecked);
         intent.putExtra(Album.KEY_INPUT_CURRENT_POSITION, mCurrentPosition);
         intent.putExtra(Album.KEY_INPUT_GALLERY_CHECKABLE, mCheckable);
-        intent.putExtra(Album.KEY_INPUT_NAVIGATION_ALPHA, mNavigationAlpha);
         mContext.startActivity(intent);
     }
 }

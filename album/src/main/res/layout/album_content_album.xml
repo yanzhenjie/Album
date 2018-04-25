@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017 Yan Zhenjie.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        style="@style/Album.WrapContent.WidthMatchParent"
+        android:layout_below="@id/app_bar_layout" />
+
+    <RelativeLayout
+        style="@style/Album.MatchParent.SheetBottom"
+        android:layout_alignParentBottom="true"
+        android:background="@color/albumSheetBottom">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_switch_dir"
+            style="@style/Album.TextButton.WrapContent.SheetBottom"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:drawableEnd="@drawable/album_abc_spinner_white"
+            android:drawableRight="@drawable/album_abc_spinner_white" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_preview"
+            style="@style/Album.TextButton.WrapContent.SheetBottom"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:drawableLeft="@drawable/album_ic_eye_white"
+            android:drawableStart="@drawable/album_ic_eye_white" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_loading"
+        style="@style/Album.MatchParent"
+        android:layout_below="@id/app_bar_layout"
+        android:background="@color/albumPageLight"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <com.yanzhenjie.album.widget.ColorProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/Album.Progress.Loading" />
+
+        <TextView
+            style="@style/Album.WrapContent"
+            android:layout_marginLeft="@dimen/album_dp_20"
+            android:layout_marginStart="@dimen/album_dp_20"
+            android:text="@string/album_loading"
+            android:textColor="@color/albumFontHint"
+            android:textSize="@dimen/album_sp_16" />
+
+    </LinearLayout>
+</merge>

@@ -7,30 +7,17 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-
-        compileOptions {
-            sourceCompatibility JavaVersion.VERSION_1_7
-            targetCompatibility JavaVersion.VERSION_1_7
-        }
     }
 
-    resourcePrefix 'album_'
+    resourcePrefix 'album'
 }
 
 dependencies {
-    testCompile rootProject.ext.dependencies.junit
-    androidTestCompile(rootProject.ext.dependencies.expressoCore, {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-
-    compile rootProject.ext.dependencies.appCompat
-    compile rootProject.ext.dependencies.design
-    compile rootProject.ext.dependencies.recyclerView
-    compile rootProject.ext.dependencies.cardView
-    compile rootProject.ext.dependencies.fragment
-    compile rootProject.ext.dependencies.mediaScanner
-    compile rootProject.ext.dependencies.loading
-    compile rootProject.ext.dependencies.statusView
+    implementation rootProject.ext.dependencies.appCompat
+    implementation rootProject.ext.dependencies.design
+    implementation rootProject.ext.dependencies.recyclerView
+    implementation rootProject.ext.dependencies.cardView
+    api rootProject.ext.dependencies.mediaScanner
 }
 
-apply from: "https://github.com/yanzhenjie/bintray/blob/master/maven.gradle?raw=true"
+apply from: 'https://raw.githubusercontent.com/yanzhenjie/bintray/master/maven.gradle'

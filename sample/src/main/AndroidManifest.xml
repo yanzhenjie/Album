@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-    Copyright 2017 Yan Zhenjie
+<?xml version="1.0" encoding="utf-8"?><!--
+    Copyright 2017 Yan Zhenjie.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -14,16 +13,15 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yanzhenjie.album.sample">
 
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".Application"
@@ -32,52 +30,61 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Album.AppTheme">
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme">
+            android:screenOrientation="portrait"
+            android:theme="@style/Album.AppTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".feature.CameraActivity"
+            android:name=".app.CameraActivity"
             android:label="@string/title_camera"
-            android:theme="@style/AppTheme"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Album.AppTheme" />
 
         <activity
-            android:name=".feature.ImageActivity"
+            android:name=".app.ImageActivity"
             android:label="@string/title_image_select"
-            android:theme="@style/AppTheme"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Album.AppTheme" />
 
         <activity
-            android:name=".feature.VideoActivity"
+            android:name=".app.VideoActivity"
             android:label="@string/title_video_select"
-            android:theme="@style/AppTheme"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Album.AppTheme" />
 
         <activity
-            android:name=".feature.AlbumActivity"
+            android:name=".app.AlbumActivity"
             android:label="@string/title_album_select"
-            android:theme="@style/AppTheme"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Album.AppTheme" />
 
         <activity
-            android:name=".feature.AlbumUIActivity"
+            android:name=".app.DefineStyleActivity"
             android:label="@string/title_album_select"
-            android:theme="@style/AppTheme"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Album.AppTheme" />
 
         <activity
-            android:name=".feature.GalleryActivity"
+            android:name=".app.GalleryActivity"
             android:label="@string/title_gallery"
-            android:theme="@style/AppTheme"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Album.AppTheme" />
 
         <activity
-            android:name=".feature.AlbumFilterActivity"
+            android:name=".app.AlbumFilterActivity"
             android:label="@string/title_album_select"
-            android:theme="@style/AppTheme"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Album.AppTheme" />
     </application>
 
 </manifest>

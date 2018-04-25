@@ -1,5 +1,5 @@
 /*
- * Copyright © Yan Zhenjie. All Rights Reserved
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 package com.yanzhenjie.album;
 
 import android.content.Context;
-
-import com.yanzhenjie.album.task.DefaultAlbumLoader;
 
 import java.util.Locale;
 
@@ -38,10 +36,8 @@ public class AlbumConfig {
     private Locale mLocale;
 
     private AlbumConfig(Builder builder) {
-        this.mLoader = builder.mLoader == null ?
-                DefaultAlbumLoader.getInstance() : builder.mLoader;
-        this.mLocale = builder.mLocale == null ?
-                Locale.getDefault() : builder.mLocale;
+        this.mLoader = builder.mLoader == null ? AlbumLoader.DEFAULT : builder.mLoader;
+        this.mLocale = builder.mLocale == null ? Locale.getDefault() : builder.mLocale;
     }
 
     /**

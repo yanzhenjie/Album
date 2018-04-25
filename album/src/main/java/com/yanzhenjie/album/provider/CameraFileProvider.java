@@ -1,5 +1,5 @@
 /*
- * Copyright © Yan Zhenjie. All Rights Reserved
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import android.content.Context;
 import android.support.v4.content.FileProvider;
 
 /**
- * <p>Defined for the camera.</p>
+ * <p>For external access to files.</p>
  * Created by Yan Zhenjie on 2017/3/31.
  */
 public class CameraFileProvider extends FileProvider {
@@ -30,8 +30,8 @@ public class CameraFileProvider extends FileProvider {
      * @param context context.
      * @return provider.
      */
-    public static String getFileProviderName(Context context) {
-        return context.getPackageName() + ".album.camera.provider";
+    public static String getProviderName(Context context) {
+        return context.getPackageName() + ".app.file.provider";
     }
 
 }

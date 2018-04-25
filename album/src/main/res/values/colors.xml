@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Copyright 2017 Yan Zhenjie
+    Copyright 2017 Yan Zhenjie.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -15,23 +15,21 @@
     limitations under the License.
 -->
 <resources>
+    <color name="albumColorPrimary">#2196F3</color>
+    <color name="albumColorPrimaryDark">#1E88E5</color>
+    <color name="albumColorPrimaryBlack">#2B2B2B</color>
 
-    <color name="album_White">#FFF</color>
-    <color name="album_WhiteGray">#E0E0E0</color>
-    <color name="album_Transparent">#00000000</color>
+    <color name="albumPageLight">#FFF</color>
+    <color name="albumTransparent">#0000</color>
 
-    <color name="album_FontHint">#808080</color>
-    <color name="album_FontLight">#FFF</color>
-    <color name="album_FontDark">#333</color>
+    <color name="albumFontHint">#808080</color>
+    <color name="albumFontLight">#FFF</color>
+    <color name="albumFontDark">#333</color>
 
-    <color name="album_ErrorLoad">#2B2B2B</color>
-    <color name="album_IconDark">#333</color>
+    <color name="albumIconDark">#333</color>
+    <color name="albumLoadingDark">#333</color>
+    <color name="albumSelectorNormal">#E0E0E0</color>
 
-    <color name="album_ColorPrimary">#2196F3</color>
-    <color name="album_ColorPrimaryDark">#1E88E5</color>
-    <color name="album_ColorPrimaryBlack">#FF2B2B2B</color>
-
-    <color name="album_SheetBackground">#CC2B2B2B</color>
-
-    <color name="album_ItemLayer">#CC2B2B2B</color>
+    <color name="albumSheetBottom">#992B2B2B</color>
+    <color name="albumSheetLayer">#EE2B2B2B</color>
 </resources>

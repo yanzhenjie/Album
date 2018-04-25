@@ -1,5 +1,5 @@
 /*
- * Copyright © Yan Zhenjie. All Rights Reserved
+ * Copyright 2016 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package com.yanzhenjie.album.sample;
 
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumConfig;
-import com.yanzhenjie.album.sample.load.GlideAlbumLoader;
 
 import java.util.Locale;
 
@@ -35,11 +34,10 @@ public class Application extends android.app.Application {
         if (instance == null) {
             instance = this;
 
-            Album.initialize(
-                    AlbumConfig.newBuilder(instance)
-                            .setAlbumLoader(new GlideAlbumLoader()) // This is not necessary.
-                            .setLocale(Locale.getDefault())
-                            .build()
+            Album.initialize(AlbumConfig.newBuilder(this)
+                    .setAlbumLoader(new MediaLoader())
+                    .setLocale(Locale.getDefault())
+                    .build()
             );
         }
     }

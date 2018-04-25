@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Copyright 2017 Yan Zhenjie
+    Copyright 2017 Yan Zhenjie.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,6 +16,14 @@
 -->
 <resources>
     <string name="app_name">Album</string>
+
+    <string name="btn_function_camera">Camera</string>
+    <string name="btn_function_album">Pictures and Videos</string>
+    <string name="btn_function_picture">Only Pictures</string>
+    <string name="btn_function_video">Only Videos</string>
+    <string name="btn_function_gallery">Gallery</string>
+    <string name="btn_function_change_style">Change Style</string>
+    <string name="btn_function_filter">Filter</string>
 
     <string name="btn_plus">+</string>
 
