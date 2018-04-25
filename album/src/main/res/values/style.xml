@@ -140,6 +140,7 @@
     <style name="Album.Dialog.Folder">
         <item name="android:windowBackground">@color/albumTransparent</item>
         <item name="android:windowIsFloating">false</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <style name="Album.Progress" parent="Widget.AppCompat.ProgressBar" />
