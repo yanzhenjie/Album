@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 Yan Zhenjie.
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.album.sample.feature;
+package com.yanzhenjie.album.sample.app;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,7 +30,6 @@ import android.widget.Toast;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.sample.R;
-import com.yanzhenjie.album.task.DefaultAlbumLoader;
 
 /**
  * Created by YanZhenjie on 2017/8/17.
@@ -58,19 +57,19 @@ public class CameraActivity extends AppCompatActivity {
         Album.camera(this)
                 .image()
 //                .filePath()
-                .requestCode(2)
                 .onResult(new Action<String>() {
                     @Override
-                    public void onAction(int requestCode, @NonNull String result) {
+                    public void onAction(@NonNull String result) {
                         mTextView.setText(result);
 
-                        DefaultAlbumLoader.getInstance()
-                                .loadImage(mImageView, result, 720, 1280);
+                        Album.getAlbumConfig()
+                                .getAlbumLoader()
+                                .load(mImageView, result);
                     }
                 })
                 .onCancel(new Action<String>() {
                     @Override
-                    public void onAction(int requestCode, @NonNull String result) {
+                    public void onAction(@NonNull String result) {
                         Toast.makeText(CameraActivity.this, R.string.canceled, Toast.LENGTH_LONG).show();
                     }
                 })
@@ -81,22 +80,22 @@ public class CameraActivity extends AppCompatActivity {
         Album.camera(this)
                 .video()
 //                .filePath()
-                .requestCode(3)
                 .quality(1)
                 .limitDuration(Integer.MAX_VALUE)
                 .limitBytes(Integer.MAX_VALUE)
                 .onResult(new Action<String>() {
                     @Override
-                    public void onAction(int requestCode, @NonNull String result) {
+                    public void onAction(@NonNull String result) {
                         mTextView.setText(result);
 
-                        DefaultAlbumLoader.getInstance()
-                                .loadVideo(mImageView, result, 720, 1280);
+                        Album.getAlbumConfig()
+                                .getAlbumLoader()
+                                .load(mImageView, result);
                     }
                 })
                 .onCancel(new Action<String>() {
                     @Override
-                    public void onAction(int requestCode, @NonNull String result) {
+                    public void onAction(@NonNull String result) {
                         Toast.makeText(CameraActivity.this, R.string.canceled, Toast.LENGTH_LONG).show();
                     }
                 })

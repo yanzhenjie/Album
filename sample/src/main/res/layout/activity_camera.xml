@@ -14,29 +14,28 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/MatchParent">
+    style="@style/Album.MatchParent">
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar" />
 
     <LinearLayout
-        style="@style/MatchParent"
+        style="@style/Album.MatchParent"
         android:orientation="vertical"
-        android:padding="@dimen/dp_10"
+        android:padding="@dimen/album_dp_10"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <TextView
             android:id="@+id/tv_message"
-            style="@style/WrapContent.WidthMatchParent"
-            android:layout_margin="@dimen/dp_10"/>
+            style="@style/Album.WrapContent.WidthMatchParent"
+            android:layout_margin="@dimen/album_dp_10" />
 
         <ImageView
             android:id="@+id/image_view"
-            style="@style/MatchParent"
+            style="@style/Album.MatchParent"
             android:contentDescription="@string/app_name"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter" />
 
     </LinearLayout>
 

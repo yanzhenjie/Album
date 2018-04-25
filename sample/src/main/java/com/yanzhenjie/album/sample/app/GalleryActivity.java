@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 Yan Zhenjie.
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.album.sample.feature;
+package com.yanzhenjie.album.sample.app;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -38,24 +38,26 @@ import java.util.Collections;
 public class GalleryActivity extends AppCompatActivity {
 
     private static final String[] IMAGE_PATH_LIST = {
-            "http://i3.bbs.fd.zol-img.com.cn/t_s800x5000/g3/M04/07/0E/Cg-4V1GUurCIEoj2AAskZb1av5gAAIe1QFhxFgACyR9799.jpg",
-            "http://attimg.dospy.com/img/day_150423/20150423_bd08f826a59b7424e98eB1ij8y9YAWID.jpg",
-            "http://i2.bbs.fd.zol-img.com.cn/t_s800x5000/g3/M04/07/0E/Cg-4WFGUusyIfe_-AAnBY9FU2tsAAIe1QLiUuQACcF7472.jpg",
-            "http://attimg.dospy.com/img/day_150423/20150423_dc874eab81e679ac49b7evQ5QDh5ZAJN.jpg",
-            "http://i4.bbs.fd.zol-img.com.cn/t_s800x5000/g3/M04/07/0E/Cg-4WFGUus-IP0JPAAmdjBDYP3gAAIe1QMXheEACZ2k634.jpg",
-            "http://attimg.dospy.com/img/day_150423/20150423_8d6ea1ccfaa12e923383181z2NJoFjUU.jpg",
-            "http://i1.bbs.fd.zol-img.com.cn/t_s800x5000/g3/M05/07/0E/Cg-4WFGUutiIaJ-zAArt-GjXe2MAAIe1gAuIlYACu4Q927.jpg",
-            "http://attimg.dospy.com/img/day_150423/20150423_465ae973fe6a63d25fc795O9L3L3Mdl8.jpg",
-            "http://i4.bbs.fd.zol-img.com.cn/t_s800x5000/g4/M07/07/0E/Cg-4WVGUuuOIIoUFABDK84KlTV8AAIe8ABL3NYAEMsL854.jpg",
-            "http://attimg.dospy.com/img/day_150423/20150423_7ef133d562957e27be33aOLlEAEC31RM.jpg",
-            "http://i2.bbs.fd.zol-img.com.cn/t_s800x5000/g4/M07/07/0E/Cg-4WlGUuuiIIbzsAAoUT9aU-aIAAIe8AC2hJ4AChRn222.jpg",
-            "http://attimg.dospy.com/img/day_150423/20150423_26ff8033492435ed0ad6Q1ZzKq79H2oQ.jpg",
-            "http://i5.bbs.fd.zol-img.com.cn/t_s800x5000/g4/M07/07/0E/Cg-4WVGUuuyIXN_MAAfgzhGTg_QAAIe8AELPZAAB-Dm065.jpg",
-            "http://attimg.dospy.com/img/day_150423/20150423_9c701ead392800c28a7fE8Uu7iTUUukC.jpg",
-            "http://attimg.dospy.com/img/day_150423/20150423_ee824127f5f6784addf5vVu6JE6vJQnP.jpg",
-            "http://attimg.dospy.com/img/day_150423/20150423_6e69ca04cab3beda6248VmPZ242k9T6h.jpg",
-            "http://attimg.dospy.com/img/day_150423/20150423_71cc2e187d7820710d10bz3bj36as75j.jpg",
-            "http://attimg.dospy.com/img/day_150423/20150423_e6977d9cff8f545b7022iUwTjc591KI9.jpg"
+            "http://pic1.win4000.com/mobile/1/520d9410ebc79.jpg", "http://pic1.win4000.com/mobile/1/520d941218b04.jpg",
+            "http://wapfile.desktx.com/7681280/0925/160925tn4a5sz3at2.jpg", "http://wapfile.desktx.com/7681280/0925/160925ruuqfaqwuvx.jpg",
+            "http://wapfile.desktx.com/7681280/0925/160925a0x5knyt3ue.jpg", "http://wapfile.desktx.com/7681280/0925/160925jrfl5dnvln1.jpg",
+            "http://wapfile.desktx.com/7681280/0925/160925csx5pu2ysam.jpg", "http://wapfile.desktx.com/7681280/0925/160925m4lgeuakuc5.jpg",
+            "http://wapfile.desktx.com/7681280/0925/160925gcmbg5gycqw.jpg", "http://wapfile.desktx.com/7681280/0925/160925o0zf2pbozw1.jpg",
+            "http://wapfile.desktx.com/7681280/0925/160925danhsef1uzu.jpg", "http://wapfile.desktx.com/7681280/0925/160925y5lmcrqslm4.jpg",
+            "http://wapfile.desktx.com/7681280/0925/160925njt3dm2hlw0.jpg", "http://wapfile.desktx.com/7681280/0925/160925xgesspjxztt.jpg",
+            "http://wapfile.desktx.com/7681280/0925/160925a5dg2zsddtx.jpg", "http://wapfile.desktx.com/7681280/0925/1609252fupmrdasrp.jpg",
+            "http://wapfile.desktx.com/7681280/0925/160925lasaphesxkd.jpg", "http://wapfile.desktx.com/7681280/0925/160925ti2kged45bp.jpg",
+            "http://wapfile.desktx.com/7681280/0925/160925dsx3uyapoen.jpg", "http://wapfile.desktx.com/7681280/0925/160925largrb3p2l4.jpg",
+            "http://wapfile.desktx.com/7681280/0925/160925l0vaht45uy1.jpg", "http://wapfile.desktx.com/7681280/0925/160925054jrhaerro.jpg",
+            "http://wapfile.desktx.com/7681280/0925/1609255mlt2so5yp2.jpg", "http://wapfile.desktx.com/7681280/0925/160925bm3jmwdptie.jpg",
+            "http://wapfile.desktx.com/7681280/0925/1609251brfaryoizu.jpg", "http://wapfile.desktx.com/7681280/0925/1609254qfjkbwjlox.jpg",
+            "http://wapfile.desktx.com/7681280/0925/160925memb5c4pcnt.jpg", "http://wapfile.desktx.com/7681280/0925/160925c5i4dbhh2rh.jpg",
+            "http://wapfile.desktx.com/7681280/0925/1609254pmjqhppmah.jpg", "http://wapfile.desktx.com/7681280/0925/16092505gvkuoampz.jpg",
+            "http://wapfile.desktx.com/7681280/0925/1609254dxk3vpsrvj.jpg", "http://wapfile.desktx.com/7681280/0925/160925bgyxuik3j4y.jpg",
+            "http://wapfile.desktx.com/7681280/0925/160925jbhhtendosg.jpg", "http://wapfile.desktx.com/7681280/0925/160925knnv51uglia.jpg",
+            "http://wapfile.desktx.com/7681280/0925/160925vajxn2aqfkc.jpg", "http://wapfile.desktx.com/7681280/0925/160925xehnehy5frf.jpg",
+            "http://wapfile.desktx.com/7681280/0925/160925e2rajc4zi4k.jpg", "http://wapfile.desktx.com/7681280/0925/160925dfxg2wlarga.jpg",
+            "http://wapfile.desktx.com/7681280/0925/160925vuifhcqactt.jpg", "http://wapfile.desktx.com/7681280/0925/160925rcxiez3ikcg.jpg"
     };
 
     private Toolbar mToolbar;
@@ -83,9 +85,7 @@ public class GalleryActivity extends AppCompatActivity {
         Collections.addAll(imageList, IMAGE_PATH_LIST);
 
         Album.gallery(this)
-                .requestCode(2)
                 .checkedList(imageList)
-                .navigationAlpha(80)
                 .checkable(mCheckBox.isChecked())
                 .widget(
                         Widget.newDarkBuilder(this)
@@ -94,7 +94,7 @@ public class GalleryActivity extends AppCompatActivity {
                 )
                 .onResult(new Action<ArrayList<String>>() {
                     @Override
-                    public void onAction(int requestCode, @NonNull ArrayList<String> result) {
+                    public void onAction(@NonNull ArrayList<String> result) {
                         // TODO If it is optional, here you can accept the results of user selection.
                     }
                 })

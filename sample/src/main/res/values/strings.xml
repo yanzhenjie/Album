@@ -17,6 +17,14 @@
 <resources>
     <string name="app_name">Album</string>
 
+    <string name="btn_function_camera">Camera</string>
+    <string name="btn_function_album">Pictures and Videos</string>
+    <string name="btn_function_picture">Only Pictures</string>
+    <string name="btn_function_video">Only Videos</string>
+    <string name="btn_function_gallery">Gallery</string>
+    <string name="btn_function_change_style">Change Style</string>
+    <string name="btn_function_filter">Filter</string>
+
     <string name="btn_plus">+</string>
 
     <string name="title_camera">Camera</string>

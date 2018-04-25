@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 Yan Zhenjie.
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.album.sample.feature;
+package com.yanzhenjie.album.sample.app;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,17 +35,15 @@ import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.api.widget.Widget;
 import com.yanzhenjie.album.impl.OnItemClickListener;
 import com.yanzhenjie.album.sample.R;
-import com.yanzhenjie.album.util.AlbumUtils;
-import com.yanzhenjie.album.util.DisplayUtils;
+import com.yanzhenjie.album.widget.divider.Api21ItemDivider;
 import com.yanzhenjie.album.widget.divider.Divider;
-import com.yanzhenjie.statusview.StatusUtils;
 
 import java.util.ArrayList;
 
 /**
  * Created by YanZhenjie on 2017/8/17.
  */
-public class AlbumUIActivity extends AppCompatActivity {
+public class DefineStyleActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private TextView mTvMessage;
@@ -57,7 +54,6 @@ public class AlbumUIActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatusUtils.setStatusBarColor(this, Color.WHITE);
         setContentView(R.layout.activity_album_ui);
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -65,24 +61,16 @@ public class AlbumUIActivity extends AppCompatActivity {
         mTvMessage = findViewById(R.id.tv_message);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        Divider divider = AlbumUtils.getDivider(Color.WHITE);
+        Divider divider = new Api21ItemDivider(Color.TRANSPARENT, 10, 10);
         recyclerView.addItemDecoration(divider);
 
-        int itemSize = (DisplayUtils.sScreenWidth - (divider.getWidth() * 4)) / 3;
-        mAdapter = new Adapter(this, itemSize, new OnItemClickListener() {
+        mAdapter = new Adapter(this, new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 previewAlbum(position);
             }
         });
         recyclerView.setAdapter(mAdapter);
-
-        if (!StatusUtils.setStatusBarDarkFont(this, true)) {
-            StatusUtils.setStatusBarColor(this, ContextCompat.getColor(this, R.color.colorPrimaryBlack));
-        }
-
-        //noinspection ConstantConditions
-        AlbumUtils.setDrawableTint(mToolbar.getNavigationIcon(), ContextCompat.getColor(this, R.color.colorPrimaryBlack));
     }
 
     /**
@@ -91,7 +79,6 @@ public class AlbumUIActivity extends AppCompatActivity {
     private void selectAlbum() {
         Album.album(this)
                 .multipleChoice()
-                .requestCode(200)
                 .selectCount(6)
                 .camera(true)
                 .checkedList(mAlbumFiles)
@@ -111,7 +98,7 @@ public class AlbumUIActivity extends AppCompatActivity {
                 )
                 .onResult(new Action<ArrayList<AlbumFile>>() {
                     @Override
-                    public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
+                    public void onAction(@NonNull ArrayList<AlbumFile> result) {
                         mAlbumFiles = result;
                         mAdapter.notifyDataSetChanged(mAlbumFiles);
                         mTvMessage.setVisibility(result.size() > 0 ? View.VISIBLE : View.GONE);
@@ -119,8 +106,8 @@ public class AlbumUIActivity extends AppCompatActivity {
                 })
                 .onCancel(new Action<String>() {
                     @Override
-                    public void onAction(int requestCode, @NonNull String result) {
-                        Toast.makeText(AlbumUIActivity.this, R.string.canceled, Toast.LENGTH_LONG).show();
+                    public void onAction(@NonNull String result) {
+                        Toast.makeText(DefineStyleActivity.this, R.string.canceled, Toast.LENGTH_LONG).show();
                     }
                 })
                 .start();
@@ -152,7 +139,7 @@ public class AlbumUIActivity extends AppCompatActivity {
                     )
                     .onResult(new Action<ArrayList<AlbumFile>>() {
                         @Override
-                        public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
+                        public void onAction(@NonNull ArrayList<AlbumFile> result) {
                             mAlbumFiles = result;
                             mAdapter.notifyDataSetChanged(mAlbumFiles);
                             mTvMessage.setVisibility(result.size() > 0 ? View.VISIBLE : View.GONE);
@@ -165,11 +152,6 @@ public class AlbumUIActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_album, menu);
-        MenuItem eyeMenuItem = menu.findItem(R.id.menu_eye);
-        AlbumUtils.setDrawableTint(eyeMenuItem.getIcon(), ContextCompat.getColor(this, R.color.colorPrimaryBlack));
-
-        MenuItem albumMenuItem = menu.findItem(R.id.menu_album);
-        AlbumUtils.setDrawableTint(albumMenuItem.getIcon(), ContextCompat.getColor(this, R.color.colorPrimaryBlack));
         return true;
     }
 

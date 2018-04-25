@@ -17,26 +17,24 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/MatchParent">
+    style="@style/Album.MatchParent">
 
     <include layout="@layout/toolbar"/>
 
     <LinearLayout
-        style="@style/MatchParent"
+        style="@style/Album.MatchParent"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_gallery"
-            style="@style/Button.Primary.WrapContent.WidthMatchParent"
-            android:minHeight="@dimen/dp_100"
-            android:text="@string/btn_gallery_preview"
-            android:textSize="@dimen/sp_20"/>
+            style="@style/Album.Button.Main"
+            android:text="@string/btn_gallery_preview"/>
 
         <android.support.v7.widget.AppCompatCheckBox
             android:id="@+id/checkbox"
-            style="@style/WrapContent"
-            android:layout_marginTop="@dimen/dp_10"
+            style="@style/Album.WrapContent"
+            android:layout_marginTop="@dimen/album_dp_10"
             android:checked="true"
             android:text="@string/checkable"/>
 

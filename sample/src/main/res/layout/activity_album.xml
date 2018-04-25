@@ -15,7 +15,7 @@
     limitations under the License.
 -->
 <android.support.design.widget.CoordinatorLayout
-    style="@style/MatchParent">
+    style="@style/Album.MatchParent">
 
     <include layout="@layout/toolbar"/>
 

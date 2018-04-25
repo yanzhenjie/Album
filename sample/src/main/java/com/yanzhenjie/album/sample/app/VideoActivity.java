@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 Yan Zhenjie.
+ * Copyright 2017 Yan Zhenjie.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.album.sample.feature;
+package com.yanzhenjie.album.sample.app;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -35,8 +35,7 @@ import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.api.widget.Widget;
 import com.yanzhenjie.album.impl.OnItemClickListener;
 import com.yanzhenjie.album.sample.R;
-import com.yanzhenjie.album.util.AlbumUtils;
-import com.yanzhenjie.album.util.DisplayUtils;
+import com.yanzhenjie.album.widget.divider.Api21ItemDivider;
 import com.yanzhenjie.album.widget.divider.Divider;
 
 import java.util.ArrayList;
@@ -62,11 +61,10 @@ public class VideoActivity extends AppCompatActivity {
         mTvMessage = findViewById(R.id.tv_message);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        Divider divider = AlbumUtils.getDivider(Color.WHITE);
+        Divider divider = new Api21ItemDivider(Color.TRANSPARENT, 10, 10);
         recyclerView.addItemDecoration(divider);
 
-        int itemSize = (DisplayUtils.sScreenWidth - (divider.getWidth() * 4)) / 3;
-        mAdapter = new Adapter(this, itemSize, new OnItemClickListener() {
+        mAdapter = new Adapter(this, new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 previewVideo(position);
@@ -81,7 +79,6 @@ public class VideoActivity extends AppCompatActivity {
     private void selectVideo() {
         Album.video(this)
                 .multipleChoice()
-                .requestCode(200)
                 .columnCount(2)
                 .selectCount(6)
                 .camera(true)
@@ -93,7 +90,7 @@ public class VideoActivity extends AppCompatActivity {
                 )
                 .onResult(new Action<ArrayList<AlbumFile>>() {
                     @Override
-                    public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
+                    public void onAction(@NonNull ArrayList<AlbumFile> result) {
                         mAlbumFiles = result;
                         mAdapter.notifyDataSetChanged(mAlbumFiles);
                         mTvMessage.setVisibility(result.size() > 0 ? View.VISIBLE : View.GONE);
@@ -101,7 +98,7 @@ public class VideoActivity extends AppCompatActivity {
                 })
                 .onCancel(new Action<String>() {
                     @Override
-                    public void onAction(int requestCode, @NonNull String result) {
+                    public void onAction(@NonNull String result) {
                         Toast.makeText(VideoActivity.this, R.string.canceled, Toast.LENGTH_LONG).show();
                     }
                 })
@@ -126,7 +123,7 @@ public class VideoActivity extends AppCompatActivity {
                     )
                     .onResult(new Action<ArrayList<AlbumFile>>() {
                         @Override
-                        public void onAction(int requestCode, @NonNull ArrayList<AlbumFile> result) {
+                        public void onAction(@NonNull ArrayList<AlbumFile> result) {
                             mAlbumFiles = result;
                             mAdapter.notifyDataSetChanged(mAlbumFiles);
                             mTvMessage.setVisibility(result.size() > 0 ? View.VISIBLE : View.GONE);

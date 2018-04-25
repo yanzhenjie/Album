@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     Copyright 2017 Yan Zhenjie.
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,23 +13,10 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<android.support.design.widget.CoordinatorLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/MatchParent">
+<android.support.design.widget.CoordinatorLayout style="@style/Album.MatchParent">
 
-    <android.support.design.widget.AppBarLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        style="@style/WrapContent.WidthMatchParent">
+    <include layout="@layout/toolbar" />
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            style="@style/Toolbar"
-            android:background="@color/colorWhite"
-            app:subtitleTextColor="@color/colorPrimaryBlack"
-            app:titleTextColor="@color/colorPrimaryBlack"/>
-
-    </android.support.design.widget.AppBarLayout>
-
-    <include layout="@layout/activity_list_content"/>
+    <include layout="@layout/activity_list_content" />
 
 </android.support.design.widget.CoordinatorLayout>

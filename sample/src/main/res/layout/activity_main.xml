@@ -14,75 +14,61 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/MatchParent">
+    style="@style/Album.MatchParent">
 
-    <include layout="@layout/toolbar_scroll"/>
+    <include layout="@layout/toolbar_scroll" />
 
     <android.support.v4.widget.NestedScrollView
-        style="@style/album_MatchParent"
+        style="@style/Album.MatchParent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            style="@style/WrapContent.WidthMatchParent"
+            style="@style/Album.WrapContent.WidthMatchParent"
             android:orientation="vertical">
 
-            <android.support.v7.widget.AppCompatImageButton
+            <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_camera"
-                style="@style/Button.Primary.WrapContent.WidthMatchParent"
-                android:minHeight="@dimen/dp_90"
-                android:src="@drawable/btn_camera_photo_white"/>
+                style="@style/Album.Button.Main"
+                android:text="@string/btn_function_camera" />
 
             <LinearLayout
-                style="@style/WrapContent.WidthMatchParent"
+                style="@style/Album.WrapContent.WidthMatchParent"
                 android:orientation="horizontal">
 
-                <android.support.v7.widget.AppCompatImageButton
+                <android.support.v7.widget.AppCompatButton
                     android:id="@+id/btn_image"
-                    style="@style/Button.Primary.WrapContent.WidthMatchParent"
+                    style="@style/Album.Button.Main"
                     android:layout_weight="1"
-                    android:contentDescription="@string/app_name"
-                    android:minHeight="@dimen/dp_90"
-                    android:src="@drawable/btn_image_white"/>
+                    android:text="@string/btn_function_picture" />
 
-                <android.support.v7.widget.AppCompatImageButton
+                <android.support.v7.widget.AppCompatButton
                     android:id="@+id/btn_video"
-                    style="@style/Button.Primary.WrapContent.WidthMatchParent"
+                    style="@style/Album.Button.Main"
                     android:layout_weight="1"
-                    android:contentDescription="@string/app_name"
-                    android:minHeight="@dimen/dp_90"
-                    android:src="@drawable/btn_video_white"/>
+                    android:text="@string/btn_function_video" />
             </LinearLayout>
 
-            <ImageButton
+            <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_album"
-                style="@style/Button.Primary.WrapContent.WidthMatchParent"
-                android:contentDescription="@string/app_name"
-                android:minHeight="@dimen/dp_90"
-                android:src="@drawable/btn_album"/>
+                style="@style/Album.Button.Main"
+                android:text="@string/btn_function_album" />
 
-            <ImageButton
+            <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_gallery"
-                style="@style/Button.Primary.WrapContent.WidthMatchParent"
-                android:contentDescription="@string/app_name"
-                android:minHeight="@dimen/dp_90"
-                android:src="@drawable/btn_gallery"/>
+                style="@style/Album.Button.Main"
+                android:text="@string/btn_function_gallery" />
 
-            <ImageButton
+            <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_chang_ui"
-                style="@style/Button.Primary.WrapContent.WidthMatchParent"
-                android:contentDescription="@string/app_name"
-                android:minHeight="@dimen/dp_90"
-                android:src="@drawable/btn_change_ui"/>
+                style="@style/Album.Button.Main"
+                android:text="@string/btn_function_change_style" />
 
-            <ImageButton
+            <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_filter"
-                style="@style/Button.Primary.WrapContent.WidthMatchParent"
-                android:contentDescription="@string/app_name"
-                android:minHeight="@dimen/dp_90"
-                android:src="@drawable/btn_filter"/>
+                style="@style/Album.Button.Main"
+                android:text="@string/btn_function_filter" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
