@@ -29,7 +29,7 @@ import java.util.ArrayList;
  * <p>Album wrapper.</p>
  * Created by yanzhenjie on 17-3-29.
  */
-public class AlbumSingleWrapper extends BasicChoiceVideoWrapper<AlbumSingleWrapper, ArrayList<AlbumFile>, String, AlbumFile> {
+public class AlbumSingleWrapper extends BasicChoiceAlbumWrapper<AlbumSingleWrapper, ArrayList<AlbumFile>, String, AlbumFile> {
 
     private Filter<Long> mDurationFilter;
 

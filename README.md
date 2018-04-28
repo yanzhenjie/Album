@@ -23,7 +23,7 @@ Effect on landscape screen:
 ## Download
 * Gradle：
 ```groovy
-compile 'com.yanzhenjie:album:2.1.0'
+compile 'com.yanzhenjie:album:2.1.1'
 ```
 
 * [Download source code](https://github.com/yanzhenjie/Album/releases/latest)

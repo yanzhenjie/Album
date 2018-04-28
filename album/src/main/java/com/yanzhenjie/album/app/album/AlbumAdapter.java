@@ -109,7 +109,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
             case TYPE_IMAGE: {
                 ImageHolder imageViewHolder = new ImageHolder(mInflater.inflate(R.layout.album_item_content_image, parent, false),
-                        hasCamera, mChoiceMode,
+                        hasCamera,
                         mItemClickListener,
                         mCheckedClickListener);
                 if (mChoiceMode == Album.MODE_MULTIPLE) {
@@ -123,7 +123,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
             case TYPE_VIDEO: {
                 VideoHolder videoViewHolder = new VideoHolder(mInflater.inflate(R.layout.album_item_content_video, parent, false),
-                        hasCamera, mChoiceMode,
+                        hasCamera,
                         mItemClickListener,
                         mCheckedClickListener);
                 if (mChoiceMode == Album.MODE_MULTIPLE) {
@@ -185,7 +185,6 @@ public class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private static class ImageHolder extends MediaViewHolder implements View.OnClickListener {
 
         private final boolean hasCamera;
-        private final int mChoiceMode;
 
         private final OnItemClickListener mItemClickListener;
         private final OnCheckedClickListener mCheckedClickListener;
@@ -195,11 +194,10 @@ public class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         private FrameLayout mLayoutLayer;
 
-        ImageHolder(View itemView, boolean hasCamera, int choiceMode,
+        ImageHolder(View itemView, boolean hasCamera,
                     OnItemClickListener itemClickListener, OnCheckedClickListener checkedClickListener) {
             super(itemView);
             this.hasCamera = hasCamera;
-            this.mChoiceMode = choiceMode;
             this.mItemClickListener = itemClickListener;
             this.mCheckedClickListener = checkedClickListener;
 
@@ -225,18 +223,8 @@ public class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         @Override
         public void onClick(View v) {
             if (v == itemView) {
-                switch (mChoiceMode) {
-                    case Album.MODE_SINGLE: {
-                        int camera = hasCamera ? 1 : 0;
-                        mCheckedClickListener.onCheckedClick(mCheckBox, getAdapterPosition() - camera);
-                        break;
-                    }
-                    case Album.MODE_MULTIPLE: {
-                        int camera = hasCamera ? 1 : 0;
-                        mItemClickListener.onItemClick(v, getAdapterPosition() - camera);
-                        break;
-                    }
-                }
+                int camera = hasCamera ? 1 : 0;
+                mItemClickListener.onItemClick(v, getAdapterPosition() - camera);
             } else if (v == mCheckBox) {
                 int camera = hasCamera ? 1 : 0;
                 mCheckedClickListener.onCheckedClick(mCheckBox, getAdapterPosition() - camera);
@@ -250,7 +238,6 @@ public class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private static class VideoHolder extends MediaViewHolder implements View.OnClickListener {
 
         private final boolean hasCamera;
-        private final int mChoiceMode;
 
         private final OnItemClickListener mItemClickListener;
         private final OnCheckedClickListener mCheckedClickListener;
@@ -261,11 +248,10 @@ public class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         private FrameLayout mLayoutLayer;
 
-        VideoHolder(View itemView, boolean hasCamera, int choiceMode,
+        VideoHolder(View itemView, boolean hasCamera,
                     OnItemClickListener itemClickListener, OnCheckedClickListener checkedClickListener) {
             super(itemView);
             this.hasCamera = hasCamera;
-            this.mChoiceMode = choiceMode;
             this.mItemClickListener = itemClickListener;
             this.mCheckedClickListener = checkedClickListener;
 
@@ -291,18 +277,8 @@ public class AlbumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         @Override
         public void onClick(View v) {
             if (v == itemView) {
-                switch (mChoiceMode) {
-                    case Album.MODE_SINGLE: {
-                        int camera = hasCamera ? 1 : 0;
-                        mCheckedClickListener.onCheckedClick(mCheckBox, getAdapterPosition() - camera);
-                        break;
-                    }
-                    case Album.MODE_MULTIPLE: {
-                        int camera = hasCamera ? 1 : 0;
-                        mItemClickListener.onItemClick(v, getAdapterPosition() - camera);
-                        break;
-                    }
-                }
+                int camera = hasCamera ? 1 : 0;
+                mItemClickListener.onItemClick(v, getAdapterPosition() - camera);
             } else if (v == mCheckBox) {
                 int camera = hasCamera ? 1 : 0;
                 mCheckedClickListener.onCheckedClick(mCheckBox, getAdapterPosition() - camera);
