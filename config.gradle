@@ -14,12 +14,12 @@ ext {
             minSdkVersion    : 14,
             targetSdkVersion : 27,
 
-            versionCode      : 24,
-            versionName      : "2.1.0",
+            versionCode      : 25,
+            versionName      : "2.1.1",
     ]
 
     bintray = [
-            version       : "2.1.0",
+            version       : "2.1.1",
 
             siteUrl       : 'https://github.com/yanzhenjie/Album',
             gitUrl        : 'git@github.com:yanzhenjie/Album.git',
@@ -51,7 +51,7 @@ ext {
             recyclerView: 'com.android.support:recyclerview-v7:27.1.1',
             cardView    : 'com.android.support:cardview-v7:27.1.1',
 
-            album       : 'com.yanzhenjie:album:2.1.0',
+            album       : 'com.yanzhenjie:album:2.1.1',
             glide       : 'com.github.bumptech.glide:glide:3.8.0'
     ]
 }
