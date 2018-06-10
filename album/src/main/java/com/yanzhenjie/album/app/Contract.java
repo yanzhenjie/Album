@@ -118,6 +118,13 @@ public final class Contract {
         public abstract void bindAlbumFolder(AlbumFolder albumFolder);
 
         /**
+         * Notify item was inserted.
+         *
+         * @param position position of item.
+         */
+        public abstract void notifyInsertItem(int position);
+
+        /**
          * Notify item was changed.
          *
          * @param position position of item.

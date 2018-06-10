@@ -387,7 +387,7 @@ public class AlbumActivity extends BaseActivity implements
             mView.bindAlbumFolder(albumFolder);
         } else {
             albumFiles.add(0, albumFile);
-            mView.notifyItem(mHasCamera ? 1 : 0);
+            mView.notifyInsertItem(mHasCamera ? 1 : 0);
         }
 
         mCheckedList.add(albumFile);

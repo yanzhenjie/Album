@@ -192,6 +192,11 @@ class AlbumView extends Contract.AlbumView implements View.OnClickListener {
     }
 
     @Override
+    public void notifyInsertItem(int position) {
+        mAdapter.notifyItemInserted(position);
+    }
+
+    @Override
     public void notifyItem(int position) {
         mAdapter.notifyItemChanged(position);
     }
