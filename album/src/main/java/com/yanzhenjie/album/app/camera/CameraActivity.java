@@ -83,13 +83,13 @@ public class CameraActivity extends BaseActivity {
             switch (mFunction) {
                 case Album.FUNCTION_CAMERA_IMAGE: {
                     if (TextUtils.isEmpty(mCameraFilePath))
-                        mCameraFilePath = AlbumUtils.randomJPGPath();
+                        mCameraFilePath = AlbumUtils.randomJPGPath(this);
                     requestPermission(PERMISSION_TAKE_PICTURE, CODE_PERMISSION_IMAGE);
                     break;
                 }
                 case Album.FUNCTION_CAMERA_VIDEO: {
                     if (TextUtils.isEmpty(mCameraFilePath))
-                        mCameraFilePath = AlbumUtils.randomMP4Path();
+                        mCameraFilePath = AlbumUtils.randomMP4Path(this);
                     requestPermission(PERMISSION_TAKE_VIDEO, CODE_PERMISSION_VIDEO);
                     break;
                 }

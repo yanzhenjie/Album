@@ -167,11 +167,29 @@ public class AlbumUtils {
      * Generate a random jpg file path.
      *
      * @return file path.
+     *
+     * @deprecated use {@link #randomJPGPath(Context)} instead.
      */
     @NonNull
+    @Deprecated
     public static String randomJPGPath() {
         File bucket = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
         return randomJPGPath(bucket);
+    }
+
+    /**
+     * Generate a random jpg file path.
+     *
+     * @param context context.
+     *
+     * @return file path.
+     */
+    @NonNull
+    public static String randomJPGPath(Context context) {
+        if(!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            return randomJPGPath(context.getCacheDir());
+        }
+        return randomJPGPath();
     }
 
     /**
@@ -189,11 +207,29 @@ public class AlbumUtils {
      * Generate a random mp4 file path.
      *
      * @return file path.
+     *
+     * @deprecated use {@link #randomMP4Path(Context)} instead.
      */
     @NonNull
+    @Deprecated
     public static String randomMP4Path() {
         File bucket = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
         return randomMP4Path(bucket);
+    }
+
+    /**
+     * Generate a random mp4 file path.
+     *
+     * @param context context.
+     *
+     * @return file path.
+     */
+    @NonNull
+    public static String randomMP4Path(Context context) {
+        if(!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            return randomMP4Path(context.getCacheDir());
+        }
+        return randomMP4Path();
     }
 
     /**
