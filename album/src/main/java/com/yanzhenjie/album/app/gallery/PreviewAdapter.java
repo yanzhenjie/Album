@@ -23,6 +23,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.yanzhenjie.album.impl.OnItemClickListener;
+import com.yanzhenjie.album.widget.photoview.AttacherImageView;
+import com.yanzhenjie.album.widget.photoview.PhotoViewAttacher;
 
 import java.util.List;
 
@@ -75,9 +77,10 @@ public abstract class PreviewAdapter<T> extends PagerAdapter
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        ImageView imageView = new ImageView(mContext);
-        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        AttacherImageView imageView = new AttacherImageView(mContext);
         imageView.setLayoutParams(new ViewGroup.LayoutParams(-1, -1));
+        final PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
+        imageView.setAttacher(attacher);
         T t = mPreviewList.get(position);
         loadPreview(imageView, t, position);
 
