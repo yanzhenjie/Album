@@ -28,8 +28,8 @@ public abstract class BasicChoiceAlbumWrapper<Returner extends BasicChoiceAlbumW
     }
 
     int mQuality = 1;
-    long mLimitDuration = Long.MAX_VALUE;
-    long mLimitBytes = Long.MAX_VALUE;
+    long mLimitDuration = Integer.MAX_VALUE;
+    long mLimitBytes = Integer.MAX_VALUE;
 
     /**
      * Set the quality when taking video, should be 0 or 1. Currently value 0 means low quality, and value 1 means high quality.
