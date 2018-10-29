@@ -17,6 +17,7 @@ package com.yanzhenjie.album.app.album;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.MotionEvent;
 
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
@@ -47,6 +48,17 @@ public class GalleryActivity extends BaseActivity implements Contract.GalleryPre
     private int mAllowSelectCount;
 
     private Contract.GalleryView<AlbumFile> mView;
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        boolean result = true;
+        try {
+            result = super.dispatchTouchEvent(ev);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
