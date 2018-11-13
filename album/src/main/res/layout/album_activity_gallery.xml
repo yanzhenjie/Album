@@ -18,7 +18,7 @@
     style="@style/Album.MatchParent"
     android:background="@color/albumColorPrimaryBlack">
 
-    <android.support.v4.view.ViewPager
+    <com.yanzhenjie.album.widget.photoview.FixViewPager
         android:id="@+id/view_pager"
         style="@style/Album.MatchParent" />
 
