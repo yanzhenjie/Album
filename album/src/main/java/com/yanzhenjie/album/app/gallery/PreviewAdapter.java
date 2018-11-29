@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.yanzhenjie.album.impl.OnItemClickListener;
 import com.yanzhenjie.album.widget.photoview.AttacherImageView;
 import com.yanzhenjie.album.widget.photoview.PhotoViewAttacher;
 
@@ -33,13 +32,13 @@ import java.util.List;
  * Created by Yan Zhenjie on 2016/10/19.
  */
 public abstract class PreviewAdapter<T> extends PagerAdapter
-        implements View.OnClickListener, View.OnLongClickListener {
+    implements PhotoViewAttacher.OnViewTapListener, View.OnLongClickListener {
 
     private Context mContext;
     private List<T> mPreviewList;
 
-    private OnItemClickListener mItemClickListener;
-    private OnItemClickListener mItemLongClickListener;
+    private View.OnClickListener mItemClickListener;
+    private View.OnClickListener mItemLongClickListener;
 
     public PreviewAdapter(Context context, List<T> previewList) {
         this.mContext = context;
@@ -51,7 +50,7 @@ public abstract class PreviewAdapter<T> extends PagerAdapter
      *
      * @param onClickListener listener.
      */
-    public void setItemClickListener(OnItemClickListener onClickListener) {
+    public void setItemClickListener(View.OnClickListener onClickListener) {
         this.mItemClickListener = onClickListener;
     }
 
@@ -60,7 +59,7 @@ public abstract class PreviewAdapter<T> extends PagerAdapter
      *
      * @param longClickListener listener.
      */
-    public void setItemLongClickListener(OnItemClickListener longClickListener) {
+    public void setItemLongClickListener(View.OnClickListener longClickListener) {
         this.mItemLongClickListener = longClickListener;
     }
 
@@ -79,36 +78,34 @@ public abstract class PreviewAdapter<T> extends PagerAdapter
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         AttacherImageView imageView = new AttacherImageView(mContext);
         imageView.setLayoutParams(new ViewGroup.LayoutParams(-1, -1));
-        final PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
-        imageView.setAttacher(attacher);
-        T t = mPreviewList.get(position);
-        loadPreview(imageView, t, position);
+        loadPreview(imageView, mPreviewList.get(position), position);
+        container.addView(imageView);
 
-        imageView.setId(position);
+        final PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
         if (mItemClickListener != null) {
-            imageView.setOnClickListener(this);
+            attacher.setOnViewTapListener(this);
         }
         if (mItemLongClickListener != null) {
-            imageView.setOnLongClickListener(this);
+            attacher.setOnLongClickListener(this);
         }
+        imageView.setAttacher(attacher);
 
-        container.addView(imageView);
         return imageView;
     }
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        container.removeView(((View) object));
+        container.removeView(((View)object));
     }
 
     @Override
-    public void onClick(View v) {
-        mItemClickListener.onItemClick(v, v.getId());
+    public void onViewTap(View v, float x, float y) {
+        mItemClickListener.onClick(v);
     }
 
     @Override
     public boolean onLongClick(View v) {
-        mItemLongClickListener.onItemClick(v, v.getId());
+        mItemLongClickListener.onClick(v);
         return true;
     }
 

@@ -17,7 +17,6 @@ package com.yanzhenjie.album.app.gallery;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
 
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
@@ -26,7 +25,6 @@ import com.yanzhenjie.album.ItemAction;
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.api.widget.Widget;
 import com.yanzhenjie.album.app.Contract;
-import com.yanzhenjie.album.impl.OnItemClickListener;
 import com.yanzhenjie.album.mvp.BaseActivity;
 import com.yanzhenjie.album.util.AlbumUtils;
 
@@ -65,27 +63,12 @@ public class GalleryAlbumActivity extends BaseActivity implements Contract.Galle
 
         mView.setTitle(mWidget.getTitle());
         mView.setupViews(mWidget, mCheckable);
-        PreviewAdapter<AlbumFile> adapter = new PreviewAlbumAdapter(this, mAlbumFiles);
-        if (sClick != null) {
-            adapter.setItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    sClick.onAction(GalleryAlbumActivity.this, mAlbumFiles.get(mCurrentPosition));
-                }
-            });
+        mView.bindData(mAlbumFiles);
+        if (mCurrentPosition == 0) {
+            onCurrentChanged(mCurrentPosition);
+        } else {
+            mView.setCurrentItem(mCurrentPosition);
         }
-        if (sLongClick != null) {
-            adapter.setItemLongClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    sLongClick.onAction(GalleryAlbumActivity.this, mAlbumFiles.get(mCurrentPosition));
-                }
-            });
-        }
-        mView.bindData(adapter);
-
-        if (mCurrentPosition == 0) onCurrentChanged(mCurrentPosition);
-        else mView.setCurrentItem(mCurrentPosition);
         setCheckedCount();
     }
 
@@ -98,6 +81,20 @@ public class GalleryAlbumActivity extends BaseActivity implements Contract.Galle
         String completeText = getString(R.string.album_menu_finish);
         completeText += "(" + checkedCount + " / " + mAlbumFiles.size() + ")";
         mView.setCompleteText(completeText);
+    }
+
+    @Override
+    public void clickItem(int position) {
+        if (sClick != null) {
+            sClick.onAction(GalleryAlbumActivity.this, mAlbumFiles.get(mCurrentPosition));
+        }
+    }
+
+    @Override
+    public void longClickItem(int position) {
+        if (sLongClick != null) {
+            sLongClick.onAction(GalleryAlbumActivity.this, mAlbumFiles.get(mCurrentPosition));
+        }
     }
 
     @Override

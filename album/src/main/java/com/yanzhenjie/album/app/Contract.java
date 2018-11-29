@@ -23,9 +23,10 @@ import android.widget.CompoundButton;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFolder;
 import com.yanzhenjie.album.api.widget.Widget;
-import com.yanzhenjie.album.app.gallery.PreviewAdapter;
 import com.yanzhenjie.album.mvp.BasePresenter;
 import com.yanzhenjie.album.mvp.BaseView;
+
+import java.util.List;
 
 /**
  * Created by YanZhenjie on 2018/4/7.
@@ -47,7 +48,7 @@ public final class Contract {
         /**
          * Try to check item.
          *
-         * @param button   view.
+         * @param button view.
          * @param position position of item.
          */
         void tryCheckItem(CompoundButton button, int position);
@@ -80,12 +81,11 @@ public final class Contract {
         /**
          * Set some properties of the view.
          *
-         * @param widget     {@link Widget}.
-         * @param column     the count of columns.
-         * @param hasCamera  the camera is enabled.
-         * @param choiceMode choice mode, one of {@link Album#FUNCTION_CHOICE_ALBUM},
-         *                   {@link Album#FUNCTION_CHOICE_IMAGE}
-         *                   or {@link Album#FUNCTION_CHOICE_VIDEO}.
+         * @param widget {@link Widget}.
+         * @param column the count of columns.
+         * @param hasCamera the camera is enabled.
+         * @param choiceMode choice mode, one of {@link Album#FUNCTION_CHOICE_ALBUM}, {@link
+         *     Album#FUNCTION_CHOICE_IMAGE} or {@link Album#FUNCTION_CHOICE_VIDEO}.
          */
         public abstract void setupViews(Widget widget, int column, boolean hasCamera, int choiceMode);
 
@@ -140,6 +140,7 @@ public final class Contract {
     }
 
     public interface NullPresenter extends BasePresenter {
+
         /**
          * Take a picture.
          */
@@ -187,6 +188,11 @@ public final class Contract {
     }
 
     public interface GalleryPresenter extends BasePresenter {
+
+        void clickItem(int position);
+
+        void longClickItem(int position);
+
         /**
          * Set the current position of item .
          */
@@ -212,7 +218,7 @@ public final class Contract {
         /**
          * Set some properties of the view.
          *
-         * @param widget    {@link Widget}.
+         * @param widget {@link Widget}.
          * @param checkable show the checkbox.
          */
         public abstract void setupViews(Widget widget, boolean checkable);
@@ -220,9 +226,9 @@ public final class Contract {
         /**
          * Bind data.
          *
-         * @param adapter data adapter.
+         * @param dataList data.
          */
-        public abstract void bindData(PreviewAdapter<Data> adapter);
+        public abstract void bindData(List<Data> dataList);
 
         /**
          * Set the position of the item to be displayed.

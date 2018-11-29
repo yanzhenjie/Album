@@ -24,13 +24,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.yanzhenjie.album.Album;
+import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.api.widget.Widget;
 import com.yanzhenjie.album.app.Contract;
 import com.yanzhenjie.album.util.SystemBar;
+
+import java.util.List;
 
 /**
  * Created by YanZhenjie on 2018/4/9.
@@ -100,9 +105,34 @@ public class GalleryView<Data> extends Contract.GalleryView<Data> implements Vie
     }
 
     @Override
-    public void bindData(PreviewAdapter<Data> adapter) {
-        if (adapter.getCount() > 3) mViewPager.setOffscreenPageLimit(3);
-        else if (adapter.getCount() > 2) mViewPager.setOffscreenPageLimit(2);
+    public void bindData(List<Data> dataList) {
+        PreviewAdapter<Data> adapter = new PreviewAdapter<Data>(getContext(), dataList) {
+            @Override
+            protected void loadPreview(ImageView imageView, Data item, int position) {
+                if (item instanceof String) {
+                    Album.getAlbumConfig().getAlbumLoader().load(imageView, (String)item);
+                } else if (item instanceof AlbumFile) {
+                    Album.getAlbumConfig().getAlbumLoader().load(imageView, (AlbumFile)item);
+                }
+            }
+        };
+        adapter.setItemClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().clickItem(mViewPager.getCurrentItem());
+            }
+        });
+        adapter.setItemLongClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresenter().longClickItem(mViewPager.getCurrentItem());
+            }
+        });
+        if (adapter.getCount() > 3) {
+            mViewPager.setOffscreenPageLimit(3);
+        } else if (adapter.getCount() > 2) {
+            mViewPager.setOffscreenPageLimit(2);
+        }
         mViewPager.setAdapter(adapter);
     }
 

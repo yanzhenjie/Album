@@ -24,7 +24,6 @@ import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.api.widget.Widget;
 import com.yanzhenjie.album.app.Contract;
 import com.yanzhenjie.album.app.gallery.GalleryView;
-import com.yanzhenjie.album.app.gallery.PreviewAlbumAdapter;
 import com.yanzhenjie.album.mvp.BaseActivity;
 import com.yanzhenjie.album.util.AlbumUtils;
 
@@ -60,10 +59,13 @@ public class GalleryActivity extends BaseActivity implements Contract.GalleryPre
         mAllowSelectCount = argument.getInt(Album.KEY_INPUT_LIMIT_COUNT);
 
         mView.setupViews(mWidget, true);
-        mView.bindData(new PreviewAlbumAdapter(this, sAlbumFiles));
+        mView.bindData(sAlbumFiles);
 
-        if (sCurrentPosition == 0) onCurrentChanged(sCurrentPosition);
-        else mView.setCurrentItem(sCurrentPosition);
+        if (sCurrentPosition == 0) {
+            onCurrentChanged(sCurrentPosition);
+        } else {
+            mView.setCurrentItem(sCurrentPosition);
+        }
         setCheckedCount();
     }
 
@@ -71,6 +73,14 @@ public class GalleryActivity extends BaseActivity implements Contract.GalleryPre
         String completeText = getString(R.string.album_menu_finish);
         completeText += "(" + sCheckedCount + " / " + mAllowSelectCount + ")";
         mView.setCompleteText(completeText);
+    }
+
+    @Override
+    public void clickItem(int position) {
+    }
+
+    @Override
+    public void longClickItem(int position) {
     }
 
     @Override
@@ -172,6 +182,7 @@ public class GalleryActivity extends BaseActivity implements Contract.GalleryPre
     }
 
     public interface Callback {
+
         /**
          * Complete the preview.
          */
