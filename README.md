@@ -20,7 +20,7 @@ Effect on landscape screen:
 
 ## Download
 ```groovy
-implementation 'com.yanzhenjie:album:2.1.2'
+implementation 'com.yanzhenjie:album:2.1.3'
 ```
 
 ## Usage
