@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.album.widget.photoview;
+package com.yanzhenjie.album.sample.photoview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -35,9 +35,9 @@ import android.view.animation.Interpolator;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
-import com.yanzhenjie.album.widget.photoview.gestures.OnGestureListener;
-import com.yanzhenjie.album.widget.photoview.gestures.VersionedGestureDetector;
-import com.yanzhenjie.album.widget.photoview.scrollerproxy.ScrollerProxy;
+import com.yanzhenjie.album.sample.photoview.gestures.OnGestureListener;
+import com.yanzhenjie.album.sample.photoview.gestures.VersionedGestureDetector;
+import com.yanzhenjie.album.sample.photoview.scrollerproxy.ScrollerProxy;
 
 import java.lang.ref.WeakReference;
 
@@ -118,7 +118,7 @@ public class PhotoViewAttacher
 
     // Gesture Detectors
     private GestureDetector mGestureDetector;
-    private com.yanzhenjie.album.widget.photoview.gestures.GestureDetector mScaleDragDetector;
+    private com.yanzhenjie.album.sample.photoview.gestures.GestureDetector mScaleDragDetector;
 
     // These are set so we don't keep allocating them on the heap
     private final Matrix mBaseMatrix = new Matrix();

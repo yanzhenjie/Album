@@ -27,7 +27,7 @@
         android:text="@string/hint_image_preview_click"
         android:visibility="gone" />
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/image_view"
         style="@style/Album.WrapContent" />
 

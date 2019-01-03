@@ -13,21 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.album.widget.photoview.scrollerproxy;
+package com.yanzhenjie.album.widget;
 
-import android.annotation.TargetApi;
 import android.content.Context;
+import android.support.v4.view.ViewPager;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
 
-@TargetApi(14)
-public class IcsScroller extends GingerScroller {
+/**
+ * Created by Yan Zhenjie on 2016/11/1.
+ */
+public class FixViewPager extends ViewPager {
 
-    public IcsScroller(Context context) {
+    public FixViewPager(Context context) {
         super(context);
     }
 
-    @Override
-    public boolean computeScrollOffset() {
-        return mScroller.computeScrollOffset();
+    public FixViewPager(Context context, AttributeSet attrs) {
+        super(context, attrs);
     }
 
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        try {
+            return super.onInterceptTouchEvent(ev);
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
 }

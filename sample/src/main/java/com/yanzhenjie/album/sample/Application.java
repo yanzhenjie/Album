@@ -15,6 +15,8 @@
  */
 package com.yanzhenjie.album.sample;
 
+import com.github.piasy.biv.BigImageViewer;
+import com.github.piasy.biv.loader.fresco.FrescoImageLoader;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumConfig;
 
@@ -25,23 +27,25 @@ import java.util.Locale;
  * Created by Yan Zhenjie on 2016/10/30.
  */
 public class Application extends android.app.Application {
-
+    
     private static Application instance;
-
+    
     @Override
     public void onCreate() {
         super.onCreate();
         if (instance == null) {
             instance = this;
-
+            BigImageViewer.initialize(FrescoImageLoader.with(instance));
+            
             Album.initialize(AlbumConfig.newBuilder(this)
-                    .setAlbumLoader(new MediaLoader())
-                    .setLocale(Locale.getDefault())
-                    .build()
+                //                .setAlbumLoader(new MediaLoader())
+                .setAlbumLoader(new FrescoLoader())
+                .setLocale(Locale.getDefault())
+                .build()
             );
         }
     }
-
+    
     public static Application getInstance() {
         return instance;
     }

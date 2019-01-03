@@ -13,17 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.album.widget.photoview.scrollerproxy;
+package com.yanzhenjie.album.sample.photoview.scrollerproxy;
 
+import android.annotation.TargetApi;
 import android.content.Context;
-import android.widget.Scroller;
+import android.widget.OverScroller;
 
-public class PreGingerScroller extends ScrollerProxy {
+@TargetApi(9)
+public class GingerScroller extends ScrollerProxy {
 
-    private final Scroller mScroller;
+    protected final OverScroller mScroller;
 
-    public PreGingerScroller(Context context) {
-        mScroller = new Scroller(context);
+    public GingerScroller(Context context) {
+        mScroller = new OverScroller(context);
     }
 
     @Override
@@ -34,7 +36,7 @@ public class PreGingerScroller extends ScrollerProxy {
     @Override
     public void fling(int startX, int startY, int velocityX, int velocityY, int minX, int maxX, int minY, int maxY,
                       int overX, int overY) {
-        mScroller.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY);
+        mScroller.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY, overX, overY);
     }
 
     @Override
@@ -42,6 +44,7 @@ public class PreGingerScroller extends ScrollerProxy {
         mScroller.forceFinished(finished);
     }
 
+    @Override
     public boolean isFinished() {
         return mScroller.isFinished();
     }

@@ -16,8 +16,12 @@
 package com.yanzhenjie.album.app.gallery;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.view.Menu;
@@ -107,12 +111,16 @@ public class GalleryView<Data> extends Contract.GalleryView<Data> implements Vie
     @Override
     public void bindData(List<Data> dataList) {
         PreviewAdapter<Data> adapter = new PreviewAdapter<Data>(getContext(), dataList) {
+            
+            @NonNull
             @Override
-            protected void loadPreview(ImageView imageView, Data item, int position) {
+            protected View getView(Context context, Data item, int position, @Nullable View.OnClickListener onClickListener, @Nullable View.OnClickListener longClickListener) {
                 if (item instanceof String) {
-                    Album.getAlbumConfig().getAlbumLoader().load(imageView, (String)item);
+                    return Album.getAlbumConfig().getAlbumLoader().getPreviewView(context, (String) item, onClickListener, longClickListener);
                 } else if (item instanceof AlbumFile) {
-                    Album.getAlbumConfig().getAlbumLoader().load(imageView, (AlbumFile)item);
+                    return Album.getAlbumConfig().getAlbumLoader().getPreviewView(context, (AlbumFile) item, onClickListener, longClickListener);
+                } else {
+                    return new ImageView(context);
                 }
             }
         };

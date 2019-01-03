@@ -15,6 +15,10 @@
  */
 package com.yanzhenjie.album;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.ImageView;
 
 /**
@@ -31,6 +35,19 @@ public interface AlbumLoader {
         @Override
         public void load(ImageView imageView, String url) {
         }
+        
+        @NonNull
+        @Override
+        public View getPreviewView(Context context, AlbumFile albumFile, View.OnClickListener onClickListener, View.OnClickListener longClickListener) {
+            return new ImageView(context);
+        }
+        
+        @NonNull
+        @Override
+        public View getPreviewView(Context context, String url, View.OnClickListener onClickListener, View.OnClickListener longClickListener) {
+            return new ImageView(context);
+        }
+        
     };
 
     /**
@@ -48,5 +65,11 @@ public interface AlbumLoader {
      * @param url       The url of the file, local path or remote path.
      */
     void load(ImageView imageView, String url);
-
+    
+    @NonNull
+    View getPreviewView(Context context, AlbumFile albumFile, @Nullable View.OnClickListener onClickListener, @Nullable View.OnClickListener longClickListener);
+    
+    @NonNull
+    View getPreviewView(Context context, String url, @Nullable View.OnClickListener onClickListener, @Nullable View.OnClickListener longClickListener);
+    
 }

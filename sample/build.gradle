@@ -14,7 +14,12 @@ android {
 }
 
 dependencies {
-    implementation rootProject.ext.dependencies.album
+    implementation project(":album")
+    //    implementation rootProject.ext.dependencies.album
+    implementation 'com.facebook.fresco:fresco:1.11.0'
+    implementation "com.github.piasy:BigImageViewer:1.5.6"
+    implementation "com.github.piasy:FrescoImageLoader:1.5.6"
+    implementation 'com.github.piasy:FrescoImageViewFactory:1.5.6'
 
     implementation rootProject.ext.dependencies.appCompat
     implementation rootProject.ext.dependencies.design

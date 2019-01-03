@@ -1,4 +1,4 @@
-package com.yanzhenjie.album.widget.photoview;
+package com.yanzhenjie.album.sample.photoview;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

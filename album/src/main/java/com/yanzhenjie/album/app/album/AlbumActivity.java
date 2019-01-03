@@ -249,7 +249,7 @@ public class AlbumActivity extends BaseActivity implements
 
     @Override
     public void clickCamera(View v) {
-        int hasCheckSize = mCheckedList.size();
+        int hasCheckSize = mCheckedList == null ? 0 : mCheckedList.size();
         if (hasCheckSize >= mLimitCount) {
             int messageRes;
             switch (mFunction) {
