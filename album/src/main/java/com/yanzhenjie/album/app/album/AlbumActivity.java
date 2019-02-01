@@ -502,6 +502,11 @@ public class AlbumActivity extends BaseActivity implements
 
     @Override
     public void onPreviewChanged(AlbumFile albumFile) {
+        // finish button is pressed, ignore any preview change event.
+        // or mCheckedList will be changed AlbumActivity's thread and GalleryActivity thread.
+        if (isThumbnailTaskWorking) {
+            return;
+        }
         ArrayList<AlbumFile> albumFiles = mAlbumFolders.get(mCurrentFolder).getAlbumFiles();
         int position = albumFiles.indexOf(albumFile);
         int notifyPosition = mHasCamera ? position + 1 : position;
@@ -548,10 +553,12 @@ public class AlbumActivity extends BaseActivity implements
         callbackCancel();
     }
 
+    private boolean isThumbnailTaskWorking = false;
     /**
      * Callback result action.
      */
     private void callbackResult() {
+        isThumbnailTaskWorking = true;
         ThumbnailBuildTask task = new ThumbnailBuildTask(this, mCheckedList, this);
         task.execute();
     }
@@ -566,6 +573,7 @@ public class AlbumActivity extends BaseActivity implements
     public void onThumbnailCallback(ArrayList<AlbumFile> albumFiles) {
         if (sResult != null) sResult.onAction(albumFiles);
         dismissLoadingDialog();
+        isThumbnailTaskWorking = false;
         finish();
     }
 
