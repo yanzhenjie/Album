@@ -111,12 +111,15 @@ public class AlbumUtils {
      * @param requestCode code, see {@link Activity#onActivityResult(int, int, Intent)}.
      * @param outPath     file path.
      */
-    public static void takeImage(@NonNull Activity activity, int requestCode, File outPath) {
+    public static void takeImage(@NonNull Activity activity, int requestCode, File outPath, boolean startWithFrontCamera) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         Uri uri = getUri(activity, outPath);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        if (startWithFrontCamera) {
+            intent.putExtra("android.intent.extra.USE_FRONT_CAMERA", true);
+        }
         activity.startActivityForResult(intent, requestCode);
     }
 
@@ -133,13 +136,15 @@ public class AlbumUtils {
     public static void takeVideo(@NonNull Activity activity, int requestCode, File outPath,
                                  @IntRange(from = 0, to = 1) int quality,
                                  @IntRange(from = 1) long duration,
-                                 @IntRange(from = 1) long limitBytes) {
+                                 @IntRange(from = 1) long limitBytes,
+                                 boolean startWithFrontCamera) {
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         Uri uri = getUri(activity, outPath);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, quality);
         intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, duration);
         intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, limitBytes);
+        intent.putExtra("android.intent.extra.USE_FRONT_CAMERA", startWithFrontCamera);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         activity.startActivityForResult(intent, requestCode);
@@ -167,7 +172,6 @@ public class AlbumUtils {
      * Generate a random jpg file path.
      *
      * @return file path.
-     *
      * @deprecated use {@link #randomJPGPath(Context)} instead.
      */
     @NonNull
@@ -181,12 +185,11 @@ public class AlbumUtils {
      * Generate a random jpg file path.
      *
      * @param context context.
-     *
      * @return file path.
      */
     @NonNull
     public static String randomJPGPath(Context context) {
-        if(!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+        if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             return randomJPGPath(context.getCacheDir());
         }
         return randomJPGPath();
@@ -207,7 +210,6 @@ public class AlbumUtils {
      * Generate a random mp4 file path.
      *
      * @return file path.
-     *
      * @deprecated use {@link #randomMP4Path(Context)} instead.
      */
     @NonNull
@@ -221,12 +223,11 @@ public class AlbumUtils {
      * Generate a random mp4 file path.
      *
      * @param context context.
-     *
      * @return file path.
      */
     @NonNull
     public static String randomMP4Path(Context context) {
-        if(!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+        if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             return randomMP4Path(context.getCacheDir());
         }
         return randomMP4Path();

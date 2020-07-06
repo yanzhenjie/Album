@@ -42,6 +42,7 @@ public class CameraActivity extends BaseActivity {
     private static final String INSTANCE_CAMERA_QUALITY = "INSTANCE_CAMERA_QUALITY";
     private static final String INSTANCE_CAMERA_DURATION = "INSTANCE_CAMERA_DURATION";
     private static final String INSTANCE_CAMERA_BYTES = "INSTANCE_CAMERA_BYTES";
+    private static final String INSTANCE_START_WITH_FRONT_CAMERA = "INSTANCE_USE_FRONT_CAMERA";
 
     private static final int CODE_PERMISSION_IMAGE = 1;
     private static final int CODE_PERMISSION_VIDEO = 2;
@@ -57,6 +58,7 @@ public class CameraActivity extends BaseActivity {
     private int mQuality;
     private long mLimitDuration;
     private long mLimitBytes;
+    private boolean mStartWithFrontCamera;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +73,7 @@ public class CameraActivity extends BaseActivity {
             mQuality = savedInstanceState.getInt(INSTANCE_CAMERA_QUALITY);
             mLimitDuration = savedInstanceState.getLong(INSTANCE_CAMERA_DURATION);
             mLimitBytes = savedInstanceState.getLong(INSTANCE_CAMERA_BYTES);
+            mStartWithFrontCamera = savedInstanceState.getBoolean(INSTANCE_START_WITH_FRONT_CAMERA);
         } else {
             Bundle bundle = getIntent().getExtras();
             assert bundle != null;
@@ -79,6 +82,7 @@ public class CameraActivity extends BaseActivity {
             mQuality = bundle.getInt(Album.KEY_INPUT_CAMERA_QUALITY);
             mLimitDuration = bundle.getLong(Album.KEY_INPUT_CAMERA_DURATION);
             mLimitBytes = bundle.getLong(Album.KEY_INPUT_CAMERA_BYTES);
+            mStartWithFrontCamera = bundle.getBoolean(Album.KEY_START_WITH_FRONT_CAMERA);
 
             switch (mFunction) {
                 case Album.FUNCTION_CAMERA_IMAGE: {
@@ -107,6 +111,7 @@ public class CameraActivity extends BaseActivity {
         outState.putInt(INSTANCE_CAMERA_QUALITY, mQuality);
         outState.putLong(INSTANCE_CAMERA_DURATION, mLimitDuration);
         outState.putLong(INSTANCE_CAMERA_BYTES, mLimitBytes);
+        outState.putBoolean(INSTANCE_START_WITH_FRONT_CAMERA, mStartWithFrontCamera);
         super.onSaveInstanceState(outState);
     }
 
@@ -114,11 +119,11 @@ public class CameraActivity extends BaseActivity {
     protected void onPermissionGranted(int code) {
         switch (code) {
             case CODE_PERMISSION_IMAGE: {
-                AlbumUtils.takeImage(this, CODE_ACTIVITY_TAKE_IMAGE, new File(mCameraFilePath));
+                AlbumUtils.takeImage(this, CODE_ACTIVITY_TAKE_IMAGE, new File(mCameraFilePath), mStartWithFrontCamera);
                 break;
             }
             case CODE_PERMISSION_VIDEO: {
-                AlbumUtils.takeVideo(this, CODE_ACTIVITY_TAKE_VIDEO, new File(mCameraFilePath), mQuality, mLimitDuration, mLimitBytes);
+                AlbumUtils.takeVideo(this, CODE_ACTIVITY_TAKE_VIDEO, new File(mCameraFilePath), mQuality, mLimitDuration, mLimitBytes, mStartWithFrontCamera);
                 break;
             }
             default: {

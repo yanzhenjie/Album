@@ -80,6 +80,7 @@ public class ImageActivity extends AppCompatActivity {
         Album.image(this)
                 .multipleChoice()
                 .camera(true)
+                .cameraStartWithFront(true)
                 .columnCount(2)
                 .selectCount(6)
                 .checkedList(mAlbumFiles)
