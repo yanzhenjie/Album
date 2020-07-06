@@ -85,6 +85,7 @@ public class AlbumActivity extends AppCompatActivity {
                 .cameraVideoQuality(1)
                 .cameraVideoLimitDuration(Integer.MAX_VALUE)
                 .cameraVideoLimitBytes(Integer.MAX_VALUE)
+                .cameraStartWithFront(true)
                 .checkedList(mAlbumFiles)
                 .widget(
                         Widget.newDarkBuilder(this)

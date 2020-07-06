@@ -84,6 +84,7 @@ public class AlbumActivity extends BaseActivity implements
     private int mQuality;
     private long mLimitDuration;
     private long mLimitBytes;
+    private boolean mStartWithFront;
 
     private boolean mFilterVisibility;
 
@@ -123,6 +124,7 @@ public class AlbumActivity extends BaseActivity implements
         mQuality = argument.getInt(Album.KEY_INPUT_CAMERA_QUALITY);
         mLimitDuration = argument.getLong(Album.KEY_INPUT_CAMERA_DURATION);
         mLimitBytes = argument.getLong(Album.KEY_INPUT_CAMERA_BYTES);
+        mStartWithFront = argument.getBoolean(Album.KEY_START_WITH_FRONT_CAMERA);
         mFilterVisibility = argument.getBoolean(Album.KEY_INPUT_FILTER_VISIBILITY);
     }
 
@@ -317,6 +319,7 @@ public class AlbumActivity extends BaseActivity implements
         }
         Album.camera(this)
                 .image()
+                .startWithFrontCamera(mStartWithFront)
                 .filePath(filePath)
                 .onResult(mCameraAction)
                 .start();
@@ -332,6 +335,7 @@ public class AlbumActivity extends BaseActivity implements
         }
         Album.camera(this)
                 .video()
+                .startWithFrontCamera(mStartWithFront)
                 .filePath(filePath)
                 .quality(mQuality)
                 .limitDuration(mLimitDuration)

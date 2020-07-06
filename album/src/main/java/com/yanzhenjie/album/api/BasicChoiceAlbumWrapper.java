@@ -30,6 +30,7 @@ public abstract class BasicChoiceAlbumWrapper<Returner extends BasicChoiceAlbumW
     int mQuality = 1;
     long mLimitDuration = Integer.MAX_VALUE;
     long mLimitBytes = Integer.MAX_VALUE;
+    boolean mStartWithFront = false;
 
     /**
      * Set the quality when taking video, should be 0 or 1. Currently value 0 means low quality, and value 1 means high quality.
@@ -58,6 +59,18 @@ public abstract class BasicChoiceAlbumWrapper<Returner extends BasicChoiceAlbumW
      */
     public Returner cameraVideoLimitBytes(@IntRange(from = 1) long bytes) {
         this.mLimitBytes = bytes;
+        return (Returner) this;
+    }
+
+
+    /**
+     * Start camera with front camera
+     *
+     * @param v
+     * @return
+     */
+    public Returner cameraStartWithFront(boolean v) {
+        this.mStartWithFront = v;
         return (Returner) this;
     }
 }

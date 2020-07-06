@@ -66,6 +66,7 @@ public class AlbumSingleWrapper extends BasicChoiceAlbumWrapper<AlbumSingleWrapp
         intent.putExtra(Album.KEY_INPUT_CAMERA_QUALITY, mQuality);
         intent.putExtra(Album.KEY_INPUT_CAMERA_DURATION, mLimitDuration);
         intent.putExtra(Album.KEY_INPUT_CAMERA_BYTES, mLimitBytes);
+        intent.putExtra(Album.KEY_START_WITH_FRONT_CAMERA, mStartWithFront);
         mContext.startActivity(intent);
     }
 }
