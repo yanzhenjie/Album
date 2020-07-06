@@ -29,6 +29,7 @@ public abstract class BasicCameraWrapper<Returner extends BasicCameraWrapper> {
     Action<String> mResult;
     Action<String> mCancel;
     String mFilePath;
+    boolean mStartWithFrontCamera = false;
 
     public BasicCameraWrapper(Context context) {
         this.mContext = context;
@@ -61,6 +62,14 @@ public abstract class BasicCameraWrapper<Returner extends BasicCameraWrapper> {
      */
     public Returner filePath(@Nullable String filePath) {
         this.mFilePath = filePath;
+        return (Returner) this;
+    }
+
+    /**
+     * Switch the default camera to the front.
+     */
+    public Returner startWithFrontCamera(boolean v) {
+        this.mStartWithFrontCamera = v;
         return (Returner) this;
     }
 

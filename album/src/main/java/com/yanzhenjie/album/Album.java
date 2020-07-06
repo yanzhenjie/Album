@@ -77,6 +77,7 @@ public final class Album {
     public static final String KEY_INPUT_CAMERA_QUALITY = "KEY_INPUT_CAMERA_QUALITY";
     public static final String KEY_INPUT_CAMERA_DURATION = "KEY_INPUT_CAMERA_DURATION";
     public static final String KEY_INPUT_CAMERA_BYTES = "KEY_INPUT_CAMERA_BYTES";
+    public static final String KEY_START_WITH_FRONT_CAMERA = "KEY_START_WITH_FRONT_CAMERA";
 
     // Filter.
     public static final String KEY_INPUT_FILTER_VISIBILITY = "KEY_INPUT_FILTER_VISIBILITY";

@@ -42,6 +42,7 @@ public class NullActivity extends BaseActivity implements Contract.NullPresenter
     private int mQuality = 1;
     private long mLimitDuration;
     private long mLimitBytes;
+    private boolean mCameraStartWithFront = false;
 
     private Contract.NullView mView;
 
@@ -59,6 +60,7 @@ public class NullActivity extends BaseActivity implements Contract.NullPresenter
         mQuality = argument.getInt(Album.KEY_INPUT_CAMERA_QUALITY);
         mLimitDuration = argument.getLong(Album.KEY_INPUT_CAMERA_DURATION);
         mLimitBytes = argument.getLong(Album.KEY_INPUT_CAMERA_BYTES);
+        mCameraStartWithFront = argument.getBoolean(Album.KEY_START_WITH_FRONT_CAMERA);
 
         mWidget = argument.getParcelable(Album.KEY_INPUT_WIDGET);
         mView.setupViews(mWidget);
@@ -94,6 +96,7 @@ public class NullActivity extends BaseActivity implements Contract.NullPresenter
     public void takePicture() {
         Album.camera(this)
                 .image()
+                .startWithFrontCamera(mCameraStartWithFront)
                 .onResult(mCameraAction)
                 .start();
     }
@@ -102,6 +105,7 @@ public class NullActivity extends BaseActivity implements Contract.NullPresenter
     public void takeVideo() {
         Album.camera(this)
                 .video()
+                .startWithFrontCamera(mCameraStartWithFront)
                 .quality(mQuality)
                 .limitDuration(mLimitDuration)
                 .limitBytes(mLimitBytes)
