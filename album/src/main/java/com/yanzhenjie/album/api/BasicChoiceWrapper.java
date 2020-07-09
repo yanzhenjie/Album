@@ -32,6 +32,7 @@ public abstract class BasicChoiceWrapper<Returner extends BasicChoiceWrapper, Re
     Filter<String> mMimeTypeFilter;
 
     boolean mFilterVisibility = true;
+    boolean mCameraStartWithFront = false;
 
     BasicChoiceWrapper(Context context) {
         super(context);
@@ -85,4 +86,14 @@ public abstract class BasicChoiceWrapper<Returner extends BasicChoiceWrapper, Re
         return (Returner) this;
     }
 
+    /**
+     * Start camera with front camera
+     *
+     * @param v
+     * @return
+     */
+    public Returner cameraStartWithFront(boolean v) {
+        this.mCameraStartWithFront = v;
+        return (Returner) this;
+    }
 }

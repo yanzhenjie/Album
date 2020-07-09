@@ -48,6 +48,7 @@ public final class ImageSingleWrapper extends BasicChoiceWrapper<ImageSingleWrap
         intent.putExtra(Album.KEY_INPUT_ALLOW_CAMERA, mHasCamera);
         intent.putExtra(Album.KEY_INPUT_LIMIT_COUNT, 1);
         intent.putExtra(Album.KEY_INPUT_FILTER_VISIBILITY, mFilterVisibility);
+        intent.putExtra(Album.KEY_START_WITH_FRONT_CAMERA, mCameraStartWithFront);
         mContext.startActivity(intent);
     }
 }

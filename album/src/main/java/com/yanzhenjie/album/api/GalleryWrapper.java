@@ -20,7 +20,6 @@ import android.content.Intent;
 
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.app.gallery.GalleryActivity;
-import com.yanzhenjie.album.app.gallery.GalleryAlbumActivity;
 
 /**
  * <p>Gallery wrapper.</p>
@@ -43,6 +42,7 @@ public class GalleryWrapper extends BasicGalleryWrapper<GalleryWrapper, String, 
         intent.putStringArrayListExtra(Album.KEY_INPUT_CHECKED_LIST, mChecked);
         intent.putExtra(Album.KEY_INPUT_CURRENT_POSITION, mCurrentPosition);
         intent.putExtra(Album.KEY_INPUT_GALLERY_CHECKABLE, mCheckable);
+        intent.putExtra(Album.KEY_START_WITH_FRONT_CAMERA, mStartWithFrontCamera);
         mContext.startActivity(intent);
     }
 }

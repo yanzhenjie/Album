@@ -57,6 +57,7 @@ public class CameraActivity extends AppCompatActivity {
         Album.camera(this)
                 .image()
 //                .filePath()
+                .startWithFrontCamera(true)
                 .onResult(new Action<String>() {
                     @Override
                     public void onAction(@NonNull String result) {
@@ -80,6 +81,7 @@ public class CameraActivity extends AppCompatActivity {
         Album.camera(this)
                 .video()
 //                .filePath()
+                .startWithFrontCamera(true)
                 .quality(1)
                 .limitDuration(Integer.MAX_VALUE)
                 .limitBytes(Integer.MAX_VALUE)

@@ -97,6 +97,7 @@ public class AlbumFilterActivity extends AppCompatActivity {
                 .columnCount(2)
                 .selectCount(6)
                 .camera(true)
+                .cameraStartWithFront(true)
                 .checkedList(mAlbumFiles)
                 .widget(
                         Widget.newDarkBuilder(this)

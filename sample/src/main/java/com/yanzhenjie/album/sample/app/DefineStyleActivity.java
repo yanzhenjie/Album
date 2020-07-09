@@ -81,6 +81,7 @@ public class DefineStyleActivity extends AppCompatActivity {
                 .multipleChoice()
                 .selectCount(6)
                 .camera(true)
+                .cameraStartWithFront(true)
                 .checkedList(mAlbumFiles)
                 .widget(
                         Widget.newLightBuilder(this)
