@@ -65,6 +65,7 @@ public final class VideoSingleWrapper extends BasicChoiceVideoWrapper<VideoSingl
         intent.putExtra(Album.KEY_INPUT_CAMERA_QUALITY, mQuality);
         intent.putExtra(Album.KEY_INPUT_CAMERA_DURATION, mLimitDuration);
         intent.putExtra(Album.KEY_INPUT_CAMERA_BYTES, mLimitBytes);
+        intent.putExtra(Album.KEY_START_WITH_FRONT_CAMERA, mCameraStartWithFront);
         mContext.startActivity(intent);
     }
 }

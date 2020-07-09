@@ -76,6 +76,7 @@ public class VideoCameraWrapper extends BasicCameraWrapper<VideoCameraWrapper> {
         intent.putExtra(Album.KEY_INPUT_CAMERA_QUALITY, mQuality);
         intent.putExtra(Album.KEY_INPUT_CAMERA_DURATION, mLimitDuration);
         intent.putExtra(Album.KEY_INPUT_CAMERA_BYTES, mLimitBytes);
+        intent.putExtra(Album.KEY_START_WITH_FRONT_CAMERA, mStartWithFrontCamera);
         mContext.startActivity(intent);
     }
 }

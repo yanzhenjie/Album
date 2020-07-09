@@ -33,17 +33,25 @@ import com.yanzhenjie.album.mvp.BaseActivity;
 public class NullActivity extends BaseActivity implements Contract.NullPresenter {
 
     private static final String KEY_OUTPUT_IMAGE_PATH = "KEY_OUTPUT_IMAGE_PATH";
-
-    public static String parsePath(Intent intent) {
-        return intent.getStringExtra(KEY_OUTPUT_IMAGE_PATH);
-    }
-
     private Widget mWidget;
     private int mQuality = 1;
     private long mLimitDuration;
     private long mLimitBytes;
-
+    private boolean mCameraStartWithFront = false;
     private Contract.NullView mView;
+    private Action<String> mCameraAction = new Action<String>() {
+        @Override
+        public void onAction(@NonNull String result) {
+            Intent intent = new Intent();
+            intent.putExtra(KEY_OUTPUT_IMAGE_PATH, result);
+            setResult(RESULT_OK, intent);
+            finish();
+        }
+    };
+
+    public static String parsePath(Intent intent) {
+        return intent.getStringExtra(KEY_OUTPUT_IMAGE_PATH);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,6 +67,7 @@ public class NullActivity extends BaseActivity implements Contract.NullPresenter
         mQuality = argument.getInt(Album.KEY_INPUT_CAMERA_QUALITY);
         mLimitDuration = argument.getLong(Album.KEY_INPUT_CAMERA_DURATION);
         mLimitBytes = argument.getLong(Album.KEY_INPUT_CAMERA_BYTES);
+        mCameraStartWithFront = argument.getBoolean(Album.KEY_START_WITH_FRONT_CAMERA);
 
         mWidget = argument.getParcelable(Album.KEY_INPUT_WIDGET);
         mView.setupViews(mWidget);
@@ -94,6 +103,7 @@ public class NullActivity extends BaseActivity implements Contract.NullPresenter
     public void takePicture() {
         Album.camera(this)
                 .image()
+                .startWithFrontCamera(mCameraStartWithFront)
                 .onResult(mCameraAction)
                 .start();
     }
@@ -102,20 +112,11 @@ public class NullActivity extends BaseActivity implements Contract.NullPresenter
     public void takeVideo() {
         Album.camera(this)
                 .video()
+                .startWithFrontCamera(mCameraStartWithFront)
                 .quality(mQuality)
                 .limitDuration(mLimitDuration)
                 .limitBytes(mLimitBytes)
                 .onResult(mCameraAction)
                 .start();
     }
-
-    private Action<String> mCameraAction = new Action<String>() {
-        @Override
-        public void onAction(@NonNull String result) {
-            Intent intent = new Intent();
-            intent.putExtra(KEY_OUTPUT_IMAGE_PATH, result);
-            setResult(RESULT_OK, intent);
-            finish();
-        }
-    };
 }

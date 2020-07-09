@@ -18,7 +18,6 @@ package com.yanzhenjie.album.api;
 import android.content.Context;
 import android.support.annotation.IntRange;
 
-import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.ItemAction;
 
 import java.util.ArrayList;
@@ -32,6 +31,7 @@ public abstract class BasicGalleryWrapper<Returner extends BasicGalleryWrapper, 
     ItemAction<Checked> mItemLongClick;
     int mCurrentPosition;
     boolean mCheckable;
+    boolean mStartWithFrontCamera;
 
     public BasicGalleryWrapper(Context context) {
         super(context);
@@ -84,6 +84,16 @@ public abstract class BasicGalleryWrapper<Returner extends BasicGalleryWrapper, 
      */
     public Returner checkable(boolean checkable) {
         this.mCheckable = checkable;
+        return (Returner) this;
+    }
+
+    /**
+     *
+     * @param frontCamera
+     * @return
+     */
+    public Returner startWithFrontCamera(boolean frontCamera) {
+        this.mStartWithFrontCamera = frontCamera;
         return (Returner) this;
     }
 }
