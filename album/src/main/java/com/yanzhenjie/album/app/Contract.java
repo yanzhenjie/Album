@@ -28,6 +28,8 @@ import com.yanzhenjie.album.mvp.BaseView;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by YanZhenjie on 2018/4/7.
  */
@@ -43,7 +45,7 @@ public final class Contract {
         /**
          * Click camera.
          */
-        void clickCamera(View v);
+        void clickCamera(@NonNull View v);
 
         /**
          * Try to check item.
@@ -51,7 +53,7 @@ public final class Contract {
          * @param button view.
          * @param position position of item.
          */
-        void tryCheckItem(CompoundButton button, int position);
+        void tryCheckItem(@NonNull CompoundButton button, int position);
 
         /**
          * Try to preview item.

@@ -16,6 +16,8 @@
 package com.yanzhenjie.album.app.album;
 
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.yanzhenjie.album.Album;
@@ -193,6 +195,6 @@ public class GalleryActivity extends BaseActivity implements Contract.GalleryPre
          *
          * @param albumFile target item.
          */
-        void onPreviewChanged(AlbumFile albumFile);
+        void onPreviewChanged(@NonNull AlbumFile albumFile);
     }
 }

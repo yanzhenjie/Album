@@ -23,13 +23,15 @@ import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.app.gallery.GalleryActivity;
 import com.yanzhenjie.album.app.gallery.GalleryAlbumActivity;
 
+import androidx.annotation.NonNull;
+
 /**
  * <p>Gallery wrapper.</p>
  * Created by yanzhenjie on 17-3-29.
  */
 public class GalleryAlbumWrapper extends BasicGalleryWrapper<GalleryAlbumWrapper, AlbumFile, String, AlbumFile> {
 
-    public GalleryAlbumWrapper(Context context) {
+    public GalleryAlbumWrapper(@NonNull Context context) {
         super(context);
     }
 

@@ -17,6 +17,8 @@ package com.yanzhenjie.album.api;
 
 import android.content.Context;
 import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.yanzhenjie.album.Filter;
 
@@ -40,6 +42,7 @@ public abstract class BasicChoiceWrapper<Returner extends BasicChoiceWrapper, Re
     /**
      * Turn on the camera function.
      */
+    @NonNull
     public Returner camera(boolean hasCamera) {
         this.mHasCamera = hasCamera;
         return (Returner) this;
@@ -50,6 +53,7 @@ public abstract class BasicChoiceWrapper<Returner extends BasicChoiceWrapper, Re
      *
      * @param count the number of columns.
      */
+    @NonNull
     public Returner columnCount(@IntRange(from = 2, to = 4) int count) {
         this.mColumnCount = count;
         return (Returner) this;
@@ -60,7 +64,8 @@ public abstract class BasicChoiceWrapper<Returner extends BasicChoiceWrapper, Re
      *
      * @param filter filter.
      */
-    public Returner filterSize(Filter<Long> filter) {
+    @NonNull
+    public Returner filterSize(@Nullable Filter<Long> filter) {
         this.mSizeFilter = filter;
         return (Returner) this;
     }
@@ -70,7 +75,7 @@ public abstract class BasicChoiceWrapper<Returner extends BasicChoiceWrapper, Re
      *
      * @param filter filter.
      */
-    public Returner filterMimeType(Filter<String> filter) {
+    public Returner filterMimeType(@Nullable Filter<String> filter) {
         this.mMimeTypeFilter = filter;
         return (Returner) this;
     }

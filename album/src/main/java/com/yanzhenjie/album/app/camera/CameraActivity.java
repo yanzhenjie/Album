@@ -50,8 +50,10 @@ public class CameraActivity extends BaseActivity {
     
     private static final int CODE_ACTIVITY_TAKE_IMAGE = 1;
     private static final int CODE_ACTIVITY_TAKE_VIDEO = 2;
-    
+
+    @Nullable
     public static Action<AlbumCameraFile> sResult;
+    @Nullable
     public static Action<String> sCancel;
     
     private int mFunction;

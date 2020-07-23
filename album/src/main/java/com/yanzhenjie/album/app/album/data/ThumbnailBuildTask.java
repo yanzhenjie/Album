@@ -22,32 +22,35 @@ import com.yanzhenjie.album.AlbumFile;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * Created by YanZhenjie on 2017/10/15.
  */
 public class ThumbnailBuildTask extends AsyncTask<Void, Void, ArrayList<AlbumFile>> {
-    
+
     public interface Callback {
         /**
          * The task begins.
          */
         void onThumbnailStart();
-        
+
         /**
          * Callback results.
          *
          * @param albumFiles result.
          */
-        void onThumbnailCallback(ArrayList<AlbumFile> albumFiles);
+        void onThumbnailCallback(@NonNull ArrayList<AlbumFile> albumFiles);
     }
-    
+
     private ArrayList<AlbumFile> mAlbumFiles;
     private Callback mCallback;
-    
+
     private ThumbnailBuilder mThumbnailBuilder;
     private Context mContext;
-    
-    public ThumbnailBuildTask(Context context, ArrayList<AlbumFile> albumFiles, Callback callback) {
+
+    public ThumbnailBuildTask(@NonNull Context context, @Nullable ArrayList<AlbumFile> albumFiles, @NonNull Callback callback) {
         this.mAlbumFiles = albumFiles;
         if (mAlbumFiles == null) {
             mAlbumFiles = new ArrayList<>();
@@ -56,27 +59,28 @@ public class ThumbnailBuildTask extends AsyncTask<Void, Void, ArrayList<AlbumFil
         this.mContext = context;
         this.mThumbnailBuilder = new ThumbnailBuilder(mContext);
     }
-    
+
     @Override
     protected void onPreExecute() {
         mCallback.onThumbnailStart();
     }
-    
+
+    @NonNull
     @Override
-    protected ArrayList<AlbumFile> doInBackground(Void... params) {
+    protected ArrayList<AlbumFile> doInBackground(@NonNull Void... params) {
         for (AlbumFile albumFile : mAlbumFiles) {
             int mediaType = albumFile.getMediaType();
             if (mediaType == AlbumFile.TYPE_IMAGE) {
-                albumFile.setThumbPath(mThumbnailBuilder.createThumbnailForImage(mContext, albumFile.getUri(), albumFile.getMimeType()));
+                albumFile.setThumbUri(mThumbnailBuilder.createThumbnailForImage(mContext, albumFile.getUri(), albumFile.getMimeType()));
             } else if (mediaType == AlbumFile.TYPE_VIDEO) {
-                albumFile.setThumbPath(mThumbnailBuilder.createThumbnailForVideo(mContext, albumFile.getUri()));
+                albumFile.setThumbUri(mThumbnailBuilder.createThumbnailForVideo(mContext, albumFile.getUri()));
             }
         }
         return mAlbumFiles;
     }
-    
+
     @Override
-    protected void onPostExecute(ArrayList<AlbumFile> albumFiles) {
+    protected void onPostExecute(@NonNull ArrayList<AlbumFile> albumFiles) {
         mCallback.onThumbnailCallback(albumFiles);
     }
 }

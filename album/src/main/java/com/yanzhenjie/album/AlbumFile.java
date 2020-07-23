@@ -18,10 +18,11 @@ package com.yanzhenjie.album;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.annotation.IntDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import androidx.annotation.IntDef;
 
 /**
  * Created by YanZhenjie on 2017/8/15.
@@ -35,6 +36,7 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
     @IntDef({TYPE_IMAGE, TYPE_VIDEO})
     public @interface MediaType {
     }
+
     /**
      * File uri.
      */
@@ -90,10 +92,11 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
     @Override
     public int compareTo(AlbumFile o) {
         long time = o.getAddDate() - getAddDate();
-        if (time > Integer.MAX_VALUE)
+        if (time > Integer.MAX_VALUE) {
             return Integer.MAX_VALUE;
-        else if (time < -Integer.MAX_VALUE)
+        } else if (time < -Integer.MAX_VALUE) {
             return -Integer.MAX_VALUE;
+        }
         return (int) time;
     }
 
@@ -113,11 +116,11 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
     public int hashCode() {
         return uri != null ? uri.hashCode() : super.hashCode();
     }
-    
+
     public Uri getUri() {
         return uri;
     }
-    
+
     public void setUri(Uri uri) {
         this.uri = uri;
     }
@@ -182,7 +185,7 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
         return mThumbUri;
     }
 
-    public void setThumbPath(Uri thumbUri) {
+    public void setThumbUri(Uri thumbUri) {
         mThumbUri = thumbUri;
     }
 
@@ -210,7 +213,7 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
     public void setDisable(boolean disable) {
         this.isDisable = disable;
     }
-    
+
     @Override
     public String toString() {
         return "AlbumFile{" +
@@ -228,12 +231,12 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
             ", isDisable=" + isDisable +
             '}';
     }
-    
+
     @Override
     public int describeContents() {
         return 0;
     }
-    
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(this.uri, flags);
@@ -249,7 +252,7 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
         dest.writeByte(this.isChecked ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isDisable ? (byte) 1 : (byte) 0);
     }
-    
+
     protected AlbumFile(Parcel in) {
         this.uri = in.readParcelable(Uri.class.getClassLoader());
         this.mBucketName = in.readString();
@@ -264,13 +267,13 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
         this.isChecked = in.readByte() != 0;
         this.isDisable = in.readByte() != 0;
     }
-    
+
     public static final Creator<AlbumFile> CREATOR = new Creator<AlbumFile>() {
         @Override
         public AlbumFile createFromParcel(Parcel source) {
             return new AlbumFile(source);
         }
-        
+
         @Override
         public AlbumFile[] newArray(int size) {
             return new AlbumFile[size];

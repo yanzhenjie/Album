@@ -54,7 +54,7 @@ public class FrescoLoader implements AlbumLoader {
     @Override
     public void load(ImageView imageView, Uri uri) {
         if (imageView instanceof SimpleDraweeView) {
-            ((SimpleDraweeView) imageView).setImageURI(uri);
+            imageView.setImageURI(uri);
         }
     }
     

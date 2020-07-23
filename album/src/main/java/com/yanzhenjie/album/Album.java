@@ -18,7 +18,6 @@ package com.yanzhenjie.album;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import androidx.annotation.IntDef;
 import android.util.Log;
 
 import com.yanzhenjie.album.api.AlbumMultipleWrapper;
@@ -41,6 +40,10 @@ import com.yanzhenjie.album.api.choice.VideoChoice;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * <p>Entrance.</p>
@@ -103,14 +106,18 @@ public final class Album {
      *
      * @param albumConfig {@link AlbumConfig}.
      */
-    public static void initialize(AlbumConfig albumConfig) {
-        if (sAlbumConfig == null) sAlbumConfig = albumConfig;
-        else Log.w("Album", new IllegalStateException("Illegal operation, only allowed to configure once."));
+    public static void initialize(@Nullable AlbumConfig albumConfig) {
+        if (sAlbumConfig == null) {
+            sAlbumConfig = albumConfig;
+        } else {
+            Log.w("Album", new IllegalStateException("Illegal operation, only allowed to configure once."));
+        }
     }
 
     /**
      * Get the album configuration.
      */
+    @NonNull
     public static AlbumConfig getAlbumConfig() {
         if (sAlbumConfig == null) {
             sAlbumConfig = AlbumConfig.newBuilder(null).build();
@@ -121,168 +128,192 @@ public final class Album {
     /**
      * Open the camera from the activity.
      */
-    public static Camera<ImageCameraWrapper, VideoCameraWrapper> camera(Context context) {
+    @NonNull
+    public static Camera<ImageCameraWrapper, VideoCameraWrapper> camera(@NonNull Context context) {
         return new AlbumCamera(context);
     }
 
     /**
      * Select images.
      */
-    public static Choice<ImageMultipleWrapper, ImageSingleWrapper> image(Context context) {
+    @NonNull
+    public static Choice<ImageMultipleWrapper, ImageSingleWrapper> image(@NonNull Context context) {
         return new ImageChoice(context);
     }
 
     /**
      * Select videos.
      */
-    public static Choice<VideoMultipleWrapper, VideoSingleWrapper> video(Context context) {
+    @NonNull
+    public static Choice<VideoMultipleWrapper, VideoSingleWrapper> video(@NonNull Context context) {
         return new VideoChoice(context);
     }
 
     /**
      * Select images and videos.
      */
-    public static Choice<AlbumMultipleWrapper, AlbumSingleWrapper> album(Context context) {
+    @NonNull
+    public static Choice<AlbumMultipleWrapper, AlbumSingleWrapper> album(@NonNull Context context) {
         return new AlbumChoice(context);
     }
 
     /**
      * Preview picture.
      */
-    public static GalleryWrapper gallery(Context context) {
+    @NonNull
+    public static GalleryWrapper gallery(@NonNull Context context) {
         return new GalleryWrapper(context);
     }
 
     /**
      * Preview Album.
      */
-    public static GalleryAlbumWrapper galleryAlbum(Context context) {
+    @NonNull
+    public static GalleryAlbumWrapper galleryAlbum(@NonNull Context context) {
         return new GalleryAlbumWrapper(context);
     }
 
     /**
      * Open the camera from the activity.
      */
-    public static Camera<ImageCameraWrapper, VideoCameraWrapper> camera(Activity activity) {
+    @NonNull
+    public static Camera<ImageCameraWrapper, VideoCameraWrapper> camera(@NonNull Activity activity) {
         return new AlbumCamera(activity);
     }
 
     /**
      * Select images.
      */
-    public static Choice<ImageMultipleWrapper, ImageSingleWrapper> image(Activity activity) {
+    @NonNull
+    public static Choice<ImageMultipleWrapper, ImageSingleWrapper> image(@NonNull Activity activity) {
         return new ImageChoice(activity);
     }
 
     /**
      * Select videos.
      */
-    public static Choice<VideoMultipleWrapper, VideoSingleWrapper> video(Activity activity) {
+    @NonNull
+    public static Choice<VideoMultipleWrapper, VideoSingleWrapper> video(@NonNull Activity activity) {
         return new VideoChoice(activity);
     }
 
     /**
      * Select images and videos.
      */
-    public static Choice<AlbumMultipleWrapper, AlbumSingleWrapper> album(Activity activity) {
+    @NonNull
+    public static Choice<AlbumMultipleWrapper, AlbumSingleWrapper> album(@NonNull Activity activity) {
         return new AlbumChoice(activity);
     }
 
     /**
      * Preview picture.
      */
-    public static BasicGalleryWrapper<GalleryWrapper, String, String, String> gallery(Activity activity) {
+    @NonNull
+    public static BasicGalleryWrapper<GalleryWrapper, String, String, String> gallery(@NonNull Activity activity) {
         return new GalleryWrapper(activity);
     }
 
     /**
      * Preview Album.
      */
-    public static BasicGalleryWrapper<GalleryAlbumWrapper, AlbumFile, String, AlbumFile> galleryAlbum(Activity activity) {
+    @NonNull
+    public static BasicGalleryWrapper<GalleryAlbumWrapper, AlbumFile, String, AlbumFile> galleryAlbum(@NonNull Activity activity) {
         return new GalleryAlbumWrapper(activity);
     }
 
     /**
      * Open the camera from the activity.
      */
-    public static Camera<ImageCameraWrapper, VideoCameraWrapper> camera(Fragment fragment) {
+    @NonNull
+    public static Camera<ImageCameraWrapper, VideoCameraWrapper> camera(@NonNull Fragment fragment) {
         return new AlbumCamera(fragment.getActivity());
     }
 
     /**
      * Select images.
      */
-    public static Choice<ImageMultipleWrapper, ImageSingleWrapper> image(Fragment fragment) {
+    @NonNull
+    public static Choice<ImageMultipleWrapper, ImageSingleWrapper> image(@NonNull Fragment fragment) {
         return new ImageChoice(fragment.getActivity());
     }
 
     /**
      * Select videos.
      */
-    public static Choice<VideoMultipleWrapper, VideoSingleWrapper> video(Fragment fragment) {
+    @NonNull
+    public static Choice<VideoMultipleWrapper, VideoSingleWrapper> video(@NonNull Fragment fragment) {
         return new VideoChoice(fragment.getActivity());
     }
 
     /**
      * Select images and videos.
      */
-    public static Choice<AlbumMultipleWrapper, AlbumSingleWrapper> album(Fragment fragment) {
+    @NonNull
+    public static Choice<AlbumMultipleWrapper, AlbumSingleWrapper> album(@NonNull Fragment fragment) {
         return new AlbumChoice(fragment.getActivity());
     }
 
     /**
      * Preview picture.
      */
-    public static BasicGalleryWrapper<GalleryWrapper, String, String, String> gallery(Fragment fragment) {
+    @NonNull
+    public static BasicGalleryWrapper<GalleryWrapper, String, String, String> gallery(@NonNull Fragment fragment) {
         return new GalleryWrapper(fragment.getActivity());
     }
 
     /**
      * Preview Album.
      */
-    public static BasicGalleryWrapper<GalleryAlbumWrapper, AlbumFile, String, AlbumFile> galleryAlbum(Fragment fragment) {
+    @NonNull
+    public static BasicGalleryWrapper<GalleryAlbumWrapper, AlbumFile, String, AlbumFile> galleryAlbum(@NonNull Fragment fragment) {
         return new GalleryAlbumWrapper(fragment.getActivity());
     }
 
     /**
      * Open the camera from the activity.
      */
-    public static Camera<ImageCameraWrapper, VideoCameraWrapper> camera(androidx.fragment.app.Fragment fragment) {
+    @NonNull
+    public static Camera<ImageCameraWrapper, VideoCameraWrapper> camera(@NonNull androidx.fragment.app.Fragment fragment) {
         return new AlbumCamera(fragment.getContext());
     }
 
     /**
      * Select images.
      */
-    public static Choice<ImageMultipleWrapper, ImageSingleWrapper> image(androidx.fragment.app.Fragment fragment) {
+    @NonNull
+    public static Choice<ImageMultipleWrapper, ImageSingleWrapper> image(@NonNull androidx.fragment.app.Fragment fragment) {
         return new ImageChoice(fragment.getContext());
     }
 
     /**
      * Select videos.
      */
-    public static Choice<VideoMultipleWrapper, VideoSingleWrapper> video(androidx.fragment.app.Fragment fragment) {
+    @NonNull
+    public static Choice<VideoMultipleWrapper, VideoSingleWrapper> video(@NonNull androidx.fragment.app.Fragment fragment) {
         return new VideoChoice(fragment.getContext());
     }
 
     /**
      * Select images and videos.
      */
-    public static Choice<AlbumMultipleWrapper, AlbumSingleWrapper> album(androidx.fragment.app.Fragment fragment) {
+    @NonNull
+    public static Choice<AlbumMultipleWrapper, AlbumSingleWrapper> album(@NonNull androidx.fragment.app.Fragment fragment) {
         return new AlbumChoice(fragment.getContext());
     }
 
     /**
      * Preview picture.
      */
-    public static BasicGalleryWrapper<GalleryWrapper, String, String, String> gallery(androidx.fragment.app.Fragment fragment) {
+    @NonNull
+    public static BasicGalleryWrapper<GalleryWrapper, String, String, String> gallery(@NonNull androidx.fragment.app.Fragment fragment) {
         return new GalleryWrapper(fragment.getContext());
     }
 
     /**
      * Preview Album.
      */
-    public static BasicGalleryWrapper<GalleryAlbumWrapper, AlbumFile, String, AlbumFile> galleryAlbum(androidx.fragment.app.Fragment fragment) {
+    @NonNull
+    public static BasicGalleryWrapper<GalleryAlbumWrapper, AlbumFile, String, AlbumFile> galleryAlbum(@NonNull androidx.fragment.app.Fragment fragment) {
         return new GalleryAlbumWrapper(fragment.getContext());
     }
 }

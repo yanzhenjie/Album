@@ -20,55 +20,62 @@ import android.content.Context;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.AlbumCameraFile;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /**
  * Created by YanZhenjie on 2017/8/18.
  */
 public abstract class BasicCameraWrapper<Returner extends BasicCameraWrapper> {
-    
+    @NonNull
     Context mContext;
+    @Nullable
     Action<AlbumCameraFile> mResult;
+    @Nullable
     Action<String> mCancel;
+    @Nullable
     String mFilePath;
-    
-    public BasicCameraWrapper(Context context) {
+
+    public BasicCameraWrapper(@NonNull Context context) {
         this.mContext = context;
     }
-    
+
     /**
      * Set the action when result.
      *
      * @param result action when producing result.
      */
-    public final Returner onResult(Action<AlbumCameraFile> result) {
+    @NonNull
+    public final Returner onResult(@Nullable Action<AlbumCameraFile> result) {
         this.mResult = result;
         return (Returner) this;
     }
-    
+
     /**
      * Set the action when canceling.
      *
      * @param cancel action when canceled.
      */
-    public final Returner onCancel(Action<String> cancel) {
+    @NonNull
+    public final Returner onCancel(@Nullable Action<String> cancel) {
         this.mCancel = cancel;
         return (Returner) this;
     }
-    
+
     /**
      * Set the image storage path.
      *
      * @param filePath storage path.
      */
+    @NonNull
     public Returner filePath(@Nullable String filePath) {
         this.mFilePath = filePath;
         return (Returner) this;
     }
-    
+
     /**
      * Start up.
      */
     public abstract void start();
-    
+
 }

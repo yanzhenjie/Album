@@ -22,9 +22,9 @@ dependencies {
     implementation project(":album")
     //    implementation rootProject.ext.dependencies.album
     implementation 'com.facebook.fresco:fresco:2.1.0'
-    implementation "com.github.piasy:BigImageViewer:1.6.2"
-    implementation "com.github.piasy:FrescoImageLoader:1.6.2"
-    implementation 'com.github.piasy:FrescoImageViewFactory:1.6.2'
+    implementation "com.github.piasy:BigImageViewer:1.6.5"
+    implementation "com.github.piasy:FrescoImageLoader:1.6.5"
+    implementation 'com.github.piasy:FrescoImageViewFactory:1.6.5'
 
     implementation rootProject.ext.dependencies.appCompat
     implementation rootProject.ext.dependencies.design

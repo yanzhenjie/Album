@@ -17,13 +17,16 @@ package com.yanzhenjie.album.api;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.annotation.IntRange;
 
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.app.album.AlbumActivity;
 
 import java.util.ArrayList;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by YanZhenjie on 2017/8/16.
@@ -33,7 +36,7 @@ public final class ImageMultipleWrapper extends BasicChoiceWrapper<ImageMultiple
     @IntRange(from = 1, to = Integer.MAX_VALUE)
     private int mLimitCount = Integer.MAX_VALUE;
 
-    public ImageMultipleWrapper(Context context) {
+    public ImageMultipleWrapper(@NonNull Context context) {
         super(context);
     }
 
@@ -42,7 +45,8 @@ public final class ImageMultipleWrapper extends BasicChoiceWrapper<ImageMultiple
      *
      * @param checked the data list.
      */
-    public final ImageMultipleWrapper checkedList(ArrayList<AlbumFile> checked) {
+    @NonNull
+    public final ImageMultipleWrapper checkedList(@Nullable ArrayList<AlbumFile> checked) {
         this.mChecked = checked;
         return this;
     }
@@ -52,6 +56,7 @@ public final class ImageMultipleWrapper extends BasicChoiceWrapper<ImageMultiple
      *
      * @param count the maximum number.
      */
+    @NonNull
     public ImageMultipleWrapper selectCount(@IntRange(from = 1, to = Integer.MAX_VALUE) int count) {
         this.mLimitCount = count;
         return this;

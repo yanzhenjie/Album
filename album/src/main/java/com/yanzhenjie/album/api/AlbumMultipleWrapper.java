@@ -18,6 +18,8 @@ package com.yanzhenjie.album.api;
 import android.content.Context;
 import android.content.Intent;
 import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
@@ -35,7 +37,7 @@ public class AlbumMultipleWrapper extends BasicChoiceAlbumWrapper<AlbumMultipleW
     private int mLimitCount = Integer.MAX_VALUE;
     private Filter<Long> mDurationFilter;
 
-    public AlbumMultipleWrapper(Context context) {
+    public AlbumMultipleWrapper(@NonNull Context context) {
         super(context);
     }
 
@@ -44,7 +46,8 @@ public class AlbumMultipleWrapper extends BasicChoiceAlbumWrapper<AlbumMultipleW
      *
      * @param checked the data list.
      */
-    public final AlbumMultipleWrapper checkedList(ArrayList<AlbumFile> checked) {
+    @NonNull
+    public final AlbumMultipleWrapper checkedList(@Nullable ArrayList<AlbumFile> checked) {
         this.mChecked = checked;
         return this;
     }
@@ -54,6 +57,7 @@ public class AlbumMultipleWrapper extends BasicChoiceAlbumWrapper<AlbumMultipleW
      *
      * @param count the maximum number.
      */
+    @NonNull
     public AlbumMultipleWrapper selectCount(@IntRange(from = 1, to = Integer.MAX_VALUE) int count) {
         this.mLimitCount = count;
         return this;
@@ -64,7 +68,8 @@ public class AlbumMultipleWrapper extends BasicChoiceAlbumWrapper<AlbumMultipleW
      *
      * @param filter filter.
      */
-    public AlbumMultipleWrapper filterDuration(Filter<Long> filter) {
+    @NonNull
+    public AlbumMultipleWrapper filterDuration(@Nullable Filter<Long> filter) {
         this.mDurationFilter = filter;
         return this;
     }

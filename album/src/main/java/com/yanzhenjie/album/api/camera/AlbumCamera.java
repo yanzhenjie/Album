@@ -20,6 +20,8 @@ import android.content.Context;
 import com.yanzhenjie.album.api.ImageCameraWrapper;
 import com.yanzhenjie.album.api.VideoCameraWrapper;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by YanZhenjie on 2017/8/18.
  */
@@ -27,15 +29,17 @@ public class AlbumCamera implements Camera<ImageCameraWrapper, VideoCameraWrappe
 
     private Context mContext;
 
-    public AlbumCamera(Context context) {
+    public AlbumCamera(@NonNull Context context) {
         mContext = context;
     }
 
+    @NonNull
     @Override
     public ImageCameraWrapper image() {
         return new ImageCameraWrapper(mContext);
     }
 
+    @NonNull
     @Override
     public VideoCameraWrapper video() {
         return new VideoCameraWrapper(mContext);

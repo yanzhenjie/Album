@@ -27,16 +27,16 @@ import java.util.Locale;
  * Created by Yan Zhenjie on 2016/10/30.
  */
 public class Application extends android.app.Application {
-    
+
     private static Application instance;
-    
+
     @Override
     public void onCreate() {
         super.onCreate();
         if (instance == null) {
             instance = this;
             BigImageViewer.initialize(FrescoImageLoader.with(instance));
-            
+
             Album.initialize(AlbumConfig.newBuilder(this)
                 //                .setAlbumLoader(new MediaLoader())
                 .setAlbumLoader(new FrescoLoader())
@@ -45,7 +45,7 @@ public class Application extends android.app.Application {
             );
         }
     }
-    
+
     public static Application getInstance() {
         return instance;
     }
