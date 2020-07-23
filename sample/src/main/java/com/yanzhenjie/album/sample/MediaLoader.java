@@ -16,7 +16,9 @@
 package com.yanzhenjie.album.sample;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import android.net.Uri;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -34,13 +36,13 @@ public class MediaLoader implements AlbumLoader {
     
     @Override
     public void load(ImageView imageView, AlbumFile albumFile) {
-        load(imageView, albumFile.getPath());
+        load(imageView, albumFile.getUri());
     }
     
     @Override
-    public void load(ImageView imageView, String url) {
+    public void load(ImageView imageView, Uri uri) {
         Glide.with(imageView.getContext())
-            .load(url)
+            .load(uri)
             .error(R.drawable.placeholder)
             .placeholder(R.drawable.placeholder)
             .crossFade()
@@ -50,15 +52,15 @@ public class MediaLoader implements AlbumLoader {
     @NonNull
     @Override
     public View getPreviewView(Context context, AlbumFile albumFile, final View.OnClickListener onClickListener, final View.OnClickListener longClickListener) {
-        return getPreviewView(context, albumFile.getPath(), onClickListener, longClickListener);
+        return getPreviewView(context, albumFile.getUri(), onClickListener, longClickListener);
     }
     
     @NonNull
     @Override
-    public View getPreviewView(Context context, String url, final View.OnClickListener onClickListener, final View.OnClickListener longClickListener) {
+    public View getPreviewView(Context context, Uri uri, @Nullable final View.OnClickListener onClickListener, @Nullable final View.OnClickListener longClickListener) {
         final AttacherImageView view = new AttacherImageView(context);
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        load(view, url);
+        load(view, uri);
         PhotoViewAttacher attacher = new PhotoViewAttacher(view);
         if (onClickListener != null) {
             attacher.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
@@ -80,4 +82,5 @@ public class MediaLoader implements AlbumLoader {
         view.setAttacher(attacher);
         return view;
     }
+    
 }

@@ -16,9 +16,8 @@
 package com.yanzhenjie.album.api;
 
 import android.content.Context;
-import android.support.annotation.IntRange;
+import androidx.annotation.IntRange;
 
-import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.ItemAction;
 
 import java.util.ArrayList;

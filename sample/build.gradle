@@ -11,15 +11,20 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
     }
+
+    //解决  More than one file was found with OS independent path 'META-INF/DEPENDENCIES'
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+    }
 }
 
 dependencies {
     implementation project(":album")
     //    implementation rootProject.ext.dependencies.album
-    implementation 'com.facebook.fresco:fresco:1.11.0'
-    implementation "com.github.piasy:BigImageViewer:1.5.6"
-    implementation "com.github.piasy:FrescoImageLoader:1.5.6"
-    implementation 'com.github.piasy:FrescoImageViewFactory:1.5.6'
+    implementation 'com.facebook.fresco:fresco:2.1.0'
+    implementation "com.github.piasy:BigImageViewer:1.6.2"
+    implementation "com.github.piasy:FrescoImageLoader:1.6.2"
+    implementation 'com.github.piasy:FrescoImageViewFactory:1.6.2'
 
     implementation rootProject.ext.dependencies.appCompat
     implementation rootProject.ext.dependencies.design

@@ -31,7 +31,7 @@
         android:id="@+id/image_view"
         style="@style/Album.WrapContent" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         style="@style/Album.WrapContent.WidthMatchParent"
         android:layout_marginTop="@dimen/album_dp_10" />

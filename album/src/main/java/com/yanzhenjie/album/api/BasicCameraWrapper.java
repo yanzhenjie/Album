@@ -16,34 +16,36 @@
 package com.yanzhenjie.album.api;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 
 import com.yanzhenjie.album.Action;
+import com.yanzhenjie.album.AlbumCameraFile;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by YanZhenjie on 2017/8/18.
  */
 public abstract class BasicCameraWrapper<Returner extends BasicCameraWrapper> {
-
+    
     Context mContext;
-    Action<String> mResult;
+    Action<AlbumCameraFile> mResult;
     Action<String> mCancel;
     String mFilePath;
-
+    
     public BasicCameraWrapper(Context context) {
         this.mContext = context;
     }
-
+    
     /**
      * Set the action when result.
      *
      * @param result action when producing result.
      */
-    public final Returner onResult(Action<String> result) {
+    public final Returner onResult(Action<AlbumCameraFile> result) {
         this.mResult = result;
         return (Returner) this;
     }
-
+    
     /**
      * Set the action when canceling.
      *
@@ -53,7 +55,7 @@ public abstract class BasicCameraWrapper<Returner extends BasicCameraWrapper> {
         this.mCancel = cancel;
         return (Returner) this;
     }
-
+    
     /**
      * Set the image storage path.
      *
@@ -63,10 +65,10 @@ public abstract class BasicCameraWrapper<Returner extends BasicCameraWrapper> {
         this.mFilePath = filePath;
         return (Returner) this;
     }
-
+    
     /**
      * Start up.
      */
     public abstract void start();
-
+    
 }

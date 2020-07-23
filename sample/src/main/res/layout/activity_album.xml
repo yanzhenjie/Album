@@ -14,11 +14,11 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<android.support.design.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     style="@style/Album.MatchParent">
 
     <include layout="@layout/toolbar"/>
 
     <include layout="@layout/activity_list_content"/>
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

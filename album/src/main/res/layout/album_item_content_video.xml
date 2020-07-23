@@ -30,7 +30,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true">
 
-            <android.support.v7.widget.AppCompatCheckBox
+            <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/check_box"
                 style="@style/Album.CheckBox.WrapContent" />
         </com.yanzhenjie.album.widget.TransferLayout>

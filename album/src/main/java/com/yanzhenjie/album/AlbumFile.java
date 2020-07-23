@@ -15,9 +15,10 @@
  */
 package com.yanzhenjie.album;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -34,11 +35,10 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
     @IntDef({TYPE_IMAGE, TYPE_VIDEO})
     public @interface MediaType {
     }
-
     /**
-     * File path.
+     * File uri.
      */
-    private String mPath;
+    private Uri uri;
     /**
      * Folder mName.
      */
@@ -68,9 +68,9 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
      */
     private long mDuration;
     /**
-     * Thumb path.
+     * Thumb path uri.
      */
-    private String mThumbPath;
+    private Uri mThumbUri;
     /**
      * MediaType.
      */
@@ -101,9 +101,9 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
     public boolean equals(Object obj) {
         if (obj != null && obj instanceof AlbumFile) {
             AlbumFile o = (AlbumFile) obj;
-            String inPath = o.getPath();
-            if (mPath != null && inPath != null) {
-                return mPath.equals(inPath);
+            Uri inPath = o.getUri();
+            if (uri != null && inPath != null) {
+                return uri.equals(inPath);
             }
         }
         return super.equals(obj);
@@ -111,15 +111,15 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
 
     @Override
     public int hashCode() {
-        return mPath != null ? mPath.hashCode() : super.hashCode();
+        return uri != null ? uri.hashCode() : super.hashCode();
     }
-
-    public String getPath() {
-        return mPath;
+    
+    public Uri getUri() {
+        return uri;
     }
-
-    public void setPath(String path) {
-        mPath = path;
+    
+    public void setUri(Uri uri) {
+        this.uri = uri;
     }
 
     public String getBucketName() {
@@ -178,12 +178,12 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
         mDuration = duration;
     }
 
-    public String getThumbPath() {
-        return mThumbPath;
+    public Uri getThumbUri() {
+        return mThumbUri;
     }
 
-    public void setThumbPath(String thumbPath) {
-        mThumbPath = thumbPath;
+    public void setThumbPath(Uri thumbUri) {
+        mThumbUri = thumbUri;
     }
 
     @MediaType
@@ -210,53 +210,70 @@ public class AlbumFile implements Parcelable, Comparable<AlbumFile> {
     public void setDisable(boolean disable) {
         this.isDisable = disable;
     }
-
-    protected AlbumFile(Parcel in) {
-        mPath = in.readString();
-        mBucketName = in.readString();
-        mMimeType = in.readString();
-        mAddDate = in.readLong();
-        mLatitude = in.readFloat();
-        mLongitude = in.readFloat();
-        mSize = in.readLong();
-        mDuration = in.readLong();
-        mThumbPath = in.readString();
-        mMediaType = in.readInt();
-        isChecked = in.readByte() != 0;
-        isDisable = in.readByte() != 0;
-    }
-
+    
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mPath);
-        dest.writeString(mBucketName);
-        dest.writeString(mMimeType);
-        dest.writeLong(mAddDate);
-        dest.writeFloat(mLatitude);
-        dest.writeFloat(mLongitude);
-        dest.writeLong(mSize);
-        dest.writeLong(mDuration);
-        dest.writeString(mThumbPath);
-        dest.writeInt(mMediaType);
-        dest.writeByte((byte) (isChecked ? 1 : 0));
-        dest.writeByte((byte) (isDisable ? 1 : 0));
+    public String toString() {
+        return "AlbumFile{" +
+            "uri=" + uri +
+            ", mBucketName='" + mBucketName + '\'' +
+            ", mMimeType='" + mMimeType + '\'' +
+            ", mAddDate=" + mAddDate +
+            ", mLatitude=" + mLatitude +
+            ", mLongitude=" + mLongitude +
+            ", mSize=" + mSize +
+            ", mDuration=" + mDuration +
+            ", mThumbUri='" + mThumbUri + '\'' +
+            ", mMediaType=" + mMediaType +
+            ", isChecked=" + isChecked +
+            ", isDisable=" + isDisable +
+            '}';
     }
-
+    
     @Override
     public int describeContents() {
         return 0;
     }
-
+    
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(this.uri, flags);
+        dest.writeString(this.mBucketName);
+        dest.writeString(this.mMimeType);
+        dest.writeLong(this.mAddDate);
+        dest.writeFloat(this.mLatitude);
+        dest.writeFloat(this.mLongitude);
+        dest.writeLong(this.mSize);
+        dest.writeLong(this.mDuration);
+        dest.writeParcelable(this.mThumbUri, flags);
+        dest.writeInt(this.mMediaType);
+        dest.writeByte(this.isChecked ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.isDisable ? (byte) 1 : (byte) 0);
+    }
+    
+    protected AlbumFile(Parcel in) {
+        this.uri = in.readParcelable(Uri.class.getClassLoader());
+        this.mBucketName = in.readString();
+        this.mMimeType = in.readString();
+        this.mAddDate = in.readLong();
+        this.mLatitude = in.readFloat();
+        this.mLongitude = in.readFloat();
+        this.mSize = in.readLong();
+        this.mDuration = in.readLong();
+        this.mThumbUri = in.readParcelable(Uri.class.getClassLoader());
+        this.mMediaType = in.readInt();
+        this.isChecked = in.readByte() != 0;
+        this.isDisable = in.readByte() != 0;
+    }
+    
     public static final Creator<AlbumFile> CREATOR = new Creator<AlbumFile>() {
         @Override
-        public AlbumFile createFromParcel(Parcel in) {
-            return new AlbumFile(in);
+        public AlbumFile createFromParcel(Parcel source) {
+            return new AlbumFile(source);
         }
-
+        
         @Override
         public AlbumFile[] newArray(int size) {
             return new AlbumFile[size];
         }
     };
-
 }

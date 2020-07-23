@@ -18,15 +18,15 @@
     style="@style/Album.MatchParent"
     android:background="@color/albumPageLight">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
         style="@style/Album.AppBar.General">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             style="@style/Album.Toolbar.Light" />
 
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/album_content_album"/>
 </RelativeLayout>

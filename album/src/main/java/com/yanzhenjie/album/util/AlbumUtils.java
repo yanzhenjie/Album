@@ -27,10 +27,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.ColorInt;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -49,14 +45,19 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.core.graphics.drawable.DrawableCompat;
+
 /**
  * <p>Helper for album.</p>
  * Created by Yan Zhenjie on 2016/10/30.
  */
 public class AlbumUtils {
-
+    
     private static final String CACHE_DIRECTORY = "AlbumCache";
-
+    
     /**
      * Get a writable root directory.
      *
@@ -65,25 +66,26 @@ public class AlbumUtils {
      */
     @NonNull
     public static File getAlbumRootPath(Context context) {
-        if (sdCardIsAvailable()) {
-            return new File(Environment.getExternalStorageDirectory(), CACHE_DIRECTORY);
+        if (sdCardIsAvailable(context)) {
+            return new File(context.getExternalCacheDir(), CACHE_DIRECTORY);
         } else {
             return new File(context.getFilesDir(), CACHE_DIRECTORY);
         }
     }
-
+    
     /**
      * SD card is available.
      *
      * @return true when available, other wise is false.
      */
-    public static boolean sdCardIsAvailable() {
+    public static boolean sdCardIsAvailable(Context context) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            return Environment.getExternalStorageDirectory().canWrite();
-        } else
+            return context.getExternalCacheDir().canWrite();
+        } else {
             return false;
+        }
     }
-
+    
     /**
      * Setting {@link Locale} for {@link Context}.
      *
@@ -103,7 +105,7 @@ public class AlbumUtils {
             return context;
         }
     }
-
+    
     /**
      * Take picture.
      *
@@ -119,7 +121,7 @@ public class AlbumUtils {
         intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         activity.startActivityForResult(intent, requestCode);
     }
-
+    
     /**
      * Take video.
      *
@@ -144,7 +146,7 @@ public class AlbumUtils {
         intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         activity.startActivityForResult(intent, requestCode);
     }
-
+    
     /**
      * Generates an externally accessed URI based on path.
      *
@@ -162,36 +164,29 @@ public class AlbumUtils {
         }
         return uri;
     }
-
+    
     /**
-     * Generate a random jpg file path.
-     *
-     * @return file path.
-     *
-     * @deprecated use {@link #randomJPGPath(Context)} instead.
-     */
-    @NonNull
-    @Deprecated
-    public static String randomJPGPath() {
-        File bucket = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        return randomJPGPath(bucket);
-    }
-
-    /**
-     * Generate a random jpg file path.
+     * Generates an externally accessed URI based on path.
      *
      * @param context context.
+     * @param outPath file path.
+     * @return the uri address of the file.
+     */
+    @NonNull
+    public static Uri getUri(@NonNull Context context, @NonNull String outPath) {
+        return getUri(context, new File(outPath));
+    }
+    
+    /**
+     * Generates a random jpg file path in the specified directory.
      *
      * @return file path.
      */
     @NonNull
-    public static String randomJPGPath(Context context) {
-        if(!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-            return randomJPGPath(context.getCacheDir());
-        }
-        return randomJPGPath();
+    public static String randomJPGPath(@NonNull Context context) {
+        return randomJPGPath(getAlbumRootPath(context));
     }
-
+    
     /**
      * Generates a random jpg file path in the specified directory.
      *
@@ -199,65 +194,48 @@ public class AlbumUtils {
      * @return file path.
      */
     @NonNull
-    public static String randomJPGPath(File bucket) {
-        return randomMediaPath(bucket, ".jpg");
+    public static String randomJPGPath(@NonNull File bucket) {
+        String outFileName = AlbumUtils.getNowDateTime("yyyyMMdd_HHmmssSSS") + "_" + getMD5ForString(UUID.randomUUID().toString()) + ".jpg";
+        if (bucket.exists() && bucket.isFile()) {
+            bucket.delete();
+        }
+        if (!bucket.exists()) {
+            bucket.mkdirs();
+        }
+        File file = new File(bucket, outFileName);
+        return file.getAbsolutePath();
     }
-
-    /**
-     * Generate a random mp4 file path.
-     *
-     * @return file path.
-     *
-     * @deprecated use {@link #randomMP4Path(Context)} instead.
-     */
-    @NonNull
-    @Deprecated
-    public static String randomMP4Path() {
-        File bucket = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
-        return randomMP4Path(bucket);
-    }
-
+    
     /**
      * Generate a random mp4 file path.
      *
      * @param context context.
-     *
      * @return file path.
      */
     @NonNull
-    public static String randomMP4Path(Context context) {
-        if(!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-            return randomMP4Path(context.getCacheDir());
-        }
-        return randomMP4Path();
+    public static String randomMP4Path(@NonNull Context context) {
+        return randomMP4Path(getAlbumRootPath(context));
     }
-
+    
     /**
      * Generates a random mp4 file path in the specified directory.
      *
      * @return file path.
      */
     @NonNull
-    public static String randomMP4Path(File bucket) {
-        return randomMediaPath(bucket, ".mp4");
-    }
-
-    /**
-     * Generates a random file path using the specified suffix name in the specified directory.
-     *
-     * @param bucket    specify the directory.
-     * @param extension extension.
-     * @return file path.
-     */
-    @NonNull
-    private static String randomMediaPath(File bucket, String extension) {
-        if (bucket.exists() && bucket.isFile()) bucket.delete();
-        if (!bucket.exists()) bucket.mkdirs();
-        String outFilePath = AlbumUtils.getNowDateTime("yyyyMMdd_HHmmssSSS") + "_" + getMD5ForString(UUID.randomUUID().toString()) + extension;
-        File file = new File(bucket, outFilePath);
+    public static String randomMP4Path(@NonNull File bucket) {
+        String outFileName = AlbumUtils.getNowDateTime("yyyyMMdd_HHmmssSSS") + "_" + getMD5ForString(UUID.randomUUID().toString()) + ".mp4";
+        if (bucket.exists() && bucket.isFile()) {
+            bucket.delete();
+        }
+        if (!bucket.exists()) {
+            bucket.mkdirs();
+        }
+        File file = new File(bucket, outFileName);
         return file.getAbsolutePath();
+        
     }
-
+    
     /**
      * Format the current time in the specified format.
      *
@@ -269,7 +247,7 @@ public class AlbumUtils {
         Date curDate = new Date(System.currentTimeMillis());
         return formatter.format(curDate);
     }
-
+    
     /**
      * Get the mime type of the file in the url.
      *
@@ -278,12 +256,14 @@ public class AlbumUtils {
      */
     public static String getMimeType(String url) {
         String extension = getExtension(url);
-        if (!MimeTypeMap.getSingleton().hasExtension(extension)) return "";
-
+        if (!MimeTypeMap.getSingleton().hasExtension(extension)) {
+            return "";
+        }
+        
         String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
         return TextUtils.isEmpty(mimeType) ? "" : mimeType;
     }
-
+    
     /**
      * Get the file extension in url.
      *
@@ -295,7 +275,7 @@ public class AlbumUtils {
         String extension = MimeTypeMap.getFileExtensionFromUrl(url);
         return TextUtils.isEmpty(extension) ? "" : extension;
     }
-
+    
     /**
      * Specifies a tint for {@code drawable}.
      *
@@ -305,7 +285,7 @@ public class AlbumUtils {
     public static void setDrawableTint(@NonNull Drawable drawable, @ColorInt int color) {
         DrawableCompat.setTint(DrawableCompat.wrap(drawable.mutate()), color);
     }
-
+    
     /**
      * Specifies a tint for {@code drawable}.
      *
@@ -319,7 +299,7 @@ public class AlbumUtils {
         DrawableCompat.setTint(drawable, color);
         return drawable;
     }
-
+    
     /**
      * {@link ColorStateList}.
      *
@@ -338,7 +318,7 @@ public class AlbumUtils {
         int[] colors = new int[]{highLight, highLight, highLight, normal, normal, normal};
         return new ColorStateList(states, colors);
     }
-
+    
     /**
      * Change part of the color of CharSequence.
      *
@@ -354,7 +334,7 @@ public class AlbumUtils {
         stringSpan.setSpan(new ForegroundColorSpan(color), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return stringSpan;
     }
-
+    
     /**
      * Return a color-int from alpha, red, green, blue components.
      *
@@ -368,7 +348,7 @@ public class AlbumUtils {
         int blue = Color.blue(color);
         return Color.argb(alpha, red, green, blue);
     }
-
+    
     /**
      * Generate divider.
      *
@@ -381,7 +361,7 @@ public class AlbumUtils {
         }
         return new Api20ItemDivider(color);
     }
-
+    
     /**
      * Time conversion.
      *
@@ -394,7 +374,7 @@ public class AlbumUtils {
         int hour = (int) (duration / 3600);
         int minute = (int) ((duration - hour * 3600) / 60);
         int second = (int) (duration - hour * 3600 - minute * 60);
-
+        
         String hourValue = "";
         String minuteValue;
         String secondValue;
@@ -427,7 +407,7 @@ public class AlbumUtils {
         }
         return hourValue + minuteValue + secondValue;
     }
-
+    
     /**
      * Get the MD5 value of string.
      *
@@ -454,5 +434,12 @@ public class AlbumUtils {
             return Integer.toString(content.hashCode());
         }
         return md5Buffer.toString();
+    }
+    
+    /**
+     * @return 是否是 Android 10 （Q） 之前的版本
+     */
+    public static boolean isBeforeAndroidTen() {
+        return android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || Environment.isExternalStorageLegacy();
     }
 }

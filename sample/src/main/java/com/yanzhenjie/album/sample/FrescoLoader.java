@@ -19,7 +19,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -39,6 +38,9 @@ import com.yanzhenjie.album.AlbumLoader;
 import com.yanzhenjie.album.sample.photoview.AttacherImageView;
 import com.yanzhenjie.album.sample.photoview.PhotoViewAttacher;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * Created by Yan Zhenjie on 2017/3/31.
  */
@@ -46,13 +48,13 @@ public class FrescoLoader implements AlbumLoader {
     
     @Override
     public void load(ImageView imageView, AlbumFile albumFile) {
-        load(imageView, "file://" + albumFile.getPath());
+        load(imageView, albumFile.getUri());
     }
     
     @Override
-    public void load(ImageView imageView, String url) {
+    public void load(ImageView imageView, Uri uri) {
         if (imageView instanceof SimpleDraweeView) {
-            ((SimpleDraweeView) imageView).setImageURI(url);
+            ((SimpleDraweeView) imageView).setImageURI(uri);
         }
     }
     
@@ -63,7 +65,7 @@ public class FrescoLoader implements AlbumLoader {
             final AttacherImageView view = new AttacherImageView(context);
             view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             DataSource<CloseableReference<CloseableImage>> dataSource = Fresco.getImagePipeline()
-                .fetchDecodedImage(ImageRequest.fromUri("file://" + albumFile.getPath()), context);
+                .fetchDecodedImage(ImageRequest.fromUri(albumFile.getUri()), context);
             dataSource.subscribe(new BaseBitmapDataSubscriber() {
                 @Override
                 protected void onNewResultImpl(Bitmap bitmap) {
@@ -95,25 +97,28 @@ public class FrescoLoader implements AlbumLoader {
             view.setAttacher(attacher);
             return view;
         } else {
-            return getPreviewView(context, "file://" + albumFile.getPath(), onClickListener, longClickListener);
+            return getPreviewView(context, albumFile.getUri(), onClickListener, longClickListener);
         }
     }
     
     @NonNull
     @Override
-    public View getPreviewView(Context context, String url, View.OnClickListener onClickListener, final View.OnClickListener longClickListener) {
+    public View getPreviewView(Context context, Uri uri, @Nullable View.OnClickListener onClickListener, final @Nullable View.OnClickListener longClickListener) {
         final BigImageView view = new BigImageView(context);
         view.setImageViewFactory(new FrescoImageViewFactory());
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        view.showImage(Uri.parse(url));
+        view.showImage(uri);
         view.setOnClickListener(onClickListener);
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                longClickListener.onClick(view);
+                if (longClickListener != null) {
+                    longClickListener.onClick(view);
+                }
                 return true;
             }
         });
         return view;
     }
+    
 }

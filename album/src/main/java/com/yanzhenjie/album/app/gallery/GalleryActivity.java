@@ -16,7 +16,7 @@
 package com.yanzhenjie.album.app.gallery;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
@@ -60,6 +60,9 @@ public class GalleryActivity extends BaseActivity implements Contract.GalleryPre
         assert argument != null;
         mWidget = argument.getParcelable(Album.KEY_INPUT_WIDGET);
         mPathList = argument.getStringArrayList(Album.KEY_INPUT_CHECKED_LIST);
+        if (mPathList == null) {
+            mPathList = new ArrayList<>();
+        }
         mCurrentPosition = argument.getInt(Album.KEY_INPUT_CURRENT_POSITION);
         mCheckable = argument.getBoolean(Album.KEY_INPUT_GALLERY_CHECKABLE);
 

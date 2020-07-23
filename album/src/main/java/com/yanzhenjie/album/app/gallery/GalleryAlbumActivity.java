@@ -16,7 +16,7 @@
 package com.yanzhenjie.album.app.gallery;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;

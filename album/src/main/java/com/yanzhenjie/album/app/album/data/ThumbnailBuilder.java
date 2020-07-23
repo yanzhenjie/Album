@@ -21,161 +21,183 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.media.MediaMetadataRetriever;
-import android.support.annotation.Nullable;
-import android.support.annotation.WorkerThread;
+import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
 import android.webkit.URLUtil;
 
 import com.yanzhenjie.album.util.AlbumUtils;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.util.HashMap;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.WorkerThread;
 
 /**
  * Created by YanZhenjie on 2017/10/15.
  */
 public class ThumbnailBuilder {
-
+    
     private static final int THUMBNAIL_SIZE = 360;
     private static final int THUMBNAIL_QUALITY = 80;
-
+    
     private File mCacheDir;
-
+    
     public ThumbnailBuilder(Context context) {
         this.mCacheDir = AlbumUtils.getAlbumRootPath(context);
-        if (mCacheDir.exists() && mCacheDir.isFile()) mCacheDir.delete();
-        if (!mCacheDir.exists()) mCacheDir.mkdirs();
+        if (mCacheDir.exists() && mCacheDir.isFile()) {
+            mCacheDir.delete();
+        }
+        if (!mCacheDir.exists()) {
+            mCacheDir.mkdirs();
+        }
     }
-
+    
     /**
      * Create a thumbnail for the image.
      *
-     * @param imagePath image path.
+     * @param imageUri image path.
      * @return thumbnail path.
      */
     @WorkerThread
     @Nullable
-    public String createThumbnailForImage(String imagePath) {
-        if (TextUtils.isEmpty(imagePath)) return null;
-
-        File inFile = new File(imagePath);
-        if (!inFile.exists()) return null;
-
-        File thumbnailFile = randomPath(imagePath);
-        if (thumbnailFile.exists()) return thumbnailFile.getAbsolutePath();
-
-        Bitmap inBitmap = readImageFromPath(imagePath, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
-        if (inBitmap == null) return null;
-
+    public Uri createThumbnailForImage(Context context, Uri imageUri, String mimeType) {
+        if (imageUri == null || TextUtils.isEmpty(imageUri.toString())) {
+            return null;
+        }
+        
+        //        File inFile = new File(imagePath);
+        //        if (!inFile.exists()) {
+        //            return null;
+        //        }
+        
+        File thumbnailFile = randomPath(imageUri.toString());
+        if (thumbnailFile.exists()) {
+            return AlbumUtils.getUri(context, thumbnailFile.getAbsolutePath());
+        }
+        
+        Bitmap inBitmap = readImageFromPath(context, imageUri, THUMBNAIL_SIZE, THUMBNAIL_SIZE, mimeType);
+        if (inBitmap == null) {
+            return null;
+        }
+        
         ByteArrayOutputStream compressStream = new ByteArrayOutputStream();
         inBitmap.compress(Bitmap.CompressFormat.JPEG, THUMBNAIL_QUALITY, compressStream);
-
+        
         try {
             compressStream.close();
             thumbnailFile.createNewFile();
-
             FileOutputStream writeStream = new FileOutputStream(thumbnailFile);
             writeStream.write(compressStream.toByteArray());
             writeStream.flush();
             writeStream.close();
-            return thumbnailFile.getAbsolutePath();
+            return AlbumUtils.getUri(context, thumbnailFile.getAbsolutePath());
         } catch (Exception ignored) {
             return null;
         }
     }
-
+    
     /**
      * Create a thumbnail for the video.
      *
-     * @param videoPath video path.
+     * @param videoUri video path.
      * @return thumbnail path.
      */
     @WorkerThread
     @Nullable
-    public String createThumbnailForVideo(String videoPath) {
-        if (TextUtils.isEmpty(videoPath)) return null;
-
-        File thumbnailFile = randomPath(videoPath);
-        if (thumbnailFile.exists()) return thumbnailFile.getAbsolutePath();
-
+    public Uri createThumbnailForVideo(Context context, Uri videoUri) {
+        if (videoUri == null || TextUtils.isEmpty(videoUri.toString())) {
+            return null;
+        }
+        
+        File thumbnailFile = randomPath(videoUri.toString());
+        if (thumbnailFile.exists()) {
+            return AlbumUtils.getUri(context, thumbnailFile.getAbsolutePath());
+        }
+        
         try {
             MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-            if (URLUtil.isNetworkUrl(videoPath)) {
-                retriever.setDataSource(videoPath, new HashMap<String, String>());
+            if (URLUtil.isNetworkUrl(videoUri.toString())) {
+                retriever.setDataSource(videoUri.toString(), new HashMap<String, String>());
             } else {
-                retriever.setDataSource(videoPath);
+                ParcelFileDescriptor parcelFileDescriptor = context.getContentResolver().openFileDescriptor(videoUri, "r");
+                FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+                retriever.setDataSource(fileDescriptor);
             }
             Bitmap bitmap = retriever.getFrameAtTime();
             thumbnailFile.createNewFile();
             bitmap.compress(Bitmap.CompressFormat.JPEG, THUMBNAIL_QUALITY, new FileOutputStream(thumbnailFile));
-            return thumbnailFile.getAbsolutePath();
+            return AlbumUtils.getUri(context, thumbnailFile.getAbsolutePath());
         } catch (Exception ignored) {
             return null;
         }
     }
-
+    
     private File randomPath(String filePath) {
         String outFilePath = AlbumUtils.getMD5ForString(filePath) + ".album";
         return new File(mCacheDir, outFilePath);
     }
-
+    
     /**
      * Deposit in the province read images, mViewWidth is high, the greater the picture clearer, but also the memory.
      *
-     * @param imagePath pictures in the path of the memory card.
+     * @param imageUri pictures in the path of the memory card.
      * @return bitmap.
      */
     @Nullable
-    public static Bitmap readImageFromPath(String imagePath, int width, int height) {
-        File imageFile = new File(imagePath);
-        if (imageFile.exists()) {
-            try {
-                BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(imageFile));
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inJustDecodeBounds = true;
-                BitmapFactory.decodeStream(inputStream, null, options);
-                inputStream.close();
-
-                options.inJustDecodeBounds = false;
-                options.inSampleSize = computeSampleSize(options, width, height);
-
-                Bitmap sampledBitmap = null;
-                boolean attemptSuccess = false;
-                while (!attemptSuccess) {
-                    inputStream = new BufferedInputStream(new FileInputStream(imageFile));
-                    try {
-                        sampledBitmap = BitmapFactory.decodeStream(inputStream, null, options);
-                        attemptSuccess = true;
-                    } catch (Exception e) {
-                        options.inSampleSize *= 2;
-                    }
-                    inputStream.close();
+    public static Bitmap readImageFromPath(Context context, Uri imageUri, int width, int height, String mimeType) {
+        ParcelFileDescriptor parcelFileDescriptor = null;
+        try {
+            parcelFileDescriptor = context.getContentResolver().openFileDescriptor(imageUri, "r");
+            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
+            options.inJustDecodeBounds = false;
+            options.inSampleSize = computeSampleSize(options, width, height);
+            Bitmap sampledBitmap = null;
+            boolean attemptSuccess = false;
+            while (!attemptSuccess ) {
+                try {
+                    sampledBitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
+                    attemptSuccess = true;
+                } catch (Exception e) {
+                    options.inSampleSize *= 2;
                 }
-
-                String lowerPath = imagePath.toLowerCase();
-                if (lowerPath.endsWith(".jpg") || lowerPath.endsWith(".jpeg")) {
-                    int degrees = computeDegree(imagePath);
-                    if (degrees > 0) {
-                        Matrix matrix = new Matrix();
-                        matrix.setRotate(degrees);
-                        Bitmap newBitmap = Bitmap.createBitmap(sampledBitmap, 0, 0, sampledBitmap.getWidth(), sampledBitmap.getHeight(), matrix, true);
-                        if (newBitmap != sampledBitmap) {
-                            sampledBitmap.recycle();
-                            sampledBitmap = newBitmap;
-                        }
-                    }
-                }
-                return sampledBitmap;
-            } catch (Exception ignored) {
             }
+            
+            if (mimeType.endsWith("jpg") || mimeType.endsWith("jpeg")) {
+                int degrees = computeDegree(context, imageUri, fileDescriptor);
+                if (degrees > 0) {
+                    Matrix matrix = new Matrix();
+                    matrix.setRotate(degrees);
+                    Bitmap newBitmap = Bitmap.createBitmap(sampledBitmap, 0, 0, sampledBitmap.getWidth(), sampledBitmap.getHeight(), matrix, true);
+                    if (newBitmap != sampledBitmap) {
+                        sampledBitmap.recycle();
+                        sampledBitmap = newBitmap;
+                    }
+                }
+            }
+            return sampledBitmap;
+        } catch (Exception ignored) {
+            ignored.printStackTrace();
+        } finally {
+            try {
+                if (parcelFileDescriptor != null) {
+                    parcelFileDescriptor.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
         }
         return null;
     }
-
+    
     private static int computeSampleSize(BitmapFactory.Options options, int width, int height) {
         int inSampleSize = 1;
         if (options.outWidth > width || options.outHeight > height) {
@@ -185,24 +207,37 @@ public class ThumbnailBuilder {
         }
         return inSampleSize;
     }
-
-    private static int computeDegree(String path) {
+    
+    private static int computeDegree(Context context, Uri imageUri, FileDescriptor fileDescriptor) {
         try {
-            ExifInterface exifInterface = new ExifInterface(path);
-            int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-            switch (orientation) {
-                case ExifInterface.ORIENTATION_ROTATE_90: {
-                    return 90;
+            ExifInterface exifInterface = null;
+            
+            if (AlbumUtils.isBeforeAndroidTen()) {
+                String filePath = MediaReader.getFilePathByUriBeforeAndroidQ(context, imageUri);
+                if (!TextUtils.isEmpty(filePath)) {
+                    exifInterface = new ExifInterface(filePath);
                 }
-                case ExifInterface.ORIENTATION_ROTATE_180: {
-                    return 180;
+            } else {
+                exifInterface = new ExifInterface(fileDescriptor);
+            }
+            if (exifInterface != null) {
+                int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                switch (orientation) {
+                    case ExifInterface.ORIENTATION_ROTATE_90: {
+                        return 90;
+                    }
+                    case ExifInterface.ORIENTATION_ROTATE_180: {
+                        return 180;
+                    }
+                    case ExifInterface.ORIENTATION_ROTATE_270: {
+                        return 270;
+                    }
+                    default: {
+                        return 0;
+                    }
                 }
-                case ExifInterface.ORIENTATION_ROTATE_270: {
-                    return 270;
-                }
-                default: {
-                    return 0;
-                }
+            } else {
+                return 0;
             }
         } catch (Exception e) {
             return 0;

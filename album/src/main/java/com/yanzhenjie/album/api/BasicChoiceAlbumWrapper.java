@@ -16,7 +16,7 @@
 package com.yanzhenjie.album.api;
 
 import android.content.Context;
-import android.support.annotation.IntRange;
+import androidx.annotation.IntRange;
 
 /**
  * Created by YanZhenjie on 2017/11/8.

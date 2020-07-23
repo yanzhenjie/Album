@@ -18,7 +18,7 @@ package com.yanzhenjie.album;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 import android.util.Log;
 
 import com.yanzhenjie.album.api.AlbumMultipleWrapper;
@@ -247,42 +247,42 @@ public final class Album {
     /**
      * Open the camera from the activity.
      */
-    public static Camera<ImageCameraWrapper, VideoCameraWrapper> camera(android.support.v4.app.Fragment fragment) {
+    public static Camera<ImageCameraWrapper, VideoCameraWrapper> camera(androidx.fragment.app.Fragment fragment) {
         return new AlbumCamera(fragment.getContext());
     }
 
     /**
      * Select images.
      */
-    public static Choice<ImageMultipleWrapper, ImageSingleWrapper> image(android.support.v4.app.Fragment fragment) {
+    public static Choice<ImageMultipleWrapper, ImageSingleWrapper> image(androidx.fragment.app.Fragment fragment) {
         return new ImageChoice(fragment.getContext());
     }
 
     /**
      * Select videos.
      */
-    public static Choice<VideoMultipleWrapper, VideoSingleWrapper> video(android.support.v4.app.Fragment fragment) {
+    public static Choice<VideoMultipleWrapper, VideoSingleWrapper> video(androidx.fragment.app.Fragment fragment) {
         return new VideoChoice(fragment.getContext());
     }
 
     /**
      * Select images and videos.
      */
-    public static Choice<AlbumMultipleWrapper, AlbumSingleWrapper> album(android.support.v4.app.Fragment fragment) {
+    public static Choice<AlbumMultipleWrapper, AlbumSingleWrapper> album(androidx.fragment.app.Fragment fragment) {
         return new AlbumChoice(fragment.getContext());
     }
 
     /**
      * Preview picture.
      */
-    public static BasicGalleryWrapper<GalleryWrapper, String, String, String> gallery(android.support.v4.app.Fragment fragment) {
+    public static BasicGalleryWrapper<GalleryWrapper, String, String, String> gallery(androidx.fragment.app.Fragment fragment) {
         return new GalleryWrapper(fragment.getContext());
     }
 
     /**
      * Preview Album.
      */
-    public static BasicGalleryWrapper<GalleryAlbumWrapper, AlbumFile, String, AlbumFile> galleryAlbum(android.support.v4.app.Fragment fragment) {
+    public static BasicGalleryWrapper<GalleryAlbumWrapper, AlbumFile, String, AlbumFile> galleryAlbum(androidx.fragment.app.Fragment fragment) {
         return new GalleryAlbumWrapper(fragment.getContext());
     }
 }

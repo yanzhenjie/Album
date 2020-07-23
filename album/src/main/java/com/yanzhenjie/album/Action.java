@@ -15,7 +15,7 @@
  */
 package com.yanzhenjie.album;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * <p>Any action takes place.</p>

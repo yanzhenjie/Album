@@ -17,9 +17,9 @@ package com.yanzhenjie.album.widget;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.core.content.ContextCompat;
 import android.widget.TextView;
 
 import com.yanzhenjie.album.R;
