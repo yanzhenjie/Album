@@ -25,7 +25,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.github.imliujun:album:3.0.1'
+    compile 'com.github.imliujun:album:3.0.2'
 }
 ```
 

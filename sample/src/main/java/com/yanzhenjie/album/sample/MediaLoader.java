@@ -45,7 +45,6 @@ public class MediaLoader implements AlbumLoader {
             .load(uri)
             .error(R.drawable.placeholder)
             .placeholder(R.drawable.placeholder)
-            .crossFade()
             .into(imageView);
     }
     
