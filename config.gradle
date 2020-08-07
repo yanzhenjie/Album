@@ -18,30 +18,30 @@ ext {
             versionName      : "2.1.3",
     ]
 
-    bintray = [
-            version       : "2.1.3",
-
-            siteUrl       : 'https://github.com/yanzhenjie/Album',
-            gitUrl        : 'git@github.com:yanzhenjie/Album.git',
-
-            group         : "com.yanzhenjie",
-
-            packaging     : 'aar',
-            name          : 'Album',
-            description   : 'Album for android',
-
-            licenseName   : 'The Apache Software License, Version 2.0',
-            licenseUrl    : 'http://www.apache.org/licenses/LICENSE-2.0.txt',
-
-            developerId   : 'yanzhenjie',
-            developerName : 'yanzhenjie',
-            developerEmail: 'smallajax@foxmail.com',
-
-            binrayLibrary : "Album",
-            bintrayRepo   : "maven",
-            bintrayUser   : 'yolanda',
-            bintrayLicense: "Apache-2.0"
-    ]
+    //    bintray = [
+    //            version       : "2.1.3",
+    //
+    //            siteUrl       : 'https://github.com/yanzhenjie/Album',
+    //            gitUrl        : 'git@github.com:yanzhenjie/Album.git',
+    //
+    //            group         : "com.yanzhenjie",
+    //
+    //            packaging     : 'aar',
+    //            name          : 'Album',
+    //            description   : 'Album for android',
+    //
+    //            licenseName   : 'The Apache Software License, Version 2.0',
+    //            licenseUrl    : 'http://www.apache.org/licenses/LICENSE-2.0.txt',
+    //
+    //            developerId   : 'yanzhenjie',
+    //            developerName : 'yanzhenjie',
+    //            developerEmail: 'smallajax@foxmail.com',
+    //
+    //            binrayLibrary : "Album",
+    //            bintrayRepo   : "maven",
+    //            bintrayUser   : 'yolanda',
+    //            bintrayLicense: "Apache-2.0"
+    //    ]
 
     dependencies = [
             mediaScanner: 'com.yanzhenjie:mediascanner:1.0.3',

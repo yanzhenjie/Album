@@ -47,12 +47,12 @@ import androidx.annotation.Nullable;
 public class FrescoLoader implements AlbumLoader {
     
     @Override
-    public void load(ImageView imageView, AlbumFile albumFile) {
+    public void load(@NonNull ImageView imageView, @NonNull AlbumFile albumFile) {
         load(imageView, albumFile.getUri());
     }
     
     @Override
-    public void load(ImageView imageView, Uri uri) {
+    public void load(@NonNull ImageView imageView, @NonNull Uri uri) {
         if (imageView instanceof SimpleDraweeView) {
             imageView.setImageURI(uri);
         }
@@ -60,7 +60,7 @@ public class FrescoLoader implements AlbumLoader {
     
     @NonNull
     @Override
-    public View getPreviewView(Context context, AlbumFile albumFile, final View.OnClickListener onClickListener, final View.OnClickListener longClickListener) {
+    public View getPreviewView(@NonNull Context context, @NonNull AlbumFile albumFile, final View.OnClickListener onClickListener, final View.OnClickListener longClickListener) {
         if (albumFile.getMediaType() == AlbumFile.TYPE_VIDEO) {
             final AttacherImageView view = new AttacherImageView(context);
             view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -103,7 +103,7 @@ public class FrescoLoader implements AlbumLoader {
     
     @NonNull
     @Override
-    public View getPreviewView(Context context, Uri uri, @Nullable View.OnClickListener onClickListener, final @Nullable View.OnClickListener longClickListener) {
+    public View getPreviewView(@NonNull Context context, @NonNull Uri uri, @Nullable View.OnClickListener onClickListener, final @Nullable View.OnClickListener longClickListener) {
         final BigImageView view = new BigImageView(context);
         view.setImageViewFactory(new FrescoImageViewFactory());
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));

@@ -35,12 +35,12 @@ import com.yanzhenjie.album.sample.photoview.PhotoViewAttacher;
 public class MediaLoader implements AlbumLoader {
     
     @Override
-    public void load(ImageView imageView, AlbumFile albumFile) {
+    public void load(@NonNull ImageView imageView, @NonNull AlbumFile albumFile) {
         load(imageView, albumFile.getUri());
     }
     
     @Override
-    public void load(ImageView imageView, Uri uri) {
+    public void load(@NonNull ImageView imageView, @NonNull Uri uri) {
         Glide.with(imageView.getContext())
             .load(uri)
             .error(R.drawable.placeholder)
@@ -51,13 +51,13 @@ public class MediaLoader implements AlbumLoader {
     
     @NonNull
     @Override
-    public View getPreviewView(Context context, AlbumFile albumFile, final View.OnClickListener onClickListener, final View.OnClickListener longClickListener) {
+    public View getPreviewView(@NonNull Context context, @NonNull AlbumFile albumFile, final View.OnClickListener onClickListener, final View.OnClickListener longClickListener) {
         return getPreviewView(context, albumFile.getUri(), onClickListener, longClickListener);
     }
     
     @NonNull
     @Override
-    public View getPreviewView(Context context, Uri uri, @Nullable final View.OnClickListener onClickListener, @Nullable final View.OnClickListener longClickListener) {
+    public View getPreviewView(@NonNull Context context, @NonNull Uri uri, @Nullable final View.OnClickListener onClickListener, @Nullable final View.OnClickListener longClickListener) {
         final AttacherImageView view = new AttacherImageView(context);
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         load(view, uri);

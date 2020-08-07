@@ -20,7 +20,13 @@ Effect on landscape screen:
 
 ## Download
 ```groovy
-implementation 'com.yanzhenjie:album:2.1.3'
+repositories {
+    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+    compile 'com.github.imliujun:album:3.0.1'
+}
 ```
 
 ## Usage
