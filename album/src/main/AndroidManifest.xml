@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     Copyright 2017 Yan Zhenjie.
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,8 +20,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
-    <application>
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION"/>
+    
+    <application android:requestLegacyExternalStorage="true">
         <activity
             android:name=".app.album.AlbumActivity"
             android:configChanges="orientation|screenSize"

@@ -19,7 +19,7 @@
 
     <RelativeLayout style="@style/Album.MatchParent">
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/iv_album_content_image"
             style="@style/Album.MatchParent"
             android:contentDescription="@string/album_title"

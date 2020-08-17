@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Yan Zhenjie.
+ * Copyright © Yan Zhenjie. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,25 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.album.provider;
+package com.yanzhenjie.album.sample.photoview.gestures;
 
-import android.content.Context;
-import androidx.core.content.FileProvider;
+import android.view.MotionEvent;
 
-/**
- * <p>For external access to files.</p>
- * Created by Yan Zhenjie on 2017/3/31.
- */
-public class CameraFileProvider extends FileProvider {
+public interface GestureDetector {
 
-    /**
-     * Get the provider of the external file path.
-     *
-     * @param context context.
-     * @return provider.
-     */
-    public static String getProviderName(Context context) {
-        return context.getPackageName() + ".app.file.provider";
-    }
+    boolean onTouchEvent(MotionEvent ev);
+
+    boolean isScaling();
+
+    boolean isDragging();
+
+    void setOnGestureListener(OnGestureListener listener);
 
 }

@@ -15,9 +15,8 @@
  */
 package com.yanzhenjie.album.app.album.data;
 
+import android.content.Context;
 import android.media.MediaPlayer;
-import android.support.annotation.NonNull;
-import android.support.annotation.WorkerThread;
 import android.text.TextUtils;
 
 import com.yanzhenjie.album.AlbumFile;
@@ -26,32 +25,35 @@ import com.yanzhenjie.album.util.AlbumUtils;
 
 import java.io.File;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.WorkerThread;
+
 /**
  * Created by YanZhenjie on 2017/10/18.
  */
 public class PathConversion {
-
+    
     private Filter<Long> mSizeFilter;
     private Filter<String> mMimeFilter;
     private Filter<Long> mDurationFilter;
-
+    
     public PathConversion(Filter<Long> sizeFilter, Filter<String> mimeFilter, Filter<Long> durationFilter) {
         this.mSizeFilter = sizeFilter;
         this.mMimeFilter = mimeFilter;
         this.mDurationFilter = durationFilter;
     }
-
+    
     @WorkerThread
     @NonNull
-    public AlbumFile convert(String filePath) {
+    public AlbumFile convert(Context context, String filePath) {
         File file = new File(filePath);
-
+        
         AlbumFile albumFile = new AlbumFile();
-        albumFile.setPath(filePath);
-
+        albumFile.setUri(AlbumUtils.getUri(context, filePath));
+        
         File parentFile = file.getParentFile();
         albumFile.setBucketName(parentFile.getName());
-
+        
         String mimeType = AlbumUtils.getMimeType(filePath);
         albumFile.setMimeType(mimeType);
         long nowTime = System.currentTimeMillis();
@@ -59,20 +61,22 @@ public class PathConversion {
         albumFile.setSize(file.length());
         int mediaType = 0;
         if (!TextUtils.isEmpty(mimeType)) {
-            if (mimeType.contains("video"))
+            if (mimeType.contains("video")) {
                 mediaType = AlbumFile.TYPE_VIDEO;
-            if (mimeType.contains("image"))
+            }
+            if (mimeType.contains("image")) {
                 mediaType = AlbumFile.TYPE_IMAGE;
+            }
         }
         albumFile.setMediaType(mediaType);
-
+        
         if (mSizeFilter != null && mSizeFilter.filter(file.length())) {
             albumFile.setDisable(true);
         }
         if (mMimeFilter != null && mMimeFilter.filter(mimeType)) {
             albumFile.setDisable(true);
         }
-
+        
         if (mediaType == AlbumFile.TYPE_VIDEO) {
             MediaPlayer player = new MediaPlayer();
             try {
@@ -83,12 +87,12 @@ public class PathConversion {
             } finally {
                 player.release();
             }
-
+            
             if (mDurationFilter != null && mDurationFilter.filter(albumFile.getDuration())) {
                 albumFile.setDisable(true);
             }
         }
         return albumFile;
     }
-
+    
 }

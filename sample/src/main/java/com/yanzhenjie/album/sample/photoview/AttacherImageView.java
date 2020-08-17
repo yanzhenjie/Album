@@ -1,15 +1,15 @@
-package com.yanzhenjie.album.widget.photoview;
+package com.yanzhenjie.album.sample.photoview;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 
 /**
  * Created by Yan Zhenjie on 2017/3/31.
  */
 
-public class AttacherImageView extends android.support.v7.widget.AppCompatImageView {
+public class AttacherImageView extends androidx.appcompat.widget.AppCompatImageView {
 
     private PhotoViewAttacher mAttacher;
 

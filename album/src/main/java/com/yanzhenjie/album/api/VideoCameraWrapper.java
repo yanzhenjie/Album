@@ -17,7 +17,8 @@ package com.yanzhenjie.album.api;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.IntRange;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
 
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.app.camera.CameraActivity;
@@ -32,7 +33,7 @@ public class VideoCameraWrapper extends BasicCameraWrapper<VideoCameraWrapper> {
     private long mLimitDuration = Integer.MAX_VALUE;
     private long mLimitBytes = Integer.MAX_VALUE;
 
-    public VideoCameraWrapper(Context context) {
+    public VideoCameraWrapper(@NonNull Context context) {
         super(context);
     }
 
@@ -41,6 +42,7 @@ public class VideoCameraWrapper extends BasicCameraWrapper<VideoCameraWrapper> {
      *
      * @param quality should be 0 or 1.
      */
+    @NonNull
     public VideoCameraWrapper quality(@IntRange(from = 0, to = 1) int quality) {
         this.mQuality = quality;
         return this;
@@ -51,6 +53,7 @@ public class VideoCameraWrapper extends BasicCameraWrapper<VideoCameraWrapper> {
      *
      * @param duration the maximum number of seconds.
      */
+    @NonNull
     public VideoCameraWrapper limitDuration(@IntRange(from = 1) long duration) {
         this.mLimitDuration = duration;
         return this;
@@ -61,11 +64,13 @@ public class VideoCameraWrapper extends BasicCameraWrapper<VideoCameraWrapper> {
      *
      * @param bytes the size of the byte.
      */
+    @NonNull
     public VideoCameraWrapper limitBytes(@IntRange(from = 1) long bytes) {
         this.mLimitBytes = bytes;
         return this;
     }
 
+    @Override
     public void start() {
         CameraActivity.sResult = mResult;
         CameraActivity.sCancel = mCancel;

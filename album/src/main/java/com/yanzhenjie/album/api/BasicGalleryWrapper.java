@@ -16,9 +16,9 @@
 package com.yanzhenjie.album.api;
 
 import android.content.Context;
-import android.support.annotation.IntRange;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
 
-import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.ItemAction;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public abstract class BasicGalleryWrapper<Returner extends BasicGalleryWrapper, 
     int mCurrentPosition;
     boolean mCheckable;
 
-    public BasicGalleryWrapper(Context context) {
+    public BasicGalleryWrapper(@NonNull Context context) {
         super(context);
     }
 

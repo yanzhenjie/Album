@@ -18,15 +18,15 @@
     style="@style/Album.MatchParent"
     android:background="@color/albumPageLight">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
         style="@style/Album.AppBar.General">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             style="@style/Album.Toolbar.Dark" />
 
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         style="@style/Album.MatchParent"
@@ -39,7 +39,7 @@
             style="@style/Album.WrapContent"
             android:textColor="@color/albumFontHint" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_camera_image"
             style="@style/Album.Button.WrapContent"
             android:layout_marginTop="@dimen/album_dp_15"
@@ -50,7 +50,7 @@
             android:text="@string/album_camera_image_capture"
             android:textColor="@color/albumFontLight" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_camera_video"
             style="@style/Album.Button.WrapContent"
             android:layout_marginTop="@dimen/album_dp_15"

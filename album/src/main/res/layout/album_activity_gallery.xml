@@ -18,7 +18,7 @@
     style="@style/Album.MatchParent"
     android:background="@color/albumColorPrimaryBlack">
 
-    <com.yanzhenjie.album.widget.photoview.FixViewPager
+    <com.yanzhenjie.album.widget.FixViewPager
         android:id="@+id/view_pager"
         style="@style/Album.MatchParent" />
 
@@ -26,14 +26,14 @@
         style="@style/Album.MatchParent"
         android:fitsSystemWindows="true">
 
-        <android.support.design.widget.AppBarLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar_layout"
             style="@style/Album.AppBar.General.Transparent">
 
-            <android.support.v7.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 style="@style/Album.Toolbar.Dark" />
-        </android.support.design.widget.AppBarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
         <FrameLayout
             style="@style/Album.WrapContent.WidthMatchParent"
@@ -58,7 +58,7 @@
                     android:textColor="@color/albumFontLight"
                     android:visibility="gone" />
 
-                <android.support.v7.widget.AppCompatCheckBox
+                <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/check_box"
                     style="@style/Album.CheckBox.WrapContent"
                     android:layout_alignParentEnd="true"

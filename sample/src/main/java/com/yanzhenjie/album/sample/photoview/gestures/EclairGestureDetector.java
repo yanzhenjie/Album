@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.album.widget.photoview.gestures;
+package com.yanzhenjie.album.sample.photoview.gestures;
 
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.view.MotionEvent;
 
-import com.yanzhenjie.album.widget.photoview.Compat;
+import com.yanzhenjie.album.sample.photoview.Compat;
 
 @TargetApi(5)
 public class EclairGestureDetector extends CupcakeGestureDetector {

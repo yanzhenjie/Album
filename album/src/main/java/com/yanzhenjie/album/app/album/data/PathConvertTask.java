@@ -15,6 +15,7 @@
  */
 package com.yanzhenjie.album.app.album.data;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 import com.yanzhenjie.album.AlbumFile;
@@ -23,13 +24,13 @@ import com.yanzhenjie.album.AlbumFile;
  * Created by YanZhenjie on 2017/10/18.
  */
 public class PathConvertTask extends AsyncTask<String, Void, AlbumFile> {
-
+    
     public interface Callback {
         /**
          * The task begins.
          */
         void onConvertStart();
-
+        
         /**
          * Callback results.
          *
@@ -37,25 +38,27 @@ public class PathConvertTask extends AsyncTask<String, Void, AlbumFile> {
          */
         void onConvertCallback(AlbumFile albumFile);
     }
-
+    
     private PathConversion mConversion;
     private Callback mCallback;
-
-    public PathConvertTask(PathConversion conversion, Callback callback) {
+    private Context mContext;
+    
+    public PathConvertTask(Context context, PathConversion conversion, Callback callback) {
+        this.mContext = context;
         this.mConversion = conversion;
         this.mCallback = callback;
     }
-
+    
     @Override
     protected void onPreExecute() {
         mCallback.onConvertStart();
     }
-
+    
     @Override
     protected AlbumFile doInBackground(String... params) {
-        return mConversion.convert(params[0]);
+        return mConversion.convert(mContext, params[0]);
     }
-
+    
     @Override
     protected void onPostExecute(AlbumFile file) {
         mCallback.onConvertCallback(file);

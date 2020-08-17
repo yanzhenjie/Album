@@ -15,30 +15,71 @@
  */
 package com.yanzhenjie.album.sample;
 
+import android.content.Context;
+import android.net.Uri;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.AlbumLoader;
-import com.yanzhenjie.album.sample.R;
+import com.yanzhenjie.album.sample.photoview.AttacherImageView;
+import com.yanzhenjie.album.sample.photoview.PhotoViewAttacher;
 
 /**
  * Created by Yan Zhenjie on 2017/3/31.
  */
 public class MediaLoader implements AlbumLoader {
-
+    
     @Override
-    public void load(ImageView imageView, AlbumFile albumFile) {
-        load(imageView, albumFile.getPath());
+    public void load(@NonNull ImageView imageView, @NonNull AlbumFile albumFile) {
+        load(imageView, albumFile.getUri());
     }
-
+    
     @Override
-    public void load(ImageView imageView, String url) {
+    public void load(@NonNull ImageView imageView, @NonNull Uri uri) {
         Glide.with(imageView.getContext())
-                .load(url)
-                .error(R.drawable.placeholder)
-                .placeholder(R.drawable.placeholder)
-                .crossFade()
-                .into(imageView);
+            .load(uri)
+            .error(R.drawable.placeholder)
+            .placeholder(R.drawable.placeholder)
+            .into(imageView);
     }
+    
+    @NonNull
+    @Override
+    public View getPreviewView(@NonNull Context context, @NonNull AlbumFile albumFile, final View.OnClickListener onClickListener, final View.OnClickListener longClickListener) {
+        return getPreviewView(context, albumFile.getUri(), onClickListener, longClickListener);
+    }
+    
+    @NonNull
+    @Override
+    public View getPreviewView(@NonNull Context context, @NonNull Uri uri, @Nullable final View.OnClickListener onClickListener, @Nullable final View.OnClickListener longClickListener) {
+        final AttacherImageView view = new AttacherImageView(context);
+        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        load(view, uri);
+        PhotoViewAttacher attacher = new PhotoViewAttacher(view);
+        if (onClickListener != null) {
+            attacher.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
+                @Override
+                public void onViewTap(View v, float x, float y) {
+                    onClickListener.onClick(v);
+                }
+            });
+        }
+        if (longClickListener != null) {
+            attacher.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    longClickListener.onClick(v);
+                    return true;
+                }
+            });
+        }
+        view.setAttacher(attacher);
+        return view;
+    }
+    
 }

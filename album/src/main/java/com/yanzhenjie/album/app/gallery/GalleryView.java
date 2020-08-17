@@ -16,10 +16,10 @@
 package com.yanzhenjie.album.app.gallery;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.AppCompatCheckBox;
+import android.net.Uri;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +36,12 @@ import com.yanzhenjie.album.app.Contract;
 import com.yanzhenjie.album.util.SystemBar;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.core.widget.CompoundButtonCompat;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * Created by YanZhenjie on 2018/4/9.
@@ -92,7 +98,7 @@ public class GalleryView<Data> extends Contract.GalleryView<Data> implements Vie
             mCheckBox.setVisibility(View.GONE);
         } else {
             ColorStateList itemSelector = widget.getMediaItemCheckSelector();
-            mCheckBox.setSupportButtonTintList(itemSelector);
+            CompoundButtonCompat.setButtonTintList(mCheckBox, itemSelector);
             mCheckBox.setTextColor(itemSelector);
         }
 
@@ -107,12 +113,18 @@ public class GalleryView<Data> extends Contract.GalleryView<Data> implements Vie
     @Override
     public void bindData(List<Data> dataList) {
         PreviewAdapter<Data> adapter = new PreviewAdapter<Data>(getContext(), dataList) {
+
+            @NonNull
             @Override
-            protected void loadPreview(ImageView imageView, Data item, int position) {
-                if (item instanceof String) {
-                    Album.getAlbumConfig().getAlbumLoader().load(imageView, (String)item);
+            protected View getView(Context context, Data item, int position, @Nullable View.OnClickListener onClickListener, @Nullable View.OnClickListener longClickListener) {
+                if (item instanceof Uri) {
+                    return Album.getAlbumConfig().getAlbumLoader().getPreviewView(context, (Uri) item, onClickListener, longClickListener);
+                } else if (item instanceof String) {
+                    return Album.getAlbumConfig().getAlbumLoader().getPreviewView(context, Uri.parse((String) item), onClickListener, longClickListener);
                 } else if (item instanceof AlbumFile) {
-                    Album.getAlbumConfig().getAlbumLoader().load(imageView, (AlbumFile)item);
+                    return Album.getAlbumConfig().getAlbumLoader().getPreviewView(context, (AlbumFile) item, onClickListener, longClickListener);
+                } else {
+                    return new ImageView(context);
                 }
             }
         };

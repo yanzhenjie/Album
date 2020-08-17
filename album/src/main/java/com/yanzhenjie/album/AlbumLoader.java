@@ -15,7 +15,13 @@
  */
 package com.yanzhenjie.album;
 
+import android.content.Context;
+import android.net.Uri;
+import android.view.View;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * <p>Used to load the preview, it should be customized.</p>
@@ -25,12 +31,31 @@ public interface AlbumLoader {
 
     AlbumLoader DEFAULT = new AlbumLoader() {
         @Override
-        public void load(ImageView imageView, AlbumFile albumFile) {
+        public void load(@NonNull ImageView imageView, @NonNull AlbumFile albumFile) {
         }
 
         @Override
-        public void load(ImageView imageView, String url) {
+        public void load(@NonNull ImageView imageView, @NonNull Uri url) {
         }
+
+        @NonNull
+        @Override
+        public View getPreviewView(@NonNull Context context,
+                                   @NonNull AlbumFile albumFile,
+                                   View.OnClickListener onClickListener,
+                                   View.OnClickListener longClickListener) {
+            return new ImageView(context);
+        }
+
+        @NonNull
+        @Override
+        public View getPreviewView(@NonNull Context context,
+                                   @NonNull Uri uri,
+                                   View.OnClickListener onClickListener,
+                                   View.OnClickListener longClickListener) {
+            return new ImageView(context);
+        }
+
     };
 
     /**
@@ -39,14 +64,36 @@ public interface AlbumLoader {
      * @param imageView {@link ImageView}.
      * @param albumFile the media object may be a picture or video.
      */
-    void load(ImageView imageView, AlbumFile albumFile);
+    void load(@NonNull ImageView imageView, @NonNull AlbumFile albumFile);
 
     /**
      * Load thumbnails of pictures or videos, either local file or remote file.
      *
      * @param imageView {@link ImageView}.
-     * @param url       The url of the file, local path or remote path.
+     * @param uri       The uri of the file, local path or remote path.
      */
-    void load(ImageView imageView, String url);
+    void load(@NonNull ImageView imageView, @NonNull Uri uri);
+
+    /**
+     * 获取大图预览的 View，开发者可以自由使用自己加载大图的组件
+     *
+     * @return 加载大图的组件
+     */
+    @NonNull
+    View getPreviewView(@NonNull Context context,
+                        @NonNull AlbumFile albumFile,
+                        @Nullable View.OnClickListener onClickListener,
+                        @Nullable View.OnClickListener longClickListener);
+
+    /**
+     * 获取大图预览的 View，开发者可以自由使用自己加载大图的组件
+     *
+     * @return 加载大图的组件
+     */
+    @NonNull
+    View getPreviewView(@NonNull Context context,
+                        @NonNull Uri uri,
+                        @Nullable View.OnClickListener onClickListener,
+                        @Nullable View.OnClickListener longClickListener);
 
 }

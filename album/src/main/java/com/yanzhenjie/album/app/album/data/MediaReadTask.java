@@ -24,6 +24,9 @@ import com.yanzhenjie.album.AlbumFolder;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 /**
  * <p>Image scan task.</p>
  * Created by Yan Zhenjie on 2017/3/28.
@@ -36,7 +39,7 @@ public class MediaReadTask extends AsyncTask<Void, Void, MediaReadTask.ResultWra
          *
          * @param albumFolders album folder list.
          */
-        void onScanCallback(ArrayList<AlbumFolder> albumFolders, ArrayList<AlbumFile> checkedFiles);
+        void onScanCallback(@NonNull ArrayList<AlbumFolder> albumFolders, @NonNull ArrayList<AlbumFile> checkedFiles);
     }
 
     static class ResultWrapper {
@@ -49,15 +52,16 @@ public class MediaReadTask extends AsyncTask<Void, Void, MediaReadTask.ResultWra
     private MediaReader mMediaReader;
     private Callback mCallback;
 
-    public MediaReadTask(int function, List<AlbumFile> checkedFiles, MediaReader mediaReader, Callback callback) {
+    public MediaReadTask(int function, @Nullable List<AlbumFile> checkedFiles, @NonNull MediaReader mediaReader, @NonNull Callback callback) {
         this.mFunction = function;
         this.mCheckedFiles = checkedFiles;
         this.mMediaReader = mediaReader;
         this.mCallback = callback;
     }
 
+    @NonNull
     @Override
-    protected ResultWrapper doInBackground(Void... params) {
+    protected ResultWrapper doInBackground(@Nullable Void... params) {
         ArrayList<AlbumFolder> albumFolders;
         switch (mFunction) {
             case Album.FUNCTION_CHOICE_IMAGE: {
@@ -98,7 +102,7 @@ public class MediaReadTask extends AsyncTask<Void, Void, MediaReadTask.ResultWra
     }
 
     @Override
-    protected void onPostExecute(ResultWrapper wrapper) {
+    protected void onPostExecute(@NonNull ResultWrapper wrapper) {
         mCallback.onScanCallback(wrapper.mAlbumFolders, wrapper.mAlbumFiles);
     }
 }

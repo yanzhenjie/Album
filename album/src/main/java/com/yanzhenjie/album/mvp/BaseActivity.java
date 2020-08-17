@@ -19,11 +19,11 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.PermissionChecker;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.PermissionChecker;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.util.AlbumUtils;
@@ -36,18 +36,25 @@ import java.util.Locale;
  * Created by YanZhenjie on 2018/4/6.
  */
 public class BaseActivity extends AppCompatActivity implements Bye {
-
+    
     public static final String[] PERMISSION_TAKE_PICTURE = {"android.permission.CAMERA", "android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"};
+    
+    public static final String[] PERMISSION_TAKE_PICTURE_29 = {"android.permission.CAMERA", "android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.ACCESS_MEDIA_LOCATION"};
+    
+    
     public static final String[] PERMISSION_TAKE_VIDEO = {"android.permission.CAMERA", "android.permission.RECORD_AUDIO", "android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"};
+    
+    public static final String[] PERMISSION_TAKE_VIDEO_29 = {"android.permission.CAMERA", "android.permission.RECORD_AUDIO", "android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.ACCESS_MEDIA_LOCATION"};
+    
     public static final String[] PERMISSION_STORAGE = {"android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"};
-
+    
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Locale locale = Album.getAlbumConfig().getLocale();
         AlbumUtils.applyLanguageForContext(this, locale);
     }
-
+    
     /**
      * Request permission.
      */
@@ -65,24 +72,27 @@ public class BaseActivity extends AppCompatActivity implements Bye {
             onPermissionGranted(code);
         }
     }
-
+    
     @Override
     public final void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (isGrantedResult(grantResults)) onPermissionGranted(requestCode);
-        else onPermissionDenied(requestCode);
+        if (isGrantedResult(grantResults)) {
+            onPermissionGranted(requestCode);
+        } else {
+            onPermissionDenied(requestCode);
+        }
     }
-
+    
     protected void onPermissionGranted(int code) {
     }
-
+    
     protected void onPermissionDenied(int code) {
     }
-
+    
     @Override
     public void bye() {
         onBackPressed();
     }
-
+    
     private static List<String> getDeniedPermissions(Context context, String... permissions) {
         List<String> deniedList = new ArrayList<>(2);
         for (String permission : permissions) {
@@ -92,10 +102,12 @@ public class BaseActivity extends AppCompatActivity implements Bye {
         }
         return deniedList;
     }
-
+    
     private static boolean isGrantedResult(int... grantResults) {
         for (int result : grantResults) {
-            if (result == PackageManager.PERMISSION_DENIED) return false;
+            if (result == PackageManager.PERMISSION_DENIED) {
+                return false;
+            }
         }
         return true;
     }

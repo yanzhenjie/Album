@@ -16,10 +16,12 @@
 package com.yanzhenjie.album.api;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.api.widget.Widget;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * <p>Album basic wrapper.</p>
@@ -28,12 +30,16 @@ import com.yanzhenjie.album.api.widget.Widget;
 public abstract class BasicAlbumWrapper<Returner extends BasicAlbumWrapper, Result, Cancel, Checked> {
 
     final Context mContext;
+    @Nullable
     Action<Result> mResult;
+    @Nullable
     Action<Cancel> mCancel;
+    @NonNull
     Widget mWidget;
+    @Nullable
     Checked mChecked;
 
-    BasicAlbumWrapper(Context context) {
+    BasicAlbumWrapper(@NonNull Context context) {
         this.mContext = context;
         mWidget = Widget.getDefaultWidget(context);
     }
@@ -43,7 +49,8 @@ public abstract class BasicAlbumWrapper<Returner extends BasicAlbumWrapper, Resu
      *
      * @param result action when producing result.
      */
-    public final Returner onResult(Action<Result> result) {
+    @NonNull
+    public final Returner onResult(@Nullable Action<Result> result) {
         this.mResult = result;
         return (Returner) this;
     }
@@ -53,7 +60,8 @@ public abstract class BasicAlbumWrapper<Returner extends BasicAlbumWrapper, Resu
      *
      * @param cancel action when canceled.
      */
-    public final Returner onCancel(Action<Cancel> cancel) {
+    @NonNull
+    public final Returner onCancel(@Nullable Action<Cancel> cancel) {
         this.mCancel = cancel;
         return (Returner) this;
     }
@@ -63,7 +71,8 @@ public abstract class BasicAlbumWrapper<Returner extends BasicAlbumWrapper, Resu
      *
      * @param widget the widget.
      */
-    public final Returner widget(@Nullable Widget widget) {
+    @NonNull
+    public final Returner widget(@NonNull Widget widget) {
         this.mWidget = widget;
         return (Returner) this;
     }

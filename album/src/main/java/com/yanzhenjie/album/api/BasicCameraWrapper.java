@@ -16,21 +16,27 @@
 package com.yanzhenjie.album.api;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 
 import com.yanzhenjie.album.Action;
+import com.yanzhenjie.album.AlbumCameraFile;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by YanZhenjie on 2017/8/18.
  */
 public abstract class BasicCameraWrapper<Returner extends BasicCameraWrapper> {
-
+    @NonNull
     Context mContext;
-    Action<String> mResult;
+    @Nullable
+    Action<AlbumCameraFile> mResult;
+    @Nullable
     Action<String> mCancel;
+    @Nullable
     String mFilePath;
 
-    public BasicCameraWrapper(Context context) {
+    public BasicCameraWrapper(@NonNull Context context) {
         this.mContext = context;
     }
 
@@ -39,7 +45,8 @@ public abstract class BasicCameraWrapper<Returner extends BasicCameraWrapper> {
      *
      * @param result action when producing result.
      */
-    public final Returner onResult(Action<String> result) {
+    @NonNull
+    public final Returner onResult(@Nullable Action<AlbumCameraFile> result) {
         this.mResult = result;
         return (Returner) this;
     }
@@ -49,7 +56,8 @@ public abstract class BasicCameraWrapper<Returner extends BasicCameraWrapper> {
      *
      * @param cancel action when canceled.
      */
-    public final Returner onCancel(Action<String> cancel) {
+    @NonNull
+    public final Returner onCancel(@Nullable Action<String> cancel) {
         this.mCancel = cancel;
         return (Returner) this;
     }
@@ -59,6 +67,7 @@ public abstract class BasicCameraWrapper<Returner extends BasicCameraWrapper> {
      *
      * @param filePath storage path.
      */
+    @NonNull
     public Returner filePath(@Nullable String filePath) {
         this.mFilePath = filePath;
         return (Returner) this;

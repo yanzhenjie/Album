@@ -19,12 +19,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
+import com.yanzhenjie.album.AlbumCameraFile;
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.mvp.BaseActivity;
 import com.yanzhenjie.album.util.AlbumUtils;
@@ -32,32 +31,37 @@ import com.yanzhenjie.album.util.SystemBar;
 
 import java.io.File;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+
 /**
  * Created by YanZhenjie on 2017/8/16.
  */
 public class CameraActivity extends BaseActivity {
-
+    
     private static final String INSTANCE_CAMERA_FUNCTION = "INSTANCE_CAMERA_FUNCTION";
     private static final String INSTANCE_CAMERA_FILE_PATH = "INSTANCE_CAMERA_FILE_PATH";
     private static final String INSTANCE_CAMERA_QUALITY = "INSTANCE_CAMERA_QUALITY";
     private static final String INSTANCE_CAMERA_DURATION = "INSTANCE_CAMERA_DURATION";
     private static final String INSTANCE_CAMERA_BYTES = "INSTANCE_CAMERA_BYTES";
-
+    
     private static final int CODE_PERMISSION_IMAGE = 1;
     private static final int CODE_PERMISSION_VIDEO = 2;
-
+    
     private static final int CODE_ACTIVITY_TAKE_IMAGE = 1;
     private static final int CODE_ACTIVITY_TAKE_VIDEO = 2;
 
-    public static Action<String> sResult;
+    @Nullable
+    public static Action<AlbumCameraFile> sResult;
+    @Nullable
     public static Action<String> sCancel;
-
+    
     private int mFunction;
     private String mCameraFilePath;
     private int mQuality;
     private long mLimitDuration;
     private long mLimitBytes;
-
+    
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,18 +83,28 @@ public class CameraActivity extends BaseActivity {
             mQuality = bundle.getInt(Album.KEY_INPUT_CAMERA_QUALITY);
             mLimitDuration = bundle.getLong(Album.KEY_INPUT_CAMERA_DURATION);
             mLimitBytes = bundle.getLong(Album.KEY_INPUT_CAMERA_BYTES);
-
+            
             switch (mFunction) {
                 case Album.FUNCTION_CAMERA_IMAGE: {
-                    if (TextUtils.isEmpty(mCameraFilePath))
+                    if (TextUtils.isEmpty(mCameraFilePath)) {
                         mCameraFilePath = AlbumUtils.randomJPGPath(this);
-                    requestPermission(PERMISSION_TAKE_PICTURE, CODE_PERMISSION_IMAGE);
+                    }
+                    if (AlbumUtils.isBeforeAndroidTen()) {
+                        requestPermission(PERMISSION_TAKE_PICTURE, CODE_PERMISSION_IMAGE);
+                    } else {
+                        requestPermission(PERMISSION_TAKE_PICTURE_29, CODE_PERMISSION_IMAGE);
+                    }
                     break;
                 }
                 case Album.FUNCTION_CAMERA_VIDEO: {
-                    if (TextUtils.isEmpty(mCameraFilePath))
+                    if (TextUtils.isEmpty(mCameraFilePath)) {
                         mCameraFilePath = AlbumUtils.randomMP4Path(this);
-                    requestPermission(PERMISSION_TAKE_VIDEO, CODE_PERMISSION_VIDEO);
+                    }
+                    if (AlbumUtils.isBeforeAndroidTen()) {
+                        requestPermission(PERMISSION_TAKE_VIDEO, CODE_PERMISSION_VIDEO);
+                    } else {
+                        requestPermission(PERMISSION_TAKE_VIDEO_29, CODE_PERMISSION_VIDEO);
+                    }
                     break;
                 }
                 default: {
@@ -99,7 +113,7 @@ public class CameraActivity extends BaseActivity {
             }
         }
     }
-
+    
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt(INSTANCE_CAMERA_FUNCTION, mFunction);
@@ -109,7 +123,7 @@ public class CameraActivity extends BaseActivity {
         outState.putLong(INSTANCE_CAMERA_BYTES, mLimitBytes);
         super.onSaveInstanceState(outState);
     }
-
+    
     @Override
     protected void onPermissionGranted(int code) {
         switch (code) {
@@ -126,7 +140,7 @@ public class CameraActivity extends BaseActivity {
             }
         }
     }
-
+    
     @Override
     protected void onPermissionDenied(int code) {
         int messageRes;
@@ -144,18 +158,18 @@ public class CameraActivity extends BaseActivity {
             }
         }
         new AlertDialog.Builder(this)
-                .setCancelable(false)
-                .setTitle(R.string.album_title_permission_failed)
-                .setMessage(messageRes)
-                .setPositiveButton(R.string.album_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        callbackCancel();
-                    }
-                })
-                .show();
+            .setCancelable(false)
+            .setTitle(R.string.album_title_permission_failed)
+            .setMessage(messageRes)
+            .setPositiveButton(R.string.album_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    callbackCancel();
+                }
+            })
+            .show();
     }
-
+    
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -173,16 +187,20 @@ public class CameraActivity extends BaseActivity {
             }
         }
     }
-
+    
     private void callbackResult() {
-        if (sResult != null) sResult.onAction(mCameraFilePath);
+        if (sResult != null) {
+            sResult.onAction(AlbumCameraFile.getAlbumCameraFile(this.getApplicationContext(), mCameraFilePath));
+        }
         sResult = null;
         sCancel = null;
         finish();
     }
-
+    
     private void callbackCancel() {
-        if (sCancel != null) sCancel.onAction("User canceled.");
+        if (sCancel != null) {
+            sCancel.onAction("User canceled.");
+        }
         sResult = null;
         sCancel = null;
         finish();

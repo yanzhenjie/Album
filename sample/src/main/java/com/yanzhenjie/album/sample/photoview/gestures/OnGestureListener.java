@@ -13,18 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.album.widget.photoview.gestures;
+package com.yanzhenjie.album.sample.photoview.gestures;
 
-import android.view.MotionEvent;
+public interface OnGestureListener {
 
-public interface GestureDetector {
+    void onDrag(float dx, float dy);
 
-    boolean onTouchEvent(MotionEvent ev);
+    void onFling(float startX, float startY, float velocityX, float velocityY);
 
-    boolean isScaling();
-
-    boolean isDragging();
-
-    void setOnGestureListener(OnGestureListener listener);
+    void onScale(float scaleFactor, float focusX, float focusY);
 
 }

@@ -21,16 +21,19 @@ import android.content.Intent;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.app.camera.CameraActivity;
 
+import androidx.annotation.NonNull;
+
 /**
  * <p>Camera wrapper.</p>
  * Created by Yan Zhenjie on 2017/4/18.
  */
 public class ImageCameraWrapper extends BasicCameraWrapper<ImageCameraWrapper> {
 
-    public ImageCameraWrapper(Context context) {
+    public ImageCameraWrapper(@NonNull Context context) {
         super(context);
     }
 
+    @Override
     public void start() {
         CameraActivity.sResult = mResult;
         CameraActivity.sCancel = mCancel;
