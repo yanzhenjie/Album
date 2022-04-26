@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="album_loading">로딩중&#8230;</string>
+    <string name="album_converting">로딩중&#8230;</string>
+    <string name="album_thumbnail">썸네일 생성 중&#8230;</string>
+    <string name="album_not_found_image">사진이 없습니다</string>
+    <string name="album_not_found_video">동영상이 없습니다</string>
+    <string name="album_not_found_album">미디어가 없습니다</string>
+    <string name="album_camera_image_capture">사진 촬영</string>
+    <string name="album_camera_video_capture">동영상 촬영</string>
+    <string name="album_title">미디어 앨범</string>
+    <string name="album_all_images">전체 사진</string>
+    <string name="album_all_videos">전체 동영상</string>
+    <string name="album_all_images_videos">전체 사진/동영상</string>
+    <string name="album_ok">확인</string>
+    <string name="album_confirm">확인</string>
+    <string name="album_cancel">취소</string>
+    <string name="album_check_image_little">사진을 선택해주세요.</string>
+    <string name="album_check_video_little">동영상을 선택해주세요.</string>
+    <string name="album_check_album_little">미디어를 선택해주세요.</string>
+    <string name="album_menu_finish">완료</string>
+    <string name="album_check">선택됨</string>
+    <string name="album_title_permission_failed">권한이 거부됨</string>
+    <string name="album_permission_storage_failed_hint">저장소 권한이 없습니다. 사용을 위해서 권한을 승인해주세요.</string>
+    <string name="album_permission_camera_image_failed_hint">카메라 또는 저장소 권한이 없습니다. 사용을 위해서 권한을 승인해주세요.</string>
+    <string name="album_permission_camera_video_failed_hint">카메라 또는 마이크 권한이 없습니다. 사용을 위해서 권한을 승인해주세요.</string>
+    <string name="album_item_unavailable">사용할 수 없습니다.</string>
+    <string name="album_take_file_unavailable">사용할 수 없는 파일입니다. 다시 시도해주세요.</string>
+</resources>
