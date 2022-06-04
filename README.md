@@ -63,7 +63,7 @@ Album.album(this) // Image and video mix options.
     .camera() // Whether the camera appears in the Item.
     .cameraVideoQuality(1) // Video quality, [0, 1].
     .cameraVideoLimitDuration(Long.MAX_VALUE) // The longest duration of the video is in milliseconds.
-    .cameraVideoLimitBytes()(Long.MAX_VALUE) // Maximum size of the video, in bytes.
+    .cameraVideoLimitBytes() // Maximum size of the video, in bytes.
     .checkedList() // To reverse the list.
     .filterSize() // Filter the file size.
     .filterMimeType() // Filter file format.
